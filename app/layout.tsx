@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -19,7 +20,10 @@ export default function RootLayout({
     <html
       lang="en" className={cn("font-sans", inter.variable)}
     >
-      <body className="font-poppins antialiased">{children}</body>
+      <body className="font-poppins antialiased">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
