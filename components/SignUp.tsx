@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { ButtonHTMLAttributes } from 'react'
 
-function SignUp() {
-  return (
-    <button className='text-ushop-purple border border-ushop-purple px-6 py-2 rounded-full hover:bg-ushop-purple hover:text-white hoverEffect cursor-pointer'>Register</button>
-  )
-}
+const SignUp = React.forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement>>(
+  (props, ref) => {
+    return (
+      <button
+        ref={ref}
+        {...props}
+        className='text-ushop-purple border border-ushop-purple px-6 py-2 rounded-full hover:bg-ushop-purple hover:text-white hoverEffect cursor-pointer'
+      >
+        Register
+      </button>
+    );
+  }
+);
+
+SignUp.displayName = "SignUp";
 
 export default SignUp
