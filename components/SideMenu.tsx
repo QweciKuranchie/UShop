@@ -8,7 +8,13 @@ import { cn } from "@/lib/utils";
 import ScoialMediaIcons from "./ScoialMediaIcons";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
-import { SignInButton, SignUpButton, Show, UserButton } from "@clerk/nextjs";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 interface SideBarProps {
   isOpen: boolean;
@@ -26,7 +32,9 @@ const SideMenu: FC<SideBarProps> = ({ isOpen, onClose }) => {
         onClick={onClose}
         className={cn(
           "fixed inset-0 z-50 transition-opacity duration-300",
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          isOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none",
         )}
         style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
       />
@@ -36,7 +44,7 @@ const SideMenu: FC<SideBarProps> = ({ isOpen, onClose }) => {
         ref={sidebarRef}
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-full max-w-xs bg-black h-[100dvh] overflow-y-auto px-6 py-8 border-r border-r-ushop_light_green flex flex-col gap-6 transition-transform duration-300 ease-in-out text-white/70 shadow-xl",
-          isOpen ? "translate-x-0" : "-translate-x-full"
+          isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <div className="flex items-center justify-between gap-5">
@@ -56,32 +64,30 @@ const SideMenu: FC<SideBarProps> = ({ isOpen, onClose }) => {
               onClick={onClose}
               className={cn(
                 "hover:text-white hoverEffect",
-                pathname === item.href && "text-white"
+                pathname === item.href && "text-white",
               )}
             >
               {item.title}
             </Link>
           ))}
         </div>
-        
+
         {/* Mobile Auth options */}
         <div className="mt-auto flex flex-col gap-3 pt-6 border-t border-gray-800">
-          <Show when="signed-out">
+          <SignedOut>
             <SignInButton mode="modal">
               <SignIn />
             </SignInButton>
             <SignUpButton mode="modal">
               <SignUp />
             </SignUpButton>
-          </Show>
-          <Show when="signed-in">
-            <div className="flex items-center justify-between px-2 text-white">
-              <span>My Profile</span>
-              <UserButton />
-            </div>
-          </Show>
+          </SignedOut>
+
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </div>
-        
+
         <ScoialMediaIcons />
       </div>
     </>
