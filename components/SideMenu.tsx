@@ -22,17 +22,19 @@ const SideMenu: FC<SideBarProps> = ({ isOpen, onClose }) => {
     <>
       {/* Background Overlay */}
       <div
+        onClick={onClose}
         className={cn(
-          "fixed inset-0 z-50 bg-black/50 transition-opacity duration-300",
+          "fixed inset-0 z-50 transition-opacity duration-300",
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
       />
 
       {/* Sidebar Drawer */}
       <div
         ref={sidebarRef}
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-full max-w-xs bg-black h-screen p-10 border-r border-r-ushop_light_green flex flex-col gap-6 transition-transform duration-300 ease-in-out text-white/70 shadow-xl",
+          "fixed inset-y-0 left-0 z-50 w-full max-w-xs bg-black h-[100dvh] overflow-y-auto px-6 py-8 border-r border-r-ushop_light_green flex flex-col gap-6 transition-transform duration-300 ease-in-out text-white/70 shadow-xl",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
