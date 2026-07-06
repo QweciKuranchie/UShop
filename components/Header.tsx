@@ -10,6 +10,7 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import MobileMenu from "./MobileMenu";
 import {
+  ClerkLoaded,
   SignInButton,
   SignUpButton,
   SignedIn,
@@ -42,6 +43,7 @@ const Header = () => {
 
           {/* Auth buttons — hidden on mobile, shown on md+ */}
           <div className="hidden md:flex items-center gap-3">
+            <ClerkLoaded>
             <SignedOut>
               <SignInButton mode="modal">
                 <SignIn />
@@ -53,6 +55,7 @@ const Header = () => {
             <SignedIn>
               <UserButton />
             </SignedIn>
+            </ClerkLoaded>
           </div>
         </div>
       </Container>
