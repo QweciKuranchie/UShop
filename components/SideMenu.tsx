@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { useOutsideClick } from "@/hooks";
 import { cn } from "@/lib/utils";
 import ScoialMediaIcons from "./ScoialMediaIcons";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 interface SideBarProps {
   isOpen: boolean;
@@ -58,6 +60,13 @@ const SideMenu: FC<SideBarProps> = ({ isOpen, onClose }) => {
             </Link>
           ))}
         </div>
+        
+        {/* Mobile Auth options */}
+        <div className="mt-auto flex flex-col gap-3 pt-6 border-t border-gray-800">
+          <SignIn />
+          <SignUp />
+        </div>
+        
         <ScoialMediaIcons />
       </div>
     </>
