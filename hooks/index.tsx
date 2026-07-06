@@ -4,7 +4,16 @@ export function useOutsideClick<T extends HTMLElement>(callback: () => void) {
     const ref = useRef<T>(null);
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (ref.current && !ref.current.contains(event.target as Node)) {
+            const target = event.target as HTMLElement;
+            if (
+                ref.current &&
+                !ref.current.contains(target) &&
+                // Do not close if the user clicked inside a Clerk modal portal
+                !target.closest(".cl-rootBox") &&
+                !target.closest(".cl-modalBackdrop") &&
+                // Do not close if the target element was unmounted during click (e.g. dynamic state changes)
+                document.body.contains(target)
+            ) {
                 callback();
             }
         };
