@@ -22,16 +22,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ClerkProvider appearance={{ theme: shadcn }}>
     <html lang="en" className={cn("font-sans", inter.variable)}>
       <body className="font-poppins antialiased">
-        <ClerkProvider appearance={{ theme: shadcn }}>
-          <Header />
-          {children}
-          <Footer />
+          <div className="min-h-screen flex flex-col">
+            <Header />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </div>
           <SpeedInsights />
-          <Analytics />
-        </ClerkProvider>
+          <Analytics /> 
       </body>
     </html>
+    </ClerkProvider>
   );
 }

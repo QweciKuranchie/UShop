@@ -43,7 +43,7 @@ const SideMenu: FC<SideBarProps> = ({ isOpen, onClose }) => {
       <div
         ref={sidebarRef}
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-full max-w-xs bg-black h-[100dvh] overflow-y-auto px-6 py-8 border-r border-r-ushop_light_green flex flex-col gap-6 transition-transform duration-300 ease-in-out text-white/70 shadow-xl",
+          "fixed inset-y-0 left-0 z-50 w-full max-w-xs bg-black h-[100dvh] overflow-y-auto px-6 py-8 border-r border-r-ushop-magenta flex flex-col gap-6 hoverEffect text-white/70 shadow-xl",
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
@@ -63,7 +63,7 @@ const SideMenu: FC<SideBarProps> = ({ isOpen, onClose }) => {
               key={item.title}
               onClick={onClose}
               className={cn(
-                "hover:text-white hoverEffect",
+                "hover:text-ushop-purple hoverEffect",
                 pathname === item.href && "text-white",
               )}
             >

@@ -23,7 +23,7 @@ const HeaderNavBar = () => {
               <Link
                 key={item?.title}
                 href={item?.href}
-                className={`text-sm capitalize font-medium text-gray-700 hover:text-ushop-purple hoverEffect relative group ${
+                className={`text-sm capitalize font-semibold text-gray-700 hover:text-ushop-purple hoverEffect relative group ${
                   pathname === item?.href && "text-ushop-purple"
                 }`}
               >
