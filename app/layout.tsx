@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "U-Shop",
@@ -18,11 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en" className={cn("font-sans", inter.variable)}
-    >
+    <html lang="en" className={cn("font-sans", inter.variable)}>
       <body className="font-poppins antialiased">
+        <Header />
         {children}
+        <Footer />
         <SpeedInsights />
         <Analytics />
       </body>
