@@ -9,6 +9,7 @@ import WhishListIcon from "./WhishListIcon";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import MobileMenu from "./MobileMenu";
+import { SignInButton, SignUpButton, Show, UserButton } from "@clerk/nextjs";
 
 const Header = () => {
   return (
@@ -36,8 +37,17 @@ const Header = () => {
           
           {/* Auth buttons — hidden on mobile, shown on md+ */}
           <div className="hidden md:flex items-center gap-3">
-            <SignIn />
-            <SignUp />
+            <Show when="signed-out">
+              <SignInButton mode="modal">
+                <SignIn />
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <SignUp />
+              </SignUpButton>
+            </Show>
+            <Show when="signed-in">
+              <UserButton />
+            </Show>
           </div>
         </div>
       </Container>

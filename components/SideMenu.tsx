@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import ScoialMediaIcons from "./ScoialMediaIcons";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import { SignInButton, SignUpButton, Show, UserButton } from "@clerk/nextjs";
 
 interface SideBarProps {
   isOpen: boolean;
@@ -65,8 +66,20 @@ const SideMenu: FC<SideBarProps> = ({ isOpen, onClose }) => {
         
         {/* Mobile Auth options */}
         <div className="mt-auto flex flex-col gap-3 pt-6 border-t border-gray-800">
-          <SignIn />
-          <SignUp />
+          <Show when="signed-out">
+            <SignInButton mode="modal">
+              <SignIn />
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <SignUp />
+            </SignUpButton>
+          </Show>
+          <Show when="signed-in">
+            <div className="flex items-center justify-between px-2 text-white">
+              <span>My Profile</span>
+              <UserButton />
+            </div>
+          </Show>
         </div>
         
         <ScoialMediaIcons />
