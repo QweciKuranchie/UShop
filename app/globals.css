@@ -64,6 +64,11 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --color-ushop-red: #E8000B;
+  --color-ushop-purple: #6B1FA8;
+  --color-ushop-purple-dark: #520f85;
+  --color-ushop-magenta: #D4009B;
+  --color-ushop-pink: #D4009B;
 }
 
 :root {
@@ -139,10 +144,19 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
+  .hoverEffect {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
   html {
     @apply font-sans;
   }
+}
+button {
+  @apply hover:cursor-pointer;
 }
