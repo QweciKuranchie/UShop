@@ -14,6 +14,11 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 export const metadata: Metadata = {
   title: "U-Shop",
   description: "U-Shop, Your trusted C2C e-commerce for tech equipment",
+  icons: {
+    icon: "/assets/logos/favicon/android-chrome-192x192.png",
+    shortcut: "/assets/logos/favicon/favicon.ico",
+    apple: "/assets/logos/favicon/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
