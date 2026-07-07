@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Container from "./Container";
 import Logo from "./Logo";
 import HeaderTopBar from "./HeaderTopBar";
@@ -17,7 +19,17 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+
 const Header = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    const handle = requestAnimationFrame(() => {
+      setIsMounted(true);
+    });
+    return () => cancelAnimationFrame(handle);
+  }, []);
+
   return (
     <header className="bg-white">
       {/* ── Row 1: Top bar ── */}
@@ -43,19 +55,21 @@ const Header = () => {
 
           {/* Auth buttons — hidden on mobile, shown on md+ */}
           <div className="hidden md:flex items-center gap-3">
-            <ClerkLoaded>
-            <SignedOut>
-              <SignInButton mode="modal">
-                <SignIn />
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <SignUp />
-              </SignUpButton>
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-            </ClerkLoaded>
+            {isMounted && (
+              <ClerkLoaded>
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <SignIn />
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <SignUp />
+                  </SignUpButton>
+                </SignedOut>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
+              </ClerkLoaded>
+            )}
           </div>
         </div>
       </Container>

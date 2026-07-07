@@ -22,9 +22,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider appearance={{ theme: shadcn }}>
     <html lang="en" className={cn("font-sans", inter.variable)}>
       <body className="font-poppins antialiased">
+        <ClerkProvider appearance={{ theme: shadcn }}>
           <div className="min-h-screen flex flex-col">
             <Header />
             <main className="flex-1">
@@ -34,8 +34,8 @@ export default function RootLayout({
           </div>
           <SpeedInsights />
           <Analytics /> 
+        </ClerkProvider>
       </body>
     </html>
-    </ClerkProvider>
   );
 }

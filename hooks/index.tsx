@@ -1,8 +1,10 @@
 import { useEffect, useRef } from "react";
 
-export function useOutsideClick<T extends HTMLElement>(callback: () => void) {
+export function useOutsideClick<T extends HTMLElement>(callback: () => void, isActive: boolean = true) {
   const ref = useRef<T>(null);
   useEffect(() => {
+    if (!isActive) return;
+
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       if (
@@ -21,6 +23,6 @@ export function useOutsideClick<T extends HTMLElement>(callback: () => void) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [callback]);
+  }, [callback, isActive]);
   return ref;
 }

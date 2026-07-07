@@ -17,5 +17,43 @@ const Title = ({
     </h2>
   );
 };
+const SubTitle = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <h3
+      className={cn(
+        "text-sm md:text-sm font-semibold text-white capitalize tracking-wide font-sans",
+        className,
+      )}
+    >
+      {children}
+    </h3>
+  );
+};
+const SubText=(
 
-export default Title;
+  {
+    children,
+    className,
+  }: {
+    children: React.ReactNode;
+    className?: string;
+  }
+)=>{
+  return (
+    <p
+      className={cn(
+        "text-sm md:text-sm text-white capitalize tracking-wide font-sans",
+        className,
+      )}
+    >
+      {children}
+    </p>
+  );
+}
+export { Title, SubTitle, SubText }

@@ -1,11 +1,11 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Logo from "./Logo";
 import { headerData } from "@/Constants/data";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useOutsideClick } from "@/hooks";
 import { cn } from "@/lib/utils";
-import ScoialMediaIcons from "./ScoialMediaIcons";
+import SocialMediaIcons from "./SocialMediaIcons";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import {
@@ -22,8 +22,17 @@ interface SideBarProps {
 }
 
 const SideMenu: FC<SideBarProps> = ({ isOpen, onClose }) => {
+  console.log("SideMenu render. isOpen:", isOpen);
   const pathname = usePathname();
-  const sidebarRef = useOutsideClick<HTMLDivElement>(onClose);
+  const sidebarRef = useOutsideClick<HTMLDivElement>(onClose, isOpen);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    const handle = requestAnimationFrame(() => {
+      setIsMounted(true);
+    });
+    return () => cancelAnimationFrame(handle);
+  }, []);
 
   return (
     <>
@@ -74,21 +83,25 @@ const SideMenu: FC<SideBarProps> = ({ isOpen, onClose }) => {
 
         {/* Mobile Auth options */}
         <div className="mt-auto flex flex-col gap-3 pt-6 border-t border-gray-800">
-          <SignedOut>
-            <SignInButton mode="modal">
-              <SignIn />
-            </SignInButton>
-            <SignUpButton mode="modal">
-              <SignUp />
-            </SignUpButton>
-          </SignedOut>
+          {isMounted && (
+            <>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <SignIn />
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <SignUp />
+                </SignUpButton>
+              </SignedOut>
 
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </>
+          )}
         </div>
 
-        <ScoialMediaIcons />
+        <SocialMediaIcons />
       </div>
     </>
   );

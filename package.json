@@ -9,17 +9,23 @@
     "lint": "eslint"
   },
   "pnpm": {
-  "ignoredBuiltDependencies": [
-    "sharp",
-    "unrs-resolver"
-  ]
-},
+    "ignoredBuiltDependencies": [
+      "sharp",
+      "unrs-resolver"
+    ],
+    "onlyBuiltDependencies": [
+      "@clerk/shared",
+      "bufferutil",
+      "core-js",
+      "utf-8-validate"
+    ]
+  },
   "dependencies": {
-    "@vercel/speed-insights": "^2.0.0",
-    "@vercel/analytics": "^2.0.1",
     "@base-ui/react": "^1.6.0",
     "@clerk/nextjs": "^6.9.6",
     "@clerk/ui": "^1.1.2",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
