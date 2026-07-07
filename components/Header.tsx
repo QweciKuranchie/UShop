@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Container from "./Container";
 import Logo from "./Logo";
 import HeaderTopBar from "./HeaderTopBar";
@@ -9,35 +11,65 @@ import WhishListIcon from "./WhishListIcon";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import MobileMenu from "./MobileMenu";
+import {
+  ClerkLoaded,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 const Header = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    const handle = requestAnimationFrame(() => {
+      setIsMounted(true);
+    });
+    return () => cancelAnimationFrame(handle);
+  }, []);
+
   return (
     <header className="bg-white">
       {/* ── Row 1: Top bar ── */}
       <HeaderTopBar />
-      
+
       {/* ── Row 2: Menu bar ── */}
-      <Container className="flex items-center justify-between py-5 text-lightColor">  
+      <Container className="flex items-center justify-between py-5 text-lightColor">
         {/* logo, Mobile Menu Icon */}
         <div className="w-auto flex items-center gap-2.5 justify-start">
           <MobileMenu />
           <Logo />
         </div>
-        
-        {/* Search bar — hidden on mobile, shown on md+ */} 
+
+        {/* Search bar — hidden on mobile, shown on md+ */}
         <div className="hidden md:block flex-1 mx-6">
           <SearchBar />
         </div>
-        
-        {/* cart, wishlist, profile, Auth buttons */} 
+
+        {/* cart, wishlist, profile */}
         <div className="flex items-center justify-end gap-3.5 md:gap-5">
           <CartIcon />
-          <WhishListIcon /> 
-          
+          <WhishListIcon />
+
           {/* Auth buttons — hidden on mobile, shown on md+ */}
           <div className="hidden md:flex items-center gap-3">
-            <SignIn />
-            <SignUp />
+            {isMounted && (
+              <ClerkLoaded>
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <SignIn />
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <SignUp />
+                  </SignUpButton>
+                </SignedOut>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
+              </ClerkLoaded>
+            )}
           </div>
         </div>
       </Container>

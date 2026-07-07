@@ -6,6 +6,8 @@ import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { ClerkProvider } from "@clerk/nextjs";
+import { shadcn } from "@clerk/ui/themes";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -22,11 +24,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", inter.variable)}>
       <body className="font-poppins antialiased">
-        <Header />
-        {children}
-        <Footer />
-        <SpeedInsights />
-        <Analytics />
+        <ClerkProvider appearance={{ theme: shadcn }}>
+          <div className="min-h-screen flex flex-col">
+            <Header />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </div>
+          <SpeedInsights />
+          <Analytics /> 
+        </ClerkProvider>
       </body>
     </html>
   );
