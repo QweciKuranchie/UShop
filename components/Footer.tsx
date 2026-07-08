@@ -9,7 +9,6 @@ import { SubTitle, SubText } from "./ui/text";
 import Link from "next/link";
 import Image from "next/image";
 import { quickLinksData, categoriesData, customerCareData } from "@/Constants/data";
-import { Button } from "./ui/button";
 import { Mail, CheckCircle } from "lucide-react";
 
 const Footer = () => {
@@ -34,7 +33,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="mb-40 bg-[#0f172a] text-gray-300 border-t">
+    <footer className="bg-[#0f172a] text-gray-300 border-t">
       <Container>
         <FooterTop />
         <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -136,16 +135,16 @@ const Footer = () => {
                           placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-ushop-purple
                           w-full disabled:opacity-50"
                       />
-                      <Button
+                      <button
                         type="submit"
                         disabled={status === "loading" || !email}
-                        className="px-6 py-2.5 bg-[#D4009B] text-white text-sm font-bold rounded-r-xl
-                          hover:bg-[#b50f7e] transition-colors whitespace-nowrap disabled:opacity-50 flex items-center justify-center min-w-[110px]"
+                        className="px-6 py-2.5 bg-[#D4009B] border border-transparent text-white text-sm font-bold rounded-r-xl
+                          hover:bg-[#b50f7e] transition-colors whitespace-nowrap disabled:opacity-50 flex items-center justify-center min-w-[110px] h-full"
                       >
                         {status === "loading" ? (
                            <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                         ) : "Subscribe"}
-                      </Button>
+                      </button>
                     </div>
                     {status === "error" && (
                       <p className="text-red-400 text-xs mt-1 absolute -bottom-5 left-0">{message}</p>
