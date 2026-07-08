@@ -8,22 +8,26 @@
     "start": "next start",
     "lint": "eslint"
   },
+  "overrides": {
+    "skills": "1.5.10"
+  },
+  "onlyBuiltDependencies": [
+    "@clerk/shared",
+    "bufferutil",
+    "core-js",
+    "utf-8-validate"
+  ],
   "pnpm": {
     "ignoredBuiltDependencies": [
       "sharp",
       "unrs-resolver"
-    ],
-    "onlyBuiltDependencies": [
-      "@clerk/shared",
-      "bufferutil",
-      "core-js",
-      "utf-8-validate"
     ]
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
     "@clerk/nextjs": "^6.9.6",
     "@clerk/ui": "^1.1.2",
+    "@sanity/icons": "^3.5.2",
     "@sanity/image-url": "2",
     "@sanity/vision": "5",
     "@vercel/analytics": "^2.0.1",
@@ -34,6 +38,7 @@
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^1.23.0",
     "next": "16.2.10",
+    "next-sanity": "^13.1.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "sanity": "5",
