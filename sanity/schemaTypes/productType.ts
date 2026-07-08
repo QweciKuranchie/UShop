@@ -70,6 +70,13 @@ export const productType = defineType({
       to: [{ type: "brand" }],
     }),
     defineField({
+      name: "store",
+      title: "Store / Seller",
+      type: "reference",
+      to: [{ type: "store" }],
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "stock",
       title: "Stock / Inventory",
       type: "number",

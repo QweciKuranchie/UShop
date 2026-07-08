@@ -15,9 +15,13 @@ export const metadata: Metadata = {
   title: "U-Shop",
   description: "U-Shop, Your trusted C2C e-commerce for tech equipment",
   icons: {
-    icon: "/assets/logos/favicon/android-chrome-192x192.png",
+    icon: [
+      { url: "/assets/logos/favicon/android-chrome-192x192.png", sizes: "192x192", type: "image/png" }
+    ],
     shortcut: "/assets/logos/favicon/favicon.ico",
-    apple: "/assets/logos/favicon/apple-touch-icon.png",
+    apple: [
+      { url: "/assets/logos/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" }
+    ],
   },
 };
 
