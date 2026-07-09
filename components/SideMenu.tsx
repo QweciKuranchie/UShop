@@ -72,7 +72,7 @@ const SideMenu: FC<SideBarProps> = ({ isOpen, onClose }) => {
               key={item.title}
               onClick={onClose}
               className={cn(
-                "hover:text-ushop-purple hoverEffect",
+                "hover:text-ushop-pink hoverEffect",
                 pathname === item.href && "text-white",
               )}
             >

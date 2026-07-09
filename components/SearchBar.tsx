@@ -33,7 +33,7 @@ function SearchBar({ onSearch, className }: SearchBarProps) {
         />
         <button
           type="submit"
-          className="px-5 py-2.5 bg-ushop-purple text-white rounded-full mr-1 hover:bg-ushop-purple-dark transition-colors flex items-center justify-center shrink-0"
+          className="px-5 py-2.5 bg-ushop-pink text-white rounded-full mr-1 hover:bg-ushop-purple-dark transition-colors flex items-center justify-center shrink-0"
           aria-label="Submit search"
         >
           <Search className="w-5 h-5" aria-hidden="true" />
