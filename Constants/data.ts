@@ -1,3 +1,5 @@
+
+
 export const headerData = [
   { title: "All Products", href: "/products" },
   { title: "Categories", href: "/categories" },
@@ -35,3 +37,8 @@ export const categoriesData = {
     { title: "Gaming", href: "/gaming" },
   ]
 }
+export const productType = [
+  { title: "Electronics", value: "electronics" },
+  { title: "Computing", value: "computing" },
+  { title: "others", value: "others" },
+];

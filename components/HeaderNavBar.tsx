@@ -23,16 +23,16 @@ const HeaderNavBar = () => {
               <Link
                 key={item?.title}
                 href={item?.href}
-                className={`text-sm capitalize font-semibold text-gray-700 hover:text-ushop-purple hoverEffect relative group ${
-                  pathname === item?.href && "text-ushop-purple"
+                className={`text-sm capitalize font-semibold text-gray-700 hover:text-ushop-pink hoverEffect relative group ${
+                  pathname === item?.href && "text-ushop-pink"
                 }`}
               >
                 {item.title}
-                <span className={`absolute -bottom-0.5 left-1/2 w-0 h-0.5 bg-ushop-purple group-hover:w-12 hoverEffect group-hover:left-0 ${
+                <span className={`absolute -bottom-0.5 left-1/2 w-0 h-0.5 bg-ushop-pink group-hover:w-12 hoverEffect group-hover:left-0 ${
                   pathname === item?.href && "text-ushop-purple"
                 }`}/>
-                <span className={`absolute -bottom-0.5 right-1/2 w-0 h-0.5 bg-ushop-purple group-hover:w-12 hoverEffect group-hover:right-0 ${
-                  pathname === item?.href && "text-ushop-purple"
+                <span className={`absolute -bottom-0.5 right-1/2 w-0 h-0.5 bg-ushop-pink group-hover:w-12 hoverEffect group-hover:right-0 ${
+                  pathname === item?.href && "text-ushop-pink"
                 }`}/>
               </Link>
             ))}
