@@ -3,12 +3,14 @@ import { useEffect, useState } from "react"
 import HomeTabBar from "./HomeTabBar";
 import { productType } from "@/Constants/data";
 import { client } from "@/sanity/lib/client";
-import {motion} from "motion/react";
+import {AnimatePresence, motion} from "motion/react";
 import { Loader2 } from "lucide-react";
 import NoProductsAvailable from "./NoProductsAvailable";
+import ProductCard from "./ProductCard";
+import { Product } from "@/sanity.types";
 
 const ProductGrid = () => {
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(false);
     const [selectedTab, setSelectedTab] = useState(productType[0]?.title || "");
 
@@ -38,9 +40,20 @@ const ProductGrid = () => {
                 <span>Product is loading...</span>
             </div>
         </div> : products?.length?(
-            <>Product</>
+            <div className="grid grid-cols-2 md:grid-col-3 lg:grid-cols-5 gap-2.5 mt-10  ">
+            {products?.map((product) => (
+                <AnimatePresence key={product?._id}>
+                    <motion.div layout 
+                    initial={{opacity: 0.2}} 
+                    animate={{opacity: 1}} 
+                    exit={{opacity: 0}}>
+                        <ProductCard product={product}/>
+                    </motion.div>
+                </AnimatePresence>
+            ))}
+            </div>
         ) : (
-            <NoProductsAvailable />
+            <NoProductsAvailable selectedTab={selectedTab} />
         )
         }
     </div>

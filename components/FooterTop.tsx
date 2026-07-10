@@ -12,28 +12,28 @@ const data: ContactItemData[] = [
     title: "Visit Us",
     subtitle: "Akweteyman, Ghana",
     icon: (
-      <MapPin className="h-6 w-6 text-slate-400 group-hover:text-ushop-purple transition-colors" />
+      <MapPin className="h-6 w-6 text-slate-400 group-hover:text-ushop-pink transition-colors" />
     ),
   },
   {
     title: "Call US",
     subtitle: "+233 50 956 5794",
     icon: (
-      <Phone className="h-6 w-6 text-slate-400 group-hover:text-ushop-purple transition-colors" />
+      <Phone className="h-6 w-6 text-slate-400 group-hover:text-ushop-pink transition-colors" />
     )
   },
   {
     title: "Email Us",
     subtitle: "ghanaushop@gmail.com",
     icon: (
-      <Mail className="h-6 w-6 text-slate-400 group-hover:text-ushop-purple transition-colors" />
+      <Mail className="h-6 w-6 text-slate-400 group-hover:text-ushop-pink transition-colors" />
     )
   },
   {
     title: "Working Hours",
     subtitle: "Mon - Sat: 10:00 Am - 7:00 PM",
     icon: (
-      <Clock className="h-6 w-6 text-slate-400 group-hover:text-ushop-purple transition-colors" />
+      <Clock className="h-6 w-6 text-slate-400 group-hover:text-ushop-pink transition-colors" />
     )
   },
 ]
