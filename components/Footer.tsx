@@ -52,7 +52,7 @@ const Footer = () => {
                    <li key={link.title}>
                     <Link
                     href={link.href}
-                    className="hover:text-ushop-purple hoverEffect"
+                    className="hover:text-ushop-pink hoverEffect"
                   >
                     {link.title}
                   </Link>
@@ -69,7 +69,7 @@ const Footer = () => {
                    <li key={link.title}>
                     <Link
                     href={link.href}
-                    className="hover:text-ushop-purple hoverEffect"
+                    className="hover:text-ushop-pink hoverEffect"
                   >
                     {link.title}
                   </Link>
@@ -86,7 +86,7 @@ const Footer = () => {
                    <li key={link.title}>
                     <Link
                     href={link.href}
-                    className="hover:text-ushop-purple hoverEffect"
+                    className="hover:text-ushop-pink hoverEffect"
                   >
                     {link.title}
                   </Link>
@@ -165,19 +165,19 @@ const Footer = () => {
               <div className="flex items-center gap-4">
                 <Link
                   href="/privacy"
-                  className="hover:text-ushop-purple transition-colors hoverEffect"
+                  className="hover:text-ushop-pink transition-colors hoverEffect"
                 >
                   Privacy Policy
                 </Link>
                 <Link
                   href="/terms"
-                  className="hover:text-ushop-purple transition-colors hoverEffect"
+                  className="hover:text-ushop-pink transition-colors hoverEffect"
                 >
                   Terms of Service
                 </Link>
                 <Link
                   href="/cookies"
-                  className="hover:text-ushop-purple transition-colors hoverEffect"
+                  className="hover:text-ushop-pink transition-colors hoverEffect"
                 >
                   Cookie Policy
                 </Link>
