@@ -16,12 +16,15 @@
   --color-dark_color: #151515;
   --color-light_color: #52525b;
   --color-light_orange: #fca99b;
+  --color-ushop-light-text: #686e7d;
+  --color-ushop-lighter-text: #ababab
   /* ── Brand Core ──────────────────────────────────────────────── */
   --color-ushop-red: #E8000B;
   --color-ushop-purple: #6B1FA8;
   --color-ushop-purple-dark: #520f85;
   --color-ushop-magenta: #D4009B;
   --color-ushop-pink: #D4009B;
+  --color-ushop-lighter-pink: #db2777;
   --color-dark-blue: #6c7fd8;
 }
 
