@@ -40,15 +40,8 @@ export const productType = defineType({
     }),
     defineField({
       name: "discount",
-      title: "Discount",
+      title: "Discount Percentage %",
       type: "number",
-    }),
-    defineField({
-      name: "compareAtPrice",
-      title: "Compare at Price (GHS)",
-      type: "number",
-      description: "Original price before discount/deal",
-      validation: (Rule) => Rule.min(0),
     }),
     defineField({
       name: "description",
@@ -89,9 +82,13 @@ export const productType = defineType({
       type: "string",
       options: {
         list: [
-            {title: "New", value: "new"},
-            {title: "Hot", value: "hot"},
-            {title: "Sale", value: "sale"},
+            {title: "NEW", value: "new"},
+            {title: "HOT", value: "hot"},
+            {title: "LIKE_NEW", value: "like_new"},
+            {title: "EXCELLENT", value: "excellent"},
+            {title: "GOOD", value: "good"},
+            {title: "FAIR", value: "fair"},
+            {title: "FOR_PARTS", value: "for_parts"},
         ],
 
       },

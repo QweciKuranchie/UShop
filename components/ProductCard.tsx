@@ -3,7 +3,11 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import { Product } from "@/sanity.types";
 import Link from "next/link";
-import { Flame } from "lucide-react";
+import { Flame, StarIcon } from "lucide-react";
+import AddToWishlistBtn from "./AddToWishlistBtn";
+import { Title } from "./ui/text";
+import PriceView from "./PriceView";
+import AddToCartBtn from "./AddToCartBtn";
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
@@ -16,34 +20,75 @@ const ProductCard = ({ product }: { product: Product }) => {
             loading="lazy"
             width={700}
             height={700}
-            className="object-cover"
+            className={`w-full h-64 object-cover overflow-hidden transition-transform
+               bg-ushop_light_bg hoverEffect
+                ${product?.stock !== 0 ? "group-hover:scale-105" : "opacity-50"}`}
           />
         )}
-        {product?.status === "sale" && (<p className="absolute top-2 left-2 z-10 text-xs border
+        <AddToWishlistBtn product={product} />
+        {product?.status === "new" && (
+          <p
+            className="absolute top-2 left-2 z-10 text-xs border
          border-darkColoer/50 px-2 rounded-full 
-         group-hover:border-ushop-pink hoverEffect">
-          Sale!
+         group-hover:border-ushop_light_green hoverEffect bg-ushop_light_green"
+          >
+            NEW
           </p>
         )}
-        {product?.status === "hot" && <Link
-        href={"/deal"}
-        className="absolute top-2 left-2 z-10 text-xs border
+        {product?.status === "hot" && (
+          <Link
+            href={"/deal"}
+            className="absolute top-2 left-2 z-10 text-xs border
          border-ushop_orange/50 px-2 rounded-full 
          group-hover:border-ushop_orange hover:text-ushop-pink hoverEffect"
-        >
-          <Flame
-          size={18}
-          fill="#fb6c08"
-          className="text-ushop_orange/50 group-hover:text-ushop-pink hoverEffect"
-          />  
-          </Link>}
+          >
+            <Flame
+              size={18}
+              fill="#fb6c08"
+              className="text-ushop_orange/50 group-hover:text-ushop-red hoverEffect"
+            />
+          </Link>
+        )}
       </div>
-      <div className="p-3">
-        <h3 className="font-semibold text-gray-800 truncate">{product.name}</h3>
-        <p className="text-gray-500 mt-1">GH₵ {product.price?.toLocaleString()}</p>
+      <div className="p-3 flex flex-col gap-2">
+        {product?.categories && 
+        ( <p className="uppercase line-clamp-1 text-xs text-ushop-light-text"
+        >
+          {product.categories.map((cat) => cat).join(", ")}
+        </p>
+      )}
+      <Title className="text-base md:text-base line-clamp-2 text-ushop-purple-dark ">{product?.name}</Title>
+      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-0.5">
+          {[...Array(5)].map((_, index) => (
+            <StarIcon 
+            key={index} 
+            size={12}
+            className={index < 4 ?
+              "text-ushop-lighter-pink"
+              :
+              "text-ushop-lighter-text"
+            }
+            
+            fill={index < 4 ? "#db2777" : "#ababab"}
+             />
+          ))}
+        </div>
+        <p className="text-xs text-ushop-light-text tracking-wide">5 Reviews</p>
+      </div>
+      <div className="flex items-center gap-2.5">
+        <p className="font-medium">In Stock</p>
+        <p className={` ${product?.stock === 0 ? "text-ushop-red font-semibold" : "text-ushop-purple font-semibold"}`}>{(product?.stock as number) > 0 ? `(${product?.stock})` : "Out of Stock"} </p>
+      </div>
+      <PriceView 
+      price={product?.price} 
+      discount={product?.discount}
+      className="text-sm"
+      />
+      <AddToCartBtn product={product} className="w-36 rounded-full"/>
       </div>
     </div>
   );
 };
 
-export default ProductCard
+export default ProductCard;
