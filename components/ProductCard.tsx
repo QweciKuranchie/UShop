@@ -20,7 +20,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             loading="lazy"
             width={700}
             height={700}
-            className={`w-full h-64 object-cover overflow-hidden transition-transform
+            className={`w-full h-52 md:h-64 object-cover overflow-hidden transition-transform
                bg-ushop_light_bg hoverEffect
                 ${product?.stock !== 0 ? "group-hover:scale-105" : "opacity-50"}`}
           />
@@ -85,7 +85,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       discount={product?.discount}
       className="text-sm"
       />
-      <AddToCartBtn product={product} className="w-36 rounded-full"/>
+      <AddToCartBtn product={product} className="w-full rounded-full"/>
       </div>
     </div>
   );

@@ -66,6 +66,17 @@ const SideMenu: FC<SideBarProps> = ({ isOpen, onClose }) => {
           </button>
         </div>
         <div className="flex flex-col space-y-3.5 font-semibold tracking-wide">
+          {/* Dedicated Home Link for Mobile Menu */}
+          <Link
+            href="/"
+            onClick={onClose}
+            className={cn(
+              "hover:text-ushop-pink hoverEffect",
+              pathname === "/" && "text-white",
+            )}
+          >
+            Home
+          </Link>
           {headerData.map((item) => (
             <Link
               href={item.href}
