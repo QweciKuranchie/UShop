@@ -109,7 +109,6 @@ export type Product = {
   }>;
   price?: number;
   discount?: number;
-  compareAtPrice?: number;
   description?: string;
   categories?: Array<
     {
@@ -119,7 +118,8 @@ export type Product = {
   brand?: BrandReference;
   store?: StoreReference;
   stock?: number;
-  status?: "new" | "hot" | "sale";
+  status?:
+    "new" | "hot" | "like_new" | "excellent" | "good" | "fair" | "for_parts";
   variant?: "electronics" | "computing" | "others";
   featured?: boolean;
 };
@@ -242,6 +242,7 @@ export type Category = {
   description?: string;
   range?: number;
   featured?: boolean;
+  productCount?: number;
   image?: {
     asset?: SanityImageAssetReference;
     media?: unknown;

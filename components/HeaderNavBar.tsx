@@ -40,11 +40,11 @@ const HeaderNavBar = () => {
 
           {/* Student Deals — highlighted */}
           <Link
-            href="/deals"
+            href="/flash-sales"
             className="flex items-center gap-1 text-sm font-bold text-[#E8000B] hover:text-ushop-red transition-colors py-1"
           >
             <Flame className="w-4 h-4 mb-0.5" />
-            Hot Deals
+            Flash Sales
           </Link>
         </nav>
       </div>
