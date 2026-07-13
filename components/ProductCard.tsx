@@ -45,7 +45,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             <Flame
               size={18}
               fill="#fb6c08"
-              className="text-ushop_orange/50 group-hover:text-ushop-red hoverEffect"
+              className="text-ushop_orange/50 group-hover:text-ushop_orange hoverEffect"
             />
           </Link>
         )}
@@ -57,7 +57,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           {product.categories.map((cat) => cat).join(", ")}
         </p>
       )}
-      <Title className="text-base md:text-base line-clamp-2 text-ushop-purple-dark ">{product?.name}</Title>
+      <Title className="text-base md:text-base line-clamp-1 text-ushop-purple-dark ">{product?.name}</Title>
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-0.5">
           {[...Array(5)].map((_, index) => (
@@ -77,7 +77,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <p className="text-xs text-ushop-light-text tracking-wide">5 Reviews</p>
       </div>
       <div className="flex items-center gap-2.5">
-        <p className="font-medium">In Stock</p>
+        <p className="font-medium">Stock</p>
         <p className={` ${product?.stock === 0 ? "text-ushop-red font-semibold" : "text-ushop-purple font-semibold"}`}>{(product?.stock as number) > 0 ? `(${product?.stock})` : "Out of Stock"} </p>
       </div>
       <PriceView 

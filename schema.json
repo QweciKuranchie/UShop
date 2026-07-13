@@ -579,13 +579,6 @@
         },
         "optional": true
       },
-      "compareAtPrice": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "number"
-        },
-        "optional": true
-      },
       "description": {
         "type": "objectAttribute",
         "value": {
@@ -653,7 +646,23 @@
             },
             {
               "type": "string",
-              "value": "sale"
+              "value": "like_new"
+            },
+            {
+              "type": "string",
+              "value": "excellent"
+            },
+            {
+              "type": "string",
+              "value": "good"
+            },
+            {
+              "type": "string",
+              "value": "fair"
+            },
+            {
+              "type": "string",
+              "value": "for_parts"
             }
           ]
         },
