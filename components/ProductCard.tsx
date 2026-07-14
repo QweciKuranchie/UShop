@@ -29,10 +29,55 @@ const ProductCard = ({ product }: { product: Product }) => {
         {product?.status === "new" && (
           <p
             className="absolute top-2 left-2 z-10 text-xs border
-         border-darkColoer/50 px-2 rounded-full 
-         group-hover:border-ushop_light_green hoverEffect bg-ushop_light_green"
+         border-emerald-300 px-2 rounded-full 
+         group-hover:border-emerald-300 hoverEffect bg-emerald-100 text-emerald-700 "
           >
             NEW
+          </p>
+        )}
+         {product?.status === "like_new" && (
+          <p
+            className="absolute top-2 left-2 z-10 text-xs border
+         border-emerald-300 px-2 rounded-full 
+         group-hover:border-emerald-300 hoverEffect bg-emerald-100 text-emerald-700 "
+          >
+            LIKE-NEW
+          </p>
+        )}
+        {product?.status === "excellent" && (
+          <p
+            className="absolute top-2 left-2 z-10 text-xs border
+         border-blue-300 px-2 rounded-full 
+         group-hover:border-blue hoverEffect bg-blue-100 text-blue-700 "
+          >
+            EXCELLENT
+          </p>
+        )}
+        {product?.status === "good" && (
+          <p
+            className="absolute top-2 left-2 z-10 text-xs border
+         border-gray-300 px-2 rounded-full 
+         group-hover:border-gray-300 hoverEffect bg-gray-100 text-gray-700 "
+          >
+            GOOD
+          </p>
+        )}
+        {product?.status === "fair" && (
+          <p
+            className="absolute top-2 left-2 z-10 text-xs border
+         border-amber-300 px-2 rounded-full 
+         group-hover:border-amber-300 hoverEffect bg-amber-100 text-amber-700 "
+          >
+            FAIR
+          </p>
+        )}
+        {product?.status === "for_parts" && (
+          <p
+            className="absolute top-2 left-2 z-10 text-xs border
+         border-red-300 px-2 rounded-full 
+         group-hover:border-red-300 hoverEffect bg-red-100 text-red-700 "
+          >
+            FOR PARTS
           </p>
         )}
         {product?.status === "hot" && (
