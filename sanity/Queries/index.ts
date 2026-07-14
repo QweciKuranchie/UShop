@@ -1,5 +1,6 @@
-import { Category } from "@/sanity.types";
+import { Category, Brand } from "@/sanity.types";
 import { sanityFetch } from "../lib/live";
+import { BRANDS_QUERY } from "./query";
 
 const getCategories = async (quantity?: number) => {
     try {
@@ -21,6 +22,16 @@ const getCategories = async (quantity?: number) => {
         console.log("Error fetching categories:", error);
         return [];
     }
+};
+
+const getAllBrands = async () => {
+    try {
+        const { data } = await sanityFetch({query: BRANDS_QUERY});
+        return data as Brand[];
+    } catch (error) {
+        console.log("Error fetching brands:", error);
+        return [];
+    }
 }
 
-export {getCategories};
+export {getCategories, getAllBrands};
