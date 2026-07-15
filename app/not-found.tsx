@@ -1,6 +1,6 @@
 import Logo from "@/components/common/Logo";
 import Link from "next/link";
-import { Home, Search, ShoppingBag, ArrowLeft, Sparkles } from "lucide-react";
+import { Home, Search, ShoppingBag, Sparkles } from "lucide-react";
 
 const NotFoundPage = () => {
   return (

@@ -46,15 +46,13 @@ const DynamicBreadcrumb = ({
 }: DynamicBreadcrumbProps) => {
   const pathname = usePathname();
   const [detectedParentPath, setDetectedParentPath] = useState<string | null>(
-    null
+    parentPath ?? null
   );
 
   // Detect parent path from referrer or session storage
   useEffect(() => {
-    if (parentPath) {
-      setDetectedParentPath(parentPath);
-      return;
-    }
+    // If parentPath is explicitly provided, it was already set via initial state
+    if (parentPath) return;
 
     // Clear parent context if we're on dashboard itself
     if (pathname === "/dashboard") {
@@ -64,25 +62,34 @@ const DynamicBreadcrumb = ({
     }
 
     // Check if we came from dashboard based on document referrer
+    let resolved: string | null = null;
     const referrer = document.referrer;
     if (referrer) {
-      const referrerUrl = new URL(referrer);
-      const referrerPath = referrerUrl.pathname;
+      try {
+        const referrerUrl = new URL(referrer);
+        const referrerPath = referrerUrl.pathname;
 
-      // If we came from dashboard, include it in breadcrumb
-      if (
-        referrerPath === "/dashboard" ||
-        referrerPath.startsWith("/dashboard/")
-      ) {
-        setDetectedParentPath("/dashboard");
+        // If we came from dashboard, include it in breadcrumb
+        if (
+          referrerPath === "/dashboard" ||
+          referrerPath.startsWith("/dashboard/")
+        ) {
+          resolved = "/dashboard";
+        }
+      } catch {
+        // invalid referrer URL, ignore
       }
     }
 
     // Also check session storage for navigation context
-    const storedParent = sessionStorage.getItem("breadcrumb-parent");
-    if (storedParent === "/dashboard") {
-      setDetectedParentPath("/dashboard");
+    if (!resolved) {
+      const storedParent = sessionStorage.getItem("breadcrumb-parent");
+      if (storedParent === "/dashboard") {
+        resolved = "/dashboard";
+      }
     }
+
+    setDetectedParentPath(resolved);
   }, [parentPath, pathname]);
 
   const formatSegmentLabel = (segment: string): string => {
