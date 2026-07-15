@@ -1,5 +1,5 @@
 import Container from "./Container";
-import { getAllBrands } from "@/sanity/Queries";
+import { getAllBrands } from "@/sanity/queries";
 import Title from "./Title";
 import Link from "next/link";
 import Image from "next/image";
