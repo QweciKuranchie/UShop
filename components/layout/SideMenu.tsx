@@ -53,7 +53,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
     { title: "Stores", href: "/stores", icon: ShoppingBag },
     { title: "Categories", href: "/category", icon: Grid3X3 },
     { title: "Brands", href: "/brands", icon: Tag },
-    { title: "Flash Sales", href: "/flash-sales", icon: Flame },
+    { title: "Flash Sales", href: "/deal", icon: Flame },
   ];
 
   const supportMenuItems = [

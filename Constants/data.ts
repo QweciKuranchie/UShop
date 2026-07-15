@@ -36,7 +36,7 @@ export const quickLinksData = {
     { title: "Deals", href: "/deals" },
     { title: "Universities", href: "/universities" },
     { title: "Stores", href: "/stores" },
-    {title:"Flash Sales", href:"/flash-sales"},
+    {title:"Flash Sales", href:"/deal"},
     {title:"New Arrivals", href:"/new-arrivals"},
   ],
 }

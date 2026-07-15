@@ -53,10 +53,10 @@ const ShopByBrands = async () => {
               className="group bg-white rounded-2xl p-6 flex items-center justify-center aspect-square hover:shadow-2xl shadow-lg border border-gray-100 hover:border-ushop-purple/30 hoverEffect transform hover:-translate-y-2"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
-              {brand?.logo && (
+              {brand?.image && (
                 <div className="relative w-full h-full flex items-center justify-center">
                   <Image
-                    src={urlFor(brand?.logo).url()}
+                    src={urlFor(brand.image).url()}
                     alt={`${brand?.name || "Brand"} logo`}
                     width={120}
                     height={80}

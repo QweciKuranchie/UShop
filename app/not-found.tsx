@@ -1,0 +1,82 @@
+import Logo from "@/components/common/Logo";
+import Link from "next/link";
+import { Home, Search, ShoppingBag, ArrowLeft, Sparkles } from "lucide-react";
+
+const NotFoundPage = () => {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/10 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute top-20 left-10 w-72 h-72 bg-ushop-purple/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-ushop-pink/5 rounded-full blur-3xl" />
+      <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-ushop-purple/3 rounded-full blur-2xl" />
+
+      <div className="max-w-lg w-full space-y-8 relative z-10">
+        {/* Logo */}
+        <div className="flex justify-center">
+          <Logo imageClassName="h-10 md:h-12" />
+        </div>
+
+        {/* 404 Display */}
+        <div className="text-center">
+          <div className="relative inline-block">
+            <h1 className="text-[120px] sm:text-[150px] font-black leading-none bg-gradient-to-br from-ushop-purple via-ushop-pink to-ushop-purple bg-clip-text text-transparent select-none">
+              404
+            </h1>
+            <Sparkles className="absolute -top-2 -right-4 w-8 h-8 text-ushop-pink animate-pulse" />
+          </div>
+
+          <h2 className="text-2xl sm:text-3xl font-bold text-dark-color mt-2">
+            Page Not Found
+          </h2>
+          <p className="mt-3 text-base text-light-color max-w-sm mx-auto leading-relaxed">
+            Oops! The page you&apos;re looking for doesn&apos;t exist or has
+            been moved. Let&apos;s get you back on track.
+          </p>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="space-y-3 pt-4">
+          <Link
+            href="/"
+            className="w-full flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold rounded-2xl text-white bg-gradient-to-r from-ushop-purple to-ushop-pink hover:from-ushop-purple/90 hover:to-ushop-pink/90 shadow-lg shadow-ushop-purple/20 hover:shadow-xl hover:shadow-ushop-purple/30 hoverEffect transform hover:-translate-y-0.5"
+          >
+            <Home className="w-4 h-4" />
+            Back to Homepage
+          </Link>
+
+          <div className="grid grid-cols-2 gap-3">
+            <Link
+              href="/product"
+              className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold rounded-2xl text-ushop-purple bg-white border-2 border-ushop-purple/20 hover:border-ushop-purple hover:bg-ushop-purple/5 shadow-sm hover:shadow-md hoverEffect"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              Shop
+            </Link>
+            <Link
+              href="/category"
+              className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold rounded-2xl text-ushop-pink bg-white border-2 border-ushop-pink/20 hover:border-ushop-pink hover:bg-ushop-pink/5 shadow-sm hover:shadow-md hoverEffect"
+            >
+              <Search className="w-4 h-4" />
+              Categories
+            </Link>
+          </div>
+        </div>
+
+        {/* Help Footer */}
+        <div className="text-center pt-6 border-t border-ushop-purple/10">
+          <p className="text-sm text-light-color">
+            Need help?{" "}
+            <Link
+              href="/contact"
+              className="font-semibold text-ushop-purple hover:text-ushop-pink hoverEffect underline underline-offset-4 decoration-ushop-purple/30 hover:decoration-ushop-pink/50"
+            >
+              Contact Us
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default NotFoundPage;
