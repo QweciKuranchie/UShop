@@ -4,7 +4,7 @@ import {
   getProductBySlug,
   getRelatedProducts,
   getBrand,
-} from "@/sanity/queries";
+} from "@/sanity/Queries";
 import { notFound } from "next/navigation";
 import ProductContent from "@/components/ProductContent";
 import { Product } from "@/sanity.types";

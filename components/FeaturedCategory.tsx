@@ -3,7 +3,7 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import Link from "next/link";
 import { Category } from "@/sanity.types";
-import { getFeaturedCategory } from "@/sanity/queries";
+import { getFeaturedCategory } from "@/sanity/Queries";
 
 const FeaturedCategory = async () => {
   const featuredCategories = await getFeaturedCategory(4);
