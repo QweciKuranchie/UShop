@@ -5,7 +5,6 @@ import { getOrderById } from "./userQueries";
 
 import { ADDRESS_QUERY,
   ALL_PRODUCTS_QUERY,
-  ALLCATEGORIES_QUERY,
   ADMIN_CATEGORIES_QUERY,
   BANNER_QUERY,
   BRAND_QUERY,

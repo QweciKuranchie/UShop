@@ -4,30 +4,6 @@ import Title from "./Title";
 import Link from "next/link";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
-import { GitCompareArrows, Headset, ShieldCheck, Truck } from "lucide-react";
-
-const extraData = [
-  {
-    title: "Free Delivery",
-    description: "Free shipping over $100",
-    icon: <Truck size={45} />,
-  },
-  {
-    title: "Free Return",
-    description: "Free shipping over $100",
-    icon: <GitCompareArrows size={45} />,
-  },
-  {
-    title: "Customer Support",
-    description: "Friendly 27/7 customer support",
-    icon: <Headset size={45} />,
-  },
-  {
-    title: "Money Back guarantee",
-    description: "Quality checked by our team",
-    icon: <ShieldCheck size={45} />,
-  },
-];
 
 const ShopByBrands = async () => {
   const brands = await getAllBrands();
@@ -77,11 +53,11 @@ const ShopByBrands = async () => {
               className="group bg-white rounded-2xl p-6 flex items-center justify-center aspect-square hover:shadow-2xl shadow-lg border border-gray-100 hover:border-ushop-purple/30 hoverEffect transform hover:-translate-y-2"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
-              {brand?.image && (
+              {brand?.logo && (
                 <div className="relative w-full h-full flex items-center justify-center">
                   <Image
-                    src={urlFor(brand?.image).url()}
-                    alt={`${brand?.title || "Brand"} logo`}
+                    src={urlFor(brand?.logo).url()}
+                    alt={`${brand?.name || "Brand"} logo`}
                     width={120}
                     height={80}
                     className="max-w-full max-h-full object-contain group-hover:scale-110 hoverEffect filter group-hover:brightness-110"
