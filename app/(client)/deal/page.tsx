@@ -15,7 +15,6 @@ import {
   Zap,
   ShoppingBag,
   Star,
-  Users,
   Heart,
 } from "lucide-react";
 import Link from "next/link";
@@ -59,7 +58,7 @@ const DealPage = async () => {
 
                 <div>
                   <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-4">
-                    Weekly Hot Deals
+                    Flash Sales Everyday
                   </h1>
                   <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-2xl">
                     Don&apos;t miss out on these incredible limited-time offers!
@@ -69,7 +68,7 @@ const DealPage = async () => {
                 </div>
 
                 {/* Deal Statistics */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4">
                     <div className="flex items-center gap-2 text-white/80 mb-1">
                       <ShoppingBag className="w-4 h-4" />
@@ -88,16 +87,6 @@ const DealPage = async () => {
                     <p className="text-xl sm:text-2xl font-bold">
                       {avgDiscount.toFixed(0)}%
                     </p>
-                  </div>
-
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 col-span-2 sm:col-span-1">
-                    <div className="flex items-center gap-2 text-white/80 mb-1">
-                      <Users className="w-4 h-4" />
-                      <span className="text-xs sm:text-sm">
-                        Happy Customers
-                      </span>
-                    </div>
-                    <p className="text-xl sm:text-2xl font-bold">2.5K+</p>
                   </div>
                 </div>
               </div>
@@ -184,12 +173,12 @@ const DealPage = async () => {
 
         {products && products.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
-            {products.map((product: DEAL_PRODUCTSResult[0]) => (
+            {products.map((product: Product) => (
               <div
                 key={product?._id}
                 className="transform hover:scale-105 transition-transform duration-300"
               >
-                <ProductCard product={product as unknown as Product} />
+                <ProductCard product={product} />
               </div>
             ))}
           </div>

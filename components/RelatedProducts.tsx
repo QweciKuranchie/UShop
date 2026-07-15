@@ -7,8 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
-import AddToCartButton from "./AddToCartButton";
-import FavoriteButton from "./FavoriteButton";
+import AddToCartBtn from "./AddToCartBtn";
+import AddToWishlistBtn from "./AddToWishlistBtn";
 
 interface RelatedProductsProps {
   currentProduct: Product;
@@ -79,12 +79,7 @@ const RelatedProducts = memo(({ relatedProducts }: RelatedProductsProps) => {
                     </Badge>
                   )}
 
-                  {/* Quick Actions */}
-                  <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="bg-white/90 rounded-full p-1 hover:bg-white transition-colors">
-                      <FavoriteButton product={product} />
-                    </div>
-                  </div>
+                  <AddToWishlistBtn product={product} />
                 </div>
 
                 {/* Product Info */}
@@ -129,9 +124,9 @@ const RelatedProducts = memo(({ relatedProducts }: RelatedProductsProps) => {
                   </div>
 
                   {/* Add to Cart Button */}
-                  <AddToCartButton
+                  <AddToCartBtn
                     product={product}
-                    className="w-full mt-3 bg-shop_dark_green hover:bg-shop_light_green text-white text-sm py-2 rounded-md"
+                    className="w-full mt-3"
                   />
                 </div>
               </CardContent>

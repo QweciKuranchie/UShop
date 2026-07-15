@@ -54,7 +54,7 @@ const ProductPage = async ({
 };
 
 const ProductPageContent = async ({ slug }: { slug: string }) => {
-  const product = await getProductBySlug(slug);
+  const product = (await getProductBySlug(slug)) as any;
 
   if (!product) {
     return notFound();
