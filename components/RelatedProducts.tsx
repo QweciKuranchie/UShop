@@ -140,9 +140,9 @@ const RelatedProducts = memo(({ relatedProducts }: RelatedProductsProps) => {
         <Button
           variant="outline"
           className="border-shop_dark_green text-shop_dark_green hover:bg-shop_dark_green hover:text-white"
-          asChild
+          render={<Link href="/shop" />}
         >
-          <Link href="/shop">View More Products</Link>
+          View More Products
         </Button>
       </div>
     </div>

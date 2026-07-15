@@ -23,7 +23,7 @@ interface ProductReviewsProps {
   productName: string;
 }
 
-const ProductReviews = ({ productId, productName }: ProductReviewsProps) => {
+const ProductReviews = ({ productId: _productId, productName }: ProductReviewsProps) => {
   const [reviews, setReviews] = useState<Review[]>([
     {
       _id: "1",
@@ -32,7 +32,7 @@ const ProductReviews = ({ productId, productName }: ProductReviewsProps) => {
       content: "Exceeded my expectations in every way. The quality is top-notch, delivery was prompt, and it fits the description perfectly.",
       helpful: 8,
       isVerifiedPurchase: true,
-      createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+      createdAt: "2026-07-12T12:00:00.000Z",
       user: { firstName: "Kofi", lastName: "Mensah" },
     },
     {
@@ -42,7 +42,7 @@ const ProductReviews = ({ productId, productName }: ProductReviewsProps) => {
       content: "Very satisfied with this purchase. It performs really well. Minor issue with packaging but the product itself is flawless.",
       helpful: 3,
       isVerifiedPurchase: true,
-      createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      createdAt: "2026-07-08T12:00:00.000Z",
       user: { firstName: "Ama", lastName: "Osei" },
     },
   ]);

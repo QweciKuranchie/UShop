@@ -53,8 +53,13 @@ const ProductPage = async ({
   );
 };
 
+type ProductWithCalculations = Product & {
+  averageRating?: number;
+  totalReviews?: number;
+};
+
 const ProductPageContent = async ({ slug }: { slug: string }) => {
-  const product = (await getProductBySlug(slug)) as any;
+  const product = (await getProductBySlug(slug)) as ProductWithCalculations | null;
 
   if (!product) {
     return notFound();
