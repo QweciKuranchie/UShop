@@ -4,7 +4,7 @@ import Title from "@/components/Title";
 import DealCountdown from "@/components/DealCountdown";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { DEAL_PRODUCTSResult, Product } from "@/sanity.types";
-import { getDealProducts, getCategories } from "@/sanity/queries";
+import { getDealProducts, getCategories } from "@/sanity/Queries";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
