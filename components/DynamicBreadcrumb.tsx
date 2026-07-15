@@ -230,7 +230,7 @@ const DynamicBreadcrumb = ({
             <div key={index} className="flex items-center">
               <BreadcrumbItem>
                 {crumb.isLast ? (
-                  <BreadcrumbPage className="text-shop_dark_green font-medium truncate max-w-xs">
+                  <BreadcrumbPage className="text-ushop-purple font-medium truncate max-w-xs">
                     {crumb.label}
                   </BreadcrumbPage>
                 ) : (
@@ -238,7 +238,7 @@ const DynamicBreadcrumb = ({
                     render={
                       <Link
                         href={crumb.href || "/"}
-                        className={`flex items-center hover:text-shop_light_green transition-colors ${
+                        className={`flex items-center hover:text-ushop-pink transition-colors ${
                           index === 0 ? "flex items-center" : ""
                         }`}
                       />
