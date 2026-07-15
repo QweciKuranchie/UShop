@@ -6,7 +6,12 @@ const BANNER_QUERY = defineQuery(
 const FEATURED_CATEGORY_QUERY = defineQuery(
   `*[_type == 'category' && featured == true] | order(name desc)`
 );
-const ALL_PRODUCTS_QUERY = defineQuery(`*[_type=="product"] | order(name asc)`);
+const ALL_PRODUCTS_QUERY = defineQuery(
+  `*[_type=="product"] | order(name asc){
+    ...,
+    "categories": categories[]->title
+  }`
+);
 const DEAL_PRODUCTS = defineQuery(
   `*[_type == 'product' && status == 'hot'] | order(name asc){
   ...,"categories": categories[]->title

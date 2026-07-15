@@ -107,12 +107,21 @@ const ProductCard = ({ product }: { product: Product }) => {
         ) : null}
       </div>
       <div className="p-3 flex flex-col gap-2">
-        {product?.categories && 
-        ( <p className="uppercase line-clamp-1 text-xs text-ushop-light-text"
-        >
-          {product.categories.map((cat) => cat).join(", ")}
-        </p>
-      )}
+        {product?.categories && product.categories.length > 0 && (
+          <p className="uppercase line-clamp-1 text-xs text-ushop-light-text">
+            {product.categories
+              .map((cat: unknown) => {
+                if (typeof cat === "string") return cat;
+                if (cat && typeof cat === "object") {
+                  const obj = cat as { title?: string; name?: string };
+                  return obj.title || obj.name || "";
+                }
+                return "";
+              })
+              .filter(Boolean)
+              .join(", ")}
+          </p>
+        )}
       <Title className="text-base md:text-base line-clamp-1 text-ushop-purple-dark ">{product?.name}</Title>
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-0.5">
