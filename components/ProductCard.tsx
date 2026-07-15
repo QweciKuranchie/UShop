@@ -94,6 +94,15 @@ const ProductCard = ({ product }: { product: Product }) => {
             />
           </Link>
         )}
+        {product?.discount && product.discount > 0 ? (
+          <div
+            className={`absolute left-2 z-10 bg-ushop-pink text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-md shadow-xs hoverEffect ${
+              product?.status ? "top-8" : "top-2"
+            }`}
+          >
+            -{product.discount}%
+          </div>
+        ) : null}
       </div>
       <div className="p-3 flex flex-col gap-2">
         {product?.categories && 
