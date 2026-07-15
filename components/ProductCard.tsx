@@ -96,7 +96,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         )}
         {product?.discount && product.discount > 0 ? (
           <div
-            className={`absolute left-2 z-10 bg-ushop-pink text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-md shadow-xs hoverEffect ${
+            className={`absolute left-2 z-10 bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/20 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg hoverEffect ${
               product?.status ? "top-8" : "top-2"
             }`}
           >
