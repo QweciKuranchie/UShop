@@ -6,14 +6,14 @@ import SideMenu from "./SideMenu";
 
 const MobileMenu = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
     <>
-      <button onClick={() => {
-        console.log("MobileMenu button clicked! Current state:", isSidebarOpen);
-        setIsSidebarOpen(!isSidebarOpen);
-      }}>
-        <AlignLeft className="hover:text-darkColor hoverEffect md:hidden hover:cursor-pointer" />
+      <button onClick={toggleSidebar}>
+        <AlignLeft className="hover:text-hoverColor hoverEffect md:hidden hover:cursor-pointer" />
       </button>
       <div className="md:hidden">
         {/* SideMenu */}

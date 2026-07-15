@@ -11,7 +11,7 @@ const sliderData = [
     title: "Experience Pure Sound — Your Perfect Headphones Await!",
     offer: "Limited Time Offer 30% Off",
     buttonText: "Coming Soon",
-    buttonLink: "/products",
+    buttonLink: "/shop",
     imgSrc: "/assets/images/hero/header_headphone_image.png",
   },
   {
@@ -27,7 +27,7 @@ const sliderData = [
     title: "Power Meets Elegance — Apple MacBook Pro Is Here!",
     offer: "Exclusive Deal 40% Off",
     buttonText: "Coming Soon",
-    buttonLink: "/products",
+    buttonLink: "/shop",
     imgSrc: "/assets/images/hero/header_macbook_image.png",
   },
 ];

@@ -22,7 +22,7 @@ const HomeTabBar = ({ selectedTab, onTabSelect }: Props) => {
         ))}
       </div>
       <Link
-        href={"/categories"}
+        href={"/category"}
         className={`border border-ushop-pink/20 px-4 py-1.5 md:px-6 md:py-2 rounded-full hover:bg-ushop-pink hover:border-ushop-pink hover:text-white hoverEffect`}
       >
         see all

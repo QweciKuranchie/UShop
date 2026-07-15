@@ -24,8 +24,8 @@ export const brandType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "logo",
-      title: "Logo",
+      name: "image",
+      title: "Brand Image",
       type: "image",
       options: {
         hotspot: true,

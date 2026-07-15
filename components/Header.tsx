@@ -2,15 +2,15 @@
 
 import React, { useEffect, useState } from "react";
 import Container from "./Container";
-import Logo from "./Logo";
+import Logo from "./common/Logo";
 import HeaderTopBar from "./HeaderTopBar";
 import HeaderNavBar from "./HeaderNavBar";
-import SearchBar from "./SearchBar";
+import SearchBar from "./common/SearchBar";
 import CartIcon from "./CartIcon";
 import WhishListIcon from "./WhishListIcon";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
-import MobileMenu from "./MobileMenu";
+import MobileMenu from "./layout/MobileMenu";
 import {
   ClerkLoaded,
   SignInButton,

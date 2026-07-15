@@ -6,6 +6,10 @@ import { client } from './client'
 
 const token = process.env.SANITY_API_READ_TOKEN;
 if(!token){
+    console.error(
+    "Available env vars:",
+    Object.keys(process.env).filter((key) => key.includes("SANITY"))
+  );
     throw new Error("SANITY_API_READ_TOKEN is not defined");
 }
 

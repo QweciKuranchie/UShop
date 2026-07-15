@@ -1,44 +1,111 @@
-import React from 'react'
-import { Title } from './ui/text'
-import Link from 'next/link'
-import { getAllBrands } from '@/sanity/Queries'
-import Image from 'next/image'
-import { urlFor } from '@/sanity/lib/image'
-const ShopByBrand = async() => {
+import Container from "./Container";
+import { getAllBrands } from "@/sanity/queries";
+import Title from "./Title";
+import Link from "next/link";
+import Image from "next/image";
+import { urlFor } from "@/sanity/lib/image";
+import { GitCompareArrows, Headset, ShieldCheck, Truck } from "lucide-react";
 
+const extraData = [
+  {
+    title: "Free Delivery",
+    description: "Free shipping over $100",
+    icon: <Truck size={45} />,
+  },
+  {
+    title: "Free Return",
+    description: "Free shipping over $100",
+    icon: <GitCompareArrows size={45} />,
+  },
+  {
+    title: "Customer Support",
+    description: "Friendly 27/7 customer support",
+    icon: <Headset size={45} />,
+  },
+  {
+    title: "Money Back guarantee",
+    description: "Quality checked by our team",
+    icon: <ShieldCheck size={45} />,
+  },
+];
+
+const ShopByBrands = async () => {
   const brands = await getAllBrands();
 
   return (
-    <div className="mb-10 lg:pb-20 bg-ushop_light_bg p-5 lg:p-7 rounded-md">
-        <div className='flex items-center justify-between mb-10 gap-5'>
-            <Title className='text-2xl'>Shop By Brands</Title>
-            <Link
-                href={"/shop"}
-                className='text-sm tracking-wide font-semibold hover:text-ushop-pink hoverEffect'
-            >
-            View All
-            </Link>
+    <Container className="mt-16 lg:mt-24">
+      {/* Header Section */}
+      <div className="text-center mb-12">
+        <div className="inline-flex items-center gap-3 mb-4">
+          <div className="h-1 w-12 bg-gradient-to-r from-ushop-pink to-ushop-purple rounded-full"></div>
+          <Title className="text-3xl lg:text-4xl font-bold text-dark-color">
+            Shop By Brands
+          </Title>
+          <div className="h-1 w-12 bg-gradient-to-l from-ushop-pink to-ushop-purple rounded-full"></div>
         </div>
-        <div className='grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-7 xl:grid-cols-9 gap-2 lg:gap-4'>
-            {brands?.map((brand) => (
-                <Link
-                    href={`/brands/${brand?.slug?.current}`}
-                    key={brand?._id}
-                    className='bg-white rounded-md hover:shadow-sm border border-ushop_light_border p-2 flex flex-col items-center justify-center group hoverEffect'
-                >
-                    {brand?.logo && 
-                    <Image 
-                    src={urlFor(brand?.logo).url()} 
-                    width={250}
-                    height={250}
-                    alt="brandImage"
-                    className='object-contain h-full group-hover:scale-110 hoverEffect'
-                    />}
-                </Link>
-            ))}
-        </div>
-    </div>
-  )
-}
+        <p className="text-light-color text-lg max-w-2xl mx-auto">
+          Discover products from your favorite trusted brands
+        </p>
+        <Link
+          href={"/brands"}
+          className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-ushop-pink/10 text-ushop-purple font-semibold rounded-full hover:bg-ushop-purple hover:text-white border-2 border-ushop-purple/20 hover:border-ushop-purple hoverEffect"
+        >
+          Explore All Brands
+          <svg
+            className="w-4 h-4 hoverEffect group-hover:translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            />
+          </svg>
+        </Link>
+      </div>
 
-export default ShopByBrand 
+      {/* Brands Grid */}
+      <div className="bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/5 p-8 lg:p-12 rounded-3xl shadow-xl border border-ushop-purple/10 mb-16">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-6">
+          {brands?.map((brand, index) => (
+            <Link
+              key={brand?._id}
+              href={`/brands/${brand?.slug?.current}`}
+              className="group bg-white rounded-2xl p-6 flex items-center justify-center aspect-square hover:shadow-2xl shadow-lg border border-gray-100 hover:border-ushop-purple/30 hoverEffect transform hover:-translate-y-2"
+              style={{ animationDelay: `${index * 0.05}s` }}
+            >
+              {brand?.image && (
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <Image
+                    src={urlFor(brand?.image).url()}
+                    alt={`${brand?.title || "Brand"} logo`}
+                    width={120}
+                    height={80}
+                    className="max-w-full max-h-full object-contain group-hover:scale-110 hoverEffect filter group-hover:brightness-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ushop-pink/5 to-transparent opacity-0 group-hover:opacity-100 hoverEffect rounded-xl"></div>
+                </div>
+              )}
+            </Link>
+          ))}
+        </div>
+
+        {/* Brand Grid Footer */}
+        <div className="text-center mt-8 pt-6 border-t border-ushop-purple/10">
+          <p className="text-dark-text text-sm">
+            <span className="font-semibold text-ushop-pink">
+              {brands?.length}+
+            </span>{" "}
+            trusted brands and counting
+          </p>
+        </div>
+      </div>
+    </Container>
+  );
+};
+
+export default ShopByBrands;
+

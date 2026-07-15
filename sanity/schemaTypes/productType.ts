@@ -113,6 +113,61 @@ export const productType = defineType({
       description: "Toggle to Featured on or off",
       initialValue: false,
     }),
+    defineField({
+      name: "averageRating",
+      title: "Average Rating",
+      type: "number",
+      readOnly: true,
+      description: "Calculated average rating from approved reviews",
+      validation: (Rule) => Rule.min(0).max(5),
+    }),
+    defineField({
+      name: "totalReviews",
+      title: "Total Reviews",
+      type: "number",
+      readOnly: true,
+      initialValue: 0,
+      description: "Total number of approved reviews",
+    }),
+    defineField({
+      name: "ratingDistribution",
+      title: "Rating Distribution",
+      type: "object",
+      readOnly: true,
+      description: "Distribution of ratings (1-5 stars)",
+      fields: [
+        defineField({
+          name: "fiveStars",
+          title: "5 Stars",
+          type: "number",
+          initialValue: 0,
+        }),
+        defineField({
+          name: "fourStars",
+          title: "4 Stars",
+          type: "number",
+          initialValue: 0,
+        }),
+        defineField({
+          name: "threeStars",
+          title: "3 Stars",
+          type: "number",
+          initialValue: 0,
+        }),
+        defineField({
+          name: "twoStars",
+          title: "2 Stars",
+          type: "number",
+          initialValue: 0,
+        }),
+        defineField({
+          name: "oneStar",
+          title: "1 Star",
+          type: "number",
+          initialValue: 0,
+        }),
+      ],
+    }),
   ],
   preview: {
     select: {

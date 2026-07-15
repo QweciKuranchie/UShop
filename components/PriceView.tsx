@@ -11,7 +11,9 @@ const PriceView = ({ price, discount, className }: Props) => {
   return (
     <div className='flex flex-col sm:flex-row sm:items-center gap-1'>
       <PriceFormatter amount={price} className='text-ushop-purple'/>
-      {price && discount && <PriceFormatter amount={price + (discount * price)/100} className='text-ushop-light-text font-normal line-through'/>}
+      {price && discount && discount > 0 ? (
+        <PriceFormatter amount={price + (discount * price)/100} className='text-ushop-light-text font-normal line-through'/>
+      ) : null}
     </div>
   )
 }
