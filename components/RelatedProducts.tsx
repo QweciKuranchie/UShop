@@ -35,6 +35,7 @@ const RelatedProducts = memo(({ relatedProducts }: RelatedProductsProps) => {
         <Button
           variant="outline"
           className="border-ushop-purple text-ushop-purple hover:bg-ushop-purple hover:text-white rounded-xl font-semibold hoverEffect"
+          nativeButton={false}
           render={<Link href="/product" />}
         >
           View More Products
