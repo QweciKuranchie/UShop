@@ -193,11 +193,11 @@ const ProductContent = ({
               </div>
 
               {/* Discount Information */}
-              {product?.discount && product.discount > 0 && (
+              {typeof product?.discount === "number" && product.discount > 0 ? (
                 <div className="bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/20 px-3 py-2 rounded-lg text-sm font-semibold">
                   💰 Save {product.discount}% on this item!
                 </div>
-              )}
+              ) : null}
             </div>
 
             {/* Action Buttons */}
