@@ -206,7 +206,7 @@ const DealPage = async () => {
                 <p className="text-sm sm:text-base text-gray-600 mb-4">
                   Check back soon for amazing deals and discounts!
                 </p>
-                <Button render={<Link href="/shop" />}>Browse All Products</Button>
+                <Button nativeButton={false} render={<Link href="/product" />}>Browse All Products</Button>
               </div>
             </div>
           </Card>
@@ -228,7 +228,8 @@ const DealPage = async () => {
               <Button
                 size="lg"
                 variant="secondary"
-                render={<Link href="/shop" />}
+                nativeButton={false}
+                render={<Link href="/product" />}
                 className="w-full sm:w-auto"
               >
                 Explore All Products

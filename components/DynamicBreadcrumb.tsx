@@ -227,18 +227,20 @@ const DynamicBreadcrumb = ({
                     {crumb.label}
                   </BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink asChild>
-                    <Link
-                      href={crumb.href || "/"}
-                      className={`flex items-center hover:text-shop_light_green transition-colors ${
-                        index === 0 ? "flex items-center" : ""
-                      }`}
-                    >
-                      {index === 0 && <Home size={16} />}
-                      <span className={index === 0 ? "ml-1" : ""}>
-                        {crumb.label}
-                      </span>
-                    </Link>
+                  <BreadcrumbLink
+                    render={
+                      <Link
+                        href={crumb.href || "/"}
+                        className={`flex items-center hover:text-shop_light_green transition-colors ${
+                          index === 0 ? "flex items-center" : ""
+                        }`}
+                      />
+                    }
+                  >
+                    {index === 0 && <Home size={16} />}
+                    <span className={index === 0 ? "ml-1" : ""}>
+                      {crumb.label}
+                    </span>
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>
