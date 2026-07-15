@@ -3,7 +3,7 @@ import ProductCard from "@/components/ProductCard";
 import Title from "@/components/Title";
 import DealCountdown from "@/components/DealCountdown";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
-import { DEAL_PRODUCTSResult, Product } from "@/sanity.types";
+import { Product } from "@/sanity.types";
 import { getDealProducts, getCategories } from "@/sanity/Queries";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -206,9 +206,7 @@ const DealPage = async () => {
                 <p className="text-sm sm:text-base text-gray-600 mb-4">
                   Check back soon for amazing deals and discounts!
                 </p>
-                <Button asChild>
-                  <Link href="/shop">Browse All Products</Link>
-                </Button>
+                <Button render={<Link href="/shop" />}>Browse All Products</Button>
               </div>
             </div>
           </Card>
@@ -230,10 +228,10 @@ const DealPage = async () => {
               <Button
                 size="lg"
                 variant="secondary"
-                asChild
+                render={<Link href="/shop" />}
                 className="w-full sm:w-auto"
               >
-                <Link href="/shop">Explore All Products</Link>
+                Explore All Products
               </Button>
               <Button
                 size="lg"

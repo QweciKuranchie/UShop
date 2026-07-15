@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache";
-import { Category, Brand } from "@/sanity.types";
+import { Category, Brand, Product } from "@/sanity.types";
 import { sanityFetch } from "../lib/live";
 import { getOrderById } from "./userQueries";
 
@@ -36,10 +36,10 @@ const getBanner = unstable_cache(
 const getFeaturedCategory = unstable_cache(
   async (quantity: number) => {
     try {
-      const { data } = await sanityFetch({
+      const { data } = (await sanityFetch({
         query: FEATURED_CATEGORY_QUERY,
         params: { quantity },
-      });
+      })) as { data: Category[] };
       return data ?? [];
     } catch (error) {
       console.error("Error fetching featured category:", error);
@@ -57,7 +57,9 @@ const getFeaturedCategory = unstable_cache(
 const getAllProducts = unstable_cache(
   async () => {
     try {
-      const { data } = await sanityFetch({ query: ALL_PRODUCTS_QUERY });
+      const { data } = (await sanityFetch({ query: ALL_PRODUCTS_QUERY })) as {
+        data: Product[];
+      };
       return data ?? [];
     } catch (error) {
       console.log("Error fetching all products:", error);
@@ -75,7 +77,9 @@ const getAllProducts = unstable_cache(
 const getDealProducts = unstable_cache(
   async () => {
     try {
-      const { data } = await sanityFetch({ query: DEAL_PRODUCTS });
+      const { data } = (await sanityFetch({ query: DEAL_PRODUCTS })) as {
+        data: Product[];
+      };
       return data ?? [];
     } catch (error) {
       console.log("Error fetching deal products:", error);
@@ -93,7 +97,9 @@ const getDealProducts = unstable_cache(
 const getFeaturedProducts = unstable_cache(
   async () => {
     try {
-      const { data } = await sanityFetch({ query: FEATURE_PRODUCTS });
+      const { data } = (await sanityFetch({ query: FEATURE_PRODUCTS })) as {
+        data: Product[];
+      };
       return data ?? [];
     } catch (error) {
       console.log("Error fetching featured products:", error);
@@ -193,12 +199,12 @@ const getAdminCategories = async () => {
 const getProductBySlug = unstable_cache(
   async (slug: string) => {
     try {
-      const product = await sanityFetch({
+      const product = (await sanityFetch({
         query: PRODUCT_BY_SLUG_QUERY,
         params: {
           slug,
         },
-      });
+      })) as { data: Product | null };
       return product?.data || null;
     } catch (error) {
       console.error("Error fetching product by slug:", error);
@@ -216,12 +222,12 @@ const getProductBySlug = unstable_cache(
 const getBrand = unstable_cache(
   async (slug: string) => {
     try {
-      const product = await sanityFetch({
+      const product = (await sanityFetch({
         query: BRAND_QUERY,
         params: {
           slug,
         },
-      });
+      })) as { data: any };
       return product?.data || null;
     } catch (error) {
       console.error("Error fetching brand by slug:", error);
@@ -239,14 +245,14 @@ const getBrand = unstable_cache(
 const getRelatedProducts = unstable_cache(
   async (categoryIds: string[], currentSlug: string, limit: number = 4) => {
     try {
-      const { data } = await sanityFetch({
+      const { data } = (await sanityFetch({
         query: RELATED_PRODUCTS_QUERY,
         params: {
           categoryIds,
           currentSlug,
           limit,
         },
-      });
+      })) as { data: Product[] };
       return data ?? [];
     } catch (error) {
       console.error("Error fetching related products:", error);
