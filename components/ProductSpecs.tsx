@@ -13,10 +13,10 @@ const ProductSpecs = ({ product }: ProductSpecsProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
       {/* Product Features */}
-      <Card className="border-2 border-gray-100 hover:border-shop_light_green/30 transition-colors">
+      <Card className="border-2 border-gray-100 hover:border-ushop-pink/30 transition-colors">
         <CardHeader className="pb-3">
           <div className="flex items-center gap-2">
-            <Package className="h-5 w-5 text-shop_orange" />
+            <Package className="h-5 w-5 text-ushop-pink" />
             <CardTitle className="text-sm font-semibold">
               Product Info
             </CardTitle>
@@ -30,7 +30,7 @@ const ProductSpecs = ({ product }: ProductSpecsProps) => {
               className={
                 product?.stock === 0
                   ? ""
-                  : "bg-green-100 text-green-700 hover:bg-green-200"
+                  : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-100/60"
               }
             >
               {product?.stock === 0
@@ -54,16 +54,16 @@ const ProductSpecs = ({ product }: ProductSpecsProps) => {
       </Card>
 
       {/* Shipping Info */}
-      <Card className="border-2 border-gray-100 hover:border-shop_light_green/30 transition-colors">
+      <Card className="border-2 border-gray-100 hover:border-ushop-pink/30 transition-colors">
         <CardHeader className="pb-3">
           <div className="flex items-center gap-2">
-            <Truck className="h-5 w-5 text-shop_orange" />
+            <Truck className="h-5 w-5 text-ushop-pink" />
             <CardTitle className="text-sm font-semibold">Shipping</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="space-y-2 text-sm">
           <div className="flex items-center gap-2">
-            <span className="text-green-600 font-medium">✓ Free Shipping</span>
+            <span className="text-emerald-600 font-medium">✓ Free Shipping</span>
           </div>
           <div className="text-gray-600">Estimated: 2-5 business days</div>
           <div className="text-gray-600">Express: 1-2 business days</div>
@@ -71,20 +71,20 @@ const ProductSpecs = ({ product }: ProductSpecsProps) => {
       </Card>
 
       {/* Warranty */}
-      <Card className="border-2 border-gray-100 hover:border-shop_light_green/30 transition-colors">
+      <Card className="border-2 border-gray-100 hover:border-ushop-pink/30 transition-colors">
         <CardHeader className="pb-3">
           <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-shop_orange" />
+            <Shield className="h-5 w-5 text-ushop-pink" />
             <CardTitle className="text-sm font-semibold">Warranty</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="space-y-2 text-sm">
           <div className="text-gray-600">
-            <span className="font-medium text-shop_dark_green">1 Year</span>{" "}
+            <span className="font-medium text-ushop-purple">1 Year</span>{" "}
             Manufacturer Warranty
           </div>
           <div className="text-gray-600">
-            <span className="font-medium text-shop_dark_green">30 Days</span>{" "}
+            <span className="font-medium text-ushop-purple">30 Days</span>{" "}
             Return Policy
           </div>
           <div className="text-gray-600">Free Tech Support</div>
@@ -92,24 +92,24 @@ const ProductSpecs = ({ product }: ProductSpecsProps) => {
       </Card>
 
       {/* Quality Assurance */}
-      <Card className="border-2 border-gray-100 hover:border-shop_light_green/30 transition-colors">
+      <Card className="border-2 border-gray-100 hover:border-ushop-pink/30 transition-colors">
         <CardHeader className="pb-3">
           <div className="flex items-center gap-2">
-            <Award className="h-5 w-5 text-shop_orange" />
+            <Award className="h-5 w-5 text-ushop-pink" />
             <CardTitle className="text-sm font-semibold">Quality</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="space-y-2 text-sm">
           <div className="flex items-center gap-2">
-            <span className="text-green-600 font-medium">✓ Quality Tested</span>
+            <span className="text-emerald-600 font-medium">✓ Quality Tested</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-green-600 font-medium">
+            <span className="text-emerald-600 font-medium">
               ✓ Authentic Product
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-green-600 font-medium">
+            <span className="text-emerald-600 font-medium">
               ✓ Secure Packaging
             </span>
           </div>

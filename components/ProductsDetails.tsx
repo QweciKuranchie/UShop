@@ -5,8 +5,8 @@ const ProductsDetails = () => {
     <div className="w-full space-y-8 mb-10">
       {/* Description Section */}
       <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-        <h2 className="text-2xl font-bold text-shop_dark_green mb-4 flex items-center gap-2">
-          <span className="w-1 h-6 bg-shop_orange rounded-full"></span>
+        <h2 className="text-xl font-bold text-zinc-900 mb-4 flex items-center gap-2">
+          <span className="w-1 h-5 bg-ushop-pink rounded-full"></span>
           Description
         </h2>
         <div className="prose prose-sm max-w-none text-gray-600">
@@ -31,8 +31,8 @@ const ProductsDetails = () => {
 
       {/* Additional Information Section */}
       <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-        <h2 className="text-2xl font-bold text-shop_dark_green mb-4 flex items-center gap-2">
-          <span className="w-1 h-6 bg-shop_orange rounded-full"></span>
+        <h2 className="text-xl font-bold text-zinc-900 mb-4 flex items-center gap-2">
+          <span className="w-1 h-5 bg-ushop-pink rounded-full"></span>
           Additional Information
         </h2>
         <div className="overflow-hidden">
