@@ -1,5 +1,5 @@
 import { Category } from "@/sanity.types";
-import CategorySelector from "./ui/category-selector";
+
 interface Props {
   categories: Category[];
 }
@@ -7,7 +7,13 @@ interface Props {
 const Categories = ({ categories }: Props) => {
   return (
     <div className="py-5">
-      <CategorySelector categories={categories} />
+      <div className="flex flex-wrap gap-2">
+        {categories?.map((cat) => (
+          <span key={cat._id} className="px-3 py-1 bg-gray-100 rounded-full text-xs">
+            {cat.title}
+          </span>
+        ))}
+      </div>
     </div>
   );
 };
