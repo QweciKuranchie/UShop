@@ -23,7 +23,7 @@ interface ProductReviewsProps {
   productName: string;
 }
 
-const ProductReviews = ({ productId: _productId, productName }: ProductReviewsProps) => {
+const ProductReviews = ({ productName }: ProductReviewsProps) => {
   const [reviews, setReviews] = useState<Review[]>([
     {
       _id: "1",

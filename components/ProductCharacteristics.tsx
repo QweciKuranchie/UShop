@@ -16,7 +16,7 @@ const ProductCharacteristics = ({
   brand,
 }: ProductCharacteristicsProps) => {
   return (
-    <Accordion type="single" collapsible>
+    <Accordion>
       <AccordionItem value="item-1">
         <AccordionTrigger className="font-bold">
           {product?.name}: Characteristics
