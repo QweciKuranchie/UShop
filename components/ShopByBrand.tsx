@@ -53,18 +53,21 @@ const ShopByBrands = async () => {
               className="group bg-white rounded-2xl p-6 flex items-center justify-center aspect-square hover:shadow-2xl shadow-lg border border-gray-100 hover:border-ushop-purple/30 hoverEffect transform hover:-translate-y-2"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
-              {brand?.image && (
-                <div className="relative w-full h-full flex items-center justify-center">
-                  <Image
-                    src={urlFor(brand.image).url()}
-                    alt={`${brand?.name || "Brand"} logo`}
-                    width={120}
-                    height={80}
-                    className="max-w-full max-h-full object-contain group-hover:scale-110 hoverEffect filter group-hover:brightness-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ushop-pink/5 to-transparent opacity-0 group-hover:opacity-100 hoverEffect rounded-xl"></div>
-                </div>
-              )}
+              {(() => {
+                const brandImg = (brand as Record<string, unknown>).image || (brand as Record<string, unknown>).logo;
+                return brandImg ? (
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <Image
+                      src={urlFor(brandImg).url()}
+                      alt={`${brand?.name || "Brand"} logo`}
+                      width={120}
+                      height={80}
+                      className="max-w-full max-h-full object-contain group-hover:scale-110 hoverEffect filter group-hover:brightness-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-ushop-pink/5 to-transparent opacity-0 group-hover:opacity-100 hoverEffect rounded-xl"></div>
+                  </div>
+                ) : null;
+              })()}
             </Link>
           ))}
         </div>
