@@ -2,17 +2,23 @@ import { Metadata } from "next";
 import { Product, Category } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 
-const BASE_URL = "https://shopcartpro.reactbd.org";
+const BASE_URL = "https://ushopgh.com";
+
+interface PopulatedProduct extends Omit<Product, "brand"> {
+  brand?: { name?: string } | null;
+  averageRating?: number;
+  totalReviews?: number;
+}
 
 /**
  * Generate metadata for product pages
  */
-export function generateProductMetadata(product: any): Metadata {
+export function generateProductMetadata(product: PopulatedProduct): Metadata {
   const title = product.name || "Product";
   const description =
     product.description ||
-    `Buy ${title} online at ShopCart. ${
-      product.price ? `Price: $${product.price}` : ""
+    `Buy ${title} online at U-Shop. ${
+      product.price ? `Price: GH₵${product.price}` : ""
     }`;
   const imageUrl = product.images?.[0]
     ? urlFor(product.images[0]).url()
@@ -46,7 +52,7 @@ export function generateProductMetadata(product: any): Metadata {
           alt: title,
         },
       ],
-      siteName: "ShopCart",
+      siteName: "U-Shop",
     },
     twitter: {
       card: "summary_large_image",
@@ -70,7 +76,7 @@ export function generateCategoryMetadata(
   const title = category.title || "Category";
   const description =
     category.description ||
-    `Browse ${productCount} products in ${title} category at ShopCart. Find the best deals and quality items.`;
+    `Browse ${productCount} products in ${title} category at U-Shop. Find the best deals and quality items.`;
   const imageUrl = category.image
     ? urlFor(category.image).url()
     : "/og-image.jpg";
@@ -100,7 +106,7 @@ export function generateCategoryMetadata(
           alt: title,
         },
       ],
-      siteName: "ShopCart",
+      siteName: "U-Shop",
     },
     twitter: {
       card: "summary_large_image",
@@ -117,12 +123,12 @@ export function generateCategoryMetadata(
 /**
  * Generate Product Schema (JSON-LD) for rich snippets
  */
-export function generateProductSchema(product: any) {
+export function generateProductSchema(product: PopulatedProduct) {
   const imageUrl = product.images?.[0] ? urlFor(product.images[0]).url() : "";
 
   // Extract brand name if it's populated
   const brandName =
-    typeof product.brand === "object" ? product.brand?.name : "ShopCart";
+    typeof product.brand === "object" ? product.brand?.name : "U-Shop";
 
   return {
     "@context": "https://schema.org",
@@ -138,7 +144,7 @@ export function generateProductSchema(product: any) {
     offers: {
       "@type": "Offer",
       url: `${BASE_URL}/product/${product.slug?.current}`,
-      priceCurrency: "USD",
+      priceCurrency: "GHS",
       price: product.price,
       priceValidUntil: new Date(
         new Date().setFullYear(new Date().getFullYear() + 1)
@@ -188,7 +194,7 @@ export function generateOrganizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "ShopCart",
+    name: "U-Shop",
     url: BASE_URL,
     logo: `${BASE_URL}/logo.png`,
     description:
@@ -197,14 +203,14 @@ export function generateOrganizationSchema() {
       "@type": "ContactPoint",
       telephone: "+1-555-123-4567",
       contactType: "customer service",
-      areaServed: "US",
+      areaServed: "GH",
       availableLanguage: "en",
     },
     sameAs: [
-      "https://facebook.com/shopcart",
-      "https://twitter.com/shopcart",
-      "https://instagram.com/shopcart",
-      "https://linkedin.com/company/shopcart",
+      "https://facebook.com/ushopgh",
+      "https://twitter.com/ushopgh",
+      "https://instagram.com/ushopgh",
+      "https://linkedin.com/company/ushopgh",
     ],
   };
 }
@@ -216,7 +222,7 @@ export function generateWebsiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "ShopCart",
+    name: "U-Shop",
     url: BASE_URL,
     potentialAction: {
       "@type": "SearchAction",
@@ -232,7 +238,7 @@ export function generateWebsiteSchema() {
 /**
  * Generate ItemList Schema for product listings
  */
-export function generateItemListSchema(products: any[], listName: string) {
+export function generateItemListSchema(products: PopulatedProduct[], listName: string) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -247,10 +253,17 @@ export function generateItemListSchema(products: any[], listName: string) {
   };
 }
 
+interface SeoReview {
+  rating?: number;
+  userName?: string;
+  comment?: string;
+  _createdAt?: string;
+}
+
 /**
  * Generate Review Schema for product reviews
  */
-export function generateReviewSchema(reviews: any[], product: Product) {
+export function generateReviewSchema(reviews: SeoReview[]) {
   if (!reviews || reviews.length === 0) return null;
 
   const reviewSchemas = reviews.map((review) => ({
@@ -304,9 +317,9 @@ export function getCanonicalUrl(path: string): string {
  */
 export function generateHomeMetadata(): Metadata {
   return {
-    title: "ShopCart - Your Trusted Online Shopping Destination",
+    title: "U-Shop - Your Trusted Online Shopping Destination",
     description:
-      "Discover amazing products at ShopCart, your trusted online shopping destination for quality items and exceptional customer service. Shop electronics, fashion, home goods and more with fast delivery.",
+      "Discover amazing products at U-Shop, your trusted online shopping destination for quality items and exceptional customer service. Shop electronics, fashion, home goods and more with fast delivery.",
     keywords: [
       "online shopping",
       "e-commerce",
@@ -320,23 +333,23 @@ export function generateHomeMetadata(): Metadata {
     openGraph: {
       type: "website",
       url: BASE_URL,
-      title: "ShopCart - Your Trusted Online Shopping Destination",
+      title: "U-Shop - Your Trusted Online Shopping Destination",
       description:
-        "Discover amazing products at ShopCart. Shop electronics, fashion, home goods and more with fast delivery.",
+        "Discover amazing products at U-Shop. Shop electronics, fashion, home goods and more with fast delivery.",
       images: [
         {
           url: "/og-image.jpg",
           width: 1200,
           height: 630,
-          alt: "ShopCart Online Store",
+          alt: "U-Shop Online Store",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "ShopCart - Your Trusted Online Shopping Destination",
+      title: "U-Shop - Your Trusted Online Shopping Destination",
       description:
-        "Discover amazing products at ShopCart. Shop electronics, fashion, home goods and more.",
+        "Discover amazing products at U-Shop. Shop electronics, fashion, home goods and more.",
       images: ["/og-image.jpg"],
     },
     alternates: {
