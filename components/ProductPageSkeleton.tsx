@@ -33,7 +33,7 @@ const ProductPageSkeleton = () => {
               <Skeleton className="h-10 w-3/4 rounded-xl animate-pulse" />
               <div className="flex items-center gap-2">
                 <Skeleton className="h-4 w-24 animate-pulse" />
-                <Skeleton className="h-4 w-12" animate-pulse />
+                <Skeleton className="h-4 w-12 animate-pulse" />
               </div>
             </div>
 

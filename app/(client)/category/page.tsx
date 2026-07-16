@@ -8,7 +8,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { getCategories } from "@/sanity/Queries";
+import { getCategories } from "@/sanity/queries";
 import { Category } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
@@ -132,7 +132,7 @@ const CategoryPage = async () => {
               ))}
             </div>
 
-            {/* View All Products CTA after categories */}
+           {/*
             <div className="mt-10 text-center">
               <div className="bg-gradient-to-r from-ushop-pink/5 via-ushop-purple/5 to-ushop-pink/5 rounded-xl p-6 border border-ushop-pink/20">
                 <h3 className="text-lg lg:text-xl font-semibold text-ushop-purple-dark mb-2">
@@ -144,7 +144,7 @@ const CategoryPage = async () => {
                 </p>
                 <Link
                   href="/shop"
-                  className="inline-flex items-center justify-center gap-2 bg-ushop-pink hover:bg-ushop-purple text-white px-6 py-2.5 rounded-full font-medium text-sm transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+                  className="inline-flex items-center justify-center gap-2 bg-ushop-purple hover:bg-ushop-pink text-white px-6 py-2.5 rounded-full font-medium text-sm transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
                 >
                   <Package className="w-4 h-4" />
                   View All Products
@@ -152,6 +152,7 @@ const CategoryPage = async () => {
                 </Link>
               </div>
             </div>
+            */}
           </>
         ) : (
           <div className="text-center py-12">
@@ -193,6 +194,7 @@ const CategoryPage = async () => {
                 >
                   <Package className="w-4 h-4" />
                   All Products
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/brands"
