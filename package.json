@@ -30,6 +30,8 @@
     "@clerk/nextjs": "^6.9.6",
     "@clerk/shared": "^2.20.0",
     "@clerk/ui": "^1.1.2",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-tabs": "^1.1.1",
     "@sanity/icons": "^3.5.2",
     "@sanity/image-url": "2",
     "@sanity/vision": "5",
