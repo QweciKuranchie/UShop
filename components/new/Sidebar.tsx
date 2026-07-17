@@ -199,7 +199,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
             Popular Categories
           </h3>
           <div className="flex flex-col gap-1">
-            {categoriesData.slice(0, 6).map((item) => (
+            {categoriesData.links.slice(0, 6).map((item: { title: string; href: string }) => (
               <Link
                 onClick={onClose}
                 key={item.title}

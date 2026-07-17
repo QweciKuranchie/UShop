@@ -1,4 +1,4 @@
-import  React from 'react'
+import { cn } from '@/lib/utils';
 import PriceFormatter from './PriceFormatter';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 
 const PriceView = ({ price, discount, className }: Props) => {
   return (
-    <div className='flex flex-col sm:flex-row sm:items-center gap-1'>
+    <div className={cn('flex flex-col sm:flex-row sm:items-center gap-1', className)}>
       <PriceFormatter amount={price} className='text-ushop-purple'/>
       {price && discount && discount > 0 ? (
         <PriceFormatter amount={price + (discount * price)/100} className='text-ushop-light-text font-normal line-through'/>

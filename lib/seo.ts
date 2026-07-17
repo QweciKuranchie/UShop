@@ -36,6 +36,7 @@ export function generateProductMetadata(product: PopulatedProduct): Metadata {
       product.name || "",
       brandName || "",
       "buy online",
+      "sell online",
       "shop",
       "e-commerce",
     ].filter(Boolean),

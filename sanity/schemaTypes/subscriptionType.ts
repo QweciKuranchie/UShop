@@ -13,9 +13,7 @@ export const subscriptionType = defineType({
       type: "email",
       description: "Subscriber's email address",
       validation: (Rule) =>
-        Rule.required().custom((email) => {
-          // Normalize email for uniqueness check
-          const normalizedEmail = email?.toLowerCase().trim();
+        Rule.required().custom(() => {
           return true; // Validation passes, uniqueness is enforced by GROQ query
         }),
     }),

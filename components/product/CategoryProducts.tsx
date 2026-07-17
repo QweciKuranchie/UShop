@@ -4,7 +4,7 @@ import React, { useState, useMemo } from "react";
 import { Category, Product } from "@/sanity.types";
 import ProductCard from "../ProductCard";
 import NoProductsAvailable from "./NoProductsAvailable";
-import { Grid3X3, ArrowUpDown, LayoutGrid } from "lucide-react";
+import { ArrowUpDown, LayoutGrid } from "lucide-react";
 
 interface Props {
   categories: Category[];

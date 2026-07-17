@@ -15,15 +15,10 @@ const ProductSideMenu = ({
   className?: string;
 }) => {
   const { favoriteProduct, addToFavorite } = useCartStore();
-  const [existingProduct, setExistingProduct] = useState<Product | null>(null);
-
-  useEffect(() => {
-    const availableItem = _.find(
-      favoriteProduct,
-      (item) => item?._id === product?._id
-    );
-    setExistingProduct(availableItem || null);
-  }, [product, favoriteProduct]);
+  const existingProduct = _.find(
+    favoriteProduct,
+    (item) => item?._id === product?._id
+  ) || null;
 
   const handleFavorite = (e: React.MouseEvent<HTMLSpanElement>) => {
     e.preventDefault();

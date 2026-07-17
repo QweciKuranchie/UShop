@@ -293,7 +293,7 @@ const ProductContent = ({
                 Fast Delivery
               </h3>
               <p className="text-xs text-zinc-500">
-                Free shipping on orders over $50
+                Free shipping on orders over GH₵50
               </p>
             </Card>
 

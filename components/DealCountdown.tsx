@@ -3,6 +3,17 @@
 import { useState, useEffect } from "react";
 import { Timer } from "lucide-react";
 
+const TimeUnit = ({ value, label }: { value: number; label: string }) => (
+  <div className="flex flex-col items-center bg-white rounded-lg p-2 sm:p-3 shadow-md border">
+    <span className="text-lg sm:text-2xl md:text-3xl font-bold text-shop_dark_green">
+      {value.toString().padStart(2, "0")}
+    </span>
+    <span className="text-xs sm:text-sm text-gray-600 font-medium">
+      {label}
+    </span>
+  </div>
+);
+
 const DealCountdown = () => {
   const [timeLeft, setTimeLeft] = useState({
     days: 2,
@@ -35,17 +46,6 @@ const DealCountdown = () => {
 
     return () => clearInterval(timer);
   }, []);
-
-  const TimeUnit = ({ value, label }: { value: number; label: string }) => (
-    <div className="flex flex-col items-center bg-white rounded-lg p-2 sm:p-3 shadow-md border">
-      <span className="text-lg sm:text-2xl md:text-3xl font-bold text-shop_dark_green">
-        {value.toString().padStart(2, "0")}
-      </span>
-      <span className="text-xs sm:text-sm text-gray-600 font-medium">
-        {label}
-      </span>
-    </div>
-  );
 
   return (
     <div className="flex items-center gap-2 sm:gap-4">

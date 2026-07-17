@@ -95,7 +95,9 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
-    onSelect(api)
+    Promise.resolve().then(() => {
+      if (api) onSelect(api)
+    })
     api.on("reInit", onSelect)
     api.on("select", onSelect)
 

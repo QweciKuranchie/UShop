@@ -128,7 +128,7 @@ const Shop = ({ categories, brands }: Props) => {
                 )}
                 {selectedPrice && (
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                    Price: ${selectedPrice.replace("-", " - $")}
+                    Price: GH₵{selectedPrice.replace("-", " - GH₵")}
                   </span>
                 )}
               </div>

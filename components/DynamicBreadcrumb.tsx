@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -48,6 +48,7 @@ const DynamicBreadcrumb = ({
   const [detectedParentPath, setDetectedParentPath] = useState<string | null>(
     parentPath ?? null
   );
+  const [, startTransition] = useTransition();
 
   // Detect parent path from referrer or session storage
   useEffect(() => {
@@ -57,7 +58,9 @@ const DynamicBreadcrumb = ({
     // Clear parent context if we're on dashboard itself
     if (pathname === "/dashboard") {
       sessionStorage.removeItem("breadcrumb-parent");
-      setDetectedParentPath(null);
+      startTransition(() => {
+        setDetectedParentPath(null);
+      });
       return;
     }
 
@@ -89,7 +92,9 @@ const DynamicBreadcrumb = ({
       }
     }
 
-    setDetectedParentPath(resolved);
+    startTransition(() => {
+      setDetectedParentPath(resolved);
+    });
   }, [parentPath, pathname]);
 
   const formatSegmentLabel = (segment: string): string => {

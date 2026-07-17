@@ -2,7 +2,6 @@ import {
   X,
   Home,
   ShoppingBag,
-  BookOpen,
   Flame,
   User,
   ShoppingCart,

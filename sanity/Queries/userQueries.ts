@@ -346,6 +346,13 @@ export const MARK_NOTIFICATION_READ_QUERY = `
   }
 `;
 
+interface UserNotification {
+  id: string;
+  read?: boolean;
+  readAt?: string;
+  [key: string]: unknown;
+}
+
 export const markNotificationAsRead = async (
   clerkUserId: string,
   notificationId: string
@@ -361,7 +368,7 @@ export const markNotificationAsRead = async (
     }
 
     const updatedNotifications = user.data.notifications.map(
-      (notification: any) => {
+      (notification: UserNotification) => {
         if (notification.id === notificationId) {
           return {
             ...notification,
@@ -402,7 +409,7 @@ export const deleteUserNotification = async (
     }
 
     const updatedNotifications = user.data.notifications.filter(
-      (notification: any) => notification.id !== notificationId
+      (notification: UserNotification) => notification.id !== notificationId
     );
 
     const { writeClient } = await import("../lib/client");
