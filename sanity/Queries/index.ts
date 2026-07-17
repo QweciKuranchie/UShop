@@ -227,7 +227,7 @@ const getBrand = unstable_cache(
         params: {
           slug,
         },
-      })) as { data: Brand | null };
+      })) as { data: { brandName: string }[] | null };
       return product?.data || null;
     } catch (error) {
       console.error("Error fetching brand by slug:", error);

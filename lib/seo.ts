@@ -239,7 +239,10 @@ export function generateWebsiteSchema() {
 /**
  * Generate ItemList Schema for product listings
  */
-export function generateItemListSchema(products: PopulatedProduct[], listName: string) {
+export function generateItemListSchema(
+  products: Array<{ name?: string; slug?: { current?: string } }>,
+  listName: string
+) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",

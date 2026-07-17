@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { Product } from "@/sanity.types";
 import useCartStore from "@/store";
 import { Heart } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { toast } from "sonner";
 import _ from "lodash";
 

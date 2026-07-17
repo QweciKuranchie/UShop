@@ -27,7 +27,6 @@ const CategoryPageWrapper = ({ slug }: Props) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [currentCategory, setCurrentCategory] = useState<Category | null>(null);
   const [categoryLoading, setCategoryLoading] = useState(true);
-  const [categoriesLoaded, setCategoriesLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
 

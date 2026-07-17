@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Category, Product } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
@@ -15,7 +14,6 @@ import {
 } from "lucide-react";
 import Title from "./Title";
 import CategoryProducts from "./product/CategoryProducts";
-import CategoryDetailSkeleton from "./CategoryDetailSkeleton";
 
 interface Props {
   categories: Category[];
@@ -34,7 +32,6 @@ const CategoryPageClient = ({
   relatedCategories,
   initialProducts,
 }: Props) => {
-  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <>
