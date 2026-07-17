@@ -5,7 +5,7 @@ import { urlFor } from "@/sanity/lib/image";
 const BASE_URL = "https://ushopgh.com";
 
 interface PopulatedProduct extends Omit<Product, "brand"> {
-  brand?: { name?: string } | null;
+  brand?: { name?: string } | Array<{ brandName?: string }> | null;
   averageRating?: number;
   totalReviews?: number;
 }
@@ -26,8 +26,11 @@ export function generateProductMetadata(product: PopulatedProduct): Metadata {
   const url = `${BASE_URL}/product/${product.slug?.current}`;
 
   // Extract brand name if it's populated
-  const brandName =
-    typeof product.brand === "object" ? product.brand?.name : "";
+  const brandName = Array.isArray(product.brand)
+    ? product.brand[0]?.brandName
+    : (product.brand && typeof product.brand === "object" && "name" in product.brand)
+      ? product.brand.name
+      : "";
 
   return {
     title,
@@ -128,8 +131,11 @@ export function generateProductSchema(product: PopulatedProduct) {
   const imageUrl = product.images?.[0] ? urlFor(product.images[0]).url() : "";
 
   // Extract brand name if it's populated
-  const brandName =
-    typeof product.brand === "object" ? product.brand?.name : "U-Shop";
+  const brandName = Array.isArray(product.brand)
+    ? product.brand[0]?.brandName || "U-Shop"
+    : (product.brand && typeof product.brand === "object" && "name" in product.brand)
+      ? product.brand.name || "U-Shop"
+      : "U-Shop";
 
   return {
     "@context": "https://schema.org",
