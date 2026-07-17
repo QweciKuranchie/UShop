@@ -117,10 +117,10 @@ export const getMyOrders = async (
 
     return {
       orders: orders?.data || [],
-      totalCount: totalCount?.data || 0,
-      totalPages: Math.ceil((totalCount?.data || 0) / limit),
+      totalCount: Number(totalCount?.data || 0),
+      totalPages: Math.ceil(Number(totalCount?.data || 0) / limit),
       currentPage: page,
-      hasNextPage: page < Math.ceil((totalCount?.data || 0) / limit),
+      hasNextPage: page < Math.ceil(Number(totalCount?.data || 0) / limit),
       hasPrevPage: page > 1,
     };
   } catch (error) {
