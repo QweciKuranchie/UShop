@@ -6,11 +6,11 @@ import HomeCategories from "@/components/HomeCategories";
 import { getCategories } from "@/sanity/Queries";
 import ShopByBrand from "@/components/ShopByBrand";
 
-const Home = async() => {
+const Home = async () => {
   const categories = await getCategories(6);
-  
+
   return (
-    <Container className="bg-shop_light_pink">
+    <Container className="bg-ushop_light_bg/80">
       <HomeBanner />
       <div className="py-10">
         <ProductGrid />

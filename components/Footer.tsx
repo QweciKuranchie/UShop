@@ -3,17 +3,24 @@
 import React, { useState } from "react";
 import Container from "./Container";
 import FooterTop from "./FooterTop";
-import Logo from "./Logo";
-import SocialMediaIcons from "./SocialMediaIcons";
+import Logo from "./common/Logo";
+import SocialMediaIcons from "./common/SocialMediaIcons";
 import { SubTitle, SubText } from "./ui/text";
 import Link from "next/link";
 import Image from "next/image";
-import { quickLinksData, categoriesData, customerCareData } from "@/Constants/data";
+import {
+  quickLinksData,
+  categoriesData,
+  customerCareData,
+  supportData,
+} from "@/Constants/data";
 import { Mail, CheckCircle } from "lucide-react";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const [message, setMessage] = useState("");
 
   const handleSubscribe = async (e: React.FormEvent) => {
@@ -40,59 +47,70 @@ const Footer = () => {
           <div className="space-y-4">
             <Logo />
             <SubText>
-              Ghana&apos;s leading tech marketplace.<br />Affordable prices and trusted sellers
+              Ghana&apos;s leading tech marketplace.
+              <br />
+              Affordable prices and trusted sellers
             </SubText>
             <SocialMediaIcons />
           </div>
           <div>
             <SubTitle>Quick Links</SubTitle>
             <ul className="space-y-3 mt-4">
-              {
-                quickLinksData.links.map((link) => (
-                   <li key={link.title}>
-                    <Link
+              {quickLinksData.links.map((link) => (
+                <li key={link.title}>
+                  <Link
                     href={link.href}
                     className="hover:text-ushop-pink hoverEffect"
                   >
                     {link.title}
                   </Link>
-                  </li>
-                ))
-              }
+                </li>
+              ))}
             </ul>
           </div>
           <div>
             <SubTitle>{categoriesData.title}</SubTitle>
             <ul className="space-y-3 mt-4">
-              {
-                categoriesData.links.map((link) => (
-                   <li key={link.title}>
-                    <Link
+              {categoriesData.links.map((link) => (
+                <li key={link.title}>
+                  <Link
                     href={link.href}
                     className="hover:text-ushop-pink hoverEffect"
                   >
                     {link.title}
                   </Link>
-                  </li>
-                ))
-              }
+                </li>
+              ))}
             </ul>
           </div>
           <div>
             <SubTitle>{customerCareData.title}</SubTitle>
             <ul className="space-y-3 mt-4">
-              {
-                customerCareData.links.map((link) => (
-                   <li key={link.title}>
-                    <Link
+              {customerCareData.links.map((link) => (
+                <li key={link.title}>
+                  <Link
                     href={link.href}
                     className="hover:text-ushop-pink hoverEffect"
                   >
                     {link.title}
                   </Link>
-                  </li>
-                ))
-              }
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <SubTitle>{supportData.title}</SubTitle>
+            <ul className="space-y-3 mt-4">
+              {supportData.links.map((link) => (
+                <li key={link.title}>
+                  <Link
+                    href={link.href}
+                    className="hover:text-ushop-pink hoverEffect"
+                  >
+                    {link.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -105,17 +123,18 @@ const Footer = () => {
                   <Mail className="w-5 h-5 text-[#D4009B]" />
                 </div>
                 <div>
-                  <SubTitle>
-                    Join the Newsletter
-                  </SubTitle>
-                  <SubText>Subscribe to our newsletter to receive updates and exclusive deals</SubText>
+                  <SubTitle>Join the Newsletter</SubTitle>
+                  <SubText>
+                    Subscribe to our newsletter to receive updates and exclusive
+                    deals
+                  </SubText>
                 </div>
               </div>
               <div className="flex w-full md:w-auto">
                 {status === "success" ? (
                   <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-6 py-2.5 rounded-xl text-emerald-400 w-full md:w-[350px]">
-                     <CheckCircle className="w-5 h-5" />
-                     <span className="text-sm font-medium">{message}</span>
+                    <CheckCircle className="w-5 h-5" />
+                    <span className="text-sm font-medium">{message}</span>
                   </div>
                 ) : (
                   <form
@@ -142,12 +161,16 @@ const Footer = () => {
                           hover:bg-[#b50f7e] transition-colors whitespace-nowrap disabled:opacity-50 flex items-center justify-center min-w-[110px] h-full"
                       >
                         {status === "loading" ? (
-                           <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                        ) : "Subscribe"}
+                          <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                        ) : (
+                          "Subscribe"
+                        )}
                       </button>
                     </div>
                     {status === "error" && (
-                      <p className="text-red-400 text-xs mt-1 absolute -bottom-5 left-0">{message}</p>
+                      <p className="text-red-400 text-xs mt-1 absolute -bottom-5 left-0">
+                        {message}
+                      </p>
                     )}
                   </form>
                 )}
@@ -185,7 +208,9 @@ const Footer = () => {
 
               {/* Payment logos from /assets/icons/footer/ */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-400 mr-1">Accepted payments:</span>
+                <span className="text-xs text-gray-400 mr-1">
+                  Accepted payments:
+                </span>
                 <Image
                   src="/assets/icons/footer/Momo.png"
                   alt="Mobile Money"

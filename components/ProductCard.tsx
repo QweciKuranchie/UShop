@@ -14,6 +14,7 @@ const ProductCard = ({ product }: { product: Product }) => {
     <div className="text-sm border-[1px] border-dark-blue/20 rounded-md bg-white group">
       <div className="relative group overflow-hidden bg-ushop_light_bg">
         {product?.images && product.images[0] && (
+          <Link href={`/product/${product?.slug?.current}`}>
           <Image
             src={urlFor(product.images[0]).url()}
             alt={product.name || "Product Image"}
@@ -24,6 +25,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                bg-ushop_light_bg hoverEffect
                 ${product?.stock !== 0 ? "group-hover:scale-105" : "opacity-50"}`}
           />
+          </Link>
         )}
         <AddToWishlistBtn product={product} />
         {product?.status === "new" && (
@@ -94,14 +96,32 @@ const ProductCard = ({ product }: { product: Product }) => {
             />
           </Link>
         )}
+        {typeof product?.discount === "number" && product.discount > 0 ? (
+          <div
+            className={`absolute left-2 z-10 bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/20 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg hoverEffect ${
+              product?.status ? "top-8" : "top-2"
+            }`}
+          >
+            -{product.discount}%
+          </div>
+        ) : null}
       </div>
       <div className="p-3 flex flex-col gap-2">
-        {product?.categories && 
-        ( <p className="uppercase line-clamp-1 text-xs text-ushop-light-text"
-        >
-          {product.categories.map((cat) => cat).join(", ")}
-        </p>
-      )}
+        {product?.categories && product.categories.length > 0 && (
+          <p className="uppercase line-clamp-1 text-xs text-ushop-light-text">
+            {product.categories
+              .map((cat: unknown) => {
+                if (typeof cat === "string") return cat;
+                if (cat && typeof cat === "object") {
+                  const obj = cat as { title?: string; name?: string };
+                  return obj.title || obj.name || "";
+                }
+                return "";
+              })
+              .filter(Boolean)
+              .join(", ")}
+          </p>
+        )}
       <Title className="text-base md:text-base line-clamp-1 text-ushop-purple-dark ">{product?.name}</Title>
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-0.5">
