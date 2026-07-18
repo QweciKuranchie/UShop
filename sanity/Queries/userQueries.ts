@@ -262,7 +262,7 @@ export const getUserCart = async (clerkUserId: string) => {
       query: USER_CART_QUERY,
       params: { clerkUserId },
     });
-    return data?.cart ?? [];
+    return (data as { cart?: unknown[] })?.cart ?? [];
   } catch (error) {
     console.error("Error fetching user cart:", error);
     return [];
@@ -275,7 +275,7 @@ export const getUserWishlist = async (clerkUserId: string) => {
       query: USER_WISHLIST_QUERY,
       params: { clerkUserId },
     });
-    return data?.wishlist ?? [];
+    return (data as { wishlist?: unknown[] })?.wishlist ?? [];
   } catch (error) {
     console.error("Error fetching user wishlist:", error);
     return [];
@@ -332,7 +332,7 @@ export const getUserNotifications = async (clerkUserId: string) => {
       query: USER_NOTIFICATIONS_QUERY,
       params: { clerkUserId },
     });
-    return data?.notifications || [];
+    return (data as { notifications?: unknown[] })?.notifications ?? [];
   } catch (error) {
     console.error("Error fetching user notifications:", error);
     return [];
@@ -367,7 +367,8 @@ export const markNotificationAsRead = async (
       throw new Error("User not found");
     }
 
-    const updatedNotifications = user.data.notifications.map(
+    const userData = user.data as { _id: string; notifications: UserNotification[] };
+    const updatedNotifications = userData.notifications.map(
       (notification: UserNotification) => {
         if (notification.id === notificationId) {
           return {
@@ -383,7 +384,7 @@ export const markNotificationAsRead = async (
     const { writeClient } = await import("../lib/client");
 
     await writeClient
-      .patch(user.data._id)
+      .patch(userData._id)
       .set({ notifications: updatedNotifications })
       .commit();
 
@@ -408,14 +409,15 @@ export const deleteUserNotification = async (
       throw new Error("User not found");
     }
 
-    const updatedNotifications = user.data.notifications.filter(
+    const userData = user.data as { _id: string; notifications: UserNotification[] };
+    const updatedNotifications = userData.notifications.filter(
       (notification: UserNotification) => notification.id !== notificationId
     );
 
     const { writeClient } = await import("../lib/client");
 
     await writeClient
-      .patch(user.data._id)
+      .patch(userData._id)
       .set({ notifications: updatedNotifications })
       .commit();
 
