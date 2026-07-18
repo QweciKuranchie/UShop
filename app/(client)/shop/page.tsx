@@ -1,5 +1,5 @@
 import Shop from "@/components/shopPage/Shop";
-import { getAllBrands, getCategories } from "@/sanity/queries";
+import { getAllBrands, getCategories } from "@/sanity/Queries";
 import { Suspense } from "react";
 
 const ShopPage = async () => {

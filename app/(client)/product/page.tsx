@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import Container from "@/components/Container";
 import Title from "@/components/Title";
-import { getAllProducts, getCategories, getAllBrands } from "@/sanity/queries";
+import { getAllProducts, getCategories, getAllBrands } from "@/sanity/Queries";
 import Link from "next/link";
 import ProductCatalog from "@/components/ProductCatalog";
 

@@ -3,7 +3,7 @@ import Container from "@/components/Container";
 import HomeBanner from "@/components/HomeBanner";
 import ProductGrid from "@/components/ProductGrid";
 import HomeCategories from "@/components/HomeCategories";
-import { getCategories } from "@/sanity/queries";
+import { getCategories } from "@/sanity/Queries";
 import ShopByBrand from "@/components/ShopByBrand";
 
 const Home = async () => {
