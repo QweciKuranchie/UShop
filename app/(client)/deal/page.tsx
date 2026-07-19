@@ -40,7 +40,7 @@ const DealPage = async () => {
 
       {/* Hero Section */}
       <Container className="py-8 sm:py-12">
-        <Card className="bg-gradient-to-r from-red-500 to-orange-500 text-white border-0 shadow-xl overflow-hidden">
+        <Card className="bg-gradient-to-r from-red-600 via-red-500 to-red-700 text-white border-0 shadow-xl overflow-hidden">
           <CardContent className="p-6 sm:p-8 lg:p-12">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-8">
               <div className="flex-1 space-y-4 sm:space-y-6">
@@ -172,7 +172,7 @@ const DealPage = async () => {
         </div>
 
         {products && products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
             {products.map((product: Product) => (
               <div
                 key={product?._id}

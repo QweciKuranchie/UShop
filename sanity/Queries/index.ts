@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache";
-import { Category, Brand, Product } from "@/sanity.types";
+import { Category, Brand, Product, Location } from "@/sanity.types";
 import { sanityFetch } from "../lib/live";
 import { getOrderById } from "./userQueries";
 
@@ -13,7 +13,8 @@ import { ADDRESS_QUERY,
   FEATURE_PRODUCTS,
   FEATURED_CATEGORY_QUERY,
   PRODUCT_BY_SLUG_QUERY,
-  RELATED_PRODUCTS_QUERY,} from "./query";
+  RELATED_PRODUCTS_QUERY,
+  UNIVERSITIES_QUERY,} from "./query";
 
 const getBanner = unstable_cache(
   async () => {
@@ -264,6 +265,24 @@ const getRelatedProducts = unstable_cache(
 );
 
 
+/**
+ * Get universities list - cached for 1 hour
+ * University list changes infrequently
+ */
+const getUniversities = unstable_cache(
+  async () => {
+    try {
+      const { data } = await sanityFetch({ query: UNIVERSITIES_QUERY }) as { data: Location[] };
+      return data ?? [];
+    } catch (error) {
+      console.error("Error fetching universities:", error);
+      return [];
+    }
+  },
+  ["universities-list"],
+  { revalidate: 3600, tags: ["locations", "universities"] }
+);
+
 export {getBanner,
   getFeaturedCategory,
   getAllProducts,
@@ -277,4 +296,5 @@ export {getBanner,
   getBrand,
   getRelatedProducts,
   getOrderById,
+  getUniversities,
 };

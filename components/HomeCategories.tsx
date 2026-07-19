@@ -57,12 +57,12 @@ const HomeCategories = ({ categories }: Props) => {
 
       {/* Categories Grid */}
       <div className="bg-gradient-to-br from-white via-ushop_light_bg to-ushop-pink/5 p-8 lg:p-12 rounded-3xl shadow-xl border border-ushop-purple/10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:pb-0">
           {categories?.map((category, index) => (
             <Link
               key={category?._id}
               href={`/category/${category?.slug?.current}`}
-              className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl border border-gray-100 hover:border-ushop-purple/20 hoverEffect transform hover:-translate-y-2 cursor-pointer block"
+              className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl border border-gray-100 hover:border-ushop-purple/20 hoverEffect transform hover:-translate-y-2 cursor-pointer block min-w-[250px] sm:min-w-0 flex-shrink-0 snap-start"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Image Container */}

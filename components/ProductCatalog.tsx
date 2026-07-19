@@ -183,7 +183,7 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
             />
           </div>
 
-          <div className="flex items-center gap-3 w-full lg:w-auto">
+          <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
             {/* Sort */}
             <Select
               value={sortBy}
@@ -193,7 +193,7 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
                 }
               }}
             >
-              <SelectTrigger className="w-full lg:w-48">
+              <SelectTrigger className="flex-1 lg:flex-none lg:w-48">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
@@ -206,7 +206,7 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
             </Select>
 
             {/* View Mode Toggle */}
-            <div className="flex border rounded-md">
+            <div className="flex border rounded-md flex-shrink-0">
               <Button
                 variant={viewMode === "grid" ? "default" : "ghost"}
                 size="sm"
@@ -229,7 +229,7 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
             <Button
               variant="outline"
               onClick={() => setShowFilters(!showFilters)}
-              className="relative"
+              className="relative flex-shrink-0"
             >
               <SlidersHorizontal className="w-4 h-4 mr-2" />
               Filters
@@ -247,7 +247,7 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
 
         {/* Active Filters */}
         {activeFilterCount > 0 && (
-          <div className="flex items-center gap-2 mt-4 pt-4 border-t">
+          <div className="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t">
             <span className="text-sm font-medium text-gray-600">
               Active filters:
             </span>
@@ -305,7 +305,7 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
         )}
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         {/* Filter Sidebar */}
         <AnimatePresence>
           {showFilters && (
@@ -313,7 +313,7 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
-              className="w-80 bg-white rounded-lg border shadow-sm p-6 h-fit sticky top-4"
+              className="w-full lg:w-80 bg-white rounded-lg border shadow-sm p-6 h-fit lg:sticky lg:top-4"
             >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-lg">Filters</h3>
@@ -458,8 +458,8 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
             <div
               className={`grid gap-4 ${
                 viewMode === "grid"
-                  ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                  : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                  ? "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                  : "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
               }`}
             >
               {Array.from({ length: 12 }).map((_, index) => (
@@ -481,8 +481,8 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
             <div
               className={`grid gap-4 ${
                 viewMode === "grid"
-                  ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                  : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                  ? "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                  : "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
               }`}
             >
               <AnimatePresence>

@@ -9,13 +9,17 @@ interface Props {
 
 const HomeTabBar = ({ selectedTab, onTabSelect }: Props) => {
   return (
-    <div className="flex items-center justify-between flex-wrap gap-5">
-      <div className="flex items-center gap-3 text-sm font-semibold">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden -mx-6 px-6 sm:mx-0 sm:px-0 text-sm font-semibold w-full sm:w-auto">
         {productType?.map((item) => (
           <button
-          onClick={() => onTabSelect(item?.title)}
+            onClick={() => onTabSelect(item?.title)}
             key={item?.title}
-            className={`border border-ushop-pink/20 px-4 py-1.5 md:px-6 md:py-2 rounded-full hover:bg-ushop-pink hover:border-ushop-pink hover:text-white hoverEffect ${selectedTab === item?.title ? "bg-ushop-pink text-white border-ushop-pink" : "bg-ushop-pink/20"}`}
+            className={`flex-shrink-0 border border-ushop-pink/20 px-4 py-1.5 md:px-6 md:py-2 rounded-full hover:bg-ushop-pink hover:border-ushop-pink hover:text-white hoverEffect ${
+              selectedTab === item?.title
+                ? "bg-ushop-pink text-white border-ushop-pink"
+                : "bg-ushop-pink/20"
+            }`}
           >
             {item?.title}
           </button>
@@ -23,7 +27,7 @@ const HomeTabBar = ({ selectedTab, onTabSelect }: Props) => {
       </div>
       <Link
         href={"/category"}
-        className={`border border-ushop-pink/20 px-4 py-1.5 md:px-6 md:py-2 rounded-full hover:bg-ushop-pink hover:border-ushop-pink hover:text-white hoverEffect`}
+        className="self-end sm:self-auto border border-ushop-pink/20 px-4 py-1.5 md:px-6 md:py-2 rounded-full hover:bg-ushop-pink hover:border-ushop-pink hover:text-white hoverEffect text-sm font-semibold flex-shrink-0"
       >
         see all
       </Link>

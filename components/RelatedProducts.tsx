@@ -24,9 +24,11 @@ const RelatedProducts = memo(({ relatedProducts }: RelatedProductsProps) => {
         <p className="text-sm text-zinc-500">Similar products from the same category</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden -mx-4 px-4 sm:mx-0 sm:px-0">
         {relatedProducts.map((product: Product) => (
-          <ProductCard key={product._id} product={product} />
+          <div key={product._id} className="w-[260px] sm:w-[280px] flex-shrink-0 snap-start">
+            <ProductCard product={product} />
+          </div>
         ))}
       </div>
 

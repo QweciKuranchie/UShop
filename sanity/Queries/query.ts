@@ -132,6 +132,10 @@ const BRAND_QUERY = defineQuery(`*[_type == "product" && slug.current == $slug]{
 "brandName": brand->title
 }`);
 
+const UNIVERSITIES_QUERY = defineQuery(
+  `*[_type == 'location' && type == 'university'] | order(name asc)`
+);
+
 export {
   BANNER_QUERY,
   FEATURED_CATEGORY_QUERY,
@@ -139,15 +143,11 @@ export {
   DEAL_PRODUCTS,
   FEATURE_PRODUCTS,
   BRANDS_QUERY,
-  LATEST_BLOG_QUERY,
-  SINGLE_BLOG_QUERY,
-  GET_ALL_BLOG,
-  BLOG_CATEGORIES,
-  OTHERS_BLOG_QUERY,
   ADDRESS_QUERY,
   ALLCATEGORIES_QUERY,
   ADMIN_CATEGORIES_QUERY,
   PRODUCT_BY_SLUG_QUERY,
   RELATED_PRODUCTS_QUERY,
   BRAND_QUERY,
+  UNIVERSITIES_QUERY,
 };

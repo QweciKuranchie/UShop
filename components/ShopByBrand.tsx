@@ -45,12 +45,12 @@ const ShopByBrands = async () => {
 
       {/* Brands Grid */}
       <div className="bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/5 p-8 lg:p-12 rounded-3xl shadow-xl border border-ushop-purple/10 mb-16">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-6">
+        <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 sm:pb-0">
           {brands?.map((brand, index) => (
             <Link
               key={brand?._id}
               href={`/brands/${brand?.slug?.current}`}
-              className="group bg-white rounded-2xl p-6 flex items-center justify-center aspect-square hover:shadow-2xl shadow-lg border border-gray-100 hover:border-ushop-purple/30 hoverEffect transform hover:-translate-y-2"
+              className="group bg-white rounded-2xl p-6 flex items-center justify-center aspect-square hover:shadow-2xl shadow-lg border border-gray-100 hover:border-ushop-purple/30 hoverEffect transform hover:-translate-y-2 min-w-[120px] sm:min-w-0 flex-shrink-0 snap-start"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
               {(() => {
