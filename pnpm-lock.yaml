@@ -129,8 +129,8 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
       uuid:
-        specifier: ^13.0.0
-        version: 13.0.2
+        specifier: ^14.0.0
+        version: 14.0.1
       zustand:
         specifier: ^5.0.8
         version: 5.0.14(@types/react@19.2.17)(immer@11.1.11)(react@19.2.7)(use-sync-external-store@1.6.0(react@19.2.7))
@@ -13471,7 +13471,7 @@ snapshots:
 
   '@types/uuid@11.0.0':
     dependencies:
-      uuid: 13.0.2
+      uuid: 14.0.1
 
   '@types/uuid@8.3.4': {}
 
