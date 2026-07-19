@@ -222,13 +222,13 @@ const ProductGrid = () => {
         {/* Advanced Controls */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mt-6 pt-6 border-t border-gray-100">
           {/* Left Side - View Options */}
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
             {/* View Mode Selector */}
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-dark-color hidden sm:block">
                 View:
               </span>
-              <div className="flex items-center gap-1">
+              <div className="flex flex-wrap items-center gap-1">
                 <ViewModeButton
                   mode="grid-2"
                   currentMode={viewMode}
@@ -279,15 +279,15 @@ const ProductGrid = () => {
               }`}
             >
               <Filter size={16} />
-              <span className="hidden sm:inline">Filters</span>
+              <span>Filters</span>
             </Button>
           </div>
 
           {/* Right Side - Sort and Info */}
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-between sm:justify-end gap-3 w-full lg:w-auto">
             {/* Sort Selector */}
-            <div className="flex items-center gap-2">
-              <SortAsc size={16} className="text-light-color" />
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <SortAsc size={16} className="text-light-color flex-shrink-0" />
               <Select
                 value={sortBy}
                 onValueChange={(value: string | null) => {
@@ -296,7 +296,7 @@ const ProductGrid = () => {
                 }
               }}
               >
-                <SelectTrigger className="w-48 border-gray-200 focus:border-ushop-purple">
+                <SelectTrigger className="w-full sm:w-48 border-gray-200 focus:border-ushop-purple">
                   <SelectValue placeholder="Sort by..." />
                 </SelectTrigger>
                 <SelectContent>

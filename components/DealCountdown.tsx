@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import { Timer } from "lucide-react";
 
 const TimeUnit = ({ value, label }: { value: number; label: string }) => (
-  <div className="flex flex-col items-center bg-white rounded-lg p-2 sm:p-3 shadow-md border">
-    <span className="text-lg sm:text-2xl md:text-3xl font-bold text-shop_dark_green">
+  <div className="flex flex-col items-center bg-white/95 rounded-lg p-2 sm:p-3 shadow-lg border border-white/20 min-w-[50px] sm:min-w-[64px]">
+    <span className="text-lg sm:text-2xl md:text-3xl font-extrabold text-red-600">
       {value.toString().padStart(2, "0")}
     </span>
-    <span className="text-xs sm:text-sm text-gray-600 font-medium">
+    <span className="text-[10px] sm:text-xs text-gray-500 font-bold uppercase tracking-wider">
       {label}
     </span>
   </div>
@@ -48,14 +48,14 @@ const DealCountdown = () => {
   }, []);
 
   return (
-    <div className="flex items-center gap-2 sm:gap-4">
-      <div className="flex items-center gap-1 sm:gap-2 text-red-600">
-        <Timer className="w-4 h-4 sm:w-5 sm:h-5" />
-        <span className="text-sm sm:text-base font-semibold">
+    <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+      <div className="flex items-center gap-1.5 sm:gap-2 text-white">
+        <Timer className="w-5 h-5 text-yellow-300 animate-pulse" />
+        <span className="text-sm sm:text-base font-bold tracking-wide">
           Deal Ends In:
         </span>
       </div>
-      <div className="grid grid-cols-4 gap-1 sm:gap-2">
+      <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
         <TimeUnit value={timeLeft.days} label="Days" />
         <TimeUnit value={timeLeft.hours} label="Hours" />
         <TimeUnit value={timeLeft.minutes} label="Mins" />

@@ -17,7 +17,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useOutsideClick } from "@/hooks";
@@ -26,6 +26,7 @@ import { ClerkLoaded, SignedIn, SignedOut, SignOutButton, useAuth } from "@clerk
 import useStore from "@/store";
 import Logo from "../common/Logo";
 import SocialMediaIcons from "../common/SocialMediaIcons";
+import { client } from "@/sanity/lib/client";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -37,6 +38,21 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
   const { isSignedIn } = useAuth();
   const sidebarRef = useOutsideClick<HTMLDivElement>(onClose);
   const { items, favoriteProduct } = useStore();
+  const [universities, setUniversities] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchUniversities = async () => {
+      try {
+        const data = await client.fetch(
+          `*[_type == 'location' && type == 'university'] | order(name asc)`
+        );
+        setUniversities(data || []);
+      } catch (error) {
+        console.error("Error fetching universities in SideMenu:", error);
+      }
+    };
+    fetchUniversities();
+  }, []);
 
   // Enhanced menu sections with icons
   const userMenuItems = [
@@ -252,6 +268,32 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
               className="text-xs font-semibold text-ushop-purple hover:text-ushop-pink transition-colors duration-200 py-1.5 px-2 rounded hover:bg-ushop-pink/10 mt-1"
             >
               View All Categories →
+            </Link>
+          </div>
+        </div>
+
+        {/* Universities Section */}
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-ushop-purple uppercase tracking-wider">
+            Universities
+          </h3>
+          <div className="flex flex-col gap-1">
+            {universities.slice(0, 6).map((item) => (
+              <Link
+                onClick={onClose}
+                key={item._id}
+                href={`/universities/${item.slug?.current}`}
+                className="text-xs font-medium text-zinc-600 hover:text-ushop-pink transition-colors duration-200 py-1.5 px-2 rounded hover:bg-ushop-pink/10 capitalize"
+              >
+                {item.name}
+              </Link>
+            ))}
+            <Link
+              onClick={onClose}
+              href="/universities"
+              className="text-xs font-semibold text-ushop-purple hover:text-ushop-pink transition-colors duration-200 py-1.5 px-2 rounded hover:bg-ushop-pink/10 mt-1"
+            >
+              View All Universities →
             </Link>
           </div>
         </div>
