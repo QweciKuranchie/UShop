@@ -375,3 +375,6 @@ export type AllSanitySchemaTypes =
   | SanityAssetSourceData
   | SanityImageAsset
   | Geopoint;
+
+export type MY_ORDERS_QUERYResult = any[];
+

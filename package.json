@@ -33,6 +33,7 @@
     "@clerk/ui": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-tabs": "^1.1.1",
+    "@radix-ui/react-visually-hidden": "^1.2.3",
     "@sanity/icons": "^3.5.2",
     "@sanity/image-url": "2",
     "@sanity/vision": "5",

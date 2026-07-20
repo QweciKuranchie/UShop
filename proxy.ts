@@ -1,9 +1,11 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
+import type { NextRequest } from "next/server";
 
-const clerkProxy = clerkMiddleware();
+const clerkHandler = clerkMiddleware();
 
-export default clerkProxy;
-export const proxy = clerkProxy;
+export function proxy(request: NextRequest) {
+  return clerkHandler(request);
+}
 
 export const config = {
   matcher: [
@@ -11,7 +13,6 @@ export const config = {
     '/((?!_next|[^?]*\\.[^?]*$).*)',
     // Always run for API routes
     '/(api|trpc)(.*)',
-    // Clerk auto-proxy path for Next.js 15+ and proxy setup
-    '/__clerk/:path*',
   ],
 };
+
