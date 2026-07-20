@@ -85,9 +85,6 @@ export default function LocationSelector({
       setCities([]);
     }
   }, [value.countryCode, value.stateCode]);
-      setCities([]);
-    }
-  }, [value.countryCode, value.stateCode]);
 
   const handleCountryChange = (countryCode: string) => {
     const country = countries.find((c) => c.isoCode === countryCode);
