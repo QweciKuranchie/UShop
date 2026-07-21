@@ -63,7 +63,7 @@ const AdminProducts: React.FC<AdminProductsProps> = ({
   const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imageLoading, setImageLoading] = useState(false);
-  const [categories, setCategories] =
+  const [categories] =
     useState<ADMIN_CATEGORIES_QUERYResult>(initialCategories);
 
   const limit = 10;
@@ -79,9 +79,15 @@ const AdminProducts: React.FC<AdminProductsProps> = ({
 
   // Reset page when search changes
   useEffect(() => {
+    let active = true;
     if (debouncedSearchTerm !== searchTerm) {
-      setCurrentPage(0);
+      Promise.resolve().then(() => {
+        if (active) setCurrentPage(0);
+      });
     }
+    return () => {
+      active = false;
+    };
   }, [debouncedSearchTerm, searchTerm]);
 
   // Utility functions
@@ -115,7 +121,13 @@ const AdminProducts: React.FC<AdminProductsProps> = ({
 
   // Effects
   useEffect(() => {
-    fetchProducts(currentPage);
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) fetchProducts(currentPage);
+    });
+    return () => {
+      active = false;
+    };
   }, [fetchProducts, currentPage]);
 
   // Reset page when filters change

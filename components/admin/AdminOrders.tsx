@@ -208,10 +208,12 @@ const AdminOrders: React.FC = () => {
     setSelectedOrders([]); // Clear selections when changing page
   };
 
-  const handlePerPageChange = (newPerPage: string) => {
-    setPerPage(parseInt(newPerPage));
-    setCurrentPage(0); // Reset to first page
-    setSelectedOrders([]);
+  const handlePerPageChange = (newPerPage: string | null) => {
+    if (newPerPage) {
+      setPerPage(parseInt(newPerPage));
+      setCurrentPage(0); // Reset to first page
+      setSelectedOrders([]);
+    }
   };
 
   // Delete functions
@@ -276,13 +278,27 @@ const AdminOrders: React.FC = () => {
 
   // Effects - Combined to avoid multiple re-renders
   useEffect(() => {
-    fetchOrders(currentPage);
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) fetchOrders(currentPage);
+    });
+    return () => {
+      active = false;
+    };
   }, [fetchOrders, currentPage]);
 
   // Reset page when filters change - Combined effect
   useEffect(() => {
-    setCurrentPage(0);
-    setSelectedOrders([]);
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) {
+        setCurrentPage(0);
+        setSelectedOrders([]);
+      }
+    });
+    return () => {
+      active = false;
+    };
   }, [orderStatus, perPage]);
 
   return (
@@ -307,7 +323,10 @@ const AdminOrders: React.FC = () => {
                 <SelectItem value="100">100</SelectItem>
               </SelectContent>
             </Select>
-            <Select value={orderStatus} onValueChange={setOrderStatus}>
+            <Select
+              value={orderStatus}
+              onValueChange={(val: string | null) => val && setOrderStatus(val)}
+            >
               <SelectTrigger className="w-40">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
