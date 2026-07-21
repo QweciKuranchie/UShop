@@ -6,6 +6,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import { shadcn } from "@clerk/ui/themes";
+import { UserDataProvider } from "@/contexts/UserDataContext";
+import { SanityLive } from "@/sanity/lib/live";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "U-Shop",
@@ -28,15 +31,19 @@ export default function RootLayout({
 }>) {
   return (
         <ClerkProvider appearance={{ theme: shadcn }}>
-          <div className="min-h-screen flex flex-col">
-            <Header />
-            <main className="flex-1">
-              {children}
-            </main>
-            <Footer />
-          </div>
-          <SpeedInsights />
-          <Analytics /> 
+          <UserDataProvider>
+            <div className="min-h-screen flex flex-col">
+              <Header />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+            </div>
+            <SpeedInsights />
+            <Analytics /> 
+            <SanityLive />
+            <Toaster position="bottom-right" />
+          </UserDataProvider>
         </ClerkProvider>
   );
 }

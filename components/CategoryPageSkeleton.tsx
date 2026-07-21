@@ -9,7 +9,7 @@ const CategoryPageSkeleton = () => {
     randomWidths[(index + offset) % randomWidths.length];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-shop_light_bg via-white to-shop_light_pink">
+    <div className="min-h-screen bg-gradient-to-br from-ushop_light_bg via-white to-ushop_light_pink">
       <Container className="py-10">
         {/* Breadcrumb Skeleton */}
         <div className="mb-8">
@@ -46,7 +46,7 @@ const CategoryPageSkeleton = () => {
                 style={{ animationDelay: `${delay}ms` }}
               >
                 {/* Image Skeleton */}
-                <div className="relative h-24 sm:h-28 lg:h-32 bg-gradient-to-br from-shop_light_pink/30 to-shop_light_bg/30">
+                <div className="relative h-24 sm:h-28 lg:h-32 bg-gradient-to-br from-ushop_light_pink/30 to-ushop_light_bg/30">
                   <Skeleton className="w-full h-full rounded-none" />
 
                   {/* Featured Badge Skeleton (show on some items) */}
@@ -96,7 +96,7 @@ const CategoryPageSkeleton = () => {
 
         {/* View All Products CTA Skeleton */}
         <div className="mt-10">
-          <div className="bg-gradient-to-r from-shop_light_green/10 via-shop_orange/5 to-shop_light_green/10 rounded-xl p-6 border border-shop_light_green/20 text-center">
+          <div className="bg-gradient-to-r from-ushop-purple/10 via-ushop-red/5 to-ushop-purple/10 rounded-xl p-6 border border-ushop-purple/20 text-center">
             <Skeleton className="h-6 lg:h-7 w-64 mx-auto mb-2" />
             <Skeleton className="h-4 w-80 mx-auto mb-4" />
             <Skeleton className="h-10 w-40 rounded-full mx-auto" />
