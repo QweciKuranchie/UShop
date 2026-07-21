@@ -11,9 +11,7 @@ import {
   UserCircle,
   Logs,
   Shield,
-  Briefcase,
   Wallet,
-  Crown,
 } from "lucide-react";
 import { useUser, useClerk } from "@clerk/nextjs";
 import {

@@ -39,7 +39,13 @@ export default function OrdersClient({
 
   // Set initial load to false after first render
   useEffect(() => {
-    setIsInitialLoad(false);
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) setIsInitialLoad(false);
+    });
+    return () => {
+      active = false;
+    };
   }, []);
 
   // Generate pagination items
