@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getMyOrders } from "@/sanity/helpers";
 import Title from "@/components/Title";
 import OrdersClient from "@/components/OrdersClient";
+import { MY_ORDERS_QUERYResult } from "@/sanity.types";
 
 interface OrdersPageProps {
   searchParams: Promise<{
@@ -25,19 +26,21 @@ async function UserOrdersPage({ searchParams }: OrdersPageProps) {
   const { orders, totalCount, totalPages, hasNextPage, hasPrevPage } =
     orderData;
 
+  const ordersList = (orders as MY_ORDERS_QUERYResult) || [];
+
   return (
     <div className="space-y-6">
       <div>
         <Title>My Orders</Title>
         {totalCount > 0 && (
           <p className="text-sm text-muted-foreground mt-2">
-            Showing {orders.length} of {totalCount} orders
+            Showing {ordersList.length} of {totalCount} orders
           </p>
         )}
       </div>
 
       <OrdersClient
-        initialOrders={orders}
+        initialOrders={ordersList}
         totalPages={totalPages}
         currentPage={currentPage}
         hasNextPage={hasNextPage}

@@ -20,7 +20,6 @@ import {
   Users,
   RefreshCw,
   Award,
-  Heart,
 } from "lucide-react";
 
 interface BestSeller {
@@ -65,7 +64,13 @@ const AnalyticsDashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchAnalytics(timeframe);
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) fetchAnalytics(timeframe);
+    });
+    return () => {
+      active = false;
+    };
   }, [timeframe]);
 
   const formatCurrency = (amount: number) => {
