@@ -20,7 +20,6 @@ import {
   UserCheck,
   UserX,
   Database,
-  Briefcase,
 } from "lucide-react";
 import {
   Select,
@@ -33,7 +32,6 @@ import { UsersSkeleton } from "./SkeletonLoaders";
 import { DeleteConfirmationDialog } from "./DeleteConfirmationDialog";
 import { UserActionModal } from "./UserActionModal";
 import { UserDetailsSidebar } from "./UserDetailsSidebar";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 interface CombinedUser {
@@ -61,7 +59,6 @@ interface CombinedUser {
 }
 
 const AdminUsers: React.FC = () => {
-  const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<CombinedUser[]>([]);
   const [totalUsersCount, setTotalUsersCount] = useState(0);
   const [sanityUsersCount, setSanityUsersCount] = useState(0);

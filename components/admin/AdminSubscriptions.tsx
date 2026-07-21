@@ -75,6 +75,7 @@ export default function AdminSubscriptions() {
 
   // Filter subscriptions
   useEffect(() => {
+    let active = true;
     let filtered = subscriptions;
 
     // Search filter
@@ -94,11 +95,18 @@ export default function AdminSubscriptions() {
       filtered = filtered.filter((sub) => sub.source === sourceFilter);
     }
 
-    setFilteredSubscriptions(filtered);
-    setCurrentPage(1); // Reset to first page when filters change
+    Promise.resolve().then(() => {
+      if (active) {
+        setFilteredSubscriptions(filtered);
+        setCurrentPage(1); // Reset to first page when filters change
+      }
+    });
+    return () => {
+      active = false;
+    };
   }, [searchQuery, statusFilter, sourceFilter, subscriptions]);
 
-  const fetchSubscriptions = async () => {
+  async function fetchSubscriptions() {
     setIsLoading(true);
     setIsRefreshing(true);
     try {
@@ -116,7 +124,7 @@ export default function AdminSubscriptions() {
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  };
+  }
 
   const handleRefresh = async () => {
     toast.info("Refreshing subscriptions...");
