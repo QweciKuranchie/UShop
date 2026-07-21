@@ -635,11 +635,7 @@ export default function AccountRequestsClient() {
   const [rejectReason, setRejectReason] = useState("");
   const [cancelReason, setCancelReason] = useState("");
 
-  useEffect(() => {
-    fetchRequests();
-  }, []);
-
-  const fetchRequests = async () => {
+  const fetchRequests = useCallback(async () => {
     try {
       setLoading(true);
       const timestamp = new Date().getTime();
@@ -667,7 +663,17 @@ export default function AccountRequestsClient() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) fetchRequests();
+    });
+    return () => {
+      active = false;
+    };
+  }, [fetchRequests]);
 
   const handleApprove = async (
     userId: string,
@@ -794,7 +800,7 @@ export default function AccountRequestsClient() {
     }
   };
 
-  const getStatusBadge = (status: string, type: "premium" | "business") => {
+  const getStatusBadge = (status: string, _type: "premium" | "business") => {
     switch (status) {
       case "pending":
         return (

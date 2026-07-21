@@ -85,13 +85,7 @@ export default function WalletDashboard() {
   });
   const [paypalEmail, setPaypalEmail] = useState("");
 
-  useEffect(() => {
-    if (user) {
-      loadWalletData();
-    }
-  }, [user]);
-
-  const loadWalletData = async () => {
+  const loadWalletData = useCallback(async () => {
     setIsLoading(true);
     try {
       const [balanceData, transactionsData, withdrawalsData] =
@@ -125,7 +119,19 @@ export default function WalletDashboard() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    if (user) {
+      Promise.resolve().then(() => {
+        if (active) loadWalletData();
+      });
+    }
+    return () => {
+      active = false;
+    };
+  }, [user, loadWalletData]);
 
   const handleWithdrawal = async () => {
     const amount = parseFloat(withdrawAmount);
