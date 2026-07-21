@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "motion/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,6 @@ import {
 import { AnalyticsSkeleton } from "@/components/admin/SkeletonLoaders";
 import {
   TrendingUp,
-  TrendingDown,
   DollarSign,
   ShoppingCart,
   Users,
@@ -134,17 +133,7 @@ const AdminAnalytics = () => {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [timeRange, setTimeRange] = useState("30d");
 
-  useEffect(() => {
-    let active = true;
-    Promise.resolve().then(() => {
-      if (active) fetchAnalytics();
-    });
-    return () => {
-      active = false;
-    };
-  }, [timeRange]);
-
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/admin/analytics?period=${timeRange}`);
@@ -155,7 +144,17 @@ const AdminAnalytics = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [timeRange]);
+
+  useEffect(() => {
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) fetchAnalytics();
+    });
+    return () => {
+      active = false;
+    };
+  }, [fetchAnalytics]);
 
   if (loading) {
     return <AnalyticsSkeleton />;

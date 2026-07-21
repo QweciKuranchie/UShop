@@ -66,6 +66,7 @@ const AdminProducts: React.FC<AdminProductsProps> = ({
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageLoading, setImageLoading] = useState(false);
   const [categories] = useState<AdminCategory[]>(initialCategories);
   const limit = 10;
 
