@@ -308,19 +308,25 @@ const AdminNotifications: React.FC<AdminNotificationsProps> = ({
   };
 
   // Explicit handlers for each filter
-  const handleTypeFilterChange = useCallback((value: string) => {
-    setNotificationTypeFilter(value);
-    handleFilterChange();
+  const handleTypeFilterChange = useCallback((value: string | null) => {
+    if (value) {
+      setNotificationTypeFilter(value);
+      handleFilterChange();
+    }
   }, []);
 
-  const handlePriorityFilterChange = useCallback((value: string) => {
-    setNotificationPriorityFilter(value);
-    handleFilterChange();
+  const handlePriorityFilterChange = useCallback((value: string | null) => {
+    if (value) {
+      setNotificationPriorityFilter(value);
+      handleFilterChange();
+    }
   }, []);
 
-  const handleDateFilterChange = useCallback((value: string) => {
-    setNotificationDateFilter(value);
-    handleFilterChange();
+  const handleDateFilterChange = useCallback((value: string | null) => {
+    if (value) {
+      setNotificationDateFilter(value);
+      handleFilterChange();
+    }
   }, []);
 
   // Effect to refetch when filters change
@@ -640,8 +646,8 @@ const AdminNotifications: React.FC<AdminNotificationsProps> = ({
                   <label className="text-sm font-medium">Type</label>
                   <Select
                     value={notificationForm.type}
-                    onValueChange={(value: string) =>
-                      setNotificationForm((prev) => ({ ...prev, type: value }))
+                    onValueChange={(value: string | null) =>
+                      value && setNotificationForm((prev) => ({ ...prev, type: value }))
                     }
                   >
                     <SelectTrigger>
@@ -661,7 +667,8 @@ const AdminNotifications: React.FC<AdminNotificationsProps> = ({
                   <label className="text-sm font-medium">Priority</label>
                   <Select
                     value={notificationForm.priority}
-                    onValueChange={(value: string) =>
+                    onValueChange={(value: string | null) =>
+                      value &&
                       setNotificationForm((prev) => ({
                         ...prev,
                         priority: value,

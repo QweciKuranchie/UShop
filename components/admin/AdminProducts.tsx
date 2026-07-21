@@ -136,7 +136,7 @@ const AdminProducts: React.FC<AdminProductsProps> = ({
         prev === 0 ? selectedProduct.images!.length - 1 : prev - 1
       );
     }
-  }, [selectedProduct?.images]);
+  }, [selectedProduct]);
 
   const goToNextImage = useCallback(() => {
     if (selectedProduct?.images && selectedProduct.images.length > 0) {
@@ -144,7 +144,7 @@ const AdminProducts: React.FC<AdminProductsProps> = ({
         prev === selectedProduct.images!.length - 1 ? 0 : prev + 1
       );
     }
-  }, [selectedProduct?.images]);
+  }, [selectedProduct]);
 
   const goToImage = (index: number) => {
     setCurrentImageIndex(index);
