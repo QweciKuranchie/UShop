@@ -50,40 +50,57 @@ export default function LocationSelector({
   const [cities, setCities] = useState<
     ReturnType<typeof City.getCitiesOfState>
   >([]);
-  const [loadingStates, setLoadingStates] = useState(false);
-  const [loadingCities, setLoadingCities] = useState(false);
-
   // Load states when country changes
   useEffect(() => {
+    let active = true;
     if (value.countryCode) {
       try {
         const countryStates = State.getStatesOfCountry(value.countryCode);
-        setStates(countryStates);
+        Promise.resolve().then(() => {
+          if (active) setStates(countryStates);
+        });
       } catch (error) {
         console.error("Error loading states:", error);
-        setStates([]);
+        Promise.resolve().then(() => {
+          if (active) setStates([]);
+        });
       }
     } else {
-      setStates([]);
+      Promise.resolve().then(() => {
+        if (active) setStates([]);
+      });
     }
+    return () => {
+      active = false;
+    };
   }, [value.countryCode]);
 
   // Load cities when state changes
   useEffect(() => {
+    let active = true;
     if (value.countryCode && value.stateCode) {
       try {
         const stateCities = City.getCitiesOfState(
           value.countryCode,
           value.stateCode
         );
-        setCities(stateCities);
+        Promise.resolve().then(() => {
+          if (active) setCities(stateCities);
+        });
       } catch (error) {
         console.error("Error loading cities:", error);
-        setCities([]);
+        Promise.resolve().then(() => {
+          if (active) setCities([]);
+        });
       }
     } else {
-      setCities([]);
+      Promise.resolve().then(() => {
+        if (active) setCities([]);
+      });
     }
+    return () => {
+      active = false;
+    };
   }, [value.countryCode, value.stateCode]);
 
   const handleCountryChange = (countryCode: string) => {
