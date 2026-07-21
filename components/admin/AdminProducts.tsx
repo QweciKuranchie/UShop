@@ -45,7 +45,18 @@ import { ProductsSkeleton } from "./SkeletonLoaders";
 import { Product } from "./types";
 import { safeApiCall, handleApiError } from "./apiHelpers";
 
-const AdminProducts: React.FC = () => {
+interface AdminCategory {
+  _id: string;
+  title?: string | null;
+}
+
+interface AdminProductsProps {
+  initialCategories?: AdminCategory[];
+}
+
+const AdminProducts: React.FC<AdminProductsProps> = ({
+  initialCategories = [],
+}) => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -55,6 +66,7 @@ const AdminProducts: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [categories] = useState<AdminCategory[]>(initialCategories);
   const limit = 10;
 
   // Debounce search term
@@ -239,7 +251,10 @@ const AdminProducts: React.FC = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full sm:w-48"
           />
-          <Select value={productCategory} onValueChange={setProductCategory}>
+          <Select
+            value={productCategory}
+            onValueChange={(val: string | null) => val && setProductCategory(val)}
+          >
             <SelectTrigger className="w-full sm:w-32">
               <SelectValue placeholder="Category" />
             </SelectTrigger>

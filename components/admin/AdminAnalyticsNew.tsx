@@ -175,7 +175,13 @@ const AdminAnalytics = () => {
   }, [timeRange]);
 
   useEffect(() => {
-    fetchAnalytics();
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) fetchAnalytics();
+    });
+    return () => {
+      active = false;
+    };
   }, [fetchAnalytics]);
 
 

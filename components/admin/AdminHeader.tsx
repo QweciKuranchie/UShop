@@ -12,7 +12,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Order } from "@/sanity.types";
 
 interface AdminUser {
   id: string;
@@ -144,23 +143,6 @@ const AdminHeader = ({ user }: AdminHeaderProps) => {
 
     fetchAdminData();
   }, []);
-
-  const getTimeAgo = (date: Date) => {
-    const now = new Date();
-    const diffInMinutes = Math.floor(
-      (now.getTime() - date.getTime()) / (1000 * 60)
-    );
-
-    if (diffInMinutes < 1) return "just now";
-    if (diffInMinutes < 60) return `${diffInMinutes} min ago`;
-
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24)
-      return `${diffInHours} hour${diffInHours > 1 ? "s" : ""} ago`;
-
-    const diffInDays = Math.floor(diffInHours / 24);
-    return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`;
-  };
 
   return (
     <div className="bg-gradient-to-r from-white via-ushop_light_bg to-ushop_light_pink rounded-2xl shadow-lg border border-ushop-purple/10 p-6">

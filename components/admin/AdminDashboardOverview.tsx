@@ -87,7 +87,13 @@ const AdminDashboardOverview = () => {
   }, []);
 
   useEffect(() => {
-    fetchStats();
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) fetchStats();
+    });
+    return () => {
+      active = false;
+    };
   }, [fetchStats]);
 
   const statCards = [

@@ -66,13 +66,82 @@ interface AnalyticsData {
   }>;
 }
 
+interface StatCardProps {
+  title: string;
+  value: number;
+  change: number;
+  icon: React.ComponentType<{ className?: string }>;
+  color: string;
+  format?: "number" | "currency";
+  subtitle?: string;
+}
+
+const StatCard: React.FC<StatCardProps> = ({
+  title,
+  value,
+  change,
+  icon: Icon,
+  color,
+  format = "number",
+  subtitle,
+}) => {
+  const isPositive = change >= 0;
+  const formatValue = (val: number) => {
+    if (format === "currency") return `$${val.toLocaleString()}`;
+    return val.toLocaleString();
+  };
+
+  return (
+    <Card className="group hover:shadow-xl transition-all duration-300 border-ushop-purple/20 hover:border-ushop-purple/40 overflow-hidden">
+      <div className={`h-1 bg-gradient-to-r ${color}`}></div>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-sm font-medium text-light-color flex items-center justify-between">
+          {title}
+          <Icon className="w-4 h-4" />
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="space-y-1">
+          <div className="text-2xl font-bold text-dark-color">
+            {formatValue(value)}
+          </div>
+          {subtitle && (
+            <div className="text-xs text-light-color">{subtitle}</div>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          {isPositive ? (
+            <ArrowUpRight className="w-4 h-4 text-green-500" />
+          ) : (
+            <ArrowDownRight className="w-4 h-4 text-red-500" />
+          )}
+          <Badge
+            variant={isPositive ? "default" : "destructive"}
+            className="text-xs"
+          >
+            {isPositive ? "+" : ""}
+            {change}%
+          </Badge>
+          <span className="text-xs text-light-color">vs last period</span>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
 const AdminAnalytics = () => {
   const [loading, setLoading] = useState(true);
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [timeRange, setTimeRange] = useState("30d");
 
   useEffect(() => {
-    fetchAnalytics();
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) fetchAnalytics();
+    });
+    return () => {
+      active = false;
+    };
   }, [timeRange]);
 
   const fetchAnalytics = async () => {
@@ -86,67 +155,6 @@ const AdminAnalytics = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const StatCard = ({
-    title,
-    value,
-    change,
-    icon: Icon,
-    color,
-    format = "number",
-    subtitle,
-  }: {
-    title: string;
-    value: number;
-    change: number;
-    icon: React.ComponentType<{ className?: string }>;
-    color: string;
-    format?: "number" | "currency";
-    subtitle?: string;
-  }) => {
-    const isPositive = change >= 0;
-    const formatValue = (val: number) => {
-      if (format === "currency") return `$${val.toLocaleString()}`;
-      return val.toLocaleString();
-    };
-
-    return (
-      <Card className="group hover:shadow-xl transition-all duration-300 border-ushop-purple/20 hover:border-ushop-purple/40 overflow-hidden">
-        <div className={`h-1 bg-gradient-to-r ${color}`}></div>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm font-medium text-light-color flex items-center justify-between">
-            {title}
-            <Icon className="w-4 h-4" />
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="space-y-1">
-            <div className="text-2xl font-bold text-dark-color">
-              {formatValue(value)}
-            </div>
-            {subtitle && (
-              <div className="text-xs text-light-color">{subtitle}</div>
-            )}
-          </div>
-          <div className="flex items-center gap-2">
-            {isPositive ? (
-              <ArrowUpRight className="w-4 h-4 text-green-500" />
-            ) : (
-              <ArrowDownRight className="w-4 h-4 text-red-500" />
-            )}
-            <Badge
-              variant={isPositive ? "default" : "destructive"}
-              className="text-xs"
-            >
-              {isPositive ? "+" : ""}
-              {change}%
-            </Badge>
-            <span className="text-xs text-light-color">vs last period</span>
-          </div>
-        </CardContent>
-      </Card>
-    );
   };
 
   if (loading) {
