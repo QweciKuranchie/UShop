@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -20,7 +19,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Country, State, City } from "country-state-city";
-import { ChevronRight, MapPin, Globe } from "lucide-react";
+import { MapPin, Globe } from "lucide-react";
 
 interface LocationData {
   country: string;

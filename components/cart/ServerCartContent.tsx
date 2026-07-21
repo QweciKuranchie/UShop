@@ -88,15 +88,20 @@ export function ServerCartContent({
     toast.success("Cart cleared successfully");
   };
 
-  // Set default address on mount
+  // Set default address on mount or when userAddresses changes
   useEffect(() => {
-    const defaultAddress = userAddresses.find((addr) => addr.default);
-    if (defaultAddress) {
-      setSelectedAddress(defaultAddress);
-    } else if (userAddresses.length > 0) {
-      setSelectedAddress(userAddresses[0]);
+    let active = true;
+    if (selectedAddress === null && userAddresses.length > 0) {
+      const defaultAddress = userAddresses.find((addr) => addr.default);
+      const targetAddress = defaultAddress || userAddresses[0];
+      Promise.resolve().then(() => {
+        if (active) setSelectedAddress(targetAddress);
+      });
     }
-  }, []);
+    return () => {
+      active = false;
+    };
+  }, [userAddresses, selectedAddress]);
 
   // New pricing structure:
   // 1. Subtotal = gross amount (sum of original prices before discount)

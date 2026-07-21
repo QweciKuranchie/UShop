@@ -54,6 +54,7 @@ function Button({
   ...props
 }: ButtonProps) {
   if (asChild && React.isValidElement(children)) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const child = React.Children.only(children) as React.ReactElement<any>;
     return (
       <ButtonPrimitive

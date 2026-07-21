@@ -159,6 +159,7 @@ export function CheckoutContent() {
 
   // Read address from URL parameters (when coming from cart)
   useEffect(() => {
+    let active = true;
     const addressParam = searchParams.get("address");
     if (addressParam) {
       try {
@@ -178,7 +179,9 @@ export function CheckoutContent() {
           orderNumber: "cart-selected",
           source: "order" as const,
         };
-        setSelectedAddress(orderAddress);
+        Promise.resolve().then(() => {
+          if (active) setSelectedAddress(orderAddress);
+        });
 
         // Show success message
         toast.success("Ready for Checkout! 🛒", {
@@ -191,12 +194,18 @@ export function CheckoutContent() {
         toast.error("Error loading address from cart");
       }
     }
+    return () => {
+      active = false;
+    };
   }, [searchParams]);
 
   // Track initial cart state and redirect if empty
   useEffect(() => {
+    let active = true;
     if (hasInitialCart === null && isLoaded && cart !== undefined) {
-      setHasInitialCart(cart.length > 0);
+      Promise.resolve().then(() => {
+        if (active) setHasInitialCart(cart.length > 0);
+      });
 
       // If cart is empty on initial load, redirect to cart
       if (cart.length === 0) {
@@ -204,6 +213,9 @@ export function CheckoutContent() {
         return;
       }
     }
+    return () => {
+      active = false;
+    };
   }, [cart, hasInitialCart, isLoaded]);
 
   const handlePayNowClick = () => {
