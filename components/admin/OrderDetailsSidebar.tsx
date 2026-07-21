@@ -70,22 +70,30 @@ const OrderDetailsSidebar: React.FC<OrderDetailsSidebarProps> = ({
   });
 
   React.useEffect(() => {
+    let active = true;
     if (order) {
-      setFormData({
-        status: order.status || "",
-        totalPrice: order.totalPrice || 0,
-        paymentStatus: order.paymentStatus || "",
-        trackingNumber: order.trackingNumber || "",
-        notes: order.notes || "",
-        estimatedDelivery: order.estimatedDelivery || "",
-        packingNotes: order.packingNotes || "",
-        deliveryNotes: order.deliveryNotes || "",
-        deliveryAttempts: order.deliveryAttempts || 0,
-        rescheduledDate: order.rescheduledDate || "",
-        rescheduledReason: order.rescheduledReason || "",
-        cashCollectedAmount: order.cashCollectedAmount || 0,
+      Promise.resolve().then(() => {
+        if (active) {
+          setFormData({
+            status: order.status || "",
+            totalPrice: order.totalPrice || 0,
+            paymentStatus: order.paymentStatus || "",
+            trackingNumber: order.trackingNumber || "",
+            notes: order.notes || "",
+            estimatedDelivery: order.estimatedDelivery || "",
+            packingNotes: order.packingNotes || "",
+            deliveryNotes: order.deliveryNotes || "",
+            deliveryAttempts: order.deliveryAttempts || 0,
+            rescheduledDate: order.rescheduledDate || "",
+            rescheduledReason: order.rescheduledReason || "",
+            cashCollectedAmount: order.cashCollectedAmount || 0,
+          });
+        }
       });
     }
+    return () => {
+      active = false;
+    };
   }, [order]);
 
   const formatCurrency = (amount: number): string => {

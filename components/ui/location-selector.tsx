@@ -19,7 +19,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Country, State, City } from "country-state-city";
-import { MapPin, Globe } from "lucide-react";
+import { Globe } from "lucide-react";
 
 interface LocationData {
   country: string;

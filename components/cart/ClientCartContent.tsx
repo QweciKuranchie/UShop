@@ -98,11 +98,17 @@ export function ClientCartContent() {
   };
 
   useEffect(() => {
-    fetchUserData();
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) fetchUserData();
+    });
     // Track cart view
     if (user) {
       trackCartView(user.id);
     }
+    return () => {
+      active = false;
+    };
   }, [user, fetchUserData]);
 
   if (!isLoaded || loading) {

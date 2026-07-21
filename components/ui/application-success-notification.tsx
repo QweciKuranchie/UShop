@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 interface ApplicationSuccessNotificationProps {
   isVisible: boolean;
   onClose: () => void;
-  type?: "premium" | "order" | "general";
+  type?: "premium" | "business" | "order" | "general";
   className?: string;
 }
 
@@ -15,6 +15,10 @@ const messages: Record<string, { title: string; body: string }> = {
   premium: {
     title: "Premium Application Submitted!",
     body: "Your premium application is now under review. You'll be notified once it's approved.",
+  },
+  business: {
+    title: "Business Application Submitted!",
+    body: "Your business account application has been submitted successfully and is now under review.",
   },
   order: {
     title: "Order Placed Successfully!",

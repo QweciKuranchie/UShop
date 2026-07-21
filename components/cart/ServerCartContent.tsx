@@ -13,7 +13,6 @@ import { urlFor } from "@/sanity/lib/image";
 import { CartItemControls } from "./CartItemControls";
 import { AddressSelector } from "./AddressSelector";
 import { CheckoutButton } from "./CheckoutButton";
-import { OrderPlacementSkeleton } from "./OrderPlacementSkeleton";
 import { Trash2, AlertTriangle, X } from "lucide-react";
 import { toast } from "sonner";
 import {
