@@ -120,8 +120,35 @@ const AdminProducts: React.FC<AdminProductsProps> = ({
 
   // Reset page when filters change
   useEffect(() => {
-    setCurrentPage(0);
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) setCurrentPage(0);
+    });
+    return () => {
+      active = false;
+    };
   }, [productCategory, debouncedSearchTerm]);
+
+  // Carousel navigation functions
+  const goToPrevImage = useCallback(() => {
+    if (selectedProduct?.images && selectedProduct.images.length > 0) {
+      setCurrentImageIndex((prev) =>
+        prev === 0 ? selectedProduct.images!.length - 1 : prev - 1
+      );
+    }
+  }, [selectedProduct?.images]);
+
+  const goToNextImage = useCallback(() => {
+    if (selectedProduct?.images && selectedProduct.images.length > 0) {
+      setCurrentImageIndex((prev) =>
+        prev === selectedProduct.images!.length - 1 ? 0 : prev + 1
+      );
+    }
+  }, [selectedProduct?.images]);
+
+  const goToImage = (index: number) => {
+    setCurrentImageIndex(index);
+  };
 
   // Keyboard navigation for image carousel
   useEffect(() => {
@@ -152,7 +179,7 @@ const AdminProducts: React.FC<AdminProductsProps> = ({
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isProductDetailsOpen, selectedProduct?.images]);
+  }, [isProductDetailsOpen, selectedProduct?.images, goToPrevImage, goToNextImage]);
 
   // Handle product view
   const handleViewProduct = async (product: Product) => {
@@ -172,27 +199,6 @@ const AdminProducts: React.FC<AdminProductsProps> = ({
       setSelectedProduct(product);
       setIsProductDetailsOpen(true);
     }
-  };
-
-  // Carousel navigation functions
-  const goToPrevImage = () => {
-    if (selectedProduct?.images && selectedProduct.images.length > 0) {
-      setCurrentImageIndex((prev) =>
-        prev === 0 ? selectedProduct.images!.length - 1 : prev - 1
-      );
-    }
-  };
-
-  const goToNextImage = () => {
-    if (selectedProduct?.images && selectedProduct.images.length > 0) {
-      setCurrentImageIndex((prev) =>
-        prev === selectedProduct.images!.length - 1 ? 0 : prev + 1
-      );
-    }
-  };
-
-  const goToImage = (index: number) => {
-    setCurrentImageIndex(index);
   };
 
   // Format date

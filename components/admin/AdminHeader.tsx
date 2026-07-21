@@ -89,7 +89,9 @@ const AdminHeader = ({ user }: AdminHeaderProps) => {
         // Calculate today's orders and revenue
         const today = new Date();
         const todayOrders = (ordersData.orders || []).filter((order: OrderType) => {
-          const orderDate = new Date(order.orderDate || order._createdAt);
+          const dateStr = order.orderDate || order._createdAt;
+          if (!dateStr) return false;
+          const orderDate = new Date(dateStr);
           return (
             orderDate.getDate() === today.getDate() &&
             orderDate.getMonth() === today.getMonth() &&
