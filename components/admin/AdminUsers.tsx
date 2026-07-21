@@ -111,13 +111,25 @@ const AdminUsers: React.FC = () => {
 
   // Reset page when search changes or per page changes
   useEffect(() => {
+    let active = true;
     if (debouncedSearchTerm !== searchTerm) {
-      setCurrentPage(0);
+      Promise.resolve().then(() => {
+        if (active) setCurrentPage(0);
+      });
     }
+    return () => {
+      active = false;
+    };
   }, [debouncedSearchTerm, searchTerm]);
 
   useEffect(() => {
-    setCurrentPage(0);
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) setCurrentPage(0);
+    });
+    return () => {
+      active = false;
+    };
   }, [perPage]);
 
   // Utility functions

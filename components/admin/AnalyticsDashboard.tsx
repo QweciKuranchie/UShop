@@ -17,7 +17,6 @@ import {
   ShoppingCart,
   Package,
   DollarSign,
-  Users,
   RefreshCw,
   Award,
 } from "lucide-react";

@@ -167,7 +167,7 @@ const AdminAnalytics = () => {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Select value={timeRange} onValueChange={setTimeRange}>
+          <Select value={timeRange} onValueChange={(val) => val && setTimeRange(val)}>
             <SelectTrigger className="w-40">
               <Calendar className="w-4 h-4 mr-2" />
               <SelectValue />

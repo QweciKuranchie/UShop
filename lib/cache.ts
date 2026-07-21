@@ -52,11 +52,6 @@ export const CACHE_TAGS = {
   REVIEWS: "reviews",
   REVIEW: (reviewId: string) => `review-${reviewId}`,
 
-  // Blog-related tags
-  BLOGS: "blogs",
-  BLOG: (slug: string) => `blog-${slug}`,
-  BLOG_CATEGORY: (slug: string) => `blog-category-${slug}`,
-
   // Static content tags (rarely change)
   HOMEPAGE: "homepage",
   NAVIGATION: "navigation",
@@ -193,16 +188,6 @@ export async function invalidateUserCart(_userId?: string) {
  */
 export async function invalidateHomepage() {
   revalidatePath("/", "page");
-}
-
-/**
- * Invalidate blog-related caches
- * Use when blog posts are added or updated
- */
-export async function invalidateBlog(blogSlug: string) {
-  revalidatePath(`/blog/${blogSlug}`, "page");
-  revalidatePath("/blog", "page");
-  revalidatePath("/", "layout");
 }
 
 /**
