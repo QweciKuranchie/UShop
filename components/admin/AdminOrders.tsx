@@ -459,7 +459,7 @@ const AdminOrders: React.FC = () => {
                             <Badge className={getStatusColor(order.status)}>
                               {order.status}
                             </Badge>
-                            {(order as any).cancellationRequested && (
+                            {order.cancellationRequested && (
                               <Badge className="bg-orange-100 text-orange-800 text-xs">
                                 ⏳ Cancellation Pending
                               </Badge>

@@ -44,15 +44,8 @@ import {
 import { ProductsSkeleton } from "./SkeletonLoaders";
 import { Product } from "./types";
 import { safeApiCall, handleApiError } from "./apiHelpers";
-import { ADMIN_CATEGORIES_QUERYResult } from "@/sanity.types";
 
-interface AdminProductsProps {
-  initialCategories?: ADMIN_CATEGORIES_QUERYResult;
-}
-
-const AdminProducts: React.FC<AdminProductsProps> = ({
-  initialCategories = [],
-}) => {
+const AdminProducts: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -62,10 +55,6 @@ const AdminProducts: React.FC<AdminProductsProps> = ({
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [imageLoading, setImageLoading] = useState(false);
-  const [categories] =
-    useState<ADMIN_CATEGORIES_QUERYResult>(initialCategories);
-
   const limit = 10;
 
   // Debounce search term

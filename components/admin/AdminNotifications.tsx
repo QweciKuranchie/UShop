@@ -277,13 +277,27 @@ const AdminNotifications: React.FC<AdminNotificationsProps> = ({
 
   // Initial data fetch
   useEffect(() => {
-    fetchUsers();
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) fetchUsers();
+    });
+    return () => {
+      active = false;
+    };
   }, [fetchUsers]);
 
   // Effect for notifications - Reset page and fetch when filters change
   useEffect(() => {
-    setSentNotificationsPage(1); // Reset to first page when filters change
-    fetchSentNotifications(1, false);
+    let active = true;
+    Promise.resolve().then(() => {
+      if (active) {
+        setSentNotificationsPage(1); // Reset to first page when filters change
+        fetchSentNotifications(1, false);
+      }
+    });
+    return () => {
+      active = false;
+    };
   }, [
     notificationTypeFilter,
     notificationPriorityFilter,
@@ -331,13 +345,19 @@ const AdminNotifications: React.FC<AdminNotificationsProps> = ({
 
   // Effect to refetch when filters change
   useEffect(() => {
+    let active = true;
     if (
       notificationTypeFilter !== "all" ||
       notificationPriorityFilter !== "all" ||
       notificationDateFilter !== "all"
     ) {
-      handleFilterChange();
+      Promise.resolve().then(() => {
+        if (active) handleFilterChange();
+      });
     }
+    return () => {
+      active = false;
+    };
   }, [
     notificationTypeFilter,
     notificationPriorityFilter,
