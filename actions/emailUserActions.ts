@@ -14,12 +14,7 @@ interface CreateAddressData {
   isDefault?: boolean;
 }
 
-interface CartItem {
-  productId: string;
-  quantity: number;
-  size?: string;
-  color?: string;
-}
+
 
 // Address Management Actions (Email-based)
 export async function createAddressForUser(addressData: CreateAddressData) {
@@ -166,7 +161,7 @@ export async function deleteAddressForUser(addressId: string) {
 
 // Cart simulation actions (since we're using Zustand for cart management)
 // These could be extended to use a server-side cart in the future
-export async function simulateAddToCart(item: CartItem) {
+export async function simulateAddToCart() {
   // For now, this would be handled by client-side Zustand
   // But this structure allows for future server-side cart management
   return { success: true };

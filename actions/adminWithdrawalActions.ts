@@ -4,6 +4,29 @@ import { auth } from "@clerk/nextjs/server";
 import { backendClient } from "@/sanity/lib/backendClient";
 import { isAdmin } from "@/lib/adminUtils";
 
+interface WithdrawalRequest {
+  id: string;
+  amount: number;
+  method: string;
+  bankDetails?: Record<string, string>;
+  paypalEmail?: string;
+  status: string;
+  requestedAt: string;
+  processedAt?: string;
+  processedBy?: string;
+  rejectionReason?: string;
+  transactionId?: string;
+}
+
+interface UserWithWithdrawals {
+  _id: string;
+  clerkUserId: string;
+  name: string;
+  email: string;
+  walletBalance?: number;
+  withdrawalRequests: WithdrawalRequest[];
+}
+
 /**
  * Admin: Get all pending withdrawal requests
  */
@@ -16,7 +39,7 @@ export async function getAllWithdrawalRequests(): Promise<{
     userEmail: string;
     amount: number;
     method: string;
-    bankDetails?: any;
+    bankDetails?: Record<string, string>;
     paypalEmail?: string;
     status: string;
     requestedAt: string;
@@ -57,10 +80,10 @@ export async function getAllWithdrawalRequests(): Promise<{
       }`
     );
 
-    const allRequests: any[] = [];
+    const allRequests: Array<WithdrawalRequest & { userId: string; userName: string; userEmail: string }> = [];
 
-    users.forEach((user: any) => {
-      user.withdrawalRequests.forEach((request: any) => {
+    users.forEach((user: UserWithWithdrawals) => {
+      user.withdrawalRequests.forEach((request: WithdrawalRequest) => {
         allRequests.push({
           ...request,
           userId: user.clerkUserId,
@@ -129,7 +152,7 @@ export async function approveWithdrawal(
     }
 
     const request = user.withdrawalRequests.find(
-      (r: any) => r.id === requestId
+      (r: WithdrawalRequest) => r.id === requestId
     );
 
     if (!request) {
@@ -144,7 +167,7 @@ export async function approveWithdrawal(
     }
 
     // Update withdrawal request status
-    const updatedRequests = user.withdrawalRequests.map((r: any) =>
+    const updatedRequests = user.withdrawalRequests.map((r: WithdrawalRequest) =>
       r.id === requestId
         ? {
             ...r,
@@ -212,7 +235,7 @@ export async function completeWithdrawal(
     }
 
     const request = user.withdrawalRequests.find(
-      (r: any) => r.id === requestId
+      (r: WithdrawalRequest) => r.id === requestId
     );
 
     if (!request) {
@@ -227,7 +250,7 @@ export async function completeWithdrawal(
     }
 
     // Update withdrawal request status
-    const updatedRequests = user.withdrawalRequests.map((r: any) =>
+    const updatedRequests = user.withdrawalRequests.map((r: WithdrawalRequest) =>
       r.id === requestId
         ? {
             ...r,
@@ -295,7 +318,7 @@ export async function rejectWithdrawal(
     }
 
     const request = user.withdrawalRequests.find(
-      (r: any) => r.id === requestId
+      (r: WithdrawalRequest) => r.id === requestId
     );
 
     if (!request) {
@@ -310,7 +333,7 @@ export async function rejectWithdrawal(
     }
 
     // Update withdrawal request status
-    const updatedRequests = user.withdrawalRequests.map((r: any) =>
+    const updatedRequests = user.withdrawalRequests.map((r: WithdrawalRequest) =>
       r.id === requestId
         ? {
             ...r,

@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { isUserAdmin } from "@/lib/adminUtils";
 import {
-  createNotification,
   sendBulkNotifications,
   NotificationType,
   NotificationPriority,

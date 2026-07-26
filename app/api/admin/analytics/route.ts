@@ -11,23 +11,6 @@ interface OrderProduct {
   brand?: string;
 }
 
-interface AnalyticsOrder {
-  _id: string;
-  orderNumber: string;
-  customerName: string;
-  email: string;
-  totalAmount: number;
-  status: string;
-  paymentMethod: string;
-  orderDate: string;
-  products?: OrderProduct[];
-}
-
-interface RevenueOrder {
-  totalAmount: number;
-  orderDate: string;
-}
-
 interface OrderWithStatus {
   _id: string;
   status: string;
@@ -40,13 +23,6 @@ interface RecentOrder {
   status: string;
   orderDate: string;
   totalPrice?: number;
-}
-interface StatusOrder {
-  status: string;
-}
-
-interface PaymentMethodOrder {
-  paymentMethod: string;
 }
 
 export async function GET(req: NextRequest) {

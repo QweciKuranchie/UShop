@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { backendClient } from "@/sanity/lib/backendClient";
 import { writeClient } from "@/sanity/lib/client";

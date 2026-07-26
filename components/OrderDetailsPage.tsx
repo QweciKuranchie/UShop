@@ -97,6 +97,10 @@ export interface OrderDetailsPageProps {
     deliveredBy?: string;
     assignedDeliverymanName?: string;
     dispatchedAt?: string;
+    cancelledAt?: string;
+    cancellationRequested?: boolean;
+    cancellationRequestedAt?: string;
+    cancellationRequestReason?: string;
   };
 }
 
@@ -247,11 +251,12 @@ const OrderDetailsPage: React.FC<OrderDetailsPageProps> = ({ order }) => {
         setCurrentOrder(
           (prev) =>
             ({
+              ...prev,
               cancellationRequested: true,
               cancellationRequestedAt: new Date().toISOString(),
               cancellationRequestReason:
                 cancellationReason || "Cancelled by customer",
-            } as typeof prev),
+            }),
         );
         setShowCancelDialog(false);
         setCancellationReason("");

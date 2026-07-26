@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { isUserAdmin } from "@/lib/adminUtils";
 import { client } from "@/sanity/lib/client";
@@ -19,7 +19,7 @@ interface Product {
   stock: number;
 }
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     // Get authenticated user
     const { userId } = await auth();

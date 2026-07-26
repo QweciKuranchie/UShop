@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -90,7 +91,7 @@ const AnalyticsDashboard: React.FC = () => {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Select value={timeframe} onValueChange={setTimeframe}>
+          <Select value={timeframe} onValueChange={(val) => setTimeframe(val ?? "monthly")}>
             <SelectTrigger className="w-32">
               <SelectValue />
             </SelectTrigger>
@@ -204,9 +205,11 @@ const AnalyticsDashboard: React.FC = () => {
                   </div>
 
                   {product.imageUrl && (
-                    <img
+                    <Image
                       src={product.imageUrl}
                       alt={product.name}
+                      width={48}
+                      height={48}
                       className="w-12 h-12 rounded-lg object-cover"
                     />
                   )}

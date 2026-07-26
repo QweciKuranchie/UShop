@@ -64,7 +64,7 @@ export default function ClerkPaymentPage() {
         throw new Error("Failed to complete payment");
       }
 
-      const result = await response.json();
+      await response.json();
 
       setPaymentStatus("success");
       toast.success("Payment Successful! 🎉", {

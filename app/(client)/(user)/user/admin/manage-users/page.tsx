@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { User, Crown, Building2 } from "lucide-react";
+import { User, Crown } from "lucide-react";
 
 export default function AdminUserManagement() {
   const [email, setEmail] = useState("");

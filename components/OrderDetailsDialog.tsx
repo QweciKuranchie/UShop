@@ -20,6 +20,10 @@ interface OrderDetailsDialogProps {
   onClose: () => void;
 }
 
+type OrderProduct = NonNullable<
+  NonNullable<MY_ORDERS_QUERYResult[number]>["products"]
+>[number];
+
 const OrderDetailsDialog: FC<OrderDetailsDialogProps> = ({
   order,
   isOpen,
@@ -101,7 +105,7 @@ const OrderDetailsDialog: FC<OrderDetailsDialogProps> = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {order.products?.map((product, index) => (
+            {order.products?.map((product: OrderProduct, index: number) => (
               <TableRow key={index}>
                 <TableCell className="flex items-center gap-2">
                   {product?.product?.images && (

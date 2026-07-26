@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -38,12 +38,9 @@ export default function PremiumAccountsAdmin() {
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchPremiumAccounts();
-  }, []);
-
-  const fetchPremiumAccounts = async () => {
+  const fetchPremiumAccounts = useCallback(async () => {
     try {
+      setLoading(true);
       const response = await fetch("/api/admin/premium-accounts");
       if (response.ok) {
         const data = await response.json();
@@ -57,7 +54,31 @@ export default function PremiumAccountsAdmin() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    let ignore = false;
+    async function load() {
+      try {
+        const response = await fetch("/api/admin/premium-accounts");
+        if (response.ok) {
+          const data = await response.json();
+          if (!ignore) setAccounts(data.accounts || []);
+        } else {
+          if (!ignore) toast.error("Failed to fetch premium accounts");
+        }
+      } catch (error) {
+        console.error("Error fetching premium accounts:", error);
+        if (!ignore) toast.error("Error loading premium accounts");
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    }
+    load();
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const handleApproval = async (
     accountId: string,

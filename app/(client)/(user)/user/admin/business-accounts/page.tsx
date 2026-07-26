@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -34,12 +34,9 @@ export default function BusinessAccountsAdmin() {
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchBusinessAccounts();
-  }, []);
-
-  const fetchBusinessAccounts = async () => {
+  const fetchBusinessAccounts = useCallback(async () => {
     try {
+      setLoading(true);
       const response = await fetch("/api/admin/business-accounts");
       if (response.ok) {
         const data = await response.json();
@@ -53,7 +50,31 @@ export default function BusinessAccountsAdmin() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    let ignore = false;
+    async function load() {
+      try {
+        const response = await fetch("/api/admin/business-accounts");
+        if (response.ok) {
+          const data = await response.json();
+          if (!ignore) setAccounts(data.accounts || []);
+        } else {
+          if (!ignore) toast.error("Failed to fetch business accounts");
+        }
+      } catch (error) {
+        console.error("Error fetching business accounts:", error);
+        if (!ignore) toast.error("Error loading business accounts");
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    }
+    load();
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const handleApproval = async (accountId: string, approve: boolean) => {
     setProcessing(accountId);

@@ -11,7 +11,7 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
+} from "../ui/chart";
 import {
   Area,
   AreaChart,

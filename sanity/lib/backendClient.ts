@@ -8,7 +8,7 @@ export const backendClient = createClient({
   dataset,
   apiVersion,
   useCdn: false, // Never use CDN for admin operations
-  token: process.env.SANITY_API_TOKEN, // Server-side token with admin permissions
+  token: process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_API_TOKEN, // Server-side token with admin/write permissions
   perspective: "published", // Use published perspective for admin operations
   ignoreBrowserTokenWarning: true, // Ignore token warning in server context
 });

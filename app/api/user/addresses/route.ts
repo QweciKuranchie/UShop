@@ -66,6 +66,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!process.env.SANITY_API_WRITE_TOKEN && !process.env.SANITY_API_TOKEN) {
+      return NextResponse.json(
+        {
+          error:
+            "SANITY_API_WRITE_TOKEN is missing. Please add SANITY_API_WRITE_TOKEN to your environment variables.",
+        },
+        { status: 500 }
+      );
+    }
+
     const body = await request.json();
     const {
       name,
@@ -77,10 +87,10 @@ export async function POST(request: NextRequest) {
       countryCode,
       stateCode,
       subArea,
-      default: isDefault,
       type,
       phone,
     } = body;
+    const isDefault = Boolean(body.isDefault ?? body.default ?? false);
 
     // Validate required fields
     if (!name || !address || !city || !state || !zip) {
@@ -124,8 +134,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Create new address
-    const newAddress = await backendClient.create({
+    // Create new address document
+    const addressDoc: { _type: string; [key: string]: unknown } = {
       _type: "address",
       name,
       email: user.emailAddresses[0]?.emailAddress,
@@ -139,13 +149,18 @@ export async function POST(request: NextRequest) {
       subArea: subArea || "",
       default: isDefault || false,
       type: type || "home",
-      phone: phone || null,
       user: {
         _type: "reference",
         _ref: sanityUser._id,
       },
       createdAt: new Date().toISOString(),
-    });
+    };
+
+    if (phone) {
+      addressDoc.phone = phone;
+    }
+
+    const newAddress = await backendClient.create(addressDoc);
 
     return NextResponse.json({
       success: true,
@@ -154,8 +169,23 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error creating address:", error);
+    let errorMessage =
+      error instanceof Error ? error.message : "Failed to create address";
+
+    if (
+      errorMessage.includes("Insufficient permissions") ||
+      errorMessage.includes("permission \"create\" required") ||
+      (typeof error === "object" &&
+        error !== null &&
+        "statusCode" in error &&
+        (error as { statusCode?: number }).statusCode === 403)
+    ) {
+      errorMessage =
+        "Sanity API Token permission error: SANITY_API_TOKEN in .env.local does not have write permissions. Please generate an 'Editor' or 'Administrator' token at https://manage.sanity.io and set SANITY_API_TOKEN in .env.local.";
+    }
+
     return NextResponse.json(
-      { error: "Failed to create address" },
+      { error: errorMessage },
       { status: 500 }
     );
   }

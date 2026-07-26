@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import {
   Bell,
   Info,
@@ -13,7 +13,6 @@ import {
   Clock,
   Trash2,
   Eye,
-  X,
   ChevronRight,
   ChevronLeft,
 } from "lucide-react";
@@ -49,7 +48,6 @@ const NOTIFICATIONS_PER_PAGE = 10;
 export default function UserNotificationsPage() {
   const { user } = useUser();
   const [allNotifications, setAllNotifications] = useState<Notification[]>([]);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [unreadCount, setUnreadCount] = useState(0);
   const [selectedNotification, setSelectedNotification] =
@@ -62,7 +60,13 @@ export default function UserNotificationsPage() {
   );
   const [isDeletingBulk, setIsDeletingBulk] = useState(false);
 
-  const fetchNotifications = async () => {
+  const notifications = useMemo(() => {
+    const startIndex = (currentPage - 1) * NOTIFICATIONS_PER_PAGE;
+    const endIndex = startIndex + NOTIFICATIONS_PER_PAGE;
+    return allNotifications.slice(startIndex, endIndex);
+  }, [currentPage, allNotifications]);
+
+  const fetchNotifications = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch("/api/user/notifications");
@@ -73,11 +77,6 @@ export default function UserNotificationsPage() {
           setAllNotifications(allNotifs);
           setUnreadCount(data.unreadCount || 0);
           setTotalPages(Math.ceil(allNotifs.length / NOTIFICATIONS_PER_PAGE));
-
-          // Get paginated notifications
-          const startIndex = (currentPage - 1) * NOTIFICATIONS_PER_PAGE;
-          const endIndex = startIndex + NOTIFICATIONS_PER_PAGE;
-          setNotifications(allNotifs.slice(startIndex, endIndex));
         }
       }
     } catch (error) {
@@ -86,21 +85,42 @@ export default function UserNotificationsPage() {
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  const handleRefresh = () => {
+    fetchNotifications();
   };
 
   useEffect(() => {
-    if (user) {
-      fetchNotifications();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+    if (!user) return;
+    let ignore = false;
 
-  // Update displayed notifications when page changes
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * NOTIFICATIONS_PER_PAGE;
-    const endIndex = startIndex + NOTIFICATIONS_PER_PAGE;
-    setNotifications(allNotifications.slice(startIndex, endIndex));
-  }, [currentPage, allNotifications]);
+    async function load() {
+      try {
+        const response = await fetch("/api/user/notifications");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && !ignore) {
+            const allNotifs = data.notifications || [];
+            setAllNotifications(allNotifs);
+            setUnreadCount(data.unreadCount || 0);
+            setTotalPages(Math.ceil(allNotifs.length / NOTIFICATIONS_PER_PAGE));
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+        if (!ignore) toast.error("Failed to fetch notifications");
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    }
+
+    load();
+
+    return () => {
+      ignore = true;
+    };
+  }, [user]);
 
   const openNotificationDetails = (notification: Notification) => {
     setSelectedNotification(notification);
@@ -403,7 +423,7 @@ export default function UserNotificationsPage() {
             </div>
           </div>
           <Button
-            onClick={fetchNotifications}
+            onClick={handleRefresh}
             variant="outline"
             size="sm"
             disabled={loading}

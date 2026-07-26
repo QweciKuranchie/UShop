@@ -1,9 +1,16 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { client, writeClient } from "@/sanity/lib/client";
 import { isUserAdmin } from "@/lib/adminUtils";
 
-export async function POST(request: NextRequest) {
+interface SubscriptionRecord {
+  _id: string;
+  email: string;
+  status: string;
+  subscribedAt: string;
+}
+
+export async function POST() {
   try {
     const { userId } = await auth();
 
@@ -27,7 +34,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Find all subscriptions
-    const allSubscriptions = await client.fetch(
+    const allSubscriptions: SubscriptionRecord[] = await client.fetch(
       `*[_type == "subscription"] | order(subscribedAt asc) {
         _id,
         email,
@@ -37,9 +44,9 @@ export async function POST(request: NextRequest) {
     );
 
     // Group by email (normalized)
-    const emailGroups: Record<string, any[]> = {};
+    const emailGroups: Record<string, SubscriptionRecord[]> = {};
 
-    allSubscriptions.forEach((sub: any) => {
+    allSubscriptions.forEach((sub: SubscriptionRecord) => {
       const normalizedEmail = sub.email.toLowerCase().trim();
       if (!emailGroups[normalizedEmail]) {
         emailGroups[normalizedEmail] = [];

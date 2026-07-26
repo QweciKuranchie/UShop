@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import {
   Sheet,
   SheetContent,
@@ -201,9 +202,11 @@ export const UserDetailsSidebar: React.FC<UserDetailsSidebarProps> = ({
               >
                 <div className="flex items-center gap-4">
                   <div className="relative">
-                    <img
+                    <Image
                       src={user.imageUrl}
                       alt={user.fullName}
+                      width={64}
+                      height={64}
                       className="w-16 h-16 rounded-full"
                     />
                     {actionLoading === "activate" && (

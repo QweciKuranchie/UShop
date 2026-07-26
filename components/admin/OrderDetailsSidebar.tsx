@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import {
   Sheet,
   SheetContent,
@@ -140,7 +141,8 @@ const OrderDetailsSidebar: React.FC<OrderDetailsSidebarProps> = ({
     }
   };
 
-  const handleInputChange = (field: string, value: string | number) => {
+  const handleInputChange = (field: string, value: string | number | null) => {
+    if (value === null) return;
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -887,9 +889,11 @@ const OrderDetailsSidebar: React.FC<OrderDetailsSidebarProps> = ({
                         className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
                       >
                         {product?.image && (
-                          <img
+                          <Image
                             src={product.image}
                             alt={product.name}
+                            width={64}
+                            height={64}
                             className="w-16 h-16 object-cover rounded-md border shadow-sm"
                           />
                         )}

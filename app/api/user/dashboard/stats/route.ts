@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import {
   getUserOrders,
@@ -23,16 +23,7 @@ interface Order {
   totalPrice?: number;
 }
 
-interface WishlistItem {
-  _id: string;
-  addedAt: string;
-  name?: string;
-  product?: {
-    name: string;
-  };
-}
-
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const user = await currentUser();
 

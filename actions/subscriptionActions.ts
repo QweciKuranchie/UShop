@@ -12,7 +12,7 @@ interface SubscriptionData {
 interface SubscriptionResponse {
   success: boolean;
   message: string;
-  data?: any;
+  data?: Record<string, unknown>;
   error?: string;
   alreadySubscribed?: boolean;
 }

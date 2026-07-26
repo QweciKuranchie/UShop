@@ -19,7 +19,7 @@ export const safeApiCall = async (url: string, options?: RequestInit) => {
       try {
         const errorBody = await response.text();
         errorDetails = errorBody ? ` - ${errorBody}` : "";
-      } catch (e) {
+      } catch {
         // If we can't read the body, continue without it
       }
 

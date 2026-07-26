@@ -131,7 +131,7 @@ export async function GET(req: NextRequest) {
     ]);
 
     // Transform the data to match the interface
-    const transformedNotifications = notifications.map((notification: any) => ({
+    const transformedNotifications = notifications.map((notification: SentNotification & { _id: string }) => ({
       id: notification._id, // Use Sanity _id for deletion
       notificationId: notification.notificationId, // Keep original notificationId
       title: notification.title,

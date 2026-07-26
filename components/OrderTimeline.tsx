@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import {
@@ -51,23 +51,7 @@ interface OrderTimelineProps {
 const OrderTimeline: React.FC<OrderTimelineProps> = ({ order }) => {
   const [visibleItems, setVisibleItems] = useState<number>(0);
 
-  useEffect(() => {
-    // Animate timeline items on mount
-    const timer = setInterval(() => {
-      setVisibleItems((prev) => {
-        const events = getTimelineEvents();
-        if (prev < events.length) {
-          return prev + 1;
-        }
-        clearInterval(timer);
-        return prev;
-      });
-    }, 150);
-
-    return () => clearInterval(timer);
-  }, [order]);
-
-  const getTimelineEvents = (): TimelineEvent[] => {
+  const getTimelineEvents = useCallback((): TimelineEvent[] => {
     const events: TimelineEvent[] = [];
 
     // Check if order is cancelled
@@ -242,7 +226,23 @@ const OrderTimeline: React.FC<OrderTimelineProps> = ({ order }) => {
     }
 
     return events;
-  };
+  }, [order]);
+
+  useEffect(() => {
+    // Animate timeline items on mount
+    const timer = setInterval(() => {
+      setVisibleItems((prev) => {
+        const evts = getTimelineEvents();
+        if (prev < evts.length) {
+          return prev + 1;
+        }
+        clearInterval(timer);
+        return prev;
+      });
+    }, 150);
+
+    return () => clearInterval(timer);
+  }, [getTimelineEvents]);
 
   const events = getTimelineEvents();
 

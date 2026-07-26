@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import {
   Table,
@@ -32,6 +33,7 @@ import { UsersSkeleton } from "./SkeletonLoaders";
 import { DeleteConfirmationDialog } from "./DeleteConfirmationDialog";
 import { UserActionModal } from "./UserActionModal";
 import { UserDetailsSidebar } from "./UserDetailsSidebar";
+import { safeApiCall, handleApiError } from "./apiHelpers";
 import { cn } from "@/lib/utils";
 
 interface CombinedUser {
@@ -394,7 +396,7 @@ const AdminUsers: React.FC = () => {
           </div>
         </div>
 
-        {(loading && users.length === 0) || tableLoading ? (
+        {tableLoading ? (
           <UsersSkeleton />
         ) : (
           <>
@@ -480,9 +482,11 @@ const AdminUsers: React.FC = () => {
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-3">
-                              <img
+                              <Image
                                 src={user.imageUrl}
                                 alt={user.fullName}
+                                width={32}
+                                height={32}
                                 className="w-8 h-8 rounded-full"
                               />
                               <div>
@@ -643,9 +647,11 @@ const AdminUsers: React.FC = () => {
                             checked={selectedUsers.includes(user.id)}
                             onCheckedChange={() => toggleUserSelection(user.id)}
                           />
-                          <img
+                          <Image
                             src={user.imageUrl}
                             alt={user.fullName}
+                            width={40}
+                            height={40}
                             className="w-10 h-10 rounded-full shrink-0"
                           />
                           <div className="flex-1 min-w-0">

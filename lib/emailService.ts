@@ -1,4 +1,4 @@
-import nodemailer, { Transporter, SentMessageInfo } from "nodemailer";
+import nodemailer, { Transporter } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const transporter: Transporter<SMTPTransport.SentMessageInfo> =

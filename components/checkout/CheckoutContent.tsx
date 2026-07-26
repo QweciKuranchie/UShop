@@ -30,11 +30,9 @@ import { CheckoutSkeleton } from "@/components/checkout/CheckoutSkeleton";
 import { OrderPlacementOverlay } from "@/components/cart/OrderPlacementSkeleton";
 import {
   Dialog,
-  DialogPortal,
-  DialogOverlay,
+  DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { cn } from "@/lib/utils";
 
@@ -623,53 +621,42 @@ export function CheckoutContent() {
 
       {/* Payment Method Selection Modal */}
       <Dialog open={showPaymentModal} onOpenChange={setShowPaymentModal}>
-        <DialogPortal>
-          <DialogOverlay />
-          <DialogPrimitive.Content
-            className={cn(
-              "fixed left-[50%] top-[50%] z-50 grid w-full max-w-md translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg",
-            )}
-          >
-            <VisuallyHidden.Root>
-              <DialogTitle>Select Payment Method</DialogTitle>
-            </VisuallyHidden.Root>
-            <div className="text-center space-y-4">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 border-4 border-blue-100">
-                <CreditCard className="h-8 w-8 text-blue-600" />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-gray-900">
-                  Choose Payment Method
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Select your preferred payment gateway to complete your order
-                </p>
-              </div>
+        <DialogContent className="max-w-md">
+          <VisuallyHidden.Root>
+            <DialogTitle>Select Payment Method</DialogTitle>
+          </VisuallyHidden.Root>
+          <div className="text-center space-y-4">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 border-4 border-blue-100">
+              <CreditCard className="h-8 w-8 text-blue-600" />
             </div>
-            <div className="flex flex-col gap-3 pt-6">
-              <Button
-                onClick={() => handlePaymentMethodSelect("stripe")}
-                className="w-full h-12 bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 font-semibold shadow-lg hover:shadow-blue-200"
-                disabled={isPlacingOrder}
-              >
-                <CreditCard className="w-5 h-5 mr-2" />
-                Pay with Stripe
-              </Button>
-              <Button
-                onClick={() => handlePaymentMethodSelect("clerk")}
-                className="w-full h-12 bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 font-semibold shadow-lg hover:shadow-purple-200"
-                disabled={isPlacingOrder}
-              >
-                <Wallet className="w-5 h-5 mr-2" />
-                Pay using Clerk
-              </Button>
+            <div className="space-y-2">
+              <h3 className="text-xl font-bold text-gray-900">
+                Choose Payment Method
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                Select your preferred payment gateway to complete your order
+              </p>
             </div>
-            <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-              <X className="h-4 w-4" />
-              <span className="sr-only">Close</span>
-            </DialogPrimitive.Close>
-          </DialogPrimitive.Content>
-        </DialogPortal>
+          </div>
+          <div className="flex flex-col gap-3 pt-6">
+            <Button
+              onClick={() => handlePaymentMethodSelect("stripe")}
+              className="w-full h-12 bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 font-semibold shadow-lg hover:shadow-blue-200"
+              disabled={isPlacingOrder}
+            >
+              <CreditCard className="w-5 h-5 mr-2" />
+              Pay with Stripe
+            </Button>
+            <Button
+              onClick={() => handlePaymentMethodSelect("clerk")}
+              className="w-full h-12 bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 font-semibold shadow-lg hover:shadow-purple-200"
+              disabled={isPlacingOrder}
+            >
+              <Wallet className="w-5 h-5 mr-2" />
+              Pay using Clerk
+            </Button>
+          </div>
+        </DialogContent>
       </Dialog>
     </div>
   );

@@ -2,8 +2,18 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { client } from "@/sanity/lib/client";
+
+interface CartItem {
+  product: { _ref: string };
+  quantity: number;
+  size?: string;
+  color?: string;
+}
+
+interface WishlistItemRef {
+  _ref: string;
+}
 
 // Types for server actions
 interface CreateUserData {
@@ -122,7 +132,7 @@ export async function addToCart(data: AddToCartData) {
 
     // Check if item already exists in cart
     const existingCartItem = user.cart?.find(
-      (item: any) =>
+      (item: CartItem) =>
         item.product._ref === data.productId &&
         item.size === data.size &&
         item.color === data.color
@@ -130,7 +140,7 @@ export async function addToCart(data: AddToCartData) {
 
     if (existingCartItem) {
       // Update existing item quantity
-      const updatedCart = user.cart.map((item: any) =>
+      const updatedCart = user.cart.map((item: CartItem) =>
         item.product._ref === data.productId &&
         item.size === data.size &&
         item.color === data.color
@@ -190,7 +200,7 @@ export async function updateCartItem(data: UpdateCartItemData) {
       throw new Error("User not found");
     }
 
-    const updatedCart = user.cart.map((item: any) =>
+    const updatedCart = user.cart.map((item: CartItem) =>
       item.product._ref === data.productId &&
       item.size === data.size &&
       item.color === data.color
@@ -235,7 +245,7 @@ export async function removeFromCart(
     }
 
     const updatedCart = user.cart.filter(
-      (item: any) =>
+      (item: CartItem) =>
         !(
           item.product._ref === productId &&
           item.size === size &&
@@ -310,7 +320,7 @@ export async function addToWishlist(productId: string) {
 
     // Check if product is already in wishlist
     const isInWishlist = user.wishlist?.some(
-      (item: any) => item._ref === productId
+      (item: WishlistItemRef) => item._ref === productId
     );
 
     if (!isInWishlist) {
@@ -347,7 +357,7 @@ export async function removeFromWishlist(productId: string) {
     }
 
     const updatedWishlist =
-      user.wishlist?.filter((item: any) => item._ref !== productId) || [];
+      user.wishlist?.filter((item: WishlistItemRef) => item._ref !== productId) || [];
 
     await client
       .patch(user._id)
@@ -494,7 +504,7 @@ export async function deleteAddress(addressId: string) {
 
     // Remove address reference from user
     const updatedAddresses =
-      user.addresses?.filter((addr: any) => addr._ref !== addressId) || [];
+      user.addresses?.filter((addr: { _ref: string }) => addr._ref !== addressId) || [];
 
     await client
       .patch(user._id)

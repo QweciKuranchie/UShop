@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useClerk } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
@@ -151,9 +152,11 @@ const AdminTopNavigation = ({ currentPath, user }: AdminTopNavigationProps) => {
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-4">
                   {user?.imageUrl ? (
-                    <img
+                    <Image
                       src={user.imageUrl}
                       alt="Admin avatar"
+                      width={40}
+                      height={40}
                       className="w-10 h-10 rounded-full object-cover border-2 border-white/30"
                     />
                   ) : (
@@ -303,9 +306,11 @@ const AdminTopNavigation = ({ currentPath, user }: AdminTopNavigationProps) => {
                 </p>
               </div>
               {user?.imageUrl && (
-                <img
+                <Image
                   src={user.imageUrl}
                   alt="Admin avatar"
+                  width={48}
+                  height={48}
                   className="w-12 h-12 rounded-full object-cover border-2 border-white/30"
                 />
               )}

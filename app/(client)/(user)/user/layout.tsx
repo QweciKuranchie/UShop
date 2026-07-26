@@ -3,6 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   LayoutDashboard,
@@ -103,9 +104,11 @@ export default function UserLayout({
             <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-shop_light_green/10">
               <div className="flex items-center space-x-3">
                 {user?.imageUrl ? (
-                  <img
+                  <Image
                     src={user.imageUrl}
                     alt="User avatar"
+                    width={40}
+                    height={40}
                     className="w-10 h-10 rounded-full object-cover border-2 border-shop_light_green/30"
                   />
                 ) : (
@@ -143,9 +146,11 @@ export default function UserLayout({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     {user?.imageUrl ? (
-                      <img
+                      <Image
                         src={user.imageUrl}
                         alt="User avatar"
+                        width={48}
+                        height={48}
                         className="w-12 h-12 rounded-full object-cover border-2 border-white/30"
                       />
                     ) : (
@@ -286,9 +291,11 @@ export default function UserLayout({
               <div className="p-6 bg-gradient-to-r from-shop_dark_green to-shop_light_green text-white">
                 <div className="flex items-center space-x-4">
                   {user?.imageUrl ? (
-                    <img
+                    <Image
                       src={user.imageUrl}
                       alt="User avatar"
+                      width={64}
+                      height={64}
                       className="w-16 h-16 rounded-full object-cover border-3 border-white/30"
                     />
                   ) : (

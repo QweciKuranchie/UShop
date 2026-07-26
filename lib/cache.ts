@@ -138,6 +138,7 @@ export async function invalidateBrand(brandSlug: string) {
  * Invalidate user-specific caches
  * Use when user data changes (profile, preferences)
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function invalidateUser(_userId?: string) {
   revalidatePath("/user", "layout");
 }
@@ -146,6 +147,7 @@ export async function invalidateUser(_userId?: string) {
  * Invalidate user's orders cache
  * Use when orders are created or updated
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function invalidateUserOrders(_userId?: string) {
   revalidatePath("/user/orders", "page");
   revalidatePath("/user", "layout");
@@ -168,6 +170,7 @@ export async function invalidateOrder(_orderId: string, userId?: string) {
  * Invalidate user's wishlist cache
  * Use when items are added/removed from wishlist
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function invalidateUserWishlist(_userId?: string) {
   revalidatePath("/wishlist", "page");
   revalidatePath("/user", "layout");
@@ -177,6 +180,7 @@ export async function invalidateUserWishlist(_userId?: string) {
  * Invalidate user's cart cache
  * Use when cart items change
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function invalidateUserCart(_userId?: string) {
   revalidatePath("/cart", "page");
   revalidatePath("/", "layout"); // Header shows cart count

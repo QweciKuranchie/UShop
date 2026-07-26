@@ -371,7 +371,7 @@ export default function AdminSubscriptions() {
                 />
               </div>
             </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <Select value={statusFilter} onValueChange={(val) => setStatusFilter(val ?? "all")}>
               <SelectTrigger>
                 <SelectValue placeholder="Filter by status" />
               </SelectTrigger>
@@ -382,7 +382,7 @@ export default function AdminSubscriptions() {
                 <SelectItem value="pending">Pending</SelectItem>
               </SelectContent>
             </Select>
-            <Select value={sourceFilter} onValueChange={setSourceFilter}>
+            <Select value={sourceFilter} onValueChange={(val) => setSourceFilter(val ?? "all")}>
               <SelectTrigger>
                 <SelectValue placeholder="Filter by source" />
               </SelectTrigger>

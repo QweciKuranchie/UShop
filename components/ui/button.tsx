@@ -59,6 +59,7 @@ function Button({
     return (
       <ButtonPrimitive
         data-slot="button"
+        nativeButton={false}
         {...props}
         render={(buttonProps) => {
           const mergedProps = {

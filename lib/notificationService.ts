@@ -91,7 +91,8 @@ export const createNotification = async (params: CreateNotificationParams) => {
 const getOrderStatusMessage = (
   status: string,
   orderNumber: string,
-  previousStatus?: string
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _previousStatus?: string
 ): { title: string; message: string; priority: NotificationPriority } => {
   switch (status.toLowerCase()) {
     case "pending":

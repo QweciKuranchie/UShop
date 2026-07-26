@@ -78,9 +78,7 @@ export default function UserDashboardPage() {
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
   const [loading, setLoading] = useState(true);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [userExists, setUserExists] = useState<boolean>(false);
   const [isApplyingBusiness, setIsApplyingBusiness] = useState<boolean>(false);
-  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationType, setNotificationType] = useState<
     "premium" | "business"
@@ -95,7 +93,6 @@ export default function UserDashboardPage() {
         const statusResponse = await fetch("/api/user/status");
         if (statusResponse.ok) {
           const statusData = await statusResponse.json();
-          setUserExists(statusData.userExists);
           setUserProfile(statusData.userProfile);
         }
 
@@ -123,8 +120,7 @@ export default function UserDashboardPage() {
   const handlePremiumRegister = () => {
     // Show success notification instead of immediate reload
     setNotificationType("premium");
-    setShowSuccessNotification(true);
-    setUserExists(true);
+    setShowNotification(true);
   };
 
   const handleBusinessAccountApply = async () => {
@@ -142,6 +138,7 @@ export default function UserDashboardPage() {
         },
         body: JSON.stringify({
           email: user.emailAddresses[0].emailAddress,
+          name: user.fullName || user.firstName || "User",
         }),
       });
 
@@ -150,7 +147,7 @@ export default function UserDashboardPage() {
       if (response.ok) {
         // Show success notification instead of toast and reload
         setNotificationType("business");
-        setShowSuccessNotification(true);
+        setShowNotification(true);
         // Also update the user profile to reflect pending status
         setTimeout(() => {
           window.location.reload();
