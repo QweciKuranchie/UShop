@@ -122,7 +122,7 @@ const OrdersComponent = ({ orders }: { orders: MY_ORDERS_QUERYResult }) => {
         <TooltipProvider>
           {orders.map((order) => (
             <Tooltip key={order?.orderNumber}>
-              <TooltipTrigger asChild>
+              <TooltipTrigger>
                 <TableRow className="hover:bg-gray-50 h-16">
                   <TableCell className="font-medium text-sm">
                     <div className="flex flex-col">

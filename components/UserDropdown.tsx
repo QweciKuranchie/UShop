@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   User,
@@ -48,13 +49,15 @@ const UserDropdown = () => {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger>
         <button className="flex items-center gap-2 py-1 px-2 rounded-lg hover:bg-ushop_light_bg group border border-ushop-purple/20 hover:border-ushop-purple hoverEffect">
           <div className="relative">
             {user.imageUrl ? (
-              <img
+              <Image
                 src={user.imageUrl}
                 alt={user.fullName || "User"}
+                width={32}
+                height={32}
                 className="w-8 h-8 rounded-full object-cover border-2 border-ushop-purple/20 group-hover:border-ushop-purple/40 transition-colors"
               />
             ) : (
@@ -74,9 +77,11 @@ const UserDropdown = () => {
         <div className="p-4 border-b border-gray-100">
           <div className="flex items-center gap-3">
             {user.imageUrl ? (
-              <img
+              <Image
                 src={user.imageUrl}
                 alt={user.fullName || "User"}
+                width={48}
+                height={48}
                 className="w-12 h-12 rounded-full object-cover"
               />
             ) : (

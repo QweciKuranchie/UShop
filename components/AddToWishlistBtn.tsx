@@ -3,7 +3,8 @@ import { Product } from "@/sanity.types";
 import useCartStore from "@/store";
 import { Heart } from "lucide-react";
 import BreadcrumbLink from "@/components/BreadcrumbLink";
-import React, { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import React from "react";
 import { toast } from "sonner";
 import isArray from "js-isarray";
 import _ from "lodash";
@@ -13,9 +14,11 @@ import { trackWishlistAdd, trackWishlistRemove } from "@/lib/analytics";
 const AddToWishlistBtn = ({
   showProduct = false,
   product,
+  className,
 }: {
   showProduct?: boolean;
   product?: Product;
+  className?: string;
 }) => {
   const { favoriteProduct, addToFavorite } = useCartStore();
   const existingProduct = _.find(
@@ -59,7 +62,7 @@ const AddToWishlistBtn = ({
       {!showProduct ? (
         <BreadcrumbLink
           href={"/wishlist"}
-          className="group relative hover:text-ushop-purple hoverEffect"
+          className={cn("group relative hover:text-ushop-purple hoverEffect", className)}
         >
           <Heart className="group-hover:text-ushop-purple hoverEffect mt-.5" />
           {/* {isArray(favoriteProduct) && favoriteProduct.length > 0 && ( */}
@@ -80,7 +83,7 @@ const AddToWishlistBtn = ({
       ) : (
         <button
           onClick={handleFavorite}
-          className="group relative hover:text-ushop-purple hoverEffect border border-ushop-purple/80 p-1.5 rounded-sm "
+          className={cn("group relative hover:text-ushop-purple hoverEffect border border-ushop-purple/80 p-1.5 rounded-sm", className)}
         >
           <Heart
             fill={existingProduct ? "#6B1FA8" : "#fff"}

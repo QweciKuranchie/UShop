@@ -49,6 +49,8 @@ export default function LocationSelector({
   const [cities, setCities] = useState<
     ReturnType<typeof City.getCitiesOfState>
   >([]);
+  const [loadingStates, setLoadingStates] = useState(false);
+  const [loadingCities, setLoadingCities] = useState(false);
   // Load states when country changes
   useEffect(() => {
     let active = true;
@@ -56,17 +58,26 @@ export default function LocationSelector({
       try {
         const countryStates = State.getStatesOfCountry(value.countryCode);
         Promise.resolve().then(() => {
-          if (active) setStates(countryStates);
+          if (active) {
+            setStates(countryStates);
+            setLoadingStates(false);
+          }
         });
       } catch (error) {
         console.error("Error loading states:", error);
         Promise.resolve().then(() => {
-          if (active) setStates([]);
+          if (active) {
+            setStates([]);
+            setLoadingStates(false);
+          }
         });
       }
     } else {
       Promise.resolve().then(() => {
-        if (active) setStates([]);
+        if (active) {
+          setStates([]);
+          setLoadingStates(false);
+        }
       });
     }
     return () => {
@@ -84,17 +95,26 @@ export default function LocationSelector({
           value.stateCode
         );
         Promise.resolve().then(() => {
-          if (active) setCities(stateCities);
+          if (active) {
+            setCities(stateCities);
+            setLoadingCities(false);
+          }
         });
       } catch (error) {
         console.error("Error loading cities:", error);
         Promise.resolve().then(() => {
-          if (active) setCities([]);
+          if (active) {
+            setCities([]);
+            setLoadingCities(false);
+          }
         });
       }
     } else {
       Promise.resolve().then(() => {
-        if (active) setCities([]);
+        if (active) {
+          setCities([]);
+          setLoadingCities(false);
+        }
       });
     }
     return () => {
@@ -102,7 +122,8 @@ export default function LocationSelector({
     };
   }, [value.countryCode, value.stateCode]);
 
-  const handleCountryChange = (countryCode: string) => {
+  const handleCountryChange = (countryCode: string | null) => {
+    if (!countryCode) return;
     const country = countries.find((c) => c.isoCode === countryCode);
     if (country) {
       onChange({
@@ -117,7 +138,8 @@ export default function LocationSelector({
     }
   };
 
-  const handleStateChange = (stateCode: string) => {
+  const handleStateChange = (stateCode: string | null) => {
+    if (!stateCode) return;
     const state = states.find((s) => s.isoCode === stateCode);
     if (state) {
       onChange({
@@ -130,7 +152,8 @@ export default function LocationSelector({
     }
   };
 
-  const handleCityChange = (cityName: string) => {
+  const handleCityChange = (cityName: string | null) => {
+    if (!cityName) return;
     onChange({
       ...value,
       city: cityName,
