@@ -1,8 +1,8 @@
 "use client";
 
-import { Check, Home, Package, ShoppingBag, Calendar, Eye } from "lucide-react";
+import { Check, Home, Package, ShoppingBag, Calendar, Eye, Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { MY_ORDERS_QUERYResult } from "@/sanity.types";
@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import PriceFormatter from "@/components/PriceFormatter";
 import { format } from "date-fns";
 
-const SuccessPage = () => {
+const SuccessContent = () => {
   const [orders, setOrders] = useState<MY_ORDERS_QUERYResult>([]);
   const [showAllOrders, setShowAllOrders] = useState(false);
   const searchParams = useSearchParams();
@@ -266,4 +266,16 @@ const SuccessPage = () => {
   );
 };
 
-export default SuccessPage;
+export default function SuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-green-600" />
+        </div>
+      }
+    >
+      <SuccessContent />
+    </Suspense>
+  );
+}
