@@ -10,7 +10,7 @@ const CartIcon = () => {
   const itemCount = items?.length || 0;
   const displayCount = itemCount > 9 ? "9+" : itemCount;
   return (
-    <Link href={"/cart"} className="group relative">
+    <Link href={"/cart"} title="Shopping Cart" aria-label="Shopping Cart" className="group relative">
         <ShoppingCartIcon className="w-6 h-6 group-hover:text-ushop-purple hoverEffect" />
          {itemCount > 0 ? (
         <span
