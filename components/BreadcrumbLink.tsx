@@ -8,6 +8,8 @@ interface BreadcrumbLinkProps {
   href: string;
   children: ReactNode;
   className?: string;
+  title?: string;
+  "aria-label"?: string;
   setBreadcrumbParent?: boolean; // Set to true for dashboard links
 }
 
@@ -15,6 +17,8 @@ const BreadcrumbLink = ({
   href,
   children,
   className = "",
+  title,
+  "aria-label": ariaLabel,
   setBreadcrumbParent = false,
 }: BreadcrumbLinkProps) => {
   const pathname = usePathname();
@@ -30,7 +34,7 @@ const BreadcrumbLink = ({
   };
 
   return (
-    <Link href={href} className={className} onClick={handleClick}>
+    <Link href={href} className={className} onClick={handleClick} title={title} aria-label={ariaLabel}>
       {children}
     </Link>
   );
