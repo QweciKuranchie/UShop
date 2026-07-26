@@ -14,7 +14,7 @@ const ProductCard = ({ product }: { product: Product }) => {
     <div className="text-sm border-[1px] border-dark-blue/20 rounded-md bg-white group">
       <div className="relative group overflow-hidden bg-ushop_light_bg">
         {product?.images && product.images[0] && (
-          <Link href={`/product/${product?.slug?.current}`}>
+          <Link href={`/product/${product?.slug?.current}`} aria-label={product.name || "View product"} title={product.name || "View product"}>
           <Image
             src={urlFor(product.images[0]).url()}
             alt={product.name || "Product Image"}
@@ -85,6 +85,8 @@ const ProductCard = ({ product }: { product: Product }) => {
         {product?.status === "hot" && (
           <Link
             href={"/deal"}
+            aria-label="Hot deals"
+            title="Hot deals"
             className="absolute top-2 left-2 z-10 text-xs border
          border-ushop_orange/50 px-2 rounded-full 
          group-hover:border-ushop_orange hover:text-ushop-pink hoverEffect"

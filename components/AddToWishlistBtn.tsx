@@ -62,6 +62,8 @@ const AddToWishlistBtn = ({
       {!showProduct ? (
         <BreadcrumbLink
           href={"/wishlist"}
+          aria-label="Wishlist"
+          title="Wishlist"
           className={cn("group relative hover:text-ushop-purple hoverEffect", className)}
         >
           <Heart className="group-hover:text-ushop-purple hoverEffect mt-.5" />
@@ -83,6 +85,8 @@ const AddToWishlistBtn = ({
       ) : (
         <button
           onClick={handleFavorite}
+          aria-label={existingProduct ? "Remove from wishlist" : "Add to wishlist"}
+          title={existingProduct ? "Remove from wishlist" : "Add to wishlist"}
           className={cn("group relative hover:text-ushop-purple hoverEffect border border-ushop-purple/80 p-1.5 rounded-sm", className)}
         >
           <Heart
