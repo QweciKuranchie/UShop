@@ -33,12 +33,20 @@ interface SidebarProps {
   onClose: () => void;
 }
 
+interface University {
+  _id: string;
+  name?: string;
+  slug?: {
+    current?: string;
+  };
+}
+
 const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
   const { isSignedIn } = useAuth();
   const sidebarRef = useOutsideClick<HTMLDivElement>(onClose);
   const { items, favoriteProduct } = useStore();
-  const [universities, setUniversities] = useState<any[]>([]);
+  const [universities, setUniversities] = useState<University[]>([]);
 
   useEffect(() => {
     const fetchUniversities = async () => {

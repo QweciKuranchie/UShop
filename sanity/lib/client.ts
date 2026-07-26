@@ -21,6 +21,6 @@ export const writeClient = createClient({
   dataset,
   apiVersion,
   useCdn: false, // Don't use CDN for write operations
-  token: process.env.SANITY_API_TOKEN, // Server-side token with write permissions
+  token: process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_API_TOKEN, // Server-side token with write permissions
 });
 

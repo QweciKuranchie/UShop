@@ -9,6 +9,8 @@ const HeaderTopBar = () => {
         <div className="flex items-center gap-4">
           <a
             href="tel:+233509565794"
+            title="Call +233 50 956 5794"
+            aria-label="Call +233 50 956 5794"
             className="flex items-center gap-1 hover:text-gray-300 transition-colors"
           >
             <Phone className="w-4 h-4" />

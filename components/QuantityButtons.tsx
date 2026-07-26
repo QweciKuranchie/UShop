@@ -59,6 +59,8 @@ const QuantityButtons = ({ product, className, borderStyle }: Props) => {
       <Button
         variant="outline"
         size="icon"
+        title="Decrease quantity"
+        aria-label="Decrease quantity"
         className="w-6 h-6 border-0 hover:bg-shop_dark_green/20"
         onClick={handleRemoveProduct}
         disabled={itemCount === 0 || isOutOfStock}
@@ -71,6 +73,8 @@ const QuantityButtons = ({ product, className, borderStyle }: Props) => {
       <Button
         variant="outline"
         size="icon"
+        title="Increase quantity"
+        aria-label="Increase quantity"
         className="w-6 h-6 border-0 hover:bg-shop_dark_green/20"
         onClick={handleAddToCart}
         disabled={isOutOfStock}

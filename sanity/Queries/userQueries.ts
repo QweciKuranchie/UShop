@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { sanityFetch } from "../lib/live";
 
 // User Queries
@@ -236,7 +237,7 @@ export const getUserByClerkId = async (clerkUserId: string) => {
       query: USER_BY_CLERK_ID_QUERY,
       params: { clerkUserId },
     });
-    return data;
+    return data as any;
   } catch (error) {
     console.error("Error fetching user by Clerk ID:", error);
     return null;
@@ -275,7 +276,7 @@ export const getUserWishlist = async (clerkUserId: string) => {
       query: USER_WISHLIST_QUERY,
       params: { clerkUserId },
     });
-    return (data as { wishlist?: unknown[] })?.wishlist ?? [];
+    return ((data as any)?.wishlist ?? []) as any[];
   } catch (error) {
     console.error("Error fetching user wishlist:", error);
     return [];
@@ -288,7 +289,7 @@ export const getUserOrders = async (clerkUserId: string) => {
       query: USER_ORDERS_QUERY,
       params: { clerkUserId },
     });
-    return data ?? [];
+    return (data ?? []) as any[];
   } catch (error) {
     console.error("Error fetching user orders:", error);
     return [];
@@ -301,7 +302,7 @@ export const getOrderById = async (orderId: string) => {
       query: ORDER_BY_ID_QUERY,
       params: { orderId },
     });
-    return data;
+    return data as any;
   } catch (error) {
     console.error("Error fetching order by ID:", error);
     return null;
@@ -332,7 +333,7 @@ export const getUserNotifications = async (clerkUserId: string) => {
       query: USER_NOTIFICATIONS_QUERY,
       params: { clerkUserId },
     });
-    return (data as { notifications?: unknown[] })?.notifications ?? [];
+    return ((data as any)?.notifications ?? []) as any[];
   } catch (error) {
     console.error("Error fetching user notifications:", error);
     return [];

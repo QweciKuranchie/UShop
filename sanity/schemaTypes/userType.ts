@@ -625,14 +625,6 @@ export const userType = defineType({
       type: "string",
       description: "Email of admin who activated the user",
     }),
-    // Employee fields
-    defineField({
-      name: "isEmployee",
-      title: "Is Employee",
-      type: "boolean",
-      initialValue: false,
-      description: "Whether the user is an employee",
-    }),
     defineField({
       name: "isAdmin",
       title: "Is Admin",
@@ -640,131 +632,6 @@ export const userType = defineType({
       initialValue: false,
       description:
         "Whether the user has admin privileges (can be set by admins or via environment variable)",
-    }),
-    defineField({
-      name: "employeeRole",
-      title: "Employee Role",
-      type: "string",
-      options: {
-        list: [
-          { title: "Call Center", value: "callcenter" },
-          { title: "Packer", value: "packer" },
-          { title: "Warehouse", value: "warehouse" },
-          { title: "Delivery Man", value: "deliveryman" },
-          { title: "In-Charge", value: "incharge" },
-          { title: "Accounts", value: "accounts" },
-        ],
-      },
-      description: "Employee role if user is an employee",
-      hidden: ({ document }) => !document?.isEmployee,
-    }),
-    defineField({
-      name: "employeeStatus",
-      title: "Employee Status",
-      type: "string",
-      options: {
-        list: [
-          { title: "Active", value: "active" },
-          { title: "Inactive", value: "inactive" },
-          { title: "Suspended", value: "suspended" },
-        ],
-      },
-      initialValue: "active",
-      description: "Current employment status",
-      hidden: ({ document }) => !document?.isEmployee,
-    }),
-    defineField({
-      name: "employeeAssignedBy",
-      title: "Employee Assigned By",
-      type: "string",
-      description: "Email of admin who assigned employee role",
-      hidden: ({ document }) => !document?.isEmployee,
-    }),
-    defineField({
-      name: "employeeAssignedAt",
-      title: "Employee Assigned At",
-      type: "datetime",
-      description: "When the employee role was assigned",
-      hidden: ({ document }) => !document?.isEmployee,
-    }),
-    defineField({
-      name: "employeeSuspendedBy",
-      title: "Employee Suspended By",
-      type: "string",
-      description: "Email of admin who suspended the employee",
-      hidden: ({ document }) =>
-        !document?.isEmployee || document?.employeeStatus !== "suspended",
-    }),
-    defineField({
-      name: "employeeSuspendedAt",
-      title: "Employee Suspended At",
-      type: "datetime",
-      description: "When the employee was suspended",
-      hidden: ({ document }) =>
-        !document?.isEmployee || document?.employeeStatus !== "suspended",
-    }),
-    defineField({
-      name: "employeeSuspensionReason",
-      title: "Suspension Reason",
-      type: "text",
-      description: "Reason for employee suspension",
-      hidden: ({ document }) =>
-        !document?.isEmployee || document?.employeeStatus !== "suspended",
-    }),
-    defineField({
-      name: "employeePerformance",
-      title: "Employee Performance",
-      type: "object",
-      fields: [
-        defineField({
-          name: "ordersProcessed",
-          title: "Orders Processed",
-          type: "number",
-          initialValue: 0,
-        }),
-        defineField({
-          name: "ordersConfirmed",
-          title: "Orders Confirmed",
-          type: "number",
-          initialValue: 0,
-        }),
-        defineField({
-          name: "ordersPacked",
-          title: "Orders Packed",
-          type: "number",
-          initialValue: 0,
-        }),
-        defineField({
-          name: "ordersAssignedForDelivery",
-          title: "Orders Assigned for Delivery",
-          type: "number",
-          initialValue: 0,
-        }),
-        defineField({
-          name: "ordersDelivered",
-          title: "Orders Delivered",
-          type: "number",
-          initialValue: 0,
-        }),
-        defineField({
-          name: "cashCollected",
-          title: "Cash Collected",
-          type: "number",
-          initialValue: 0,
-        }),
-        defineField({
-          name: "paymentsReceived",
-          title: "Payments Received",
-          type: "number",
-          initialValue: 0,
-        }),
-        defineField({
-          name: "lastActiveAt",
-          title: "Last Active At",
-          type: "datetime",
-        }),
-      ],
-      hidden: ({ document }) => !document?.isEmployee,
     }),
     defineField({
       name: "createdAt",
@@ -894,8 +761,6 @@ export const userType = defineType({
       image: "profileImage",
       isActive: "isActive",
       isAdmin: "isAdmin",
-      isEmployee: "isEmployee",
-      employeeRole: "employeeRole",
     },
     prepare(select) {
       const {
@@ -905,8 +770,6 @@ export const userType = defineType({
         image,
         isActive,
         isAdmin,
-        isEmployee,
-        employeeRole,
       } = select;
 
       // Build title with status badges
@@ -914,20 +777,6 @@ export const userType = defineType({
 
       if (isAdmin) {
         title += " 👑 [ADMIN]";
-      }
-
-      if (isEmployee && employeeRole) {
-        const roleLabels: Record<string, string> = {
-          callcenter: "📞 Call Center",
-          packer: "📦 Packer",
-          warehouse: "🏢 Warehouse",
-          deliveryman: "🚚 Delivery",
-          incharge: "👔 In-Charge",
-          accounts: "💰 Accounts",
-        };
-        title += ` [${roleLabels[employeeRole] || employeeRole}]`;
-      } else if (isEmployee) {
-        title += " [Employee]";
       }
 
       if (!isActive) {

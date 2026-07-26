@@ -2,7 +2,6 @@ import {
   X,
   Home,
   ShoppingBag,
-  BookOpen,
   Flame,
   User,
   ShoppingCart,
@@ -49,7 +48,6 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
     { title: "Shop", href: "/shop", icon: ShoppingBag },
     { title: "Categories", href: "/category", icon: Grid3X3 },
     { title: "Brands", href: "/brands", icon: Tag },
-    { title: "Blog", href: "/blog", icon: BookOpen },
     { title: "Hot Deal", href: "/deal", icon: Flame },
   ];
 

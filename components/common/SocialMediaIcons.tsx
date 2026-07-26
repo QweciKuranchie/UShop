@@ -109,6 +109,8 @@ const SocialMediaIcons = ({ className, iconClassName, tooltipClassName }: Props)
       target="_blank"
       rel="noopener noreferrer"
       href={item.href}
+      title={item.title}
+      aria-label={item.title}
       className={cn("p-2 border rounded-full hover:text-white hover:bg-ushop-pink hoverEffect", iconClassName)}
     />
   }

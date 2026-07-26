@@ -43,7 +43,7 @@ const CategoryPageClient = ({
             <div className="flex items-start gap-4 mb-4">
               {/* Category Image */}
               {currentCategory?.image && (
-                <div className="flex-shrink-0 w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-shop_light_pink to-shop_light_bg rounded-xl overflow-hidden">
+                <div className="flex-shrink-0 w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-ushop_light_pink to-ushop_light_bg rounded-xl overflow-hidden">
                   <Image
                     src={urlFor(currentCategory.image).url()}
                     alt={categoryTitle}
@@ -55,14 +55,14 @@ const CategoryPageClient = ({
               )}
 
               <div className="flex-1">
-                <Title className="text-2xl lg:text-3xl font-bold text-shop_dark_green mb-2">
+                <Title className="text-2xl lg:text-3xl font-bold text-ushop-purple-dark mb-2">
                   {categoryTitle}
                 </Title>
 
                 {/* Category Stats */}
                 <div className="flex items-center gap-4 text-sm text-dark-text mb-3">
                   {currentCategory?.featured && (
-                    <div className="flex items-center gap-1 text-shop_orange">
+                    <div className="flex items-center gap-1 text-ushop-red">
                       <Tag className="w-4 h-4" />
                       <span>Featured Category</span>
                     </div>
@@ -88,7 +88,7 @@ const CategoryPageClient = ({
             <div className="flex flex-wrap items-center gap-3">
               <Link
                 href="/category"
-                className="inline-flex items-center gap-2 text-shop_dark_green hover:text-shop_light_green transition-colors duration-300 text-sm font-medium"
+                className="inline-flex items-center gap-2 text-ushop-purple-dark hover:text-ushop-purple transition-colors duration-300 text-sm font-medium"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Back to Categories
@@ -98,7 +98,7 @@ const CategoryPageClient = ({
 
               <Link
                 href="/shop"
-                className="inline-flex items-center gap-2 bg-shop_light_green hover:bg-shop_dark_green text-white px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+                className="inline-flex items-center gap-2 bg-ushop-purple hover:bg-ushop-purple-dark text-white px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
               >
                 <Grid3X3 className="w-4 h-4" />
                 View All Products
@@ -134,12 +134,12 @@ const CategoryPageClient = ({
       {relatedCategories.length > 0 && (
         <div className="mt-12">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl lg:text-2xl font-bold text-shop_dark_green">
+            <h3 className="text-xl lg:text-2xl font-bold text-ushop-purple-dark">
               Explore Other Categories
             </h3>
             <Link
               href="/category"
-              className="text-shop_light_green hover:text-shop_dark_green font-medium text-sm flex items-center gap-1 transition-colors duration-300"
+              className="text-ushop-purple hover:text-ushop-purple-dark font-medium text-sm flex items-center gap-1 transition-colors duration-300"
             >
               View All
               <ArrowRight className="w-4 h-4" />
@@ -151,10 +151,10 @@ const CategoryPageClient = ({
               <Link
                 key={category._id}
                 href={`/category/${category.slug?.current}`}
-                className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100 hover:border-shop_light_green p-4 text-center"
+                className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100 hover:border-ushop-purple p-4 text-center"
               >
                 {/* Category Image */}
-                <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-shop_light_pink to-shop_light_bg rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-ushop_light_pink to-ushop_light_bg rounded-lg flex items-center justify-center">
                   {category.image ? (
                     <Image
                       src={urlFor(category.image).url()}
@@ -164,12 +164,12 @@ const CategoryPageClient = ({
                       className="w-8 h-8 object-contain"
                     />
                   ) : (
-                    <Grid3X3 className="w-6 h-6 text-shop_light_green opacity-60" />
+                    <Grid3X3 className="w-6 h-6 text-ushop-purple opacity-60" />
                   )}
                 </div>
 
                 {/* Category Title */}
-                <h4 className="text-sm font-medium text-shop_dark_green group-hover:text-shop_light_green transition-colors duration-300 line-clamp-1">
+                <h4 className="text-sm font-medium text-ushop-purple-dark group-hover:text-ushop-purple transition-colors duration-300 line-clamp-1">
                   {category.title}
                 </h4>
               </Link>
@@ -179,9 +179,9 @@ const CategoryPageClient = ({
       )}
 
       {/* Call to Action Section */}
-      <div className="mt-12 bg-gradient-to-r from-shop_light_green/10 via-shop_orange/5 to-shop_light_green/10 rounded-xl p-6 lg:p-8 border border-shop_light_green/20 text-center">
+      <div className="mt-12 bg-gradient-to-r from-ushop-purple/10 via-ushop-red/5 to-ushop-purple/10 rounded-xl p-6 lg:p-8 border border-ushop-purple/20 text-center">
         <div className="max-w-2xl mx-auto">
-          <h3 className="text-xl lg:text-2xl font-bold text-shop_dark_green mb-3">
+          <h3 className="text-xl lg:text-2xl font-bold text-ushop-purple-dark mb-3">
             Discover More Amazing Products
           </h3>
           <p className="text-dark-text mb-6 text-sm lg:text-base">
@@ -191,7 +191,7 @@ const CategoryPageClient = ({
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/shop"
-              className="inline-flex items-center justify-center gap-2 bg-shop_dark_green hover:bg-shop_light_green text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="inline-flex items-center justify-center gap-2 bg-ushop-purple-dark hover:bg-ushop-purple text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               <Grid3X3 className="w-5 h-5" />
               Browse All Products
@@ -199,7 +199,7 @@ const CategoryPageClient = ({
             </Link>
             <Link
               href="/category"
-              className="inline-flex items-center justify-center gap-2 border-2 border-shop_light_green text-shop_light_green hover:bg-shop_light_green hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300"
+              className="inline-flex items-center justify-center gap-2 border-2 border-ushop-purple text-ushop-purple hover:bg-ushop-purple hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300"
             >
               <Grid3X3 className="w-5 h-5" />
               All Categories

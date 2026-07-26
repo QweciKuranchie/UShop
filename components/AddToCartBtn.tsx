@@ -1,8 +1,7 @@
 "use client";
 
-import React from 'react'
-import { Product } from '@/sanity.types';
-import { cn } from '@/lib/utils';
+import { Product } from '../sanity.types';
+import { cn } from '../lib/utils';
 import { Button } from '@base-ui/react';
 import { ShoppingCart } from 'lucide-react';
 

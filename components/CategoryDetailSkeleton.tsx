@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const CategoryDetailSkeleton = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-shop_light_bg via-white to-shop_light_pink">
+    <div className="min-h-screen bg-gradient-to-br from-ushop_light_bg via-white to-ushop_light_pink">
       <Container className="py-10">
         {/* Breadcrumb Skeleton */}
         <div className="mb-8">
@@ -156,7 +156,7 @@ const CategoryDetailSkeleton = () => {
         </div>
 
         {/* Call to Action Section Skeleton */}
-        <div className="mt-12 bg-gradient-to-r from-shop_light_green/10 via-shop_orange/5 to-shop_light_green/10 rounded-xl p-6 lg:p-8 border border-shop_light_green/20 text-center">
+        <div className="mt-12 bg-gradient-to-r from-ushop-purple/10 via-ushop-red/5 to-ushop-purple/10 rounded-xl p-6 lg:p-8 border border-ushop-purple/20 text-center">
           <div className="max-w-2xl mx-auto space-y-4">
             <Skeleton className="h-7 lg:h-8 w-80 mx-auto" />
             <div className="space-y-2">
