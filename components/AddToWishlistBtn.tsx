@@ -1,18 +1,18 @@
 "use client";
+
+import React from "react";
 import { Product } from "@/sanity.types";
 import useCartStore from "@/store";
 import { Heart } from "lucide-react";
 import BreadcrumbLink from "@/components/BreadcrumbLink";
 import { cn } from "@/lib/utils";
-import React from "react";
 import { toast } from "sonner";
 import isArray from "js-isarray";
 import _ from "lodash";
 import { trackWishlistAdd, trackWishlistRemove } from "@/lib/analytics";
 
-
 const AddToWishlistBtn = ({
-  showProduct = false,
+  showProduct,
   product,
   className,
 }: {
@@ -21,13 +21,13 @@ const AddToWishlistBtn = ({
   className?: string;
 }) => {
   const { favoriteProduct, addToFavorite } = useCartStore();
-  const existingProduct = _.find(
-    favoriteProduct,
-    (item) => item?._id === product?._id
-  ) || null;
+  const existingProduct = product
+    ? _.find(favoriteProduct, (item) => item?._id === product?._id) || null
+    : null;
 
   const handleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     if (product?._id) {
       const isRemoving = !!existingProduct;
 
@@ -36,9 +36,9 @@ const AddToWishlistBtn = ({
           isRemoving ? "Removed from wishlist" : "Added to wishlist",
           {
             description: isRemoving
-              ? "Product removed successfully!"
-              : "Product added successfully!",
-            duration: 3000,
+              ? `${product.name ? product.name.substring(0, 18) : "Item"} removed from wishlist!`
+              : `${product.name ? product.name.substring(0, 18) : "Item"} added to wishlist!`,
+            duration: 2500,
           }
         );
 
@@ -57,45 +57,53 @@ const AddToWishlistBtn = ({
       });
     }
   };
+
+  const isButton = product !== undefined || showProduct === true;
+
+  if (isButton && product) {
+    return (
+      <button
+        onClick={handleFavorite}
+        aria-label={existingProduct ? "Remove from wishlist" : "Add to wishlist"}
+        title={existingProduct ? "Remove from wishlist" : "Add to wishlist"}
+        className={cn(
+          "group relative p-2 rounded-full bg-white/80 backdrop-blur-xs hover:bg-white shadow-xs border border-gray-200/80 hover:border-ushop-purple hoverEffect cursor-pointer z-10",
+          className
+        )}
+      >
+        <Heart
+          fill={existingProduct ? "#db2777" : "transparent"}
+          className={cn(
+            "w-4 h-4 transition-colors duration-200",
+            existingProduct
+              ? "text-ushop-pink"
+              : "text-gray-600 group-hover:text-ushop-pink"
+          )}
+        />
+      </button>
+    );
+  }
+
   return (
-    <>
-      {!showProduct ? (
-        <BreadcrumbLink
-          href={"/wishlist"}
-          aria-label="Wishlist"
-          title="Wishlist"
-          className={cn("group relative hover:text-ushop-purple hoverEffect", className)}
-        >
-          <Heart className="group-hover:text-ushop-purple hoverEffect mt-.5" />
-          {/* {isArray(favoriteProduct) && favoriteProduct.length > 0 && ( */}
-          <span
-            className={`absolute -top-1 -right-1 bg-ushop-purple-dark text-white rounded-full text-xs font-semibold flex items-center justify-center min-w-[14px] h-[14px] ${
-              favoriteProduct.length > 9 ? "px-1" : ""
-            }`}
-          >
-            {/* {favoriteProduct.length > 9 ? "9+" : favoriteProduct.length} */}
-            {isArray(favoriteProduct) && favoriteProduct.length > 0
-              ? favoriteProduct.length > 9
-                ? "9+"
-                : favoriteProduct.length
-              : 0}
-          </span>
-          {/* )} */}
-        </BreadcrumbLink>
-      ) : (
-        <button
-          onClick={handleFavorite}
-          aria-label={existingProduct ? "Remove from wishlist" : "Add to wishlist"}
-          title={existingProduct ? "Remove from wishlist" : "Add to wishlist"}
-          className={cn("group relative hover:text-ushop-purple hoverEffect border border-ushop-purple/80 p-1.5 rounded-sm", className)}
-        >
-          <Heart
-            fill={existingProduct ? "#6B1FA8" : "#fff"}
-            className="text-ushop-purple/80 group-hover:text-ushop-purple hoverEffect mt-.5"
-          />
-        </button>
-      )}
-    </>
+    <BreadcrumbLink
+      href={"/wishlist"}
+      aria-label="Wishlist"
+      title="Wishlist"
+      className={cn("group relative hover:text-ushop-purple hoverEffect", className)}
+    >
+      <Heart className="group-hover:text-ushop-purple hoverEffect mt-.5" />
+      <span
+        className={`absolute -top-1 -right-1 bg-ushop-purple-dark text-white rounded-full text-xs font-semibold flex items-center justify-center min-w-[14px] h-[14px] ${
+          favoriteProduct.length > 9 ? "px-1" : ""
+        }`}
+      >
+        {isArray(favoriteProduct) && favoriteProduct.length > 0
+          ? favoriteProduct.length > 9
+            ? "9+"
+            : favoriteProduct.length
+          : 0}
+      </span>
+    </BreadcrumbLink>
   );
 };
 

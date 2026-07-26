@@ -27,7 +27,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           />
           </Link>
         )}
-        <AddToWishlistBtn product={product} />
+        <AddToWishlistBtn product={product} className="absolute top-2 right-2 z-10" />
         {product?.status === "new" && (
           <p
             className="absolute top-2 left-2 z-10 text-xs border
