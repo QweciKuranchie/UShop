@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import PriceFormatter from "@/components/PriceFormatter";
 import { toast } from "sonner";
 
-export default function ClerkPaymentPage() {
+function ClerkPaymentContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { user } = useUser();
@@ -313,5 +313,19 @@ export default function ClerkPaymentPage() {
         </motion.div>
       </div>
     </div>
+  );
+}
+
+export default function ClerkPaymentPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+        </div>
+      }
+    >
+      <ClerkPaymentContent />
+    </Suspense>
   );
 }
