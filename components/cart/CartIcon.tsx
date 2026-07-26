@@ -7,7 +7,7 @@ import {ShoppingCartIcon } from "lucide-react";
 
 const CartIcon = () => {
   const { items } = useCartStore();
-  const itemCount = items?.length || 0;
+  const itemCount = items?.reduce((total, item) => total + item.quantity, 0) || 0;
   const displayCount = itemCount > 9 ? "9+" : itemCount;
   return (
     <Link href={"/cart"} title="Shopping Cart" aria-label="Shopping Cart" className="group relative">
