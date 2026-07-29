@@ -5,6 +5,7 @@ import React, { useEffect, useState, useTransition } from "react";
 import Container from "../Container";
 import Title from "../Title";
 import CategoryList from "./CategoryList";
+import AttributeList, { CONDITIONS, WARRANTIES, OS_OPTIONS } from "./AttributeList";
 import { Filter, X } from "lucide-react";
 import ProductCard from "../ProductCard";
 import NoProductAvailable from "../product/NoProductsAvailable";
@@ -27,24 +28,47 @@ const Shop = ({ categories, brands }: Props) => {
     brandParams || null
   );
   const [selectedPrice, setSelectedPrice] = useState<string | null>(null);
+  const [selectedCondition, setSelectedCondition] = useState<string | null>(null);
+  const [selectedWarranty, setSelectedWarranty] = useState<string | null>(null);
+  const [selectedOs, setSelectedOs] = useState<string | null>(null);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  const hasActiveFilters =
+    selectedCategory !== null ||
+    selectedBrand !== null ||
+    selectedPrice !== null ||
+    selectedCondition !== null ||
+    selectedWarranty !== null ||
+    selectedOs !== null;
+
+  const handleClearAllFilters = () => {
+    setSelectedCategory(null);
+    setSelectedBrand(null);
+    setSelectedPrice(null);
+    setSelectedCondition(null);
+    setSelectedWarranty(null);
+    setSelectedOs(null);
+  };
 
   useEffect(() => {
     startTransition(async () => {
       try {
-        // Extract min and max price from selectedPrice
         let minPrice = 0;
-        let maxPrice = 10000; // Default high value
+        let maxPrice = 100000;
 
         if (selectedPrice) {
           const [min, max] = selectedPrice.split("-").map(Number);
           minPrice = min;
           maxPrice = max;
         }
+
         const query = `
         *[_type == 'product' 
-          && (!defined($selectedCategory) || references(*[_type == "category" && slug.current == $selectedCategory]._id))
+          && (!defined($selectedCategory) || references(*[_type == "category" && (slug.current == $selectedCategory || parent->slug.current == $selectedCategory || parent->parent->slug.current == $selectedCategory)]._id))
           && (!defined($selectedBrand) || references(*[_type == "brand" && slug.current == $selectedBrand]._id))
+          && (!defined($selectedCondition) || status == $selectedCondition || attributes.condition == $selectedCondition)
+          && (!defined($selectedWarranty) || warrantyType == $selectedWarranty)
+          && (!defined($selectedOs) || attributes.os == $selectedOs)
           && price >= $minPrice && price <= $maxPrice
         ] 
         | order(name asc) {
@@ -57,6 +81,9 @@ const Shop = ({ categories, brands }: Props) => {
           {
             selectedCategory,
             selectedBrand,
+            selectedCondition,
+            selectedWarranty,
+            selectedOs,
             minPrice,
             maxPrice,
           },
@@ -67,7 +94,15 @@ const Shop = ({ categories, brands }: Props) => {
         console.log("Shop product fetching Error", error);
       }
     });
-  }, [selectedCategory, selectedBrand, selectedPrice, startTransition]);
+  }, [
+    selectedCategory,
+    selectedBrand,
+    selectedPrice,
+    selectedCondition,
+    selectedWarranty,
+    selectedOs,
+    startTransition,
+  ]);
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -83,15 +118,9 @@ const Shop = ({ categories, brands }: Props) => {
                 Discover amazing products tailored to your needs
               </p>
             </div>
-            {(selectedCategory !== null ||
-              selectedBrand !== null ||
-              selectedPrice !== null) && (
+            {hasActiveFilters && (
               <button
-                onClick={() => {
-                  setSelectedCategory(null);
-                  setSelectedBrand(null);
-                  setSelectedPrice(null);
-                }}
+                onClick={handleClearAllFilters}
                 className="inline-flex items-center px-4 py-2 bg-red-50 text-red-700 border border-red-200 rounded-md hover:bg-red-100 transition-colors duration-200 text-sm font-medium"
               >
                 Clear All Filters
@@ -100,7 +129,7 @@ const Shop = ({ categories, brands }: Props) => {
           </div>
 
           {/* Active Filters Display */}
-          {(selectedCategory || selectedBrand || selectedPrice) && (
+          {hasActiveFilters && (
             <div className="mt-4 pt-4 border-t border-gray-100">
               <div className="flex flex-wrap gap-2">
                 <span className="text-sm font-medium text-gray-700 mr-2">
@@ -112,7 +141,7 @@ const Shop = ({ categories, brands }: Props) => {
                     {
                       categories?.find(
                         (cat) => cat?.slug?.current === selectedCategory
-                      )?.title
+                      )?.title || selectedCategory
                     }
                   </span>
                 )}
@@ -131,6 +160,23 @@ const Shop = ({ categories, brands }: Props) => {
                     Price: GH₵{selectedPrice.replace("-", " - GH₵")}
                   </span>
                 )}
+                {selectedCondition && (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                    Condition:{" "}
+                    {CONDITIONS.find((c) => c.value === selectedCondition)?.label}
+                  </span>
+                )}
+                {selectedWarranty && (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                    Warranty:{" "}
+                    {WARRANTIES.find((w) => w.value === selectedWarranty)?.label}
+                  </span>
+                )}
+                {selectedOs && (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                    OS: {OS_OPTIONS.find((o) => o.value === selectedOs)?.label}
+                  </span>
+                )}
               </div>
             </div>
           )}
@@ -144,19 +190,23 @@ const Shop = ({ categories, brands }: Props) => {
           >
             <Filter className="w-4 h-4 mr-2" />
             {showMobileFilters ? "Hide Filters" : "Show Filters"}
-            {(selectedCategory || selectedBrand || selectedPrice) && (
+            {hasActiveFilters && (
               <span className="ml-2 bg-shop_dark_green text-white text-xs px-2 py-1 rounded-full">
                 {
-                  [selectedCategory, selectedBrand, selectedPrice].filter(
-                    Boolean
-                  ).length
+                  [
+                    selectedCategory,
+                    selectedBrand,
+                    selectedPrice,
+                    selectedCondition,
+                    selectedWarranty,
+                    selectedOs,
+                  ].filter(Boolean).length
                 }
               </span>
             )}
           </button>
         </div>
 
-        {/* <div className="flex flex-col lg:flex-row gap-6" /> */}
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Mobile Filter Overlay */}
           {showMobileFilters && (
@@ -165,7 +215,7 @@ const Shop = ({ categories, brands }: Props) => {
                 className="fixed inset-0 bg-black/50"
                 onClick={() => setShowMobileFilters(false)}
               />
-              <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-xl shadow-xl max-h-[80vh] overflow-y-auto">
+              <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-xl shadow-xl max-h-[85vh] overflow-y-auto">
                 <div className="p-4 border-b border-gray-200 flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-gray-900">
                     Filters
@@ -192,11 +242,27 @@ const Shop = ({ categories, brands }: Props) => {
                     setSelectedPrice={setSelectedPrice}
                     selectedPrice={selectedPrice}
                   />
+                  <AttributeList
+                    selectedCondition={selectedCondition}
+                    setSelectedCondition={setSelectedCondition}
+                    selectedWarranty={selectedWarranty}
+                    setSelectedWarranty={setSelectedWarranty}
+                    selectedOs={selectedOs}
+                    setSelectedOs={setSelectedOs}
+                  />
                 </div>
-                <div className="p-4 border-t border-gray-200 bg-gray-50">
+                <div className="p-4 border-t border-gray-200 bg-gray-50 flex gap-2">
+                  {hasActiveFilters && (
+                    <button
+                      onClick={handleClearAllFilters}
+                      className="w-1/3 border border-gray-300 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+                    >
+                      Clear
+                    </button>
+                  )}
                   <button
                     onClick={() => setShowMobileFilters(false)}
-                    className="w-full bg-shop_dark_green text-white py-3 px-4 rounded-lg font-medium hover:bg-shop_dark_green/90 transition-colors duration-200"
+                    className="flex-1 bg-shop_dark_green text-white py-3 px-4 rounded-lg font-medium hover:bg-shop_dark_green/90 transition-colors duration-200"
                   >
                     Apply Filters
                   </button>
@@ -209,12 +275,20 @@ const Shop = ({ categories, brands }: Props) => {
           <div className="hidden lg:block lg:w-80 flex-shrink-0">
             <div className="sticky top-6 space-y-4">
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                <div className="p-4 bg-gray-50 border-b border-gray-200">
+                <div className="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
                   <h3 className="text-lg font-semibold text-gray-900">
                     Filters
                   </h3>
+                  {hasActiveFilters && (
+                    <button
+                      onClick={handleClearAllFilters}
+                      className="text-xs text-red-600 hover:underline font-medium"
+                    >
+                      Reset All
+                    </button>
+                  )}
                 </div>
-                <div className="divide-y divide-gray-100">
+                <div className="divide-y divide-gray-100 max-h-[calc(100vh-120px)] overflow-y-auto">
                   <CategoryList
                     categories={categories}
                     selectedCategory={selectedCategory}
@@ -228,6 +302,14 @@ const Shop = ({ categories, brands }: Props) => {
                   <PriceList
                     setSelectedPrice={setSelectedPrice}
                     selectedPrice={selectedPrice}
+                  />
+                  <AttributeList
+                    selectedCondition={selectedCondition}
+                    setSelectedCondition={setSelectedCondition}
+                    selectedWarranty={selectedWarranty}
+                    setSelectedWarranty={setSelectedWarranty}
+                    selectedOs={selectedOs}
+                    setSelectedOs={setSelectedOs}
                   />
                 </div>
               </div>
@@ -263,7 +345,7 @@ const Shop = ({ categories, brands }: Props) => {
                         {products.length !== 1 ? "s" : ""} Found
                       </h2>
                       <div className="text-sm text-gray-600">
-                        Showing all available products
+                        Showing filtered products
                       </div>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">

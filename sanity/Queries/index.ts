@@ -156,12 +156,14 @@ const getCategories = unstable_cache(
   async (quantity?: number) => {
     try {
       const query = quantity
-        ? `*[_type == 'category'] | order(name asc) [0...$quantity] {
+        ? `*[_type == 'category'] | order(title asc) [0...$quantity] {
             ...,
+            parent->{ _id, title, slug, level },
             "productCount": count(*[_type == "product" && references(^._id)])
           }`
-        : `*[_type == 'category'] | order(name asc) {
+        : `*[_type == 'category'] | order(title asc) {
             ...,
+            parent->{ _id, title, slug, level },
             "productCount": count(*[_type == "product" && references(^._id)])
           }`;
 

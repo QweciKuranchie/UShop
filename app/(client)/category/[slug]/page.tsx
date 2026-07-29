@@ -40,40 +40,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const categories: Category[] = await getCategories();
 
-  // Fetch products for the current category to get count
+  // Fetch products for the current category (and its subcategories/leaves)
   const query = `
-    *[_type == "product" && references(*[_type == "category" && slug.current == $slug]._id)] {
-      _id
-    }
-  `;
-  const products = await client.fetch(query, { slug });
-
-  // Find the current category
-  const currentCategory = categories.find(
-    (cat: Category) => cat.slug?.current === slug
-  );
-
-  if (!currentCategory) {
-    return {
-      title: "Category Not Found",
-      description: "The category you're looking for could not be found.",
-    };
-  }
-
-  return generateCategoryMetadata(currentCategory, products.length);
-}
-
-const CategoryPage = async ({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) => {
-  const { slug } = await params;
-  const categories: Category[] = await getCategories();
-
-  // Fetch products for the current category
-  const query = `
-    *[_type == "product" && references(*[_type == "category" && slug.current == $slug]._id)] {
+    *[_type == "product" && references(*[_type == "category" && (slug.current == $slug || parent->slug.current == $slug || parent->parent->slug.current == $slug)]._id)] {
       ...,
       brand->{
         _id,

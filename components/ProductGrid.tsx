@@ -88,9 +88,11 @@ const ProductGrid = () => {
   const [sortBy, setSortBy] = useState<SortOption>("name-asc");
   const [showFilters, setShowFilters] = useState(false);
   const [productsPerPage] = useState(20);
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [priceRange, setPriceRange] = useState([0, 10000]);
   const [stockStatus, setStockStatus] = useState<string>("all");
   const [rating, setRating] = useState<string>("all");
+  const [conditionFilter, setConditionFilter] = useState<string>("all");
+  const [warrantyFilter, setWarrantyFilter] = useState<string>("all");
 
   const query = `*[_type == "product" && variant == $variant] | order(${getSortQuery(
     sortBy
@@ -158,13 +160,13 @@ const ProductGrid = () => {
       });
     }
 
-    // Filter by status (using status as a proxy for "rating/quality")
+    // Filter by status/condition
     if (rating !== "all") {
       filtered = filtered.filter((product) => {
         if (rating === "5") {
-          return product.status === "hot"; // Hot products = 5 stars
+          return product.status === "hot";
         } else if (rating === "4") {
-          return product.status === "hot" || product.status === "new"; // Hot or New = 4+ stars
+          return product.status === "hot" || product.status === "new";
         } else if (rating === "3") {
           return (
             product.status === "hot" ||
@@ -172,14 +174,30 @@ const ProductGrid = () => {
             product.status === "like_new" ||
             product.status === "excellent" ||
             product.status === "good"
-          ); // All products = 3+ stars
+          );
         }
         return true;
       });
     }
 
+    // Filter by specific condition attribute
+    if (conditionFilter !== "all") {
+      filtered = filtered.filter(
+        (product) =>
+          product.status === conditionFilter ||
+          (product as any).attributes?.condition === conditionFilter
+      );
+    }
+
+    // Filter by warranty type attribute
+    if (warrantyFilter !== "all") {
+      filtered = filtered.filter(
+        (product) => (product as any).warrantyType === warrantyFilter
+      );
+    }
+
     return filtered;
-  }, [products, priceRange, stockStatus, rating]);
+  }, [products, priceRange, stockStatus, rating, conditionFilter, warrantyFilter]);
 
   const getGridClasses = () => {
     switch (viewMode) {
@@ -554,9 +572,11 @@ const ProductGrid = () => {
                         variant="outline"
                         className="w-full border-ushop-purple/20 hover:border-ushop-purple hover:bg-ushop-purple/5 text-ushop-purple hoverEffect"
                         onClick={() => {
-                          setPriceRange([0, 1000]);
+                          setPriceRange([0, 10000]);
                           setStockStatus("all");
                           setRating("all");
+                          setConditionFilter("all");
+                          setWarrantyFilter("all");
                         }}
                       >
                         <Trash2 className="w-4 h-4 mr-1.5" /> Clear Filters
