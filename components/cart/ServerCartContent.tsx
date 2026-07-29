@@ -13,17 +13,14 @@ import { urlFor } from "@/sanity/lib/image";
 import { CartItemControls } from "./CartItemControls";
 import { AddressSelector } from "./AddressSelector";
 import { CheckoutButton } from "./CheckoutButton";
-import { Trash2, AlertTriangle, X } from "lucide-react";
+import { Trash2, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import {
   Dialog,
-  DialogPortal,
-  DialogOverlay,
+  DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
-import { cn } from "@/lib/utils";
 
 interface Address {
   _id: string;
@@ -198,27 +195,25 @@ export function ServerCartContent({
                         {item.product.name}
                       </h3>
                     </Link>
-                    {item.product.categories && (
+                    {item.product.categories && item.product.categories.length > 0 && (
                       <div className="flex gap-2 mt-1">
-                        {item.product.categories?.slice(0, 2).map(
-                          (
-                            category: {
-                              _ref?: string;
-                              _type?: string;
-                              name?: string;
-                              title?: string;
-                            },
-                            idx: number,
-                          ) => (
-                            <Badge
-                              key={idx}
-                              variant="secondary"
-                              className="text-xs"
-                            >
-                              {category?.name || category?.title || "Category"}
-                            </Badge>
-                          ),
-                        )}
+                        {item.product.categories
+                          .slice(0, 2)
+                          .map((cat: unknown, idx: number) => {
+                            // categories can be strings (from GROQ `categories[]->title`)
+                            // or reference objects {_ref, _type, _key} from persisted store
+                            const label = typeof cat === "string" ? cat : null;
+                            if (!label) return null;
+                            return (
+                              <Badge
+                                key={idx}
+                                variant="secondary"
+                                className="text-xs"
+                              >
+                                {label}
+                              </Badge>
+                            );
+                          })}
                       </div>
                     )}
                   </div>
@@ -348,54 +343,43 @@ export function ServerCartContent({
 
       {/* Clear Cart Confirmation Modal */}
       <Dialog open={showClearModal} onOpenChange={setShowClearModal}>
-        <DialogPortal>
-          <DialogOverlay />
-          <DialogPrimitive.Content
-            className={cn(
-              "fixed left-[50%] top-[50%] z-50 grid w-full max-w-md translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg",
-            )}
-          >
-            <VisuallyHidden.Root>
-              <DialogTitle>Clear Cart Confirmation</DialogTitle>
-            </VisuallyHidden.Root>
-            <div className="text-center space-y-4">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-50 border-4 border-red-100">
-                <AlertTriangle className="h-8 w-8 text-red-600 animate-pulse" />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-gray-900">Clear Cart</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  You&apos;re about to remove{" "}
-                  <span className="font-semibold text-red-600">
-                    {cart.length} {cart.length === 1 ? "item" : "items"}
-                  </span>{" "}
-                  from your cart. This action cannot be undone.
-                </p>
-              </div>
+        <DialogContent className="max-w-md">
+          <VisuallyHidden.Root>
+            <DialogTitle>Clear Cart Confirmation</DialogTitle>
+          </VisuallyHidden.Root>
+          <div className="text-center space-y-4">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-50 border-4 border-red-100">
+              <AlertTriangle className="h-8 w-8 text-red-600 animate-pulse" />
             </div>
-            <div className="flex gap-3 pt-6">
-              <Button
-                variant="outline"
-                onClick={() => setShowClearModal(false)}
-                className="flex-1 border-gray-300 hover:bg-gray-50 font-medium"
-              >
-                Keep Items
-              </Button>
-              <Button
-                variant="destructive"
-                onClick={confirmResetCart}
-                className="flex-1 bg-red-600 hover:bg-red-700 focus:ring-red-500 font-semibold shadow-lg hover:shadow-red-200"
-              >
-                <Trash2 className="w-4 h-4 mr-2" />
-                Clear Cart
-              </Button>
+            <div className="space-y-2">
+              <h3 className="text-xl font-bold text-gray-900">Clear Cart</h3>
+              <p className="text-gray-600 leading-relaxed">
+                You&apos;re about to remove{" "}
+                <span className="font-semibold text-red-600">
+                  {cart.length} {cart.length === 1 ? "item" : "items"}
+                </span>{" "}
+                from your cart. This action cannot be undone.
+              </p>
             </div>
-            <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-              <X className="h-4 w-4" />
-              <span className="sr-only">Close</span>
-            </DialogPrimitive.Close>
-          </DialogPrimitive.Content>
-        </DialogPortal>
+          </div>
+          <div className="flex gap-3 pt-6">
+            <Button
+              variant="outline"
+              onClick={() => setShowClearModal(false)}
+              className="flex-1 border-gray-300 hover:bg-gray-50 font-medium"
+            >
+              Keep Items
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={confirmResetCart}
+              className="flex-1 bg-red-600 hover:bg-red-700 focus:ring-red-500 font-semibold shadow-lg hover:shadow-red-200"
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Clear Cart
+            </Button>
+          </div>
+        </DialogContent>
       </Dialog>
     </div>
   );
