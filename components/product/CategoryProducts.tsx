@@ -154,6 +154,4 @@ export default function CategoryProducts({ categories, slug, initialProducts }: 
       )}
     </div>
   );
-};
-
-export default CategoryProducts;
+}
