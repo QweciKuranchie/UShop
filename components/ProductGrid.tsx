@@ -94,12 +94,21 @@ const ProductGrid = () => {
   const [conditionFilter, setConditionFilter] = useState<string>("all");
   const [warrantyFilter, setWarrantyFilter] = useState<string>("all");
 
-  const query = `*[_type == "product" && variant == $variant] | order(${getSortQuery(
-    sortBy
-  )}){
-  ...,"categories": categories[]->title
-}`;
-  const params = useMemo(() => ({ variant: selectedTab.toLowerCase() }), [selectedTab]);
+  const query = `*[_type == "product" && (
+    $variant == "all" || 
+    $variant == "" || 
+    lower(productClassification->title) match $variant + "*" || 
+    lower(productClassification->slug.current) match $variant + "*" || 
+    lower(variant) match $variant + "*"
+  )] | order(${getSortQuery(sortBy)}){
+    ...,
+    "categories": categories[]->title,
+    "category": category->{ _id, title, slug },
+    "brand": brand->{ _id, name, slug },
+    "productClassification": productClassification->{ _id, title, slug },
+    "store": store->{ _id, name, slug }
+  }`;
+  const params = useMemo(() => ({ variant: selectedTab.toLowerCase() === "all" ? "all" : selectedTab.toLowerCase() }), [selectedTab]);
 
   function getSortQuery(sort: SortOption): string {
     switch (sort) {

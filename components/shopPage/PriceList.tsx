@@ -15,6 +15,7 @@ interface Props {
   selectedPrice?: string | null;
   setSelectedPrice: Dispatch<SetStateAction<string | null>>;
 }
+
 const PriceList = ({ selectedPrice, setSelectedPrice }: Props) => {
   return (
     <div className="p-6">
@@ -32,19 +33,19 @@ const PriceList = ({ selectedPrice, setSelectedPrice }: Props) => {
           <div
             key={index}
             onClick={() => setSelectedPrice(price?.value)}
-            className="group flex items-center space-x-3 px-2 py-1 -mx-2 rounded-md hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+            className="group flex items-center space-x-3 px-2 py-1 -mx-2 rounded-md hover:bg-ushop-pink/10 cursor-pointer transition-colors duration-150"
           >
             <RadioGroupItem
               value={price?.value}
               id={price?.value}
-              className="border-gray-300 text-shop_dark_green focus:ring-shop_dark_green"
+              className="border-gray-300 text-ushop-pink focus:ring-ushop-pink"
             />
             <Label
               htmlFor={price.value}
               className={`flex-1 cursor-pointer transition-colors duration-150 ${
                 selectedPrice === price?.value
-                  ? "font-medium text-shop_dark_green"
-                  : "text-gray-700 group-hover:text-gray-900"
+                  ? "font-semibold text-ushop-pink"
+                  : "text-gray-700 group-hover:text-ushop-pink"
               }`}
             >
               {price?.title}
@@ -59,7 +60,7 @@ const PriceList = ({ selectedPrice, setSelectedPrice }: Props) => {
             e.stopPropagation();
             setSelectedPrice(null);
           }}
-          className="mt-4 text-xs font-medium text-gray-600 hover:text-shop_dark_green underline underline-offset-2 decoration-1 transition-colors duration-150"
+          className="mt-4 text-xs font-medium text-ushop-pink hover:underline underline-offset-2 decoration-1 transition-colors duration-150"
         >
           Clear price filter
         </button>

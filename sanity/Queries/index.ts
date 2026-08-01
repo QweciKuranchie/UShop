@@ -159,11 +159,35 @@ const getCategories = unstable_cache(
         ? `*[_type == 'category'] | order(title asc) [0...$quantity] {
             ...,
             parent->{ _id, title, slug, level },
+            productType->{ _id, title, slug },
+            attributes[]{
+              required,
+              attribute->{
+                _id,
+                title,
+                slug,
+                type,
+                options,
+                unit
+              }
+            },
             "productCount": count(*[_type == "product" && references(^._id)])
           }`
         : `*[_type == 'category'] | order(title asc) {
             ...,
             parent->{ _id, title, slug, level },
+            productType->{ _id, title, slug },
+            attributes[]{
+              required,
+              attribute->{
+                _id,
+                title,
+                slug,
+                type,
+                options,
+                unit
+              }
+            },
             "productCount": count(*[_type == "product" && references(^._id)])
           }`;
 
@@ -180,6 +204,30 @@ const getCategories = unstable_cache(
   },
   ["categories-list"],
   { revalidate: 900, tags: ["categories", "navigation"] }
+);
+
+/**
+ * Get product classifications - cached for 1 hour
+ */
+const getProductClassifications = unstable_cache(
+  async () => {
+    try {
+      const { data } = (await sanityFetch({
+        query: `*[_type == "productClassification"] | order(title asc) {
+          _id,
+          title,
+          slug,
+          description
+        }`,
+      })) as { data: any[] };
+      return data ?? [];
+    } catch (error) {
+      console.error("Error fetching product classifications:", error);
+      return [];
+    }
+  },
+  ["product-classifications"],
+  { revalidate: 3600, tags: ["classifications"] }
 );
 
 /**
@@ -299,4 +347,5 @@ export {getBanner,
   getRelatedProducts,
   getOrderById,
   getUniversities,
+  getProductClassifications,
 };

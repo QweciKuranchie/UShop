@@ -5,15 +5,34 @@ import Title from "../Title";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import { Category } from "@/sanity.types";
-import { ChevronDown, ChevronRight, Folder, FolderOpen } from "lucide-react";
+import { ChevronDown, ChevronRight, Layers } from "lucide-react";
+
+export interface ProductClassificationItem {
+  _id: string;
+  title: string;
+  slug?: { current?: string };
+  description?: string;
+}
+
+export interface ExtendedCategory extends Category {
+  parent?: { _id: string; title?: string; slug?: { current?: string }; level?: string };
+  productType?: { _id: string; title?: string; slug?: { current?: string } };
+  productCount?: number;
+}
 
 interface Props {
+  classifications?: ProductClassificationItem[];
+  selectedClassification?: string | null;
+  onClassificationChange?: (classificationSlug: string | null) => void;
   categories: Category[];
   selectedCategory?: string | null;
   setSelectedCategory: Dispatch<SetStateAction<string | null>>;
 }
 
 const CategoryList = ({
+  classifications = [],
+  selectedClassification,
+  onClassificationChange,
   categories,
   selectedCategory,
   setSelectedCategory,
@@ -25,14 +44,24 @@ const CategoryList = ({
     setExpandedCats((prev) => ({ ...prev, [catId]: !prev[catId] }));
   };
 
+  // Filter categories by selected classification if any
+  const filteredCategories = useMemo(() => {
+    const extended = categories as ExtendedCategory[];
+    if (!selectedClassification) return extended;
+    return extended?.filter((cat) => {
+      const pTypeSlug = cat.productType?.slug?.current;
+      const pTypeId = cat.productType?._id;
+      return pTypeSlug === selectedClassification || pTypeId === selectedClassification;
+    });
+  }, [categories, selectedClassification]);
+
   // Group top-level categories and build parent-child lookup
   const { topCategories, childMap } = useMemo(() => {
-    const top: Category[] = [];
-    const children: Record<string, Category[]> = {};
+    const top: ExtendedCategory[] = [];
+    const children: Record<string, ExtendedCategory[]> = {};
 
-    categories?.forEach((cat) => {
-      // If category has a parent reference
-      const parentRef = (cat as any).parent?._id;
+    filteredCategories?.forEach((cat) => {
+      const parentRef = cat.parent?._id;
       if (parentRef) {
         if (!children[parentRef]) children[parentRef] = [];
         children[parentRef].push(cat);
@@ -41,20 +70,60 @@ const CategoryList = ({
       }
     });
 
-    return { topCategories: top.length > 0 ? top : categories, childMap: children };
-  }, [categories]);
+    return { topCategories: top.length > 0 ? top : filteredCategories, childMap: children };
+  }, [filteredCategories]);
 
   return (
     <div className="p-6">
+      {/* Product Classification Section */}
+      <div className="mb-6 pb-5 border-b border-gray-200">
+        <div className="flex items-center justify-between mb-3">
+          <Title className="text-sm font-bold text-gray-900 uppercase tracking-wider flex items-center gap-2">
+            <Layers className="w-4 h-4 text-ushop-pink" /> Product Classification
+          </Title>
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          <button
+            onClick={() => onClassificationChange?.(null)}
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+              !selectedClassification
+                ? "bg-ushop-pink text-white shadow-sm ring-2 ring-ushop-pink/20"
+                : "bg-gray-100 text-gray-700 hover:bg-ushop-pink/10 hover:text-ushop-pink"
+            }`}
+          >
+            All Classifications
+          </button>
+          {classifications?.map((cls) => {
+            const isSelected =
+              selectedClassification === cls.slug?.current || selectedClassification === cls._id;
+            return (
+              <button
+                key={cls._id}
+                onClick={() => onClassificationChange?.(cls.slug?.current || cls._id)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+                  isSelected
+                    ? "bg-ushop-pink text-white shadow-sm ring-2 ring-ushop-pink/20"
+                    : "bg-gray-100 text-gray-700 hover:bg-ushop-pink/10 hover:text-ushop-pink"
+                }`}
+              >
+                {cls.title}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Categories Tree Header */}
       <div className="flex items-center justify-between mb-4">
         <Title className="text-base font-semibold text-gray-900">
           Categories
         </Title>
         <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-          {categories?.length || 0}
+          {filteredCategories?.length || 0}
         </span>
       </div>
 
+      {/* Category Tree Radio Group */}
       <RadioGroup value={selectedCategory || ""} className="space-y-1">
         {topCategories?.map((category) => {
           const subcats = childMap[category._id] || [];
@@ -70,19 +139,19 @@ const CategoryList = ({
                     isSelected ? null : (category?.slug?.current as string)
                   )
                 }
-                className={`group flex items-center space-x-2 px-2 py-1.5 -mx-2 rounded-md hover:bg-gray-50 cursor-pointer transition-colors duration-150 ${
-                  isSelected ? "bg-ushop-purple/10 text-ushop-purple" : ""
+                className={`group flex items-center space-x-2 px-2 py-1.5 -mx-2 rounded-md hover:bg-ushop-pink/10 cursor-pointer transition-colors duration-150 ${
+                  isSelected ? "bg-ushop-pink/10 text-ushop-pink" : ""
                 }`}
               >
                 {hasChildren ? (
                   <button
                     onClick={(e) => toggleExpand(category._id, e)}
-                    className="p-0.5 hover:bg-gray-200 rounded text-gray-500"
+                    className="p-0.5 hover:bg-ushop-pink/20 rounded text-gray-500 hover:text-ushop-pink"
                   >
                     {isExpanded ? (
-                      <ChevronDown className="w-3.5 h-3.5" />
+                      <ChevronDown className="w-3.5 h-3.5 text-ushop-pink" />
                     ) : (
-                      <ChevronRight className="w-3.5 h-3.5" />
+                      <ChevronRight className="w-3.5 h-3.5 hover:text-ushop-pink" />
                     )}
                   </button>
                 ) : (
@@ -92,21 +161,21 @@ const CategoryList = ({
                 <RadioGroupItem
                   value={category?.slug?.current as string}
                   id={category?.slug?.current}
-                  className="border-gray-300 text-shop_dark_green focus:ring-shop_dark_green"
+                  className="border-gray-300 text-ushop-pink focus:ring-ushop-pink"
                 />
 
                 <Label
                   htmlFor={category?.slug?.current}
                   className={`flex-1 cursor-pointer text-xs transition-colors duration-150 flex items-center justify-between ${
                     isSelected
-                      ? "font-semibold text-ushop-purple"
-                      : "text-gray-700 group-hover:text-gray-900"
+                      ? "font-semibold text-ushop-pink"
+                      : "text-gray-700 group-hover:text-ushop-pink"
                   }`}
                 >
                   <span className="truncate">{category?.title}</span>
-                  {(category as any).productCount > 0 && (
+                  {category.productCount !== undefined && category.productCount > 0 && (
                     <span className="text-[10px] text-gray-400 font-normal ml-1">
-                      ({(category as any).productCount})
+                      ({category.productCount})
                     </span>
                   )}
                 </Label>
@@ -127,14 +196,16 @@ const CategoryList = ({
                               isSubSelected ? null : (sub?.slug?.current as string)
                             )
                           }
-                          className={`flex items-center space-x-2 px-2 py-1 rounded-md hover:bg-gray-50 cursor-pointer text-xs ${
-                            isSubSelected ? "font-semibold text-ushop-purple bg-ushop-purple/10" : "text-gray-600"
+                          className={`flex items-center space-x-2 px-2 py-1 rounded-md hover:bg-ushop-pink/10 cursor-pointer text-xs ${
+                            isSubSelected
+                              ? "font-semibold text-ushop-pink bg-ushop-pink/10"
+                              : "text-gray-600 hover:text-ushop-pink"
                           }`}
                         >
                           <RadioGroupItem
                             value={sub?.slug?.current as string}
                             id={sub?.slug?.current}
-                            className="border-gray-300 text-shop_dark_green w-3 h-3"
+                            className="border-gray-300 text-ushop-pink w-3 h-3 focus:ring-ushop-pink"
                           />
                           <span className="truncate flex-1">{sub.title}</span>
                         </div>
@@ -155,9 +226,9 @@ const CategoryList = ({
                                         : (leaf?.slug?.current as string)
                                     )
                                   }
-                                  className={`px-2 py-0.5 rounded cursor-pointer text-[11px] hover:text-ushop-purple ${
+                                  className={`px-2 py-0.5 rounded cursor-pointer text-[11px] hover:text-ushop-pink hover:bg-ushop-pink/5 ${
                                     isLeafSelected
-                                      ? "font-semibold text-ushop-purple bg-ushop-purple/5"
+                                      ? "font-semibold text-ushop-pink bg-ushop-pink/10"
                                       : "text-gray-500"
                                   }`}
                                 >
@@ -183,7 +254,7 @@ const CategoryList = ({
             e.stopPropagation();
             setSelectedCategory(null);
           }}
-          className="mt-4 text-xs font-medium text-gray-600 hover:text-shop_dark_green underline underline-offset-2 decoration-1 transition-colors duration-150"
+          className="mt-4 text-xs font-medium text-ushop-pink hover:underline underline-offset-2 decoration-1 transition-colors duration-150"
         >
           Clear category filter
         </button>

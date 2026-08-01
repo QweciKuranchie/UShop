@@ -4,8 +4,8 @@ import { client } from "@/sanity/lib/client";
 import React, { useEffect, useState, useTransition } from "react";
 import Container from "../Container";
 import Title from "../Title";
-import CategoryList from "./CategoryList";
-import AttributeList, { CONDITIONS, WARRANTIES, OS_OPTIONS } from "./AttributeList";
+import CategoryList, { ProductClassificationItem } from "./CategoryList";
+import AttributeList, { CONDITIONS, WARRANTIES } from "./AttributeList";
 import { Filter, X } from "lucide-react";
 import ProductCard from "../ProductCard";
 import NoProductAvailable from "../product/NoProductsAvailable";
@@ -13,16 +13,37 @@ import BrandList from "./BrandList";
 import { useSearchParams } from "next/navigation";
 import PriceList from "./PriceList";
 
+export interface ExtendedProductAttributeValue {
+  _key?: string;
+  valueString?: string;
+  valueNumber?: number;
+  valueBoolean?: boolean;
+  valueSelect?: string;
+  valueMultiSelect?: string[];
+  attribute?: {
+    _id?: string;
+    title?: string;
+    slug?: { current?: string };
+    type?: string;
+  };
+}
+
+export interface ExtendedProduct extends Product {
+  attributeValues?: ExtendedProductAttributeValue[];
+}
+
 interface Props {
   categories: Category[];
   brands: Brand[];
+  classifications?: ProductClassificationItem[];
 }
 
-const Shop = ({ categories, brands }: Props) => {
+const Shop = ({ categories, brands, classifications = [] }: Props) => {
   const searchParams = useSearchParams();
   const brandParams = searchParams?.get("brand");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, startTransition] = useTransition();
+  const [selectedClassification, setSelectedClassification] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(
     brandParams || null
@@ -30,24 +51,57 @@ const Shop = ({ categories, brands }: Props) => {
   const [selectedPrice, setSelectedPrice] = useState<string | null>(null);
   const [selectedCondition, setSelectedCondition] = useState<string | null>(null);
   const [selectedWarranty, setSelectedWarranty] = useState<string | null>(null);
-  const [selectedOs, setSelectedOs] = useState<string | null>(null);
+  const [dynamicAttrFilters, setDynamicAttrFilters] = useState<Record<string, string>>({});
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
-  const hasActiveFilters =
-    selectedCategory !== null ||
-    selectedBrand !== null ||
-    selectedPrice !== null ||
-    selectedCondition !== null ||
-    selectedWarranty !== null ||
-    selectedOs !== null;
-
-  const handleClearAllFilters = () => {
+  // Cascading reset handler when Product Classification changes
+  const handleClassificationChange = (classificationSlug: string | null) => {
+    setSelectedClassification(classificationSlug);
+    // Reset category, attributes, dynamic specs, and dependent values
     setSelectedCategory(null);
     setSelectedBrand(null);
     setSelectedPrice(null);
     setSelectedCondition(null);
     setSelectedWarranty(null);
-    setSelectedOs(null);
+    setDynamicAttrFilters({});
+  };
+
+  // Reset dynamic specs when Category changes
+  const handleCategorySelect: React.Dispatch<React.SetStateAction<string | null>> = (value) => {
+    const nextCat = typeof value === "function" ? value(selectedCategory) : value;
+    setSelectedCategory(nextCat);
+    setDynamicAttrFilters({});
+  };
+
+  const handleDynamicAttrChange = (attrKey: string, val: string | null) => {
+    setDynamicAttrFilters((prev) => {
+      const updated = { ...prev };
+      if (val === null) {
+        delete updated[attrKey];
+      } else {
+        updated[attrKey] = val;
+      }
+      return updated;
+    });
+  };
+
+  const hasActiveFilters =
+    selectedClassification !== null ||
+    selectedCategory !== null ||
+    selectedBrand !== null ||
+    selectedPrice !== null ||
+    selectedCondition !== null ||
+    selectedWarranty !== null ||
+    Object.keys(dynamicAttrFilters).length > 0;
+
+  const handleClearAllFilters = () => {
+    setSelectedClassification(null);
+    setSelectedCategory(null);
+    setSelectedBrand(null);
+    setSelectedPrice(null);
+    setSelectedCondition(null);
+    setSelectedWarranty(null);
+    setDynamicAttrFilters({});
   };
 
   useEffect(() => {
@@ -64,43 +118,91 @@ const Shop = ({ categories, brands }: Props) => {
 
         const query = `
         *[_type == 'product' 
+          && (!defined($selectedClassification) || productClassification->slug.current == $selectedClassification || productClassification->_id == $selectedClassification)
           && (!defined($selectedCategory) || references(*[_type == "category" && (slug.current == $selectedCategory || parent->slug.current == $selectedCategory || parent->parent->slug.current == $selectedCategory)]._id))
           && (!defined($selectedBrand) || references(*[_type == "brand" && slug.current == $selectedBrand]._id))
           && (!defined($selectedCondition) || status == $selectedCondition || attributes.condition == $selectedCondition)
           && (!defined($selectedWarranty) || warrantyType == $selectedWarranty)
-          && (!defined($selectedOs) || attributes.os == $selectedOs)
           && price >= $minPrice && price <= $maxPrice
         ] 
         | order(name asc) {
-          ...,"categories": categories[]->title
+          ...,
+          "categories": categories[]->title,
+          attributeValues[]{
+            ...,
+            attribute->{ _id, title, slug, type }
+          }
         }
       `;
 
-        const data = await client.fetch(
+        const data: ExtendedProduct[] = await client.fetch(
           query,
           {
+            selectedClassification,
             selectedCategory,
             selectedBrand,
             selectedCondition,
             selectedWarranty,
-            selectedOs,
             minPrice,
             maxPrice,
           },
           { next: { revalidate: 0 } }
         );
-        setProducts(data);
+
+        // Apply Dynamic Spec Filters
+        let filteredData = data;
+        if (Object.keys(dynamicAttrFilters).length > 0) {
+          filteredData = data.filter((product) => {
+            return Object.entries(dynamicAttrFilters).every(([key, targetVal]) => {
+              if (!targetVal) return true;
+              const matchInAttrValues = product.attributeValues?.some((av) => {
+                const attrSlug = av.attribute?.slug?.current || av.attribute?._id || "";
+                const attrTitle = (av.attribute?.title || "").toLowerCase();
+                const keyLower = key.toLowerCase();
+
+                const matchesKey =
+                  attrSlug === key ||
+                  keyLower.includes(attrSlug) ||
+                  attrSlug.includes(keyLower) ||
+                  attrTitle.includes(keyLower);
+
+                if (!matchesKey) return false;
+
+                const strVal = String(
+                  av.valueString || av.valueSelect || av.valueNumber || ""
+                ).toLowerCase();
+
+                const multiArr = Array.isArray(av.valueMultiSelect)
+                  ? av.valueMultiSelect.map((v: string) => String(v).toLowerCase())
+                  : [];
+
+                const targetLower = targetVal.toLowerCase();
+
+                return (
+                  strVal.includes(targetLower) ||
+                  targetLower.includes(strVal) ||
+                  multiArr.some((m: string) => m.includes(targetLower) || targetLower.includes(m))
+                );
+              });
+
+              return matchInAttrValues;
+            });
+          });
+        }
+
+        setProducts(filteredData);
       } catch (error) {
         console.log("Shop product fetching Error", error);
       }
     });
   }, [
+    selectedClassification,
     selectedCategory,
     selectedBrand,
     selectedPrice,
     selectedCondition,
     selectedWarranty,
-    selectedOs,
+    dynamicAttrFilters,
     startTransition,
   ]);
 
@@ -121,7 +223,7 @@ const Shop = ({ categories, brands }: Props) => {
             {hasActiveFilters && (
               <button
                 onClick={handleClearAllFilters}
-                className="inline-flex items-center px-4 py-2 bg-red-50 text-red-700 border border-red-200 rounded-md hover:bg-red-100 transition-colors duration-200 text-sm font-medium"
+                className="inline-flex items-center px-4 py-2 bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/30 rounded-md hover:bg-ushop-pink hover:text-white transition-colors duration-200 text-sm font-medium"
               >
                 Clear All Filters
               </button>
@@ -135,8 +237,20 @@ const Shop = ({ categories, brands }: Props) => {
                 <span className="text-sm font-medium text-gray-700 mr-2">
                   Active filters:
                 </span>
+                {selectedClassification && (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/20">
+                    Classification:{" "}
+                    {
+                      classifications?.find(
+                        (c) =>
+                          c?.slug?.current === selectedClassification ||
+                          c?._id === selectedClassification
+                      )?.title || selectedClassification
+                    }
+                  </span>
+                )}
                 {selectedCategory && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/20">
                     Category:{" "}
                     {
                       categories?.find(
@@ -145,8 +259,16 @@ const Shop = ({ categories, brands }: Props) => {
                     }
                   </span>
                 )}
+                {Object.entries(dynamicAttrFilters).map(([k, v]) => (
+                  <span
+                    key={k}
+                    className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/20"
+                  >
+                    Spec ({k}): {v}
+                  </span>
+                ))}
                 {selectedBrand && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/20">
                     Brand:{" "}
                     {
                       brands?.find(
@@ -156,25 +278,20 @@ const Shop = ({ categories, brands }: Props) => {
                   </span>
                 )}
                 {selectedPrice && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/20">
                     Price: GH₵{selectedPrice.replace("-", " - GH₵")}
                   </span>
                 )}
                 {selectedCondition && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/20">
                     Condition:{" "}
                     {CONDITIONS.find((c) => c.value === selectedCondition)?.label}
                   </span>
                 )}
                 {selectedWarranty && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/20">
                     Warranty:{" "}
                     {WARRANTIES.find((w) => w.value === selectedWarranty)?.label}
-                  </span>
-                )}
-                {selectedOs && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                    OS: {OS_OPTIONS.find((o) => o.value === selectedOs)?.label}
                   </span>
                 )}
               </div>
@@ -186,20 +303,21 @@ const Shop = ({ categories, brands }: Props) => {
         <div className="lg:hidden mb-4">
           <button
             onClick={() => setShowMobileFilters(!showMobileFilters)}
-            className="inline-flex items-center justify-center w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-shop_dark_green transition-colors duration-200"
+            className="inline-flex items-center justify-center w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-ushop-pink/10 hover:text-ushop-pink focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ushop-pink transition-colors duration-200"
           >
-            <Filter className="w-4 h-4 mr-2" />
+            <Filter className="w-4 h-4 mr-2 text-ushop-pink" />
             {showMobileFilters ? "Hide Filters" : "Show Filters"}
             {hasActiveFilters && (
-              <span className="ml-2 bg-shop_dark_green text-white text-xs px-2 py-1 rounded-full">
+              <span className="ml-2 bg-ushop-pink text-white text-xs px-2 py-1 rounded-full">
                 {
                   [
+                    selectedClassification,
                     selectedCategory,
                     selectedBrand,
                     selectedPrice,
                     selectedCondition,
                     selectedWarranty,
-                    selectedOs,
+                    ...Object.values(dynamicAttrFilters),
                   ].filter(Boolean).length
                 }
               </span>
@@ -224,14 +342,17 @@ const Shop = ({ categories, brands }: Props) => {
                     onClick={() => setShowMobileFilters(false)}
                     className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-5 h-5 text-gray-600 hover:text-ushop-pink" />
                   </button>
                 </div>
                 <div className="divide-y divide-gray-100">
                   <CategoryList
+                    classifications={classifications}
+                    selectedClassification={selectedClassification}
+                    onClassificationChange={handleClassificationChange}
                     categories={categories}
                     selectedCategory={selectedCategory}
-                    setSelectedCategory={setSelectedCategory}
+                    setSelectedCategory={handleCategorySelect}
                   />
                   <BrandList
                     brands={brands}
@@ -243,12 +364,14 @@ const Shop = ({ categories, brands }: Props) => {
                     selectedPrice={selectedPrice}
                   />
                   <AttributeList
+                    selectedCategory={selectedCategory}
+                    categories={categories}
+                    dynamicAttrFilters={dynamicAttrFilters}
+                    onDynamicAttrChange={handleDynamicAttrChange}
                     selectedCondition={selectedCondition}
                     setSelectedCondition={setSelectedCondition}
                     selectedWarranty={selectedWarranty}
                     setSelectedWarranty={setSelectedWarranty}
-                    selectedOs={selectedOs}
-                    setSelectedOs={setSelectedOs}
                   />
                 </div>
                 <div className="p-4 border-t border-gray-200 bg-gray-50 flex gap-2">
@@ -262,7 +385,7 @@ const Shop = ({ categories, brands }: Props) => {
                   )}
                   <button
                     onClick={() => setShowMobileFilters(false)}
-                    className="flex-1 bg-shop_dark_green text-white py-3 px-4 rounded-lg font-medium hover:bg-shop_dark_green/90 transition-colors duration-200"
+                    className="flex-1 bg-ushop-pink text-white py-3 px-4 rounded-lg font-medium hover:bg-ushop-pink/90 transition-colors duration-200"
                   >
                     Apply Filters
                   </button>
@@ -276,13 +399,13 @@ const Shop = ({ categories, brands }: Props) => {
             <div className="sticky top-6 space-y-4">
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                 <div className="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Filters
+                  <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                    <Filter className="w-4 h-4 text-ushop-pink" /> Filters
                   </h3>
                   {hasActiveFilters && (
                     <button
                       onClick={handleClearAllFilters}
-                      className="text-xs text-red-600 hover:underline font-medium"
+                      className="text-xs text-ushop-pink hover:underline font-semibold"
                     >
                       Reset All
                     </button>
@@ -290,9 +413,12 @@ const Shop = ({ categories, brands }: Props) => {
                 </div>
                 <div className="divide-y divide-gray-100 max-h-[calc(100vh-120px)] overflow-y-auto">
                   <CategoryList
+                    classifications={classifications}
+                    selectedClassification={selectedClassification}
+                    onClassificationChange={handleClassificationChange}
                     categories={categories}
                     selectedCategory={selectedCategory}
-                    setSelectedCategory={setSelectedCategory}
+                    setSelectedCategory={handleCategorySelect}
                   />
                   <BrandList
                     brands={brands}
@@ -304,12 +430,14 @@ const Shop = ({ categories, brands }: Props) => {
                     selectedPrice={selectedPrice}
                   />
                   <AttributeList
+                    selectedCategory={selectedCategory}
+                    categories={categories}
+                    dynamicAttrFilters={dynamicAttrFilters}
+                    onDynamicAttrChange={handleDynamicAttrChange}
                     selectedCondition={selectedCondition}
                     setSelectedCondition={setSelectedCondition}
                     selectedWarranty={selectedWarranty}
                     setSelectedWarranty={setSelectedWarranty}
-                    selectedOs={selectedOs}
-                    setSelectedOs={setSelectedOs}
                   />
                 </div>
               </div>

@@ -1,5 +1,14 @@
-import { defineType, defineField } from "sanity";
+import { defineType, defineField, type ValidationContext } from "sanity";
 import { TrolleyIcon } from "@sanity/icons";
+
+interface AttributeValueItem {
+  attribute?: { _ref?: string };
+  valueString?: string;
+  valueNumber?: number;
+  valueBoolean?: boolean;
+  valueSelect?: string;
+  valueMultiSelect?: string[];
+}
 
 export const productType = defineType({
   name: "product",
@@ -48,37 +57,74 @@ export const productType = defineType({
       description: "Select brand (or Generic/No Brand)",
     }),
     defineField({
-      name: "variant",
-      title: "Product Type",
-      type: "string",
+      name: "productClassification",
+      title: "Product Classification",
+      type: "reference",
       group: "main",
-      description: "Root classification (Electronics, Computing, Others)",
-      options: {
-        list: [
-          { title: "Electronics", value: "electronics" },
-          { title: "Computing", value: "computing" },
-          { title: "Others", value: "others" },
-        ],
-      },
+      to: [{ type: "productClassification" }],
+      description: "Root classification (e.g. Electronics, Computing, Others)",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "categories",
-      title: "Category Path",
-      type: "array",
+      name: "category",
+      title: "Category",
+      type: "reference",
       group: "main",
-      description:
-        "Select category hierarchy (Product Type → Category → Subcategory → Leaf Category)",
-      of: [
-        {
-          type: "reference",
-          to: [{ type: "category" }],
+      to: [{ type: "category" }],
+      description: "Select the leaf category for this product.",
+      options: {
+        filter: ({ document }) => {
+          const classificationRef = (
+            document?.productClassification as { _ref?: string } | undefined
+          )?._ref;
+
+          if (!classificationRef) {
+            return {
+              filter: "!defined(_id)",
+            };
+          }
+
+          return {
+            filter:
+              'productType._ref == $classificationRef && (level == "leaf" || !defined(level))',
+            params: {
+              classificationRef,
+            },
+          };
         },
-      ],
+      },
       validation: (Rule) =>
         Rule.required()
-          .min(1)
-          .error("At least one leaf category selection is required."),
+          .error("A category is required.")
+          .custom(async (categoryRef, context) => {
+            if (!categoryRef?._ref) return true;
+
+            const { document, getClient } = context;
+            const productClassificationRef = (
+              document?.productClassification as { _ref?: string } | undefined
+            )?._ref;
+
+            if (!productClassificationRef) {
+              return "Please select a Product Classification first.";
+            }
+
+            const client = getClient({ apiVersion: "2026-07-07" });
+
+            const categoryDoc = await client.fetch(
+              `*[_id == $id || _id == "drafts." + $id][0]{ "typeRef": productType._ref }`,
+              { id: categoryRef._ref.replace(/^drafts\./, "") }
+            );
+
+            if (
+              categoryDoc?.typeRef &&
+              categoryDoc.typeRef.replace(/^drafts\./, "") !==
+                productClassificationRef.replace(/^drafts\./, "")
+            ) {
+              return "Selected category belongs to a different Product Classification than the one assigned to this product.";
+            }
+
+            return true;
+          }),
     }),
     defineField({
       name: "description",
@@ -161,12 +207,190 @@ export const productType = defineType({
 
     // ─── TAB 2: ADDITIONAL INFORMATION (SPECS TAB) ──────────────
     defineField({
+      name: "attributeValues",
+      title: "Category Attribute Values",
+      type: "array",
+      group: "specs",
+      description:
+        "Structured attribute values based on the selected category's defined attributes.",
+      of: [
+        {
+          type: "object",
+          name: "attributeValue",
+          title: "Attribute Value",
+          fields: [
+            defineField({
+              name: "attribute",
+              title: "Attribute",
+              type: "reference",
+              to: [{ type: "attribute" }],
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "valueString",
+              title: "Text Value",
+              type: "string",
+            }),
+            defineField({
+              name: "valueNumber",
+              title: "Number Value",
+              type: "number",
+            }),
+            defineField({
+              name: "valueBoolean",
+              title: "Boolean Value",
+              type: "boolean",
+            }),
+            defineField({
+              name: "valueSelect",
+              title: "Selected Option",
+              type: "string",
+            }),
+            defineField({
+              name: "valueMultiSelect",
+              title: "Selected Options",
+              type: "array",
+              of: [{ type: "string" }],
+            }),
+          ],
+          preview: {
+            select: {
+              title: "attribute.title",
+              type: "attribute.type",
+              unit: "attribute.unit",
+              valueString: "valueString",
+              valueNumber: "valueNumber",
+              valueBoolean: "valueBoolean",
+              valueSelect: "valueSelect",
+              valueMultiSelect: "valueMultiSelect",
+            },
+            prepare(selection) {
+              const {
+                title,
+                type,
+                unit,
+                valueString,
+                valueNumber,
+                valueBoolean,
+                valueSelect,
+                valueMultiSelect,
+              } = selection;
+
+              let displayVal: string | undefined;
+              if (valueString !== undefined && valueString !== null && valueString !== "") {
+                displayVal = String(valueString);
+              } else if (valueNumber !== undefined && valueNumber !== null) {
+                displayVal = `${valueNumber}${unit ? " " + unit : ""}`;
+              } else if (valueBoolean !== undefined && valueBoolean !== null) {
+                displayVal = valueBoolean ? "Yes" : "No";
+              } else if (valueSelect) {
+                displayVal = `${valueSelect}${unit ? " " + unit : ""}`;
+              } else if (Array.isArray(valueMultiSelect) && valueMultiSelect.length > 0) {
+                displayVal = valueMultiSelect.join(", ");
+              }
+
+              const subtitle = [displayVal || "(no value)", type ? `[${type}]` : null]
+                .filter(Boolean)
+                .join(" · ");
+
+              return {
+                title: title || "(select attribute)",
+                subtitle,
+              };
+            },
+          },
+        },
+      ],
+      validation: (Rule) =>
+        Rule.custom(async (attributeValues: unknown, context) => {
+          const { document, getClient } = context;
+          const categoryRef = (document?.category as { _ref?: string } | undefined)
+            ?._ref;
+
+          if (!categoryRef) {
+            return true;
+          }
+
+          const client = getClient({ apiVersion: "2026-07-07" });
+
+          const categoryDoc = await client.fetch(
+            `*[_id == $id || _id == "drafts." + $id][0]{
+              attributes[]{
+                required,
+                "attributeRef": attribute._ref
+              }
+            }`,
+            { id: categoryRef.replace(/^drafts\./, "") }
+          );
+
+          if (!categoryDoc?.attributes || categoryDoc.attributes.length === 0) {
+            return true;
+          }
+
+          const requiredAttrRefs: string[] = categoryDoc.attributes
+            .filter(
+              (attr: { required?: boolean; attributeRef?: string }) =>
+                attr.required && attr.attributeRef
+            )
+            .map((attr: { attributeRef: string }) =>
+              attr.attributeRef.replace(/^drafts\./, "")
+            );
+
+          if (requiredAttrRefs.length === 0) {
+            return true;
+          }
+
+          const filledAttrRefs = new Set<string>();
+          if (Array.isArray(attributeValues)) {
+            const items = attributeValues as AttributeValueItem[];
+            for (const item of items) {
+              const ref = item?.attribute?._ref?.replace(/^drafts\./, "");
+
+              if (ref) {
+                const hasValue =
+                  (item.valueString !== undefined &&
+                    item.valueString !== null &&
+                    item.valueString !== "") ||
+                  (item.valueNumber !== undefined && item.valueNumber !== null) ||
+                  (item.valueBoolean !== undefined && item.valueBoolean !== null) ||
+                  !!item.valueSelect ||
+                  (Array.isArray(item.valueMultiSelect) &&
+                    item.valueMultiSelect.length > 0);
+
+                if (hasValue) {
+                  filledAttrRefs.add(ref);
+                }
+              }
+            }
+          }
+
+          const missingRefs = requiredAttrRefs.filter(
+            (ref) => !filledAttrRefs.has(ref)
+          );
+
+          if (missingRefs.length > 0) {
+            const missingAttrs = await client.fetch(
+              `*[_id in $missingRefs]{ title }`,
+              { missingRefs }
+            );
+            const titles = missingAttrs
+              .map((a: { title: string }) => a.title)
+              .join(", ");
+            return `Missing required category attribute(s): ${
+              titles || missingRefs.join(", ")
+            }`;
+          }
+
+          return true;
+        }),
+    }),
+    defineField({
       name: "attributes",
-      title: "Category Dynamic Specs",
+      title: "Category Legacy Specs",
       type: "object",
       group: "specs",
       description:
-        "Dynamic technical attributes determined by selected leaf category",
+        "Legacy technical attributes object",
       fields: [
         defineField({
           name: "condition",
@@ -436,8 +660,9 @@ export const productType = defineType({
       description: "Warranty duration in months (if warranty type is not 'No Warranty')",
       hidden: ({ parent }) => parent?.warrantyType === "no_warranty",
       validation: (Rule) =>
-        Rule.custom((duration, context: any) => {
-          if (context.parent?.warrantyType !== "no_warranty" && (!duration || duration < 1)) {
+        Rule.custom((duration, context: ValidationContext) => {
+          const parent = context.parent as { warrantyType?: string } | undefined;
+          if (parent?.warrantyType !== "no_warranty" && (!duration || (duration as number) < 1)) {
             return "Please specify warranty duration in months (minimum 1).";
           }
           return true;

@@ -76,6 +76,92 @@ const UNIVERSITIES_QUERY = defineQuery(
   `*[_type == 'location' && type == 'university'] | order(name asc)`
 );
 
+const PRODUCT_CLASSIFICATIONS_QUERY = defineQuery(
+  `*[_type == "productClassification"] | order(title asc) {
+    _id,
+    title,
+    slug
+  }`
+);
+
+const CATEGORIES_HIERARCHY_QUERY = defineQuery(
+  `*[_type == "category"] | order(title asc) {
+    _id,
+    title,
+    slug,
+    level,
+    description,
+    range,
+    featured,
+    image,
+    productType->{
+      _id,
+      title,
+      slug
+    },
+    parent->{
+      _id,
+      title,
+      slug,
+      parent->{
+        _id,
+        title,
+        slug
+      }
+    },
+    attributes[]{
+      required,
+      attribute->{
+        _id,
+        title,
+        slug,
+        type,
+        options,
+        unit
+      }
+    }
+  }`
+);
+
+const PRODUCTS_BY_CLASSIFICATION_QUERY = defineQuery(
+  `*[_type == "product" && productClassification->slug.current == $classificationSlug] | order(name asc) {
+    ...,
+    productClassification->{
+      _id,
+      title,
+      slug
+    },
+    category->{
+      _id,
+      title,
+      slug,
+      parent->{
+        _id,
+        title,
+        slug
+      }
+    },
+    brand->{
+      _id,
+      name,
+      slug
+    },
+    "attributeMap": attributeValues[]{
+      "key": attribute->title,
+      "slug": attribute->slug.current,
+      "type": attribute->type,
+      "unit": attribute->unit,
+      "value": coalesce(
+        valueString,
+        valueNumber,
+        valueBoolean,
+        valueSelect,
+        valueMultiSelect
+      )
+    }
+  }`
+);
+
 export {
   BANNER_QUERY,
   FEATURED_CATEGORY_QUERY,
@@ -90,4 +176,7 @@ export {
   RELATED_PRODUCTS_QUERY,
   BRAND_QUERY,
   UNIVERSITIES_QUERY,
+  PRODUCT_CLASSIFICATIONS_QUERY,
+  CATEGORIES_HIERARCHY_QUERY,
+  PRODUCTS_BY_CLASSIFICATION_QUERY,
 };
