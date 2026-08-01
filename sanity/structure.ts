@@ -2,7 +2,7 @@ import type { StructureResolver, StructureBuilder } from "sanity/structure";
 import { TagIcon, FolderIcon, MasterDetailIcon, ThLargeIcon } from "@sanity/icons";
 
 // Helper function to generate recursive subcategory tree nodes
-function buildCategorySubtree(S: StructureBuilder, categoryId: string) {
+function buildCategorySubtree(S: StructureBuilder, categoryId: string): ReturnType<StructureBuilder["list"]> {
   return S.list()
     .title("Category Options")
     .items([

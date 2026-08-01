@@ -194,14 +194,14 @@ const ProductGrid = () => {
       filtered = filtered.filter(
         (product) =>
           product.status === conditionFilter ||
-          (product as any).attributes?.condition === conditionFilter
+          (product as Record<string, unknown>).attributes === conditionFilter
       );
     }
 
     // Filter by warranty type attribute
     if (warrantyFilter !== "all") {
       filtered = filtered.filter(
-        (product) => (product as any).warrantyType === warrantyFilter
+        (product) => (product as Record<string, unknown>).warrantyType === warrantyFilter
       );
     }
 

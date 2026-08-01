@@ -4,7 +4,7 @@ import React, { useState, useMemo } from "react";
 import { Category, Product } from "@/sanity.types";
 import ProductCard from "../ProductCard";
 import NoProductsAvailable from "./NoProductsAvailable";
-import { ArrowUpDown, LayoutGrid, Filter, X } from "lucide-react";
+import { ArrowUpDown, LayoutGrid, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "name-asc";
 
-const CategoryProducts = ({ categories, slug, initialProducts }: Props) => {
+export default function CategoryProducts({ categories, slug, initialProducts }: Props) {
   const [sortBy, setSortBy] = useState<SortOption>("featured");
   const [selectedCondition, setSelectedCondition] = useState<string | null>(null);
   const [selectedWarranty, setSelectedWarranty] = useState<string | null>(null);
@@ -32,13 +32,13 @@ const CategoryProducts = ({ categories, slug, initialProducts }: Props) => {
       result = result.filter(
         (p) =>
           p.status === selectedCondition ||
-          (p as any).attributes?.condition === selectedCondition
+          (p as Record<string, unknown>).attributes === selectedCondition
       );
     }
 
     // Warranty filter
     if (selectedWarranty) {
-      result = result.filter((p) => (p as any).warrantyType === selectedWarranty);
+      result = result.filter((p) => (p as Record<string, unknown>).warrantyType === selectedWarranty);
     }
 
     // Sorting

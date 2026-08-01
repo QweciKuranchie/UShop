@@ -219,7 +219,7 @@ const getProductClassifications = unstable_cache(
           slug,
           description
         }`,
-      })) as { data: any[] };
+      })) as { data: Record<string, unknown>[] };
       return data ?? [];
     } catch (error) {
       console.error("Error fetching product classifications:", error);

@@ -15,7 +15,6 @@ import {
   ShoppingBag,
   Package,
   Loader2,
-  X,
   Wallet,
 } from "lucide-react";
 import useCartStore, { CartItem } from "@/store";
@@ -34,7 +33,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
-import { cn } from "@/lib/utils";
 
 interface OrderAddress {
   _id: string;
