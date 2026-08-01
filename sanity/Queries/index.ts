@@ -206,11 +206,18 @@ const getCategories = unstable_cache(
   { revalidate: 900, tags: ["categories", "navigation"] }
 );
 
+export interface ProductClassificationItem {
+  _id: string;
+  title: string;
+  slug?: { current?: string };
+  description?: string;
+}
+
 /**
  * Get product classifications - cached for 1 hour
  */
-const getProductClassifications = unstable_cache(
-  async () => {
+export const getProductClassifications = unstable_cache(
+  async (): Promise<ProductClassificationItem[]> => {
     try {
       const { data } = (await sanityFetch({
         query: `*[_type == "productClassification"] | order(title asc) {
@@ -219,7 +226,7 @@ const getProductClassifications = unstable_cache(
           slug,
           description
         }`,
-      })) as { data: Record<string, unknown>[] };
+      })) as { data: ProductClassificationItem[] };
       return data ?? [];
     } catch (error) {
       console.error("Error fetching product classifications:", error);
