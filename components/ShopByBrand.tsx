@@ -4,9 +4,17 @@ import Title from "./Title";
 import Link from "next/link";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
+import { Brand } from "@/sanity.types";
 
 const ShopByBrands = async () => {
-  const brands = await getAllBrands();
+  const allBrands: Brand[] = await getAllBrands();
+  const displayBrands = allBrands?.filter(
+    (b: Brand) => b.featured === true || Boolean(b.image || b.logo)
+  );
+
+  if (!displayBrands || displayBrands.length === 0) {
+    return null;
+  }
 
   return (
     <Container className="mt-16 lg:mt-24">
@@ -46,7 +54,7 @@ const ShopByBrands = async () => {
       {/* Brands Grid */}
       <div className="bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/5 p-8 lg:p-12 rounded-3xl shadow-xl border border-ushop-pink/10 mb-16">
         <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-pink/40 scrollbar-track-transparent sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 sm:pb-0">
-          {brands?.map((brand, index) => (
+          {displayBrands?.map((brand, index) => (
             <Link
               key={brand?._id}
               href={`/brands/${brand?.slug?.current}`}
@@ -56,17 +64,24 @@ const ShopByBrands = async () => {
               {(() => {
                 const brandImg = (brand as Record<string, unknown>).image || (brand as Record<string, unknown>).logo;
                 return brandImg ? (
-                  <div className="relative w-full h-full flex items-center justify-center">
+                  <div className="relative w-full h-full flex items-center justify-center p-1">
                     <Image
                       src={urlFor(brandImg).url()}
                       alt={`${brand?.name || "Brand"} logo`}
-                      width={120}
-                      height={80}
-                      className="max-w-full max-h-full object-contain group-hover:scale-110 hoverEffect filter group-hover:brightness-110"
+                      fill
+                      className="object-contain p-1 group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ushop-pink/5 to-transparent opacity-0 group-hover:opacity-100 hoverEffect rounded-xl"></div>
                   </div>
-                ) : null;
+                ) : (
+                  <div className="flex flex-col items-center justify-center text-center p-1">
+                    <div className="w-10 h-10 rounded-full bg-ushop-pink/10 text-ushop-pink font-extrabold flex items-center justify-center text-sm mb-1.5 group-hover:bg-ushop-pink group-hover:text-white transition-colors shadow-2xs">
+                      {brand?.name?.charAt(0) || "B"}
+                    </div>
+                    <span className="text-xs font-bold text-gray-800 group-hover:text-ushop-pink transition-colors line-clamp-2 leading-tight">
+                      {brand?.name}
+                    </span>
+                  </div>
+                );
               })()}
             </Link>
           ))}
@@ -76,7 +91,7 @@ const ShopByBrands = async () => {
         <div className="text-center mt-8 pt-6 border-t border-ushop-purple/10">
           <p className="text-dark-text text-sm">
             <span className="font-semibold text-ushop-pink">
-              {brands?.length}+
+              {displayBrands?.length}+
             </span>{" "}
             trusted brands and counting
           </p>

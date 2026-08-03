@@ -18,7 +18,7 @@ export const customerCareData = {
   ],
 }
 export const supportData = {
-  title: "Need Help",
+  title: "Need Help?",
   links: [
   { title: "Help Center", href: "/help" },
   { title: "Customer Service", href: "/support" },

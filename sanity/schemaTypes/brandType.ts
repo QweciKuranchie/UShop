@@ -36,6 +36,13 @@ export const brandType = defineType({
       title: "Description",
       type: "text",
     }),
+    defineField({
+      name: "featured",
+      title: "Featured Brand",
+      type: "boolean",
+      description: "Toggle to feature this brand on the home page",
+      initialValue: false,
+    }),
   ],
   preview: {
         select:{

@@ -320,7 +320,7 @@ const PRODUCTS_BY_CLASSIFICATION_QUERY = defineQuery(
 );
 
 const STORES_QUERY = defineQuery(
-  `*[_type == "store" && status != "suspended"] | order(name asc){
+  `*[_type == "store" && (status != "suspended" || !defined(status))] | order(_createdAt desc){
     _id,
     name,
     slug,

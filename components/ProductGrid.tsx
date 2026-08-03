@@ -716,7 +716,7 @@ const ProductGrid = () => {
                 size="lg"
                 onClick={handleLoadMore}
                 disabled={isLoadingMore}
-                className="px-8 py-3 bg-gradient-to-r from-ushop-purple to-ushop-purple-dark text-white font-semibold rounded-full hover:shadow-lg transform hover:-translate-y-1 hoverEffect transition-all duration-300 inline-flex items-center gap-2 cursor-pointer"
+                className="px-8 py-3 bg-ushop-pink hover:bg-ushop-pink/90 text-white font-semibold rounded-full hover:shadow-lg transform hover:-translate-y-1 hoverEffect transition-all duration-300 inline-flex items-center gap-2 cursor-pointer"
               >
                 {isLoadingMore ? (
                   <>

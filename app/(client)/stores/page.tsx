@@ -8,6 +8,7 @@ import Link from "next/link";
 import {
   Store as StoreIcon,
   CheckCircle2,
+  GraduationCap,
   MapPin,
   Star,
   Package,
@@ -88,8 +89,15 @@ const StoresPage = async () => {
                           <h3 className="font-bold text-gray-900 text-base truncate group-hover:text-ushop-pink transition-colors">
                             {store.name}
                           </h3>
+                          {store.verifiedStudent && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 text-emerald-600 border border-emerald-200/80 rounded-md font-semibold text-[11px] shrink-0" title="Verified Student Seller">
+                              <GraduationCap className="w-3 h-3 text-emerald-600" />
+                              Verified Student
+                            </span>
+                          )}
+
                           {store.verifiedSeller && (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500 fill-emerald-50 shrink-0" />
+                            <CheckCircle2 className="w-4 h-4 text-ushop-pink fill-ushop-pink/10 shrink-0" title="Verified Merchant" />
                           )}
                         </div>
 

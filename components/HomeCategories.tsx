@@ -12,13 +12,23 @@ interface Props {
 }
 
 const HomeCategories = ({ categories }: Props) => {
-  const maxProductCount = React.useMemo(() => {
-    return Math.max(...(categories?.map((c) => c.productCount || 0) || []), 1);
+  const displayCategories = React.useMemo(() => {
+    return categories?.filter(
+      (c: Category) => c.featured === true || Boolean(c.image)
+    );
   }, [categories]);
 
+  const maxProductCount = React.useMemo(() => {
+    return Math.max(...(displayCategories?.map((c) => c.productCount || 0) || []), 1);
+  }, [displayCategories]);
+
   const totalProducts = React.useMemo(() => {
-    return categories?.reduce((sum, cat) => sum + (cat.productCount || 0), 0) || 0;
-  }, [categories]);
+    return displayCategories?.reduce((sum, cat) => sum + (cat.productCount || 0), 0) || 0;
+  }, [displayCategories]);
+
+  if (!displayCategories || displayCategories.length === 0) {
+    return null;
+  }
 
   return (
     <Container className="mt-16 lg:mt-24">
@@ -58,7 +68,7 @@ const HomeCategories = ({ categories }: Props) => {
       {/* Categories Grid */}
       <div className="bg-gradient-to-br from-white via-ushop_light_bg to-ushop-pink/5 p-8 lg:p-12 rounded-3xl shadow-xl border border-ushop-pink/10">
         <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-pink/40 scrollbar-track-transparent sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:pb-0">
-          {categories?.map((category, index) => (
+          {displayCategories?.map((category, index) => (
             <Link
               key={category?._id}
               href={`/category/${category?.slug?.current}`}

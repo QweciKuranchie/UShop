@@ -32,6 +32,14 @@ export const universityType = defineType({
       },
     }),
     defineField({
+      name: "image",
+      title: "Campus Cover Image",
+      type: "image",
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
       name: "city",
       title: "City",
       type: "string",
@@ -43,5 +51,24 @@ export const universityType = defineType({
       type: "string",
       description: "e.g., student.ug.edu.gh, knust.edu.gh (used for student verification)",
     }),
+    defineField({
+      name: "description",
+      title: "Description",
+      type: "text",
+    }),
+    defineField({
+      name: "featured",
+      title: "Featured Campus",
+      type: "boolean",
+      description: "Toggle featured campus showcase on homepage/marketplace",
+      initialValue: false,
+    }),
   ],
+  preview: {
+    select: {
+      title: "name",
+      subtitle: "city",
+      media: "logo",
+    },
+  },
 });

@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache";
-import { Category, Brand, Product, Location } from "@/sanity.types";
+import { Category, Brand, Product, Location, University } from "@/sanity.types";
 import { sanityFetch } from "../lib/live";
 import { getOrderById } from "./userQueries";
 
@@ -461,7 +461,7 @@ const getProductsByUniversitySlug = unstable_cache(
 );
 
 /**
- * Get all stores - cached for 15 minutes
+ * Get all stores directly from Sanity - cached for 30 seconds
  */
 const getStores = unstable_cache(
   async () => {
@@ -469,16 +469,16 @@ const getStores = unstable_cache(
       const { data } = await sanityFetch({ query: STORES_QUERY });
       return data ?? [];
     } catch (error) {
-      console.error("Error fetching stores:", error);
+      console.error("Error fetching stores from Sanity:", error);
       return [];
     }
   },
   ["stores-list"],
-  { revalidate: 900, tags: ["stores"] }
+  { revalidate: 30, tags: ["stores"] }
 );
 
 /**
- * Get single store by slug - cached for 15 minutes
+ * Get single store by slug directly from Sanity - cached for 30 seconds
  */
 const getSingleStoreBySlug = unstable_cache(
   async (slug: string) => {
@@ -489,12 +489,12 @@ const getSingleStoreBySlug = unstable_cache(
       });
       return data ?? null;
     } catch (error) {
-      console.error("Error fetching store by slug:", error);
+      console.error("Error fetching store by slug from Sanity:", error);
       return null;
     }
   },
   ["single-store-by-slug"],
-  { revalidate: 900, tags: ["stores"] }
+  { revalidate: 30, tags: ["stores"] }
 );
 
 /**

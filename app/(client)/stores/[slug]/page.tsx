@@ -11,6 +11,7 @@ import { notFound } from "next/navigation";
 import {
   Store as StoreIcon,
   CheckCircle2,
+  GraduationCap,
   MapPin,
   Star,
   Package,
@@ -40,6 +41,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+function getStoreImageUrl(source: any): string | null {
+  if (!source) return null;
+  if (typeof source === "string") return source;
+  if (typeof source === "object") {
+    if (source.asset || source._ref || source._type === "image") {
+      try {
+        const result = urlFor(source).url();
+        if (result && typeof result === "string" && result.length > 0) {
+          return result;
+        }
+      } catch (err) {
+        console.error("Error building image URL:", err);
+      }
+    }
+    if (source.url && typeof source.url === "string") {
+      return source.url;
+    }
+  }
+  return null;
+}
+
 const SingleStorePage = async ({ params }: Props) => {
   const { slug } = await params;
 
@@ -52,8 +74,9 @@ const SingleStorePage = async ({ params }: Props) => {
     return notFound();
   }
 
-  const logoUrl = store.logo ? urlFor(store.logo).url() : null;
-  const bannerUrl = store.banner ? urlFor(store.banner).url() : null;
+  const logoUrl = getStoreImageUrl(store.logo || store.image);
+  const rawBannerUrl = getStoreImageUrl(store.banner || store.coverImage || store.cover);
+  const bannerUrl = rawBannerUrl || "/assets/images/hero/header_macbook_image.png";
   const products = (fetchedProducts || []) as unknown as Product[];
 
   return (
@@ -71,66 +94,82 @@ const SingleStorePage = async ({ params }: Props) => {
         <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-xs mb-10">
           {/* Cover Header */}
           <div className="relative h-44 sm:h-64 w-full bg-gradient-to-r from-ushop-purple via-ushop-pink to-amber-500 overflow-hidden">
-            {bannerUrl ? (
-              <Image
-                src={bannerUrl}
-                alt={store.name}
-                fill
-                className="object-cover opacity-80"
-              />
-            ) : (
-              <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
-            )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <Image
+              src={bannerUrl}
+              alt={store.name}
+              fill
+              priority
+              unoptimized
+              className="object-cover opacity-90"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
           </div>
 
           {/* Store Info Bar */}
-          <div className="relative px-6 sm:px-10 pb-8 pt-0 -mt-12 sm:-mt-16 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-5">
-              {/* Store Logo */}
-              <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white p-1.5 shadow-lg border-2 border-white shrink-0 overflow-hidden">
-                <div className="relative w-full h-full rounded-xl bg-ushop-pink/10 flex items-center justify-center overflow-hidden">
+          <div className="px-6 sm:px-10 pb-8 pt-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+              {/* Store Logo (Overlapping banner border) */}
+              <div className="relative -mt-12 sm:-mt-14 w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white p-1.5 shadow-lg border-4 border-white shrink-0 overflow-hidden z-20">
+                <div className="relative w-full h-full rounded-xl bg-ushop-pink/10 flex flex-col items-center justify-center overflow-hidden">
                   {logoUrl ? (
                     <Image
                       src={logoUrl}
                       alt={store.name}
                       fill
+                      unoptimized
                       className="object-cover"
                     />
                   ) : (
-                    <StoreIcon className="w-12 h-12 text-ushop-pink" />
+                    <div className="flex flex-col items-center justify-center text-ushop-pink">
+                      <span className="text-xl font-black uppercase tracking-wider">{store.name?.charAt(0) || "S"}</span>
+                      <StoreIcon className="w-5 h-5 opacity-80" />
+                    </div>
                   )}
                 </div>
               </div>
 
               {/* Store Titles */}
-              <div>
+              <div className="pt-2 sm:pt-4">
                 <div className="flex items-center gap-2 mb-1">
-                  <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900">
+                  <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
                     {store.name}
                   </h1>
                   {store.verifiedSeller && (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500 fill-emerald-50 shrink-0" />
+                    <CheckCircle2 className="w-5 h-5 text-ushop-pink fill-ushop-pink/10 shrink-0" />
                   )}
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3 text-xs text-gray-600 mb-2">
+                  {store.verifiedStudent && (
+                    <span className="flex items-center gap-1.5 font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/80 px-2.5 py-1 rounded-md">
+                      <GraduationCap className="w-3.5 h-3.5 text-emerald-600" />
+                      Verified Student
+                    </span>
+                  )}
+
+                  {store.verifiedSeller && (
+                    <span className="flex items-center gap-1.5 font-semibold bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/20 px-2.5 py-1 rounded-md">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-ushop-pink" />
+                      Verified Seller
+                    </span>
+                  )}
+
                   {store.ownerName && (
-                    <span className="flex items-center gap-1 font-medium">
+                    <span className="flex items-center gap-1 font-medium bg-gray-100 px-2.5 py-1 rounded-md text-gray-700">
                       <UserCheck className="w-3.5 h-3.5 text-ushop-pink" />
                       {store.ownerName}
                     </span>
                   )}
 
                   {store.location?.name && (
-                    <span className="flex items-center gap-1 font-medium bg-gray-100 px-2 py-0.5 rounded-md">
+                    <span className="flex items-center gap-1 font-medium bg-gray-100 px-2.5 py-1 rounded-md text-gray-700">
                       <MapPin className="w-3.5 h-3.5 text-ushop-pink" />
                       {store.location.name}
                     </span>
                   )}
 
-                  <span className="flex items-center gap-1 font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md">
-                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  <span className="flex items-center gap-1 font-semibold text-ushop-pink bg-ushop-pink/10 px-2.5 py-1 rounded-md">
+                    <Star className="w-3.5 h-3.5 fill-ushop-pink text-ushop-pink" />
                     {store.rating || 5.0} Rating
                   </span>
                 </div>
@@ -144,7 +183,7 @@ const SingleStorePage = async ({ params }: Props) => {
             {/* Back to Stores Link */}
             <Link
               href="/stores"
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-semibold rounded-xl transition-all"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-ushop-pink/10 hover:bg-ushop-pink text-ushop-pink hover:text-white text-xs font-semibold rounded-xl transition-all self-start sm:self-center"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>All Stores</span>
