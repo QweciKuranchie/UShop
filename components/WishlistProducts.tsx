@@ -20,7 +20,6 @@ import {
   DialogHeader,
   DialogFooter,
 } from "./ui/dialog";
-import { cn } from "@/lib/utils";
 
 const WishlistProducts = () => {
   const [visibleProducts, setVisibleProducts] = useState(8);

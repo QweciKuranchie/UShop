@@ -61,9 +61,11 @@ export const userAccountData = [
   { title: "Order History", href: "/user/orders" },
 ];
 export const productType = [
+  { title: "All", value: "all" },
   { title: "Electronics", value: "electronics" },
   { title: "Computing", value: "computing" },
-  { title: "others", value: "others" },
+  { title: "Gaming", value: "gaming" },
+  { title: "Others", value: "others" },
 ];
 export const faqsData = [
   {

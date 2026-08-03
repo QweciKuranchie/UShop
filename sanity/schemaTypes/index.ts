@@ -1,4 +1,6 @@
 import { type SchemaTypeDefinition } from 'sanity'
+import { attributeType } from './attributeType'
+import { productClassificationType } from './productClassificationType'
 import { categoryType } from './categoryType'
 import { addressType } from './addressType'
 import { brandType } from './brandType'
@@ -16,6 +18,8 @@ import { subscriptionType } from "./subscriptionType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
+    attributeType,
+    productClassificationType,
     categoryType,
     addressType,
     brandType,

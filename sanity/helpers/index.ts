@@ -135,3 +135,34 @@ export const getMyOrders = async (
     };
   }
 };
+
+/**
+  Helper function to resolve a product's attributeValues (from GROQ projection)
+  into a simple key-value map for display on product detail pages and filter cards.
+ */
+export function resolveAttributeValues(
+  attributeMap?: Array<{
+    key?: string;
+    slug?: string;
+    type?: string;
+    unit?: string;
+    value?: unknown;
+  }>
+): Record<string, { label: string; value: unknown; unit?: string; type?: string }> {
+  if (!attributeMap || !Array.isArray(attributeMap)) return {};
+
+  const map: Record<string, { label: string; value: unknown; unit?: string; type?: string }> = {};
+
+  for (const item of attributeMap) {
+    if (item.slug && item.value !== undefined && item.value !== null) {
+      map[item.slug] = {
+        label: item.key || item.slug,
+        value: item.value,
+        unit: item.unit,
+        type: item.type,
+      };
+    }
+  }
+
+  return map;
+}

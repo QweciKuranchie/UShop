@@ -9,6 +9,37 @@ import { Title } from "./ui/text";
 import PriceView from "./PriceView";
 import AddToCartBtn from "./AddToCartBtn";
 
+const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
+  new: {
+    label: "NEW",
+    className: "bg-emerald-100 text-emerald-700 border-emerald-300 group-hover:border-emerald-400",
+  },
+  refurbished: {
+    label: "REFURBISHED",
+    className: "bg-blue-100 text-blue-700 border-blue-300 group-hover:border-blue-400",
+  },
+  like_new: {
+    label: "LIKE NEW",
+    className: "bg-teal-100 text-teal-700 border-teal-300 group-hover:border-teal-400",
+  },
+  excellent: {
+    label: "EXCELLENT",
+    className: "bg-cyan-100 text-cyan-700 border-cyan-300 group-hover:border-cyan-400",
+  },
+  good: {
+    label: "GOOD",
+    className: "bg-gray-100 text-gray-700 border-gray-300 group-hover:border-gray-400",
+  },
+  fair: {
+    label: "FAIR",
+    className: "bg-amber-100 text-amber-700 border-amber-300 group-hover:border-amber-400",
+  },
+  for_parts: {
+    label: "FOR PARTS",
+    className: "bg-red-100 text-red-700 border-red-300 group-hover:border-red-400",
+  },
+};
+
 const ProductCard = ({ product }: { product: Product }) => {
   return (
     <div className="text-sm border-[1px] border-dark-blue/20 rounded-md bg-white group">
@@ -28,59 +59,12 @@ const ProductCard = ({ product }: { product: Product }) => {
           </Link>
         )}
         <AddToWishlistBtn product={product} className="absolute top-2 right-2 z-10" />
-        {product?.status === "new" && (
-          <p
-            className="absolute top-2 left-2 z-10 text-xs border
-         border-emerald-300 px-2 rounded-full 
-         group-hover:border-emerald-300 hoverEffect bg-emerald-100 text-emerald-700 "
+        {product?.status && STATUS_CONFIG[product.status] && (
+          <span
+            className={`absolute top-2 left-2 z-10 text-xs border px-2 py-0.5 rounded-full font-medium tracking-wider hoverEffect ${STATUS_CONFIG[product.status].className}`}
           >
-            NEW
-          </p>
-        )}
-         {product?.status === "like_new" && (
-          <p
-            className="absolute top-2 left-2 z-10 text-xs border
-         border-emerald-300 px-2 rounded-full 
-         group-hover:border-emerald-300 hoverEffect bg-emerald-100 text-emerald-700 "
-          >
-            LIKE-NEW
-          </p>
-        )}
-        {product?.status === "excellent" && (
-          <p
-            className="absolute top-2 left-2 z-10 text-xs border
-         border-blue-300 px-2 rounded-full 
-         group-hover:border-blue hoverEffect bg-blue-100 text-blue-700 "
-          >
-            EXCELLENT
-          </p>
-        )}
-        {product?.status === "good" && (
-          <p
-            className="absolute top-2 left-2 z-10 text-xs border
-         border-gray-300 px-2 rounded-full 
-         group-hover:border-gray-300 hoverEffect bg-gray-100 text-gray-700 "
-          >
-            GOOD
-          </p>
-        )}
-        {product?.status === "fair" && (
-          <p
-            className="absolute top-2 left-2 z-10 text-xs border
-         border-amber-300 px-2 rounded-full 
-         group-hover:border-amber-300 hoverEffect bg-amber-100 text-amber-700 "
-          >
-            FAIR
-          </p>
-        )}
-        {product?.status === "for_parts" && (
-          <p
-            className="absolute top-2 left-2 z-10 text-xs border
-         border-red-300 px-2 rounded-full 
-         group-hover:border-red-300 hoverEffect bg-red-100 text-red-700 "
-          >
-            FOR PARTS
-          </p>
+            {STATUS_CONFIG[product.status].label}
+          </span>
         )}
         {product?.status === "hot" && (
           <Link
@@ -109,9 +93,18 @@ const ProductCard = ({ product }: { product: Product }) => {
         ) : null}
       </div>
       <div className="p-3 flex flex-col gap-2">
-        {product?.categories && product.categories.length > 0 && (
-          <p className="uppercase line-clamp-1 text-xs text-ushop-light-text">
-            {product.categories
+        {(() => {
+          const prod = product as { category?: { title?: string; name?: string } | string; categories?: unknown[] };
+          const hasCategory = prod?.category || (prod?.categories && prod.categories.length > 0);
+          if (!hasCategory) return null;
+
+          let categoryLabel = "";
+          if (typeof prod?.category === "object" && prod.category !== null) {
+            categoryLabel = prod.category.title || prod.category.name || "";
+          } else if (typeof prod?.category === "string") {
+            categoryLabel = prod.category;
+          } else if (Array.isArray(prod?.categories)) {
+            categoryLabel = prod.categories
               .map((cat: unknown) => {
                 if (typeof cat === "string") return cat;
                 if (cat && typeof cat === "object") {
@@ -121,9 +114,17 @@ const ProductCard = ({ product }: { product: Product }) => {
                 return "";
               })
               .filter(Boolean)
-              .join(", ")}
-          </p>
-        )}
+              .join(", ");
+          }
+
+          if (!categoryLabel) return null;
+
+          return (
+            <p className="uppercase line-clamp-1 text-xs text-ushop-light-text">
+              {categoryLabel}
+            </p>
+          );
+        })()}
       <Title className="text-base md:text-base line-clamp-1 text-ushop-purple-dark ">{product?.name}</Title>
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-0.5">

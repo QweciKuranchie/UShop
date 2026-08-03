@@ -156,12 +156,38 @@ const getCategories = unstable_cache(
   async (quantity?: number) => {
     try {
       const query = quantity
-        ? `*[_type == 'category'] | order(name asc) [0...$quantity] {
+        ? `*[_type == 'category'] | order(title asc) [0...$quantity] {
             ...,
+            parent->{ _id, title, slug, level },
+            productType->{ _id, title, slug },
+            attributes[]{
+              required,
+              attribute->{
+                _id,
+                title,
+                slug,
+                type,
+                options,
+                unit
+              }
+            },
             "productCount": count(*[_type == "product" && references(^._id)])
           }`
-        : `*[_type == 'category'] | order(name asc) {
+        : `*[_type == 'category'] | order(title asc) {
             ...,
+            parent->{ _id, title, slug, level },
+            productType->{ _id, title, slug },
+            attributes[]{
+              required,
+              attribute->{
+                _id,
+                title,
+                slug,
+                type,
+                options,
+                unit
+              }
+            },
             "productCount": count(*[_type == "product" && references(^._id)])
           }`;
 
@@ -178,6 +204,37 @@ const getCategories = unstable_cache(
   },
   ["categories-list"],
   { revalidate: 900, tags: ["categories", "navigation"] }
+);
+
+export interface ProductClassificationItem {
+  _id: string;
+  title: string;
+  slug?: { current?: string };
+  description?: string;
+}
+
+/**
+ * Get product classifications - cached for 1 hour
+ */
+const getProductClassifications = unstable_cache(
+  async (): Promise<ProductClassificationItem[]> => {
+    try {
+      const { data } = (await sanityFetch({
+        query: `*[_type == "productClassification"] | order(title asc) {
+          _id,
+          title,
+          slug,
+          description
+        }`,
+      })) as { data: ProductClassificationItem[] };
+      return data ?? [];
+    } catch (error) {
+      console.error("Error fetching product classifications:", error);
+      return [];
+    }
+  },
+  ["product-classifications"],
+  { revalidate: 3600, tags: ["classifications"] }
 );
 
 /**
@@ -297,4 +354,5 @@ export {getBanner,
   getRelatedProducts,
   getOrderById,
   getUniversities,
+  getProductClassifications,
 };

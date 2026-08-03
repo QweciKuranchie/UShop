@@ -3,6 +3,7 @@ import Title from "../Title";
 import { Brand } from "@/sanity.types";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
+
 interface Props {
   brands: Brand[];
   selectedBrand?: string | null;
@@ -24,19 +25,19 @@ const BrandList = ({ brands, selectedBrand, setSelectedBrand }: Props) => {
           <div
             key={brand?._id}
             onClick={() => setSelectedBrand(brand?.slug?.current as string)}
-            className="group flex items-center space-x-3 px-2 py-1 -mx-2 rounded-md hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+            className="group flex items-center space-x-3 px-2 py-1 -mx-2 rounded-md hover:bg-ushop-pink/10 cursor-pointer transition-colors duration-150"
           >
             <RadioGroupItem
               value={brand?.slug?.current as string}
               id={brand?.slug?.current}
-              className="border-gray-300 text-shop_dark_green focus:ring-shop_dark_green"
+              className="border-gray-300 text-ushop-pink focus:ring-ushop-pink"
             />
             <Label
               htmlFor={brand?.slug?.current}
               className={`flex-1 cursor-pointer transition-colors duration-150 ${
                 selectedBrand === brand?.slug?.current
-                  ? "font-medium text-shop_dark_green"
-                  : "text-gray-700 group-hover:text-gray-900"
+                  ? "font-semibold text-ushop-pink"
+                  : "text-gray-700 group-hover:text-ushop-pink"
               }`}
             >
               {brand?.name}
@@ -51,7 +52,7 @@ const BrandList = ({ brands, selectedBrand, setSelectedBrand }: Props) => {
             e.stopPropagation();
             setSelectedBrand(null);
           }}
-          className="mt-4 text-xs font-medium text-gray-600 hover:text-shop_dark_green underline underline-offset-2 decoration-1 transition-colors duration-150"
+          className="mt-4 text-xs font-medium text-ushop-pink hover:underline underline-offset-2 decoration-1 transition-colors duration-150"
         >
           Clear brand filter
         </button>
