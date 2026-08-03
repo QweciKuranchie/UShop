@@ -216,7 +216,7 @@ export interface ProductClassificationItem {
 /**
  * Get product classifications - cached for 1 hour
  */
-export const getProductClassifications = unstable_cache(
+const getProductClassifications = unstable_cache(
   async (): Promise<ProductClassificationItem[]> => {
     try {
       const { data } = (await sanityFetch({
