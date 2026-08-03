@@ -20,11 +20,20 @@ import {
   DialogHeader,
   DialogFooter,
 } from "./ui/dialog";
+import { useUser } from "@clerk/nextjs";
+import NoAccessToCart from "./NoAccessToCart";
 
 const WishlistProducts = () => {
+  const { user, isLoaded } = useUser();
   const [visibleProducts, setVisibleProducts] = useState(8);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { favoriteProduct, removeFromFavorite, resetFavorite } = useCartStore();
+
+  if (isLoaded && !user) {
+    return (
+      <NoAccessToCart details="Log in to save and view your favorite products. Don't miss out on the items you love!" />
+    );
+  }
 
   const loadMore = () => {
     setVisibleProducts((prev) => Math.min(prev + 8, favoriteProduct.length));
@@ -94,7 +103,7 @@ const WishlistProducts = () => {
                         query: { id: product?._id },
                       }}
                     >
-                      <h3 className="font-semibold text-gray-900 line-clamp-2 text-sm leading-tight hover:text-ushop-purple transition-colors">
+                      <h3 className="font-semibold text-gray-900 line-clamp-2 text-sm leading-tight hover:text-ushop-pink transition-colors">
                         {product?.name}
                       </h3>
                     </Link>
@@ -146,7 +155,7 @@ const WishlistProducts = () => {
               <Button
                 onClick={loadMore}
                 variant="outline"
-                className="hover:bg-ushop-purple-dark hover:text-white hover:border-ushop-purple-dark font-semibold px-8 py-2"
+                className="hover:bg-ushop-pink hover:text-white hover:border-ushop-pink font-semibold px-8 py-2"
               >
                 Load More Products
               </Button>

@@ -19,7 +19,7 @@ import {
   Award,
   ShoppingBag,
   Flame,
-  Sparkles,
+  Loader2,
   Check,
   Trash2,
   X,
@@ -87,14 +87,24 @@ const ProductGrid = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("grid-5");
   const [sortBy, setSortBy] = useState<SortOption>("name-asc");
   const [showFilters, setShowFilters] = useState(false);
-  const [productsPerPage] = useState(20);
+  const [productsPerPage] = useState(12);
+  const [displayLimit, setDisplayLimit] = useState(12);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 10000]);
   const [stockStatus, setStockStatus] = useState<string>("all");
   const [rating, setRating] = useState<string>("all");
   const [conditionFilter, setConditionFilter] = useState<string>("all");
   const [warrantyFilter, setWarrantyFilter] = useState<string>("all");
 
-  const query = `*[_type == "product" && (
+  const handleLoadMore = () => {
+    setIsLoadingMore(true);
+    setTimeout(() => {
+      setDisplayLimit((prev) => prev + 12);
+      setIsLoadingMore(false);
+    }, 300);
+  };
+
+  const query = `*[_type == "product" && (featured == true || isFeatured == true) && (
     $variant == "all" || 
     $variant == "" || 
     lower(productClassification->title) match $variant + "*" || 
@@ -131,8 +141,26 @@ const ProductGrid = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await client.fetch(query, params);
-        setProducts(response);
+        let response = await client.fetch(query, params);
+        // Fallback if no products are explicitly marked as featured in Sanity yet
+        if ((!response || response.length === 0)) {
+          const fallbackQuery = `*[_type == "product" && (
+            $variant == "all" || 
+            $variant == "" || 
+            lower(productClassification->title) match $variant + "*" || 
+            lower(productClassification->slug.current) match $variant + "*" || 
+            lower(variant) match $variant + "*"
+          )] | order(${getSortQuery(sortBy)}){
+            ...,
+            "categories": categories[]->title,
+            "category": category->{ _id, title, slug },
+            "brand": brand->{ _id, name, slug },
+            "productClassification": productClassification->{ _id, title, slug },
+            "store": store->{ _id, name, slug }
+          }`;
+          response = await client.fetch(fallbackQuery, params);
+        }
+        setProducts(response || []);
       } catch (error) {
         console.log("Product fetching Error", error);
       } finally {
@@ -528,7 +556,7 @@ const ProductGrid = () => {
                           </SelectItem>
                           <SelectItem value="4">
                             <span className="flex items-center gap-2">
-                              <Sparkles className="w-4 h-4 text-ushop-pink" /> New & Hot (High Quality)
+                              <Award className="w-4 h-4 text-ushop-pink" /> New & Hot (High Quality)
                             </span>
                           </SelectItem>
                           <SelectItem value="3">
@@ -550,7 +578,7 @@ const ProductGrid = () => {
                               </>
                             ) : rating === "4" ? (
                               <>
-                                <Sparkles className="w-3.5 h-3.5" /> High Quality+
+                                <Award className="w-3.5 h-3.5" /> High Quality+
                               </>
                             ) : (
                               <>
@@ -633,7 +661,7 @@ const ProductGrid = () => {
                               </>
                             ) : rating === "4" ? (
                               <>
-                                <Sparkles className="w-3 h-3" /> High Quality
+                                <Award className="w-3 h-3" /> High Quality
                               </>
                             ) : (
                               <>
@@ -656,43 +684,54 @@ const ProductGrid = () => {
       {loading ? (
         <ProductGridSkeleton />
       ) : filteredProducts?.length ? (
-        <div className={`grid ${getGridClasses()}`}>
-          <AnimatePresence mode="popLayout">
-            {filteredProducts
-              ?.slice(0, productsPerPage)
-              .map((product, index) => (
-                <motion.div
-                  key={product?._id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{
-                    duration: 0.3,
-                    delay: index * 0.05,
-                    layout: { duration: 0.3 },
-                  }}
-                  className="group"
-                >
-                  <ProductCard product={product} />
-                </motion.div>
-              ))}
-          </AnimatePresence>
-        </div>
+        <>
+          <div className={`grid ${getGridClasses()}`}>
+            <AnimatePresence mode="popLayout">
+              {filteredProducts
+                ?.slice(0, displayLimit)
+                .map((product, index) => (
+                  <motion.div
+                    key={product?._id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{
+                      duration: 0.3,
+                      delay: index * 0.03,
+                      layout: { duration: 0.3 },
+                    }}
+                    className="group"
+                  >
+                    <ProductCard product={product} />
+                  </motion.div>
+                ))}
+            </AnimatePresence>
+          </div>
+
+          {/* Load More Section */}
+          {displayLimit < filteredProducts.length && (
+            <div className="text-center mt-12">
+              <Button
+                size="lg"
+                onClick={handleLoadMore}
+                disabled={isLoadingMore}
+                className="px-8 py-3 bg-gradient-to-r from-ushop-purple to-ushop-purple-dark text-white font-semibold rounded-full hover:shadow-lg transform hover:-translate-y-1 hoverEffect transition-all duration-300 inline-flex items-center gap-2 cursor-pointer"
+              >
+                {isLoadingMore ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Loading Products...</span>
+                  </>
+                ) : (
+                  <span>Load More Products</span>
+                )}
+              </Button>
+            </div>
+          )}
+        </>
       ) : (
         <NoProductsAvailable selectedTab={selectedTab} />
-      )}
-
-      {/* Load More Section */}
-      {filteredProducts?.length > productsPerPage && (
-        <div className="text-center mt-12">
-          <Button
-            size="lg"
-            className="px-8 py-3 bg-gradient-to-r from-ushop-purple to-ushop-purple-dark text-white font-semibold rounded-full hover:shadow-lg transform hover:-translate-y-1 hoverEffect"
-          >
-            Load More Products
-          </Button>
-        </div>
       )}
     </Container>
   );

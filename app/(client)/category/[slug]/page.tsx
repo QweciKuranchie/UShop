@@ -1,13 +1,5 @@
 import Container from "@/components/Container";
-import Title from "@/components/Title";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { getCategories } from "@/sanity/Queries";
 import { Category, Product } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
@@ -18,8 +10,6 @@ import {
   ArrowRight,
   Package,
   Tag,
-  Grid3X3,
-  Filter,
   TrendingUp,
 } from "lucide-react";
 import React from "react";
@@ -46,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!currentCategory) {
     return {
-      title: "Category Not Found",
+      title: "Category Not Found | UShop",
     };
   }
 
@@ -81,7 +71,7 @@ export default async function CategoryPage({ params }: Props) {
   // Get related categories (exclude current category)
   const relatedCategories = categories
     .filter((cat) => cat.slug?.current !== slug)
-    .slice(0, 6);
+    .slice(0, 4);
 
   // Generate structured data
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -96,7 +86,7 @@ export default async function CategoryPage({ params }: Props) {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/5">
+    <div className="min-h-screen bg-gray-50/50 py-6">
       {/* JSON-LD Structured Data */}
       <script
         type="application/ld+json"
@@ -111,198 +101,138 @@ export default async function CategoryPage({ params }: Props) {
         }}
       />
 
-      <Container className="py-10">
-        {/* Breadcrumb */}
-        <div className="mb-8">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/category" />}>Categories</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>{categoryTitle}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
+      <Container>
+        {/* Dynamic Breadcrumb */}
+        <DynamicBreadcrumb
+          customItems={[
+            { label: "Categories", href: "/category" },
+            { label: categoryTitle, href: `/category/${slug}` },
+          ]}
+        />
 
-        {/* Category Header Section */}
-        <div className="bg-white/70 backdrop-blur-sm rounded-xl p-6 lg:p-8 shadow-md border border-gray-100/50 mb-8">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            {/* Left Side - Category Info */}
-            <div className="flex-1">
-              <div className="flex items-start gap-4 mb-4">
-                {/* Category Image */}
-                {currentCategory?.image && (
-                  <div className="flex-shrink-0 w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-ushop-pink/10 to-ushop_light_bg rounded-xl overflow-hidden">
-                    <Image
-                      src={urlFor(currentCategory.image).url()}
-                      alt={categoryTitle}
-                      width={80}
-                      height={80}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
+        {/* Category Header Showcase Card */}
+        <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xs border border-gray-100 mb-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
+            {currentCategory?.image && (
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-ushop-pink/10 border border-ushop-pink/20 flex items-center justify-center shrink-0 p-3 overflow-hidden shadow-2xs">
+                <Image
+                  src={urlFor(currentCategory.image).url()}
+                  alt={categoryTitle}
+                  fill
+                  className="object-contain p-2"
+                  priority
+                />
+              </div>
+            )}
+
+            <div>
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900">
+                  {categoryTitle}
+                </h1>
+
+                {currentCategory?.featured && (
+                  <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200/60 px-2.5 py-0.5 rounded-full text-xs font-semibold">
+                    <Tag className="w-3 h-3 text-amber-500" /> Featured
+                  </span>
                 )}
-
-                <div className="flex-1">
-                  <Title className="text-2xl lg:text-3xl font-bold text-ushop-purple-dark mb-2">
-                    {categoryTitle}
-                  </Title>
-
-                  {/* Category Stats */}
-                  <div className="flex items-center gap-4 text-sm text-dark-text mb-3">
-                    {currentCategory?.featured && (
-                      <div className="flex items-center gap-1 text-ushop-pink">
-                        <Tag className="w-4 h-4" />
-                        <span>Featured Category</span>
-                      </div>
-                    )}
-                    {currentCategory?.range && (
-                      <div className="flex items-center gap-1">
-                        <TrendingUp className="w-4 h-4" />
-                        <span>Range: {currentCategory.range}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Category Description */}
-                  {currentCategory?.description && (
-                    <p className="text-dark-text text-sm lg:text-base line-clamp-2">
-                      {currentCategory.description}
-                    </p>
-                  )}
-                </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3">
-                <Link
-                  href="/category"
-                  className="inline-flex items-center gap-2 text-ushop-purple hover:text-ushop-pink transition-colors duration-300 text-sm font-medium"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Back to Categories
-                </Link>
+              {currentCategory?.description && (
+                <p className="text-xs sm:text-sm text-gray-600 max-w-2xl leading-relaxed mb-3">
+                  {currentCategory.description}
+                </p>
+              )}
 
-                <div className="h-4 w-px bg-gray-300" />
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 text-xs text-gray-500">
+                <span className="font-semibold text-gray-900 bg-gray-100 px-2.5 py-1 rounded-md">
+                  {products.length} {products.length === 1 ? "Product Available" : "Products Available"}
+                </span>
 
-                <Link
-                  href="/shop"
-                  className="inline-flex items-center gap-2 bg-ushop-pink hover:bg-ushop-purple text-white px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
-                >
-                  <Package className="w-4 h-4" />
-                  View All Products
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Right Side - Quick Actions */}
-            <div className="flex flex-col gap-3 lg:items-end">
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1 text-xs text-dark-text bg-white/60 px-3 py-1.5 rounded-full">
-                  <Grid3X3 className="w-3 h-3" />
-                  <span>Category View</span>
-                </div>
-                <div className="flex items-center gap-1 text-xs text-dark-text bg-white/60 px-3 py-1.5 rounded-full">
-                  <Filter className="w-3 h-3" />
-                  <span>Filtered Results</span>
-                </div>
+                {currentCategory?.range && (
+                  <span className="flex items-center gap-1 bg-ushop-pink/10 text-ushop-pink px-2.5 py-1 rounded-md font-medium">
+                    <TrendingUp className="w-3.5 h-3.5" />
+                    Range: {currentCategory.range}
+                  </span>
+                )}
               </div>
             </div>
           </div>
+
+          <div className="flex items-center gap-3 shrink-0">
+            <Link
+              href="/category"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-semibold rounded-xl transition-all"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>All Categories</span>
+            </Link>
+          </div>
         </div>
 
-        {/* Main Content */}
+        {/* Category Main Product Grid */}
         <CategoryProducts
           categories={categories}
           slug={slug}
           initialProducts={products}
         />
 
-        {/* Related Categories Section */}
+        {/* Related Categories Grid */}
         {relatedCategories.length > 0 && (
-          <div className="mt-12">
+          <div className="mt-16 pt-10 border-t border-gray-200">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl lg:text-2xl font-bold text-ushop-purple-dark">
+              <h3 className="text-lg font-bold text-gray-900">
                 Explore Other Categories
               </h3>
               <Link
                 href="/category"
-                className="text-ushop-pink hover:text-ushop-purple-dark font-medium text-sm flex items-center gap-1 transition-colors duration-300"
+                className="text-xs font-semibold text-ushop-pink hover:underline flex items-center gap-1"
               >
-                View All
-                <ArrowRight className="w-4 h-4" />
+                <span>View All Directory</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {relatedCategories.map((category) => (
-                <Link
-                  key={category._id}
-                  href={`/category/${category.slug?.current}`}
-                  className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100 hover:border-ushop-pink p-4 text-center"
-                >
-                  {/* Category Image */}
-                  <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-ushop-pink/10 to-ushop_light_bg rounded-lg flex items-center justify-center">
-                    {category.image ? (
-                      <Image
-                        src={urlFor(category.image).url()}
-                        alt={category.title || "Category"}
-                        width={32}
-                        height={32}
-                        className="w-8 h-8 object-contain"
-                      />
-                    ) : (
-                      <Package className="w-6 h-6 text-ushop-pink opacity-60" />
-                    )}
-                  </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              {relatedCategories.map((category) => {
+                const img = category.image ? urlFor(category.image).url() : null;
+                const catSlug = category.slug?.current || "";
 
-                  {/* Category Title */}
-                  <h4 className="text-sm font-medium text-ushop-purple-dark group-hover:text-ushop-pink transition-colors duration-300 line-clamp-1">
-                    {category.title}
-                  </h4>
-                </Link>
-              ))}
+                return (
+                  <Link
+                    key={category._id}
+                    href={`/category/${catSlug}`}
+                    className="group bg-white rounded-2xl p-4 border border-gray-100 shadow-xs hover:shadow-md hover:border-ushop-pink/30 transition-all flex items-center gap-4"
+                  >
+                    <div className="relative w-12 h-12 rounded-xl bg-ushop-pink/10 border border-ushop-pink/20 flex items-center justify-center shrink-0 overflow-hidden">
+                      {img ? (
+                        <Image
+                          src={img}
+                          alt={category.title || "Category"}
+                          fill
+                          className="object-contain p-1.5 group-hover:scale-105 transition-transform"
+                        />
+                      ) : (
+                        <Package className="w-5 h-5 text-ushop-pink" />
+                      )}
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-sm font-bold text-gray-900 group-hover:text-ushop-pink transition-colors truncate">
+                        {category.title}
+                      </h4>
+                      <p className="text-xs text-gray-400 capitalize truncate mt-0.5">
+                        {catSlug.replace(/-/g, " ")}
+                      </p>
+                    </div>
+
+                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-ushop-pink group-hover:translate-x-1 transition-all shrink-0" />
+                  </Link>
+                );
+              })}
             </div>
           </div>
         )}
-
-        {/* Call to Action Section */}
-        <div className="mt-12 bg-gradient-to-r from-ushop-pink/5 via-ushop-purple/5 to-ushop-pink/5 rounded-xl p-6 lg:p-8 border border-ushop-pink/20 text-center">
-          <div className="max-w-2xl mx-auto">
-            <h3 className="text-xl lg:text-2xl font-bold text-ushop-purple-dark mb-3">
-              Discover More Amazing Products
-            </h3>
-            <p className="text-dark-text mb-6 text-sm lg:text-base">
-              Can&apos;t find what you&apos;re looking for in {categoryTitle}?
-              Explore our complete collection of products across all categories.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                href="/shop"
-                className="inline-flex items-center justify-center gap-2 bg-ushop-purple hover:bg-ushop-pink text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-              >
-                <Package className="w-5 h-5" />
-                Browse All Products
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link
-                href="/category"
-                className="inline-flex items-center justify-center gap-2 border-2 border-ushop-pink text-ushop-pink hover:bg-ushop-pink hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300"
-              >
-                <Grid3X3 className="w-5 h-5" />
-                All Categories
-              </Link>
-            </div>
-          </div>
-        </div>
       </Container>
     </div>
   );

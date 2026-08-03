@@ -50,7 +50,7 @@ const UserDropdown = () => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
-        <button className="flex items-center gap-2 py-1 px-2 rounded-lg hover:bg-ushop_light_bg group border border-ushop-purple/20 hover:border-ushop-purple hoverEffect">
+        <button className="flex items-center gap-2 py-1 px-2 rounded-lg hover:bg-ushop_light_bg group border border-ushop-pink/20 hover:border-ushop-pink hoverEffect">
           <div className="relative">
             {user.imageUrl ? (
               <Image
@@ -61,12 +61,12 @@ const UserDropdown = () => {
                 className="w-8 h-8 rounded-full object-cover border-2 border-ushop-purple/20 group-hover:border-ushop-purple/40 transition-colors"
               />
             ) : (
-              <UserCircle className="w-8 h-8 text-gray-500 group-hover:text-ushop-purple transition-colors" />
+              <UserCircle className="w-8 h-8 text-gray-500 group-hover:text-ushop-pink transition-colors" />
             )}
             <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white shadow-sm"></div>
           </div>
           <div className="hidden lg:flex flex-col items-start">
-            <span className="text-sm font-medium text-gray-800 group-hover:text-ushop-purple transition-colors">
+            <span className="text-sm font-medium text-gray-800 group-hover:text-ushop-pink transition-colors">
               {user.firstName || "User"}
             </span>
           </div>
@@ -120,8 +120,8 @@ const UserDropdown = () => {
             onClick={handleLinkClick}
             className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-ushop_light_bg transition-colors duration-200 group"
           >
-            <User className="w-4 h-4 text-gray-500 group-hover:text-ushop-purple transition-colors" />
-            <span className="text-gray-800 group-hover:text-ushop-purple transition-colors">
+            <User className="w-4 h-4 text-gray-500 group-hover:text-ushop-pink transition-colors" />
+            <span className="text-gray-800 group-hover:text-ushop-pink transition-colors">
               My Profile
             </span>
           </Link>
@@ -131,9 +131,9 @@ const UserDropdown = () => {
             onClick={handleLinkClick}
             className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-ushop_light_bg transition-colors duration-200 group"
           >
-            <Package className="w-4 h-4 text-gray-500 group-hover:text-ushop-purple transition-colors" />
+            <Package className="w-4 h-4 text-gray-500 group-hover:text-ushop-pink transition-colors" />
             <div className="flex items-center justify-between w-full">
-              <span className="text-gray-800 group-hover:text-ushop-purple transition-colors">
+              <span className="text-gray-800 group-hover:text-ushop-pink transition-colors">
                 My Orders
               </span>
               {isLoadingOrders ? (
@@ -153,8 +153,8 @@ const UserDropdown = () => {
             onClick={handleLinkClick}
             className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-ushop_light_bg transition-colors duration-200 group"
           >
-            <Heart className="w-4 h-4 text-gray-500 group-hover:text-ushop-purple transition-colors" />
-            <span className="text-gray-800 group-hover:text-ushop-purple transition-colors">
+            <Heart className="w-4 h-4 text-gray-500 group-hover:text-ushop-pink transition-colors" />
+            <span className="text-gray-800 group-hover:text-ushop-pink transition-colors">
               Wishlist
             </span>
           </Link>
@@ -164,8 +164,8 @@ const UserDropdown = () => {
             onClick={handleLinkClick}
             className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-ushop_light_bg transition-colors duration-200 group"
           >
-            <Logs className="w-4 h-4 text-gray-500 group-hover:text-ushop-purple transition-colors" />
-            <span className="text-gray-800 group-hover:text-ushop-purple transition-colors">
+            <Logs className="w-4 h-4 text-gray-500 group-hover:text-ushop-pink transition-colors" />
+            <span className="text-gray-800 group-hover:text-ushop-pink transition-colors">
               Dashboard
             </span>
           </Link>
@@ -175,8 +175,8 @@ const UserDropdown = () => {
             onClick={handleLinkClick}
             className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-ushop_light_bg transition-colors duration-200 group"
           >
-            <Settings className="w-4 h-4 text-gray-500 group-hover:text-ushop-purple transition-colors" />
-            <span className="text-gray-800 group-hover:text-ushop-purple transition-colors">
+            <Settings className="w-4 h-4 text-gray-500 group-hover:text-ushop-pink transition-colors" />
+            <span className="text-gray-800 group-hover:text-ushop-pink transition-colors">
               Settings
             </span>
           </Link>
@@ -191,7 +191,7 @@ const UserDropdown = () => {
             className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-ushop_light_bg transition-colors duration-200 group"
           >
             <svg
-              className="w-4 h-4 text-gray-500 group-hover:text-ushop-purple transition-colors"
+              className="w-4 h-4 text-gray-500 group-hover:text-ushop-pink transition-colors"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -203,7 +203,7 @@ const UserDropdown = () => {
                 d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span className="text-gray-800 group-hover:text-ushop-purple transition-colors">
+            <span className="text-gray-800 group-hover:text-ushop-pink transition-colors">
               Help & Support
             </span>
           </Link>

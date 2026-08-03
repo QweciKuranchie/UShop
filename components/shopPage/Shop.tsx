@@ -8,6 +8,7 @@ import CategoryList, { ProductClassificationItem } from "./CategoryList";
 import AttributeList, { CONDITIONS, WARRANTIES } from "./AttributeList";
 import { Filter, X } from "lucide-react";
 import ProductCard from "../ProductCard";
+import PaginatedProductGrid from "../PaginatedProductGrid";
 import NoProductAvailable from "../product/NoProductsAvailable";
 import BrandList from "./BrandList";
 import { useSearchParams } from "next/navigation";
@@ -66,10 +67,11 @@ const Shop = ({ categories, brands, classifications = [] }: Props) => {
     setDynamicAttrFilters({});
   };
 
-  // Reset dynamic specs when Category changes
+  // Reset dynamic specs and brand when Category changes
   const handleCategorySelect: React.Dispatch<React.SetStateAction<string | null>> = (value) => {
     const nextCat = typeof value === "function" ? value(selectedCategory) : value;
     setSelectedCategory(nextCat);
+    setSelectedBrand(null);
     setDynamicAttrFilters({});
   };
 
@@ -358,6 +360,8 @@ const Shop = ({ categories, brands, classifications = [] }: Props) => {
                     brands={brands}
                     setSelectedBrand={setSelectedBrand}
                     selectedBrand={selectedBrand}
+                    selectedCategory={selectedCategory}
+                    categories={categories}
                   />
                   <PriceList
                     setSelectedPrice={setSelectedPrice}
@@ -424,6 +428,8 @@ const Shop = ({ categories, brands, classifications = [] }: Props) => {
                     brands={brands}
                     setSelectedBrand={setSelectedBrand}
                     selectedBrand={selectedBrand}
+                    selectedCategory={selectedCategory}
+                    categories={categories}
                   />
                   <PriceList
                     setSelectedPrice={setSelectedPrice}
@@ -476,11 +482,7 @@ const Shop = ({ categories, brands, classifications = [] }: Props) => {
                         Showing filtered products
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-                      {products?.map((product) => (
-                        <ProductCard key={product?._id} product={product} />
-                      ))}
-                    </div>
+                    <PaginatedProductGrid products={products} initialLimit={12} incrementBy={12} />
                   </div>
                 ) : (
                   <div className="py-12">

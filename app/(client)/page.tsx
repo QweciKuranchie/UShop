@@ -5,6 +5,7 @@ import ProductGrid from "@/components/ProductGrid";
 import HomeCategories from "@/components/HomeCategories";
 import { getCategories } from "@/sanity/Queries";
 import ShopByBrand from "@/components/ShopByBrand";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const Home = async () => {
   const categories = await getCategories(6);
@@ -17,6 +18,7 @@ const Home = async () => {
       </div>
       <HomeCategories categories={categories} />
       <ShopByBrand />
+      <ScrollToTop />
     </Container>
   );
 };

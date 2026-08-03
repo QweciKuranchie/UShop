@@ -46,8 +46,73 @@ const ADMIN_CATEGORIES_QUERY = defineQuery(
 const PRODUCT_BY_SLUG_QUERY = defineQuery(
   `*[_type == "product" && slug.current == $slug] | order(name asc) [0]{
     ...,
+    productClassification->{
+      _id,
+      title,
+      slug
+    },
+    category->{
+      _id,
+      title,
+      slug,
+      level,
+      parent->{
+        _id,
+        title,
+        slug,
+        level,
+        parent->{
+          _id,
+          title,
+          slug,
+          level
+        }
+      }
+    },
+    brand->{
+      _id,
+      name,
+      title,
+      slug,
+      image,
+      description
+    },
+    store->{
+      _id,
+      name,
+      slug,
+      logo,
+      ownerName,
+      location->{ _id, name, city, slug },
+      rating,
+      verifiedStudent,
+      verifiedSeller
+    },
+    "attributeMap": attributeValues[]{
+      "key": attribute->title,
+      "slug": attribute->slug.current,
+      "type": attribute->type,
+      "unit": attribute->unit,
+      "value": coalesce(
+        valueString,
+        valueNumber,
+        valueBoolean,
+        valueSelect,
+        valueMultiSelect
+      )
+    },
     "averageRating": math::avg(*[_type == "review" && product._ref == ^._id && status == "approved"].rating),
-    "totalReviews": count(*[_type == "review" && product._ref == ^._id && status == "approved"])
+    "totalReviews": count(*[_type == "review" && product._ref == ^._id && status == "approved"]),
+    "reviews": *[_type == "review" && product._ref == ^._id && status == "approved"] | order(_createdAt desc) {
+      _id,
+      rating,
+      title,
+      content,
+      helpful,
+      isVerifiedPurchase,
+      "createdAt": _createdAt,
+      "user": coalesce(user->{ firstName, lastName }, { "firstName": coalesce(userName, "Customer"), "lastName": "" })
+    }
   }`
 );
 
@@ -68,12 +133,104 @@ const RELATED_PRODUCTS_QUERY = defineQuery(
   }`
 );
 
+const PRODUCTS_BY_STORE_QUERY = defineQuery(
+  `*[_type == "product" && store._ref == $storeId && slug.current != $currentSlug] | order(_createdAt desc) [0...$limit]{
+    _id,
+    name,
+    slug,
+    price,
+    discount,
+    stock,
+    images,
+    categories[]->{
+      _id,
+      title,
+      slug
+    }
+  }`
+);
+
 const BRAND_QUERY = defineQuery(`*[_type == "product" && slug.current == $slug]{
 "brandName": brand->title
 }`);
 
+const BRANDS_WITH_PRODUCT_COUNT_QUERY = defineQuery(
+  `*[_type == 'brand'] | order(name asc) {
+    _id,
+    name,
+    slug,
+    image,
+    description,
+    "productCount": count(*[_type == "product" && brand._ref == ^._id])
+  }`
+);
+
+const SINGLE_BRAND_BY_SLUG_QUERY = defineQuery(
+  `*[_type == 'brand' && slug.current == $slug][0] {
+    _id,
+    name,
+    slug,
+    image,
+    description,
+    "productCount": count(*[_type == "product" && brand._ref == ^._id])
+  }`
+);
+
+const PRODUCTS_BY_BRAND_SLUG_QUERY = defineQuery(
+  `*[_type == 'product' && brand->slug.current == $slug] | order(name asc) {
+    ...,
+    "categories": categories[]->title,
+    attributeValues[]{
+      ...,
+      attribute->{ _id, title, slug, type }
+    }
+  }`
+);
+
 const UNIVERSITIES_QUERY = defineQuery(
-  `*[_type == 'location' && type == 'university'] | order(name asc)`
+  `*[_type in ["location", "university"] && (type == "university" || _type == "university")] | order(name asc) {
+    _id,
+    name,
+    slug,
+    city,
+    image,
+    logo,
+    "domain": coalesce(emailDomain, domain),
+    "productCount": count(*[_type == "product" && (
+      references(^._id) || 
+      references(*[_type == "store" && references(^._id)]._id)
+    )])
+  }`
+);
+
+const SINGLE_UNIVERSITY_BY_SLUG_QUERY = defineQuery(
+  `*[_type in ["location", "university"] && (type == "university" || _type == "university") && slug.current == $slug][0] {
+    _id,
+    name,
+    slug,
+    city,
+    image,
+    logo,
+    "domain": coalesce(emailDomain, domain),
+    "productCount": count(*[_type == "product" && (
+      references(^._id) || 
+      references(*[_type == "store" && references(^._id)]._id)
+    )])
+  }`
+);
+
+const PRODUCTS_BY_UNIVERSITY_SLUG_QUERY = defineQuery(
+  `*[_type == "product" && (
+    references(*[_type in ["location", "university"] && slug.current == $slug]._id) ||
+    references(*[_type == "store" && references(*[_type in ["location", "university"] && slug.current == $slug]._id)]._id)
+  )] | order(name asc) {
+    ...,
+    "categories": categories[]->title,
+    attributeValues[]{
+      ...,
+      attribute->{ _id, title, slug, type }
+    }
+  }`
 );
 
 const PRODUCT_CLASSIFICATIONS_QUERY = defineQuery(
@@ -162,6 +319,68 @@ const PRODUCTS_BY_CLASSIFICATION_QUERY = defineQuery(
   }`
 );
 
+const STORES_QUERY = defineQuery(
+  `*[_type == "store" && status != "suspended"] | order(name asc){
+    _id,
+    name,
+    slug,
+    ownerName,
+    description,
+    logo,
+    banner,
+    verifiedStudent,
+    verifiedSeller,
+    rating,
+    location->{
+      _id,
+      name,
+      city,
+      slug
+    },
+    "productCount": count(*[_type == "product" && store._ref == ^._id])
+  }`
+);
+
+const SINGLE_STORE_BY_SLUG_QUERY = defineQuery(
+  `*[_type == "store" && slug.current == $slug && status != "suspended"][0]{
+    _id,
+    name,
+    slug,
+    ownerName,
+    description,
+    logo,
+    banner,
+    verifiedStudent,
+    verifiedSeller,
+    rating,
+    location->{
+      _id,
+      name,
+      city,
+      slug
+    },
+    "productCount": count(*[_type == "product" && store._ref == ^._id])
+  }`
+);
+
+const PRODUCTS_BY_STORE_SLUG_QUERY = defineQuery(
+  `*[_type == "product" && store->slug.current == $slug] | order(_createdAt desc){
+    _id,
+    name,
+    slug,
+    price,
+    discount,
+    stock,
+    images,
+    description,
+    categories[]->{
+      _id,
+      title,
+      slug
+    }
+  }`
+);
+
 export {
   BANNER_QUERY,
   FEATURED_CATEGORY_QUERY,
@@ -179,4 +398,13 @@ export {
   PRODUCT_CLASSIFICATIONS_QUERY,
   CATEGORIES_HIERARCHY_QUERY,
   PRODUCTS_BY_CLASSIFICATION_QUERY,
+  BRANDS_WITH_PRODUCT_COUNT_QUERY,
+  SINGLE_BRAND_BY_SLUG_QUERY,
+  PRODUCTS_BY_BRAND_SLUG_QUERY,
+  SINGLE_UNIVERSITY_BY_SLUG_QUERY,
+  PRODUCTS_BY_UNIVERSITY_SLUG_QUERY,
+  PRODUCTS_BY_STORE_QUERY,
+  STORES_QUERY,
+  SINGLE_STORE_BY_SLUG_QUERY,
+  PRODUCTS_BY_STORE_SLUG_QUERY,
 };

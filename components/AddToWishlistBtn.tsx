@@ -89,9 +89,9 @@ const AddToWishlistBtn = ({
       href={"/wishlist"}
       aria-label="Wishlist"
       title="Wishlist"
-      className={cn("group relative hover:text-ushop-purple hoverEffect", className)}
+      className={cn("group relative hover:text-ushop-pink hoverEffect", className)}
     >
-      <Heart className="group-hover:text-ushop-purple hoverEffect mt-.5" />
+      <Heart className="group-hover:text-ushop-pink hoverEffect mt-.5" />
       <span
         className={`absolute -top-1 -right-1 bg-ushop-purple-dark text-white rounded-full text-xs font-semibold flex items-center justify-center min-w-[14px] h-[14px] ${
           favoriteProduct.length > 9 ? "px-1" : ""

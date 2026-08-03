@@ -21,31 +21,13 @@ interface Review {
 interface ProductReviewsProps {
   productId: string;
   productName: string;
+  initialReviews?: Review[];
 }
 
-const ProductReviews = ({ productName }: ProductReviewsProps) => {
-  const [reviews, setReviews] = useState<Review[]>([
-    {
-      _id: "1",
-      rating: 5,
-      title: "Absolutely fantastic!",
-      content: "Exceeded my expectations in every way. The quality is top-notch, delivery was prompt, and it fits the description perfectly.",
-      helpful: 8,
-      isVerifiedPurchase: true,
-      createdAt: "2026-07-12T12:00:00.000Z",
-      user: { firstName: "Kofi", lastName: "Mensah" },
-    },
-    {
-      _id: "2",
-      rating: 4,
-      title: "Great quality, highly recommended",
-      content: "Very satisfied with this purchase. It performs really well. Minor issue with packaging but the product itself is flawless.",
-      helpful: 3,
-      isVerifiedPurchase: true,
-      createdAt: "2026-07-08T12:00:00.000Z",
-      user: { firstName: "Ama", lastName: "Osei" },
-    },
-  ]);
+const ProductReviews = ({ productName, initialReviews }: ProductReviewsProps) => {
+  const [reviews, setReviews] = useState<Review[]>(
+    initialReviews && initialReviews.length > 0 ? initialReviews : []
+  );
 
   const [helpfulRatings, setHelpfulRatings] = useState<Record<string, number>>({});
   const [showForm, setShowForm] = useState(false);
@@ -179,7 +161,7 @@ const ProductReviews = ({ productName }: ProductReviewsProps) => {
           <div className="flex gap-3 pt-2">
             <button
               type="submit"
-              className="bg-ushop-purple text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-ushop-purple/90 hoverEffect"
+              className="bg-ushop-pink text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-ushop-pink/90 hoverEffect"
             >
               Submit Review
             </button>

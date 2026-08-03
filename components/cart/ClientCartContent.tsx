@@ -5,6 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { ServerCartContent } from "./ServerCartContent";
 import { CartSkeleton } from "./CartSkeleton";
 import { trackCartView } from "@/lib/analytics";
+import NoAccessToCart from "@/components/NoAccessToCart";
 
 interface Address {
   _id: string;
@@ -111,26 +112,18 @@ export function ClientCartContent() {
     };
   }, [user, fetchUserData]);
 
-  if (!isLoaded || loading) {
+  if (!isLoaded) {
     return <CartSkeleton />;
-  }
-
-  if (error) {
-    return (
-      <div className="text-center py-10">
-        <p className="text-red-500">{error}</p>
-      </div>
-    );
   }
 
   if (!user) {
     return (
-      <div className="text-center py-10">
-        <p className="text-muted-foreground">
-          Please sign in to view your cart.
-        </p>
-      </div>
+      <NoAccessToCart details="Log in to view your cart items, saved delivery addresses, and checkout. Don't miss out on your favorite products!" />
     );
+  }
+
+  if (loading) {
+    return <CartSkeleton />;
   }
 
   const userEmail = user.emailAddresses[0]?.emailAddress || "";

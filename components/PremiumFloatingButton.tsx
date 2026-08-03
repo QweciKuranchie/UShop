@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Crown, X, Sparkles } from "lucide-react";
+import { Crown, X, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
@@ -117,7 +117,7 @@ export default function PremiumFloatingButton() {
                         transition={{ delay: index * 0.1 }}
                         className="flex items-center gap-2 text-white/90 text-sm"
                       >
-                        <Sparkles className="w-4 h-4 text-yellow-300 shrink-0" />
+                        <Check className="w-4 h-4 text-yellow-300 shrink-0" />
                         <span>{feature}</span>
                       </motion.div>
                     ))}

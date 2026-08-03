@@ -44,8 +44,8 @@ export const categoriesData = {
   title: "Categories",
   links: [
     { title: "All Categories", href: "/category" },
-    { title: "Phones & Tablets", href: "/phones-tablets" },
-    { title: "Laptops & Computers", href: "/laptops-computers" },
+    { title: "Phones", href: "/phones" },
+    { title: "Laptops", href: "/laptops" },
     { title: "Accessories", href: "/accessories" },
     { title: "Appliances", href: "/appliances" },
     { title: "Gaming", href: "/gaming" },

@@ -51,5 +51,13 @@ export const locationType = defineType({
       type: "string",
       description: "e.g., student.ug.edu.gh (used for student verification on campus locations)",
     }),
+    defineField({
+      name: "image",
+      title: "Campus / Location Image",
+      type: "image",
+      options: {
+        hotspot: true,
+      },
+    }),
   ],
 });

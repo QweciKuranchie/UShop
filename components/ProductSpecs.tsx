@@ -38,10 +38,12 @@ const ProductSpecs = ({ product }: ProductSpecsProps) => {
                 : `${product?.stock} Available`}
             </Badge>
           </div>
-          {product?.brand && (
+          {(product?.brand || (product as any)?.brandName) && (
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Brand:</span>
-              <span className="font-medium">Brand</span>
+              <span className="font-medium">
+                {(product?.brand as any)?.name || (product?.brand as any)?.title || (product as any)?.brandName || "Generic"}
+              </span>
             </div>
           )}
           <div className="flex justify-between text-sm">

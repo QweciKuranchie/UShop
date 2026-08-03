@@ -9,12 +9,21 @@ import { ADDRESS_QUERY,
   BANNER_QUERY,
   BRAND_QUERY,
   BRANDS_QUERY,
+  BRANDS_WITH_PRODUCT_COUNT_QUERY,
+  SINGLE_BRAND_BY_SLUG_QUERY,
+  PRODUCTS_BY_BRAND_SLUG_QUERY,
   DEAL_PRODUCTS,
   FEATURE_PRODUCTS,
   FEATURED_CATEGORY_QUERY,
   PRODUCT_BY_SLUG_QUERY,
   RELATED_PRODUCTS_QUERY,
-  UNIVERSITIES_QUERY,} from "./query";
+  PRODUCTS_BY_STORE_QUERY,
+  STORES_QUERY,
+  SINGLE_STORE_BY_SLUG_QUERY,
+  PRODUCTS_BY_STORE_SLUG_QUERY,
+  UNIVERSITIES_QUERY,
+  SINGLE_UNIVERSITY_BY_SLUG_QUERY,
+  PRODUCTS_BY_UNIVERSITY_SLUG_QUERY,} from "./query";
 
 const getBanner = unstable_cache(
   async () => {
@@ -171,6 +180,7 @@ const getCategories = unstable_cache(
                 unit
               }
             },
+            allowedBrands[]->{ _id, name, slug },
             "productCount": count(*[_type == "product" && references(^._id)])
           }`
         : `*[_type == 'category'] | order(title asc) {
@@ -188,6 +198,7 @@ const getCategories = unstable_cache(
                 unit
               }
             },
+            allowedBrands[]->{ _id, name, slug },
             "productCount": count(*[_type == "product" && references(^._id)])
           }`;
 
@@ -301,7 +312,7 @@ const getBrand = unstable_cache(
  * Related products are dynamic but can be cached briefly
  */
 const getRelatedProducts = unstable_cache(
-  async (categoryIds: string[], currentSlug: string, limit: number = 4) => {
+  async (categoryIds: string[], currentSlug: string, limit: number = 6) => {
     try {
       const { data } = (await sanityFetch({
         query: RELATED_PRODUCTS_QUERY,
@@ -319,6 +330,31 @@ const getRelatedProducts = unstable_cache(
   },
   ["related-products"],
   { revalidate: 900, tags: ["products"] }
+);
+
+/**
+ * Get products from seller/store - cached for 10 minutes
+ */
+const getProductsFromSeller = unstable_cache(
+  async (storeId: string, currentSlug: string, limit: number = 6) => {
+    if (!storeId) return [];
+    try {
+      const { data } = (await sanityFetch({
+        query: PRODUCTS_BY_STORE_QUERY,
+        params: {
+          storeId,
+          currentSlug,
+          limit,
+        },
+      })) as { data: Product[] };
+      return data ?? [];
+    } catch (error) {
+      console.error("Error fetching seller products:", error);
+      return [];
+    }
+  },
+  ["seller-products"],
+  { revalidate: 600, tags: ["products", "stores"] }
 );
 
 
@@ -340,18 +376,168 @@ const getUniversities = unstable_cache(
   { revalidate: 3600, tags: ["locations", "universities"] }
 );
 
+const getBrandsWithCount = unstable_cache(
+  async () => {
+    try {
+      const { data } = (await sanityFetch({ query: BRANDS_WITH_PRODUCT_COUNT_QUERY })) as {
+        data: (Brand & { productCount?: number })[];
+      };
+      return data ?? [];
+    } catch (error) {
+      console.error("Error fetching brands with product count:", error);
+      return [];
+    }
+  },
+  ["brands-with-count"],
+  { revalidate: 1800, tags: ["brands", "products"] }
+);
+
+const getSingleBrandBySlug = unstable_cache(
+  async (slug: string) => {
+    try {
+      const { data } = (await sanityFetch({
+        query: SINGLE_BRAND_BY_SLUG_QUERY,
+        params: { slug },
+      })) as { data: (Brand & { productCount?: number }) | null };
+      return data || null;
+    } catch (error) {
+      console.error("Error fetching brand by slug:", error);
+      return null;
+    }
+  },
+  ["single-brand-by-slug"],
+  { revalidate: 1800, tags: ["brands"] }
+);
+
+const getProductsByBrandSlug = unstable_cache(
+  async (slug: string) => {
+    try {
+      const { data } = (await sanityFetch({
+        query: PRODUCTS_BY_BRAND_SLUG_QUERY,
+        params: { slug },
+      })) as { data: Product[] };
+      return data ?? [];
+    } catch (error) {
+      console.error("Error fetching products by brand:", error);
+      return [];
+    }
+  },
+  ["products-by-brand-slug"],
+  { revalidate: 600, tags: ["products", "brands"] }
+);
+
+const getSingleUniversityBySlug = unstable_cache(
+  async (slug: string) => {
+    try {
+      const { data } = (await sanityFetch({
+        query: SINGLE_UNIVERSITY_BY_SLUG_QUERY,
+        params: { slug },
+      })) as { data: (Location & { productCount?: number; domain?: string; logo?: unknown; image?: unknown }) | null };
+      return data || null;
+    } catch (error) {
+      console.error("Error fetching university by slug:", error);
+      return null;
+    }
+  },
+  ["single-university-by-slug"],
+  { revalidate: 1800, tags: ["locations", "universities"] }
+);
+
+const getProductsByUniversitySlug = unstable_cache(
+  async (slug: string) => {
+    try {
+      const { data } = (await sanityFetch({
+        query: PRODUCTS_BY_UNIVERSITY_SLUG_QUERY,
+        params: { slug },
+      })) as { data: Product[] };
+      return data ?? [];
+    } catch (error) {
+      console.error("Error fetching products by university:", error);
+      return [];
+    }
+  },
+  ["products-by-university-slug"],
+  { revalidate: 600, tags: ["products", "locations", "universities"] }
+);
+
+/**
+ * Get all stores - cached for 15 minutes
+ */
+const getStores = unstable_cache(
+  async () => {
+    try {
+      const { data } = await sanityFetch({ query: STORES_QUERY });
+      return data ?? [];
+    } catch (error) {
+      console.error("Error fetching stores:", error);
+      return [];
+    }
+  },
+  ["stores-list"],
+  { revalidate: 900, tags: ["stores"] }
+);
+
+/**
+ * Get single store by slug - cached for 15 minutes
+ */
+const getSingleStoreBySlug = unstable_cache(
+  async (slug: string) => {
+    try {
+      const { data } = await sanityFetch({
+        query: SINGLE_STORE_BY_SLUG_QUERY,
+        params: { slug },
+      });
+      return data ?? null;
+    } catch (error) {
+      console.error("Error fetching store by slug:", error);
+      return null;
+    }
+  },
+  ["single-store-by-slug"],
+  { revalidate: 900, tags: ["stores"] }
+);
+
+/**
+ * Get products by store slug - cached for 10 minutes
+ */
+const getProductsByStoreSlug = unstable_cache(
+  async (slug: string) => {
+    try {
+      const { data } = (await sanityFetch({
+        query: PRODUCTS_BY_STORE_SLUG_QUERY,
+        params: { slug },
+      })) as { data: Product[] };
+      return data ?? [];
+    } catch (error) {
+      console.error("Error fetching products by store:", error);
+      return [];
+    }
+  },
+  ["products-by-store-slug"],
+  { revalidate: 600, tags: ["products", "stores"] }
+);
+
 export {getBanner,
   getFeaturedCategory,
   getAllProducts,
   getDealProducts,
   getFeaturedProducts,
   getAllBrands,
+  getBrandsWithCount,
+  getSingleBrandBySlug,
+  getProductsByBrandSlug,
+  getSingleUniversityBySlug,
+  getProductsByUniversitySlug,
+  getStores,
+  getSingleStoreBySlug,
+  getProductsByStoreSlug,
   getAddresses,
   getCategories,
   getAdminCategories,
   getProductBySlug,
   getBrand,
   getRelatedProducts,
+  getProductsFromSeller,
   getOrderById,
   getUniversities,
   getProductClassifications,

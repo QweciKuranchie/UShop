@@ -3,6 +3,7 @@ import ProductPageSkeleton from "@/components/ProductPageSkeleton";
 import {
   getProductBySlug,
   getRelatedProducts,
+  getProductsFromSeller,
   getBrand,
 } from "@/sanity/Queries";
 import { notFound } from "next/navigation";
@@ -70,8 +71,12 @@ const ProductPageContent = async ({ slug }: { slug: string }) => {
     product?.categories?.map(
       (cat: { _ref: string; _type: string; _key: string }) => cat._ref
     ) || [];
-  const [relatedProducts, brand] = await Promise.all([
-    getRelatedProducts(categoryIds, product?.slug?.current || "", 4),
+
+  const storeId = (product as any)?.store?._id || "";
+
+  const [relatedProducts, sellerProducts, brand] = await Promise.all([
+    getRelatedProducts(categoryIds, product?.slug?.current || "", 6),
+    getProductsFromSeller(storeId, product?.slug?.current || "", 6),
     getBrand(product?.slug?.current as string),
   ]);
 
@@ -111,6 +116,7 @@ const ProductPageContent = async ({ slug }: { slug: string }) => {
       <ProductContent
         product={productWithReviews}
         relatedProducts={(relatedProducts || []) as unknown as Product[]}
+        sellerProducts={(sellerProducts || []) as unknown as Product[]}
         brand={brand}
       />
     </>

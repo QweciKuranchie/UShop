@@ -1,27 +1,66 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useMemo } from "react";
 import Title from "../Title";
-import { Brand } from "@/sanity.types";
+import { Brand, Category } from "@/sanity.types";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
+import { ExtendedCategory } from "./CategoryList";
 
 interface Props {
   brands: Brand[];
   selectedBrand?: string | null;
   setSelectedBrand: Dispatch<SetStateAction<string | null>>;
+  selectedCategory?: string | null;
+  categories?: (Category | ExtendedCategory)[];
 }
 
-const BrandList = ({ brands, selectedBrand, setSelectedBrand }: Props) => {
+const BrandList = ({
+  brands,
+  selectedBrand,
+  setSelectedBrand,
+  selectedCategory,
+  categories,
+}: Props) => {
+  const displayBrands = useMemo(() => {
+    if (!selectedCategory) {
+      return brands || [];
+    }
+
+    const currentCat = (categories as ExtendedCategory[])?.find(
+      (c) => c?.slug?.current === selectedCategory || c?._id === selectedCategory
+    );
+
+    const allowed = currentCat?.allowedBrands;
+    if (!allowed || allowed.length === 0) {
+      // Category has no brand restrictions / no allowed brands -> hide brand section
+      return [];
+    }
+
+    const allowedIdsOrSlugs = new Set(
+      allowed.flatMap((b) => [b._id, b.slug?.current].filter(Boolean))
+    );
+
+    return (brands || []).filter(
+      (brand) =>
+        allowedIdsOrSlugs.has(brand._id) ||
+        (brand.slug?.current && allowedIdsOrSlugs.has(brand.slug.current))
+    );
+  }, [brands, selectedCategory, categories]);
+
+  if (!displayBrands || displayBrands.length === 0) {
+    return null;
+  }
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-4">
         <Title className="text-base font-semibold text-gray-900">Brands</Title>
         <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-          {brands?.length || 0}
+          {displayBrands.length}
         </span>
       </div>
 
       <RadioGroup value={selectedBrand || ""} className="space-y-1">
-        {brands?.map((brand) => (
+        {displayBrands.map((brand) => (
           <div
             key={brand?._id}
             onClick={() => setSelectedBrand(brand?.slug?.current as string)}

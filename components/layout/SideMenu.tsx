@@ -41,22 +41,58 @@ interface University {
   };
 }
 
+const DEFAULT_SIDEBAR_UNIVERSITIES: University[] = [
+  { _id: "uni-legon", name: "University of Ghana (Legon)", slug: { current: "university-of-ghana-legon" } },
+  { _id: "uni-knust", name: "KNUST", slug: { current: "knust-kumasi" } },
+  { _id: "uni-ucc", name: "University of Cape Coast (UCC)", slug: { current: "university-of-cape-coast" } },
+  { _id: "uni-gctu", name: "Ghana Communication Tech (GCTU)", slug: { current: "gctu-accra" } },
+  { _id: "uni-umat", name: "University of Mines (UMaT)", slug: { current: "umat-tarkwa" } },
+];
+
 const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
   const { isSignedIn } = useAuth();
   const sidebarRef = useOutsideClick<HTMLDivElement>(onClose);
   const { items, favoriteProduct } = useStore();
-  const [universities, setUniversities] = useState<University[]>([]);
+  const [universities, setUniversities] = useState<University[]>(DEFAULT_SIDEBAR_UNIVERSITIES);
 
   useEffect(() => {
     const fetchUniversities = async () => {
       try {
         const data = await client.fetch(
-          `*[_type == 'location' && type == 'university'] | order(name asc)`
+          `*[_type in ['location', 'university'] && (type == 'university' || _type == 'university')] | order(name asc)`
         );
-        setUniversities(data || []);
+        const merged = DEFAULT_SIDEBAR_UNIVERSITIES.map((def) => {
+          const key = (def.slug?.current || "").toLowerCase();
+          const found = (data || []).find((d: any) => {
+            const dSlug = (d.slug?.current || "").toLowerCase();
+            const dName = (d.name || "").toLowerCase();
+            return (
+              dSlug === key ||
+              dName.includes(def.name?.toLowerCase() || "") ||
+              (key.includes("gctu") && (dSlug.includes("gctu") || dName.includes("gctu"))) ||
+              (key.includes("ucc") && (dSlug.includes("ucc") || dName.includes("ucc"))) ||
+              (key.includes("umat") && (dSlug.includes("umat") || dName.includes("umat"))) ||
+              (key.includes("legon") && (dSlug.includes("legon") || dSlug.includes("ug"))) ||
+              (key.includes("knust") && (dSlug.includes("knust") || dName.includes("knust")))
+            );
+          });
+          return found ? { ...def, ...found } : def;
+        });
+
+        const extra = (data || []).filter(
+          (d: any) =>
+            !merged.some(
+              (m) =>
+                m._id === d._id ||
+                (m.slug?.current && d.slug?.current && m.slug.current === d.slug.current)
+            )
+        );
+
+        setUniversities([...merged, ...extra]);
       } catch (error) {
         console.error("Error fetching universities in SideMenu:", error);
+        setUniversities(DEFAULT_SIDEBAR_UNIVERSITIES);
       }
     };
     fetchUniversities();
@@ -260,16 +296,19 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
             Popular Categories
           </h3>
           <div className="flex flex-col gap-1">
-            {categoriesData.links.slice(0, 6).map((item) => (
-              <Link
-                onClick={onClose}
-                key={item.title}
-                href={`/category/${item.href}`}
-                className="text-xs font-medium text-zinc-600 hover:text-ushop-pink transition-colors duration-200 py-1.5 px-2 rounded hover:bg-ushop-pink/10 capitalize"
-              >
-                {item.title}
-              </Link>
-            ))}
+            {categoriesData.links
+              .filter((item) => item.href !== "/category" && item.title.toLowerCase() !== "all categories")
+              .slice(0, 6)
+              .map((item) => (
+                <Link
+                  onClick={onClose}
+                  key={item.title}
+                  href={`/shop?category=${item.href.replace(/^\//, "")}`}
+                  className="text-xs font-medium text-zinc-600 hover:text-ushop-pink transition-colors duration-200 py-1.5 px-2 rounded hover:bg-ushop-pink/10 capitalize"
+                >
+                  {item.title}
+                </Link>
+              ))}
             <Link
               onClick={onClose}
               href="/category"

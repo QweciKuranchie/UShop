@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Crown, Sparkles, ArrowRight } from "lucide-react";
+import { Crown, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
 
@@ -23,10 +23,6 @@ const PremiumBanner: React.FC<PremiumBannerProps> = ({
         className
       )}
     >
-      {/* Background sparkle decoration */}
-      <div className="absolute top-2 right-8 opacity-20">
-        <Sparkles className="w-24 h-24" />
-      </div>
 
       <div className="relative flex items-center justify-between gap-4 flex-wrap">
         <div className="flex items-center gap-4">

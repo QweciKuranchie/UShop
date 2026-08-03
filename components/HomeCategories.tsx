@@ -36,7 +36,7 @@ const HomeCategories = ({ categories }: Props) => {
         </p>
         <Link
           href={"/category"}
-          className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-ushop-pink/10 text-ushop-purple font-semibold rounded-full hover:bg-ushop-purple hover:text-white border-2 border-ushop-purple/20 hover:border-ushop-purple hoverEffect"
+          className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-ushop-pink/10 text-ushop-pink font-semibold rounded-full hover:bg-ushop-pink hover:text-white border-2 border-ushop-pink/20 hover:border-ushop-pink hoverEffect"
         >
           Browse All Categories
           <svg
@@ -56,13 +56,13 @@ const HomeCategories = ({ categories }: Props) => {
       </div>
 
       {/* Categories Grid */}
-      <div className="bg-gradient-to-br from-white via-ushop_light_bg to-ushop-pink/5 p-8 lg:p-12 rounded-3xl shadow-xl border border-ushop-purple/10">
-        <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:pb-0">
+      <div className="bg-gradient-to-br from-white via-ushop_light_bg to-ushop-pink/5 p-8 lg:p-12 rounded-3xl shadow-xl border border-ushop-pink/10">
+        <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-pink/40 scrollbar-track-transparent sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:pb-0">
           {categories?.map((category, index) => (
             <Link
               key={category?._id}
               href={`/category/${category?.slug?.current}`}
-              className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl border border-gray-100 hover:border-ushop-purple/20 hoverEffect transform hover:-translate-y-2 cursor-pointer block min-w-[250px] sm:min-w-0 flex-shrink-0 snap-start"
+              className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl border border-gray-100 hover:border-ushop-pink/40 hoverEffect transform hover:-translate-y-2 cursor-pointer block min-w-[250px] sm:min-w-0 flex-shrink-0 snap-start"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Image Container */}
@@ -76,14 +76,14 @@ const HomeCategories = ({ categories }: Props) => {
                       height={80}
                       className="w-full h-full object-contain group-hover:scale-110 hoverEffect"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ushop-purple/5 to-transparent opacity-0 group-hover:opacity-100 hoverEffect rounded-xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-ushop-pink/5 to-transparent opacity-0 group-hover:opacity-100 hoverEffect rounded-xl"></div>
                   </div>
                 )}
               </div>
 
               {/* Content */}
               <div className="text-center space-y-3">
-                <h3 className="text-lg font-bold text-dark-color group-hover:text-ushop-purple-dark hoverEffect line-clamp-1">
+                <h3 className="text-lg font-bold text-dark-color group-hover:text-ushop-pink hoverEffect line-clamp-1">
                   {category?.title}
                 </h3>
 

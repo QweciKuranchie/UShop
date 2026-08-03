@@ -24,7 +24,7 @@ const ShopByBrands = async () => {
         </p>
         <Link
           href={"/brands"}
-          className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-ushop-pink/10 text-ushop-purple font-semibold rounded-full hover:bg-ushop-purple hover:text-white border-2 border-ushop-purple/20 hover:border-ushop-purple hoverEffect"
+          className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-ushop-pink/10 text-ushop-pink font-semibold rounded-full hover:bg-ushop-pink hover:text-white border-2 border-ushop-pink/20 hover:border-ushop-pink hoverEffect"
         >
           Explore All Brands
           <svg
@@ -44,13 +44,13 @@ const ShopByBrands = async () => {
       </div>
 
       {/* Brands Grid */}
-      <div className="bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/5 p-8 lg:p-12 rounded-3xl shadow-xl border border-ushop-purple/10 mb-16">
-        <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 sm:pb-0">
+      <div className="bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/5 p-8 lg:p-12 rounded-3xl shadow-xl border border-ushop-pink/10 mb-16">
+        <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-pink/40 scrollbar-track-transparent sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 sm:pb-0">
           {brands?.map((brand, index) => (
             <Link
               key={brand?._id}
               href={`/brands/${brand?.slug?.current}`}
-              className="group bg-white rounded-2xl p-6 flex items-center justify-center aspect-square hover:shadow-2xl shadow-lg border border-gray-100 hover:border-ushop-purple/30 hoverEffect transform hover:-translate-y-2 min-w-[120px] sm:min-w-0 flex-shrink-0 snap-start"
+              className="group bg-white rounded-2xl p-6 flex items-center justify-center aspect-square hover:shadow-2xl shadow-lg border border-gray-100 hover:border-ushop-pink/40 hoverEffect transform hover:-translate-y-2 min-w-[120px] sm:min-w-0 flex-shrink-0 snap-start"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
               {(() => {

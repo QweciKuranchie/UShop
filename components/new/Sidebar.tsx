@@ -197,16 +197,19 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
             Popular Categories
           </h3>
           <div className="flex flex-col gap-1">
-            {categoriesData.links.slice(0, 6).map((item: { title: string; href: string }) => (
-              <Link
-                onClick={onClose}
-                key={item.title}
-                href={`/category/${item.href}`}
-                className="text-xs font-medium text-zinc-400 hover:text-shop_light_green transition-colors duration-200 py-1.5 px-2 rounded hover:bg-shop_dark_green/20 capitalize"
-              >
-                {item.title}
-              </Link>
-            ))}
+            {categoriesData.links
+              .filter((item: { title: string; href: string }) => item.href !== "/category" && item.title.toLowerCase() !== "all categories")
+              .slice(0, 6)
+              .map((item: { title: string; href: string }) => (
+                <Link
+                  onClick={onClose}
+                  key={item.title}
+                  href={`/shop?category=${item.href.replace(/^\//, "")}`}
+                  className="text-xs font-medium text-zinc-400 hover:text-shop_light_green transition-colors duration-200 py-1.5 px-2 rounded hover:bg-shop_dark_green/20 capitalize"
+                >
+                  {item.title}
+                </Link>
+              ))}
             <Link
               onClick={onClose}
               href="/category"
