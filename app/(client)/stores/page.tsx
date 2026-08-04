@@ -22,12 +22,12 @@ export const metadata: Metadata = {
   description: "Browse verified seller stores, merchant shops, and trusted vendors on UShop.",
 };
 
-interface ExtendedStore extends Store {
+type ExtendedStore = Omit<Store, "location"> & {
   logo?: unknown;
   image?: unknown;
   productCount?: number;
   location?: { name?: string };
-}
+};
 
 const StoresPage = async () => {
   const storesList = (await getStores()) as ExtendedStore[];
