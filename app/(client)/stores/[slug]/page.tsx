@@ -65,18 +65,21 @@ function getStoreImageUrl(source: unknown): string | null {
 const SingleStorePage = async ({ params }: Props) => {
   const { slug } = await params;
 
-  const [store, fetchedProducts] = await Promise.all([
+  const [rawStore, fetchedProducts] = await Promise.all([
     getSingleStoreBySlug(slug),
     getProductsByStoreSlug(slug),
   ]);
 
-  if (!store) {
+  if (!rawStore) {
     return notFound();
   }
+
+  const store = rawStore as unknown as Record<string, unknown>;
 
   const logoUrl = getStoreImageUrl(store.logo || store.image);
   const rawBannerUrl = getStoreImageUrl(store.banner || store.coverImage || store.cover);
   const bannerUrl = rawBannerUrl || "/assets/images/hero/header_macbook_image.png";
+  const storeName = (store.name as string) || "Store";
   const products = (fetchedProducts || []) as unknown as Product[];
 
   return (
@@ -86,7 +89,7 @@ const SingleStorePage = async ({ params }: Props) => {
         <DynamicBreadcrumb
           customItems={[
             { label: "Stores", href: "/stores" },
-            { label: store.name, href: `/stores/${slug}` },
+            { label: storeName, href: `/stores/${slug}` },
           ]}
         />
 
@@ -96,7 +99,7 @@ const SingleStorePage = async ({ params }: Props) => {
           <div className="relative h-44 sm:h-64 w-full bg-gradient-to-r from-ushop-purple via-ushop-pink to-amber-500 overflow-hidden">
             <Image
               src={bannerUrl}
-              alt={store.name}
+              alt={storeName}
               fill
               priority
               unoptimized
@@ -114,14 +117,14 @@ const SingleStorePage = async ({ params }: Props) => {
                   {logoUrl ? (
                     <Image
                       src={logoUrl}
-                      alt={store.name}
+                      alt={storeName}
                       fill
                       unoptimized
                       className="object-cover"
                     />
                   ) : (
                     <div className="flex flex-col items-center justify-center text-ushop-pink">
-                      <span className="text-xl font-black uppercase tracking-wider">{store.name?.charAt(0) || "S"}</span>
+                      <span className="text-xl font-black uppercase tracking-wider">{storeName.charAt(0)}</span>
                       <StoreIcon className="w-5 h-5 opacity-80" />
                     </div>
                   )}
@@ -132,7 +135,7 @@ const SingleStorePage = async ({ params }: Props) => {
               <div className="pt-2 sm:pt-4">
                 <div className="flex items-center gap-2 mb-1">
                   <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-                    {store.name}
+                    {storeName}
                   </h1>
                   {store.verifiedSeller && (
                     <CheckCircle2 className="w-5 h-5 text-ushop-pink fill-ushop-pink/10 shrink-0" />
@@ -154,17 +157,17 @@ const SingleStorePage = async ({ params }: Props) => {
                     </span>
                   )}
 
-                  {store.ownerName && (
+                  {Boolean(store.ownerName) && (
                     <span className="flex items-center gap-1 font-medium bg-gray-100 px-2.5 py-1 rounded-md text-gray-700">
                       <UserCheck className="w-3.5 h-3.5 text-ushop-pink" />
-                      {store.ownerName}
+                      {String(store.ownerName)}
                     </span>
                   )}
 
-                  {store.location?.name && (
+                  {Boolean((store.location as Record<string, unknown> | undefined)?.name) && (
                     <span className="flex items-center gap-1 font-medium bg-gray-100 px-2.5 py-1 rounded-md text-gray-700">
                       <MapPin className="w-3.5 h-3.5 text-ushop-pink" />
-                      {store.location.name}
+                      {String((store.location as Record<string, unknown>).name)}
                     </span>
                   )}
 
