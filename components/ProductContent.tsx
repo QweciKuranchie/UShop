@@ -246,6 +246,7 @@ const ProductContent = ({
                         src={urlFor(storeData.logo).url()}
                         alt={storeData.name || "Store Logo"}
                         fill
+                        sizes="48px"
                         className="object-cover"
                       />
                     ) : (

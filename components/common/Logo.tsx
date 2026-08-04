@@ -23,6 +23,7 @@ function Logo({ className, imageClassName, ...props }: LogoProps) {
         alt="U-Shop Logo"
         width={140}
         height={40}
+        style={{ width: "auto" }}
         className={cn("w-auto h-8 md:h-10 object-contain", imageClassName)}
         priority
       />

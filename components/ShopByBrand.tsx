@@ -69,6 +69,7 @@ const ShopByBrands = async () => {
                       src={urlFor(brandImg).url()}
                       alt={`${brand?.name || "Brand"} logo`}
                       fill
+                      sizes="(max-width: 768px) 33vw, 15vw"
                       className="object-contain p-1 group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
