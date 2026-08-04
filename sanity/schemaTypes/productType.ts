@@ -230,6 +230,14 @@ export const productType = defineType({
       description: "Toggle featured placement on homepage/shop",
       initialValue: false,
     }),
+    defineField({
+      name: "isFlashSale",
+      title: "Flash Sale / Daily Deal",
+      type: "boolean",
+      group: "main",
+      description: "Toggle flash sale / daily deal showcase on the homepage",
+      initialValue: false,
+    }),
 
     // ─── TAB 2: ADDITIONAL INFORMATION (SPECS TAB) ──────────────
     defineField({

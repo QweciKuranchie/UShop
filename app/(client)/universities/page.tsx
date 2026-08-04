@@ -73,7 +73,7 @@ const UniversitiesPage = async () => {
   // Merge default list with fetched Sanity items so all core Ghana universities (Legon, KNUST, UCC, GCTU, UMaT) are always rendered
   const mergedList = DEFAULT_UNIVERSITIES.map((def) => {
     const key = def.slug.current.toLowerCase();
-    const found = (fetchedUniversities || []).find((f: any) => {
+    const found = (fetchedUniversities || []).find((f: { _id?: string; name?: string; slug?: { current?: string } }) => {
       const fSlug = (f.slug?.current || "").toLowerCase();
       const fName = (f.name || "").toLowerCase();
       return (
@@ -90,7 +90,7 @@ const UniversitiesPage = async () => {
   });
 
   const extraSanity = (fetchedUniversities || []).filter(
-    (f: any) =>
+    (f: { _id?: string; name?: string; slug?: { current?: string } }) =>
       !mergedList.some(
         (m) =>
           m._id === f._id ||

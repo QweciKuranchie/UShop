@@ -72,7 +72,9 @@ const ProductPageContent = async ({ slug }: { slug: string }) => {
       (cat: { _ref: string; _type: string; _key: string }) => cat._ref
     ) || [];
 
-  const storeId = (product as any)?.store?._id || "";
+  const productObj = product as unknown as Record<string, unknown>;
+  const storeObj = productObj?.store as Record<string, unknown> | undefined;
+  const storeId = (storeObj?._id as string) || (product?.store?._ref as string) || "";
 
   const [relatedProducts, sellerProducts, brand] = await Promise.all([
     getRelatedProducts(categoryIds, product?.slug?.current || "", 6),

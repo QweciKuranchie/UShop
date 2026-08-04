@@ -13,7 +13,7 @@ const ALL_PRODUCTS_QUERY = defineQuery(
   }`
 );
 const DEAL_PRODUCTS = defineQuery(
-  `*[_type == 'product' && status == 'hot'] | order(name asc){
+  `*[_type == 'product' && (isFlashSale == true || status == 'hot' || discount > 0)] | order(_createdAt desc){
   ...,"categories": categories[]->title
 }`
 );

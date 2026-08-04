@@ -64,7 +64,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
         );
         const merged = DEFAULT_SIDEBAR_UNIVERSITIES.map((def) => {
           const key = (def.slug?.current || "").toLowerCase();
-          const found = (data || []).find((d: any) => {
+          const found = (data || []).find((d: { _id?: string; name?: string; slug?: { current?: string } }) => {
             const dSlug = (d.slug?.current || "").toLowerCase();
             const dName = (d.name || "").toLowerCase();
             return (
@@ -81,7 +81,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
         });
 
         const extra = (data || []).filter(
-          (d: any) =>
+          (d: { _id?: string; name?: string; slug?: { current?: string } }) =>
             !merged.some(
               (m) =>
                 m._id === d._id ||

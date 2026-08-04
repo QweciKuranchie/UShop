@@ -1,10 +1,12 @@
+import { GraduationCap, Grid3X3, Home, ShoppingBag, Store } from "lucide-react";
 
 
 export const headerData = [
-  { title: "All Products", href: "/shop" },
-  { title: "Categories", href: "/category" },
-  { title: "Universities", href: "/universities" },
-  { title: "Stores", href: "/stores" },
+  { title: "Home", href: "/", icon: Home },
+  { title: "Products", href: "/shop", icon: ShoppingBag },
+  { title: "Categories", href: "/category", icon: Grid3X3 },
+  { title: "Universities", href: "/universities", icon: GraduationCap },
+  { title: "Stores", href: "/stores", icon: Store},
 ];
 export const customerCareData = {
   title:"Customer Care",

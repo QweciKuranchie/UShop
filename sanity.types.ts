@@ -122,6 +122,8 @@ export type Product = {
     "new" | "hot" | "like_new" | "excellent" | "good" | "fair" | "for_parts";
   variant?: "electronics" | "computing" | "others";
   featured?: boolean;
+  isFeatured?: boolean;
+  isFlashSale?: boolean;
 };
 
 export type LocationReference = {

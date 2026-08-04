@@ -3,6 +3,7 @@ import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import Title from "@/components/Title";
 import { getStores } from "@/sanity/Queries";
 import { urlFor } from "@/sanity/lib/image";
+import { Store } from "@/sanity.types";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -21,8 +22,15 @@ export const metadata: Metadata = {
   description: "Browse verified seller stores, merchant shops, and trusted vendors on UShop.",
 };
 
+interface ExtendedStore extends Store {
+  logo?: unknown;
+  image?: unknown;
+  productCount?: number;
+  location?: { name?: string };
+}
+
 const StoresPage = async () => {
-  const storesList = await getStores();
+  const storesList = (await getStores()) as ExtendedStore[];
 
   return (
     <div className="min-h-screen bg-gray-50/50 py-6">
@@ -59,8 +67,8 @@ const StoresPage = async () => {
         {/* Stores Grid or Empty State */}
         {storesList && storesList.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {storesList.map((store: any) => {
-              const logoUrl = store.logo ? urlFor(store.logo).url() : null;
+            {storesList.map((store: ExtendedStore) => {
+              const logoUrl = store.logo ? urlFor(store.logo as Parameters<typeof urlFor>[0]).url() : null;
               const slug = store.slug?.current || "";
 
               return (
@@ -97,7 +105,9 @@ const StoresPage = async () => {
                           )}
 
                           {store.verifiedSeller && (
-                            <CheckCircle2 className="w-4 h-4 text-ushop-pink fill-ushop-pink/10 shrink-0" title="Verified Merchant" />
+                            <span title="Verified Merchant">
+                              <CheckCircle2 className="w-4 h-4 text-ushop-pink fill-ushop-pink/10 shrink-0" />
+                            </span>
                           )}
                         </div>
 

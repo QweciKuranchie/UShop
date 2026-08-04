@@ -27,7 +27,7 @@ const CategoryPage = async () => {
 
   // Filter only top categories (top-level or featured)
   const topCategories = categories.filter(
-    (cat: any) => !cat.parent || cat.level === "top" || cat.featured === true
+    (cat: Category & { parent?: unknown; level?: string }) => !cat.parent || cat.level === "top" || cat.featured === true
   );
   const displayCategories = topCategories.length > 0 ? topCategories : categories;
 

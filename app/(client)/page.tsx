@@ -3,16 +3,23 @@ import Container from "@/components/Container";
 import HomeBanner from "@/components/HomeBanner";
 import ProductGrid from "@/components/ProductGrid";
 import HomeCategories from "@/components/HomeCategories";
-import { getCategories } from "@/sanity/Queries";
+import FlashSaleSection from "@/components/FlashSaleSection";
+import { getCategories, getDealProducts } from "@/sanity/Queries";
 import ShopByBrand from "@/components/ShopByBrand";
 import ScrollToTop from "@/components/ScrollToTop";
 
 const Home = async () => {
-  const categories = await getCategories(6);
+  const [categories, dealProducts] = await Promise.all([
+    getCategories(6),
+    getDealProducts(),
+  ]);
 
   return (
     <Container className="bg-ushop_light_bg/80">
       <HomeBanner />
+      {dealProducts && dealProducts.length > 0 && (
+        <FlashSaleSection products={dealProducts} />
+      )}
       <div className="py-10">
         <ProductGrid />
       </div>

@@ -7,7 +7,6 @@ import Title from "../Title";
 import CategoryList, { ProductClassificationItem } from "./CategoryList";
 import AttributeList, { CONDITIONS, WARRANTIES } from "./AttributeList";
 import { Filter, X } from "lucide-react";
-import ProductCard from "../ProductCard";
 import PaginatedProductGrid from "../PaginatedProductGrid";
 import NoProductAvailable from "../product/NoProductsAvailable";
 import BrandList from "./BrandList";

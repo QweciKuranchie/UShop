@@ -38,11 +38,14 @@ const ProductSpecs = ({ product }: ProductSpecsProps) => {
                 : `${product?.stock} Available`}
             </Badge>
           </div>
-          {(product?.brand || (product as any)?.brandName) && (
+          {Boolean(product?.brand || (product as unknown as Record<string, unknown>)?.brandName) && (
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Brand:</span>
               <span className="font-medium">
-                {(product?.brand as any)?.name || (product?.brand as any)?.title || (product as any)?.brandName || "Generic"}
+                {((product?.brand as unknown as Record<string, string>)?.name) ||
+                  ((product?.brand as unknown as Record<string, string>)?.title) ||
+                  ((product as unknown as Record<string, string>)?.brandName) ||
+                  "Generic"}
               </span>
             </div>
           )}

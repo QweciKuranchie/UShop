@@ -87,7 +87,6 @@ const ProductGrid = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("grid-5");
   const [sortBy, setSortBy] = useState<SortOption>("name-asc");
   const [showFilters, setShowFilters] = useState(false);
-  const [productsPerPage] = useState(12);
   const [displayLimit, setDisplayLimit] = useState(12);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 10000]);
@@ -104,40 +103,42 @@ const ProductGrid = () => {
     }, 300);
   };
 
-  const query = `*[_type == "product" && (featured == true || isFeatured == true) && (
-    $variant == "all" || 
-    $variant == "" || 
-    lower(productClassification->title) match $variant + "*" || 
-    lower(productClassification->slug.current) match $variant + "*" || 
-    lower(variant) match $variant + "*"
-  )] | order(${getSortQuery(sortBy)}){
-    ...,
-    "categories": categories[]->title,
-    "category": category->{ _id, title, slug },
-    "brand": brand->{ _id, name, slug },
-    "productClassification": productClassification->{ _id, title, slug },
-    "store": store->{ _id, name, slug }
-  }`;
   const params = useMemo(() => ({ variant: selectedTab.toLowerCase() === "all" ? "all" : selectedTab.toLowerCase() }), [selectedTab]);
 
-  function getSortQuery(sort: SortOption): string {
-    switch (sort) {
-      case "name-asc":
-        return "name asc";
-      case "name-desc":
-        return "name desc";
-      case "price-asc":
-        return "price asc";
-      case "price-desc":
-        return "price desc";
-      case "newest":
-        return "_createdAt desc";
-      default:
-        return "name asc";
-    }
-  }
-
   useEffect(() => {
+    function getSortQuery(sort: SortOption): string {
+      switch (sort) {
+        case "name-asc":
+          return "name asc";
+        case "name-desc":
+          return "name desc";
+        case "price-asc":
+          return "price asc";
+        case "price-desc":
+          return "price desc";
+        case "newest":
+          return "_createdAt desc";
+        default:
+          return "name asc";
+      }
+    }
+
+    const sortOrder = getSortQuery(sortBy);
+    const query = `*[_type == "product" && (featured == true || isFeatured == true) && (
+      $variant == "all" || 
+      $variant == "" || 
+      lower(productClassification->title) match $variant + "*" || 
+      lower(productClassification->slug.current) match $variant + "*" || 
+      lower(variant) match $variant + "*"
+    )] | order(${sortOrder}){
+      ...,
+      "categories": categories[]->title,
+      "category": category->{ _id, title, slug },
+      "brand": brand->{ _id, name, slug },
+      "productClassification": productClassification->{ _id, title, slug },
+      "store": store->{ _id, name, slug }
+    }`;
+
     const fetchData = async () => {
       setLoading(true);
       try {
@@ -150,7 +151,7 @@ const ProductGrid = () => {
             lower(productClassification->title) match $variant + "*" || 
             lower(productClassification->slug.current) match $variant + "*" || 
             lower(variant) match $variant + "*"
-          )] | order(${getSortQuery(sortBy)}){
+          )] | order(${sortOrder}){
             ...,
             "categories": categories[]->title,
             "category": category->{ _id, title, slug },
@@ -168,7 +169,7 @@ const ProductGrid = () => {
       }
     };
     fetchData();
-  }, [query, params]);
+  }, [params, sortBy]);
 
   // Apply filters to products using useMemo instead of useEffect state sync
   const filteredProducts = useMemo(() => {

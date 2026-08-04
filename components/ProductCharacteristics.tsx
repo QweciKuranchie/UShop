@@ -15,15 +15,16 @@ const ProductCharacteristics = ({
   product,
   brand,
 }: ProductCharacteristicsProps) => {
+  const pObj = product as unknown as Record<string, Record<string, string>>;
   const brandName =
-    (product as any)?.brand?.name ||
-    (product as any)?.brand?.title ||
+    pObj?.brand?.name ||
+    pObj?.brand?.title ||
     brand?.[0]?.brandName ||
     "Generic";
 
   const categoryName =
-    (product as any)?.category?.title ||
-    (product as any)?.productClassification?.title ||
+    pObj?.category?.title ||
+    pObj?.productClassification?.title ||
     "General";
 
   return (

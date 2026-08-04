@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache";
-import { Category, Brand, Product, Location, University } from "@/sanity.types";
+import { Category, Brand, Product, Location } from "@/sanity.types";
 import { sanityFetch } from "../lib/live";
 import { getOrderById } from "./userQueries";
 

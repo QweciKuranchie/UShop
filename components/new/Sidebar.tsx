@@ -45,10 +45,10 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   const mainMenuItems = [
     { title: "Home", href: "/", icon: Home },
-    { title: "Shop", href: "/shop", icon: ShoppingBag },
+    { title: "Products", href: "/shop", icon: ShoppingBag },
     { title: "Categories", href: "/category", icon: Grid3X3 },
     { title: "Brands", href: "/brands", icon: Tag },
-    { title: "Hot Deal", href: "/deal", icon: Flame },
+    { title: "Deals & Offers", href: "/deal", icon: Flame },
   ];
 
   const supportMenuItems = [

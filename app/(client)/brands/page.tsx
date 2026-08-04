@@ -52,7 +52,7 @@ const BrandsPage = async () => {
         {brands && brands.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {brands.map((brand) => {
-              const brandImg = brand.image || (brand as any).logo;
+              const brandImg = brand.image || (brand as Record<string, unknown>).logo;
               const imageUrl = brandImg ? urlFor(brandImg).url() : null;
               const slug = brand.slug?.current || "";
 

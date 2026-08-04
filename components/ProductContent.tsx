@@ -62,9 +62,9 @@ const ProductContent = ({
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   // Build category hierarchy array from root ancestor down to leaf
-  const buildCategoryHierarchy = (cat: any) => {
+  const buildCategoryHierarchy = (cat: { title?: string; slug?: { current?: string }; parent?: unknown }) => {
     const list: Array<{ title: string; slug: string }> = [];
-    let current = cat;
+    let current: { title?: string; slug?: { current?: string }; parent?: unknown } | undefined = cat;
     while (current) {
       if (current.title) {
         list.unshift({
@@ -72,14 +72,15 @@ const ProductContent = ({
           slug: current.slug?.current || "",
         });
       }
-      current = current.parent;
+      current = current.parent as typeof current;
     }
     return list;
   };
 
-  const productClassification = (product as any)?.productClassification;
-  const categoryHierarchy = buildCategoryHierarchy((product as any)?.category);
-  const storeData = (product as any)?.store;
+  const productObj = product as unknown as Record<string, unknown>;
+  const productClassification = productObj?.productClassification as { title?: string; slug?: { current?: string } } | undefined;
+  const categoryHierarchy = buildCategoryHierarchy(productObj?.category as Parameters<typeof buildCategoryHierarchy>[0]);
+  const storeData = productObj?.store as { name?: string; slug?: { current?: string } } | undefined;
 
   return (
     <ProductAnimationWrapper>
@@ -410,7 +411,7 @@ const ProductContent = ({
           <ProductReviews
             productId={product._id}
             productName={product.name || "this product"}
-            initialReviews={(product as any)?.reviews}
+            initialReviews={productObj?.reviews as Parameters<typeof ProductReviews>[0]["initialReviews"]}
           />
         </ProductSectionWrapper>
 

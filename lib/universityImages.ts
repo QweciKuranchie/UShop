@@ -2,8 +2,8 @@ import { urlFor } from "@/sanity/lib/image";
 
 export function getUniversityImageUrl(university: {
   slug?: { current?: string };
-  image?: any;
-  logo?: any;
+  image?: unknown;
+  logo?: unknown;
 }): string {
   // 1. Check Sanity image/logo first
   if (university?.image) {

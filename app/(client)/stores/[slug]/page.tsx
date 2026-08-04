@@ -1,6 +1,5 @@
 import Container from "@/components/Container";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
-import ProductCard from "@/components/ProductCard";
 import PaginatedProductGrid from "@/components/PaginatedProductGrid";
 import Title from "@/components/Title";
 import { getSingleStoreBySlug, getProductsByStoreSlug } from "@/sanity/Queries";
@@ -27,9 +26,9 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const store = await getSingleStoreBySlug(slug);
+  const store = (await getSingleStoreBySlug(slug)) as { name?: string; description?: string } | null;
 
-  if (!store) {
+  if (!store || !store.name) {
     return {
       title: "Store Not Found | UShop",
     };
@@ -41,13 +40,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-function getStoreImageUrl(source: any): string | null {
+function getStoreImageUrl(source: unknown): string | null {
   if (!source) return null;
   if (typeof source === "string") return source;
   if (typeof source === "object") {
-    if (source.asset || source._ref || source._type === "image") {
+    const srcObj = source as Record<string, unknown>;
+    if (srcObj.asset || srcObj._ref || srcObj._type === "image") {
       try {
-        const result = urlFor(source).url();
+        const result = urlFor(source as Parameters<typeof urlFor>[0]).url();
         if (result && typeof result === "string" && result.length > 0) {
           return result;
         }
@@ -55,8 +55,8 @@ function getStoreImageUrl(source: any): string | null {
         console.error("Error building image URL:", err);
       }
     }
-    if (source.url && typeof source.url === "string") {
-      return source.url;
+    if (srcObj.url && typeof srcObj.url === "string") {
+      return srcObj.url;
     }
   }
   return null;

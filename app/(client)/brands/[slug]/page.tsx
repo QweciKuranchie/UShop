@@ -1,7 +1,6 @@
 import Container from "@/components/Container";
 import Title from "@/components/Title";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
-import ProductCard from "@/components/ProductCard";
 import PaginatedProductGrid from "@/components/PaginatedProductGrid";
 import NoProductAvailable from "@/components/product/NoProductsAvailable";
 import { getSingleBrandBySlug, getProductsByBrandSlug } from "@/sanity/Queries";
