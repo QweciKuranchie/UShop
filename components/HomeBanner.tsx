@@ -95,7 +95,7 @@ function HomeBanner() {
                 width={400}
                 height={400}
                 className="relative z-10 w-48 sm:w-56 md:w-72 object-contain drop-shadow-2xl"
-                priority={slide.id === 1}
+                priority
               />
             </div>
           </div>

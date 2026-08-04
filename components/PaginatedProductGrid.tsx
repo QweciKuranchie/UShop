@@ -37,8 +37,8 @@ const PaginatedProductGrid: React.FC<PaginatedProductGridProps> = ({
     <div>
       {/* Product Grid */}
       <div className={`grid ${gridCols} gap-4 md:gap-6`}>
-        {visibleProducts.map((product) => (
-          <ProductCard key={product._id} product={product} />
+        {visibleProducts.map((product, index) => (
+          <ProductCard key={product._id} product={product} priority={index < 4} />
         ))}
       </div>
 

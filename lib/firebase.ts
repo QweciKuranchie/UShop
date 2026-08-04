@@ -1,4 +1,5 @@
 import { initializeApp, getApps, FirebaseApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import { getAnalytics, isSupported, Analytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -27,4 +28,5 @@ if (typeof window !== "undefined") {
   });
 }
 
-export { app, analytics };
+const auth = getAuth(app);
+export { app, analytics, auth};

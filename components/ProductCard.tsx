@@ -40,7 +40,12 @@ const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   },
 };
 
-const ProductCard = ({ product }: { product: Product }) => {
+interface ProductCardProps {
+  product: Product;
+  priority?: boolean;
+}
+
+const ProductCard = ({ product, priority = false }: ProductCardProps) => {
   return (
     <div className="text-sm border-[1px] border-dark-blue/20 rounded-md bg-white group">
       <div className="relative group overflow-hidden bg-ushop_light_bg">
@@ -49,7 +54,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           <Image
             src={urlFor(product.images[0]).url()}
             alt={product.name || "Product Image"}
-            loading="lazy"
+            priority={priority}
             width={700}
             height={700}
             className={`w-full h-52 md:h-64 object-cover overflow-hidden transition-transform

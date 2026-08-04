@@ -80,7 +80,15 @@ const ProductContent = ({
   const productObj = product as unknown as Record<string, unknown>;
   const productClassification = productObj?.productClassification as { title?: string; slug?: { current?: string } } | undefined;
   const categoryHierarchy = buildCategoryHierarchy(productObj?.category as Parameters<typeof buildCategoryHierarchy>[0]);
-  const storeData = productObj?.store as { name?: string; slug?: { current?: string } } | undefined;
+  const storeData = productObj?.store as {
+    name?: string;
+    slug?: { current?: string };
+    logo?: unknown;
+    location?: { name?: string; city?: string };
+    ownerName?: string;
+    verifiedStudent?: boolean;
+    verifiedSeller?: boolean;
+  } | undefined;
 
   return (
     <ProductAnimationWrapper>
