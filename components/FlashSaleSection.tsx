@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Product } from "@/sanity.types";
 import ProductCard from "./ProductCard";
-import { Flame, Clock, ArrowRight, Zap } from "lucide-react";
+import { Flame, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 interface FlashSaleSectionProps {

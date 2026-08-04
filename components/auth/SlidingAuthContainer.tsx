@@ -600,46 +600,46 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
               {/* Background Image */}
               <div className="absolute inset-0 z-0 pointer-events-none">
                 <Image
-                  alt="Ghanaian students studying together"
-                  className="w-full h-full object-cover opacity-30"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7Wu_9VNiZf0qn534_LWcpQli7GE99e6I9B4GiQUn5-Wfe_cVDRvR_jO2cQPVC0E75K_WYK9fKJdyiHii3xKZlEgO3xMY32yqaqEiytmwj5kj1dmd_HaT6kGIoiTxmIpMDQz-cMRcH6SV-B8AsM3haWVE2igIMdp38_TkKxaZGPGCUAHH62yb1pnZXXF2rBMYMzw3G3b9oDE_E8frY90CQnsblbKatf3uNAh93v-CtOqWEb-HK2Qqtvmr-hWEK4DLWomFnOKLDbbNA"
+                  alt="Students using tech products and laptops"
+                  className="w-full h-full object-cover opacity-80"
+                  src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&auto=format&fit=crop&q=80"
                   fill
                   sizes="50vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-[#520f85]/90 via-[#520f85]/75 to-[#3a0a5e]/95" />
+                <div className="absolute inset-0 bg-gradient-to-b from-[#520f85]/55 via-[rgba(82,15,133,0.35)] to-[#191022]/80" />
               </div>
 
               {/* Foreground Content */}
               <div className="relative z-10 flex flex-col items-center justify-center text-center w-full px-5 lg:px-8 gap-4">
                 {/* Badge */}
-                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/20">
+                <div className="inline-flex items-center gap-2 bg-black/40 border border-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full">
                   <Sparkles className="w-3 h-3 text-[#D4009B]" />
                   <span className="text-[10px] font-bold tracking-[0.15em] uppercase text-white/90">Student Exclusive</span>
                 </div>
 
                 {/* Heading */}
-                <h1 className="text-xl lg:text-[1.65rem] font-extrabold text-white leading-snug">
+                <h1 className="text-xl lg:text-[1.65rem] font-extrabold text-white leading-snug drop-shadow-md">
                   Empowering <span className="text-[#D4009B]">You</span>
                   <br />
                   with Affordable Tech.
                 </h1>
 
                 {/* Description */}
-                <p className="text-[11px] lg:text-xs text-white/75 leading-relaxed max-w-[240px]">
+                <p className="text-[11px] lg:text-xs text-white/90 leading-relaxed max-w-[240px] drop-shadow-sm font-medium">
                   Join thousands getting the best deals on laptops, smartphones, and campus essentials.
                 </p>
 
                 {/* Feature Cards */}
                 <div className="grid grid-cols-2 gap-2.5 w-full max-w-[280px]">
-                  <div className="flex flex-col items-center gap-1.5 bg-white/8 border border-white/10 rounded-lg px-3 py-3">
+                  <div className="flex flex-col items-center gap-1.5 bg-black/45 border border-white/20 rounded-xl px-3 py-3 backdrop-blur-xs">
                     <ShieldCheck className="w-5 h-5 text-[#D4009B]" />
                     <p className="font-bold text-[11px] text-white leading-tight">Verified Sellers</p>
-                    <p className="text-[9px] text-white/55 leading-tight">Shop with confidence</p>
+                    <p className="text-[9px] text-white/75 leading-tight">Shop with confidence</p>
                   </div>
-                  <div className="flex flex-col items-center gap-1.5 bg-white/8 border border-white/10 rounded-lg px-3 py-3">
+                  <div className="flex flex-col items-center gap-1.5 bg-black/45 border border-white/20 rounded-xl px-3 py-3 backdrop-blur-xs">
                     <Truck className="w-5 h-5 text-[#D4009B]" />
-                    <p className="font-bold text-[11px] text-white leading-tight">Campus Delivery</p>
-                    <p className="text-[9px] text-white/55 leading-tight">Straight to your hostel</p>
+                    <p className="font-bold text-[11px] text-white leading-tight">Nationwide Delivery</p>
+                    <p className="text-[9px] text-white/75 leading-tight">Straight to your doorstep</p>
                   </div>
                 </div>
 

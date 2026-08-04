@@ -12,7 +12,6 @@ import NotificationBell from "./NotificationBell";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import MobileMenu from "./layout/MobileMenu";
-import Link from "next/link";
 import {
   ClerkLoaded,
   SignedIn,

@@ -1,19 +1,13 @@
 import {
   X,
-  Home,
-  ShoppingBag,
-  Flame,
   User,
   ShoppingCart,
   Heart,
   Package,
-  Tag,
   Phone,
   HelpCircle,
   Info,
-  Grid3X3,
   Logs,
-  List,
   LogOut,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -106,15 +100,6 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
     { title: "My Orders", href: "/orders", icon: Package },
     { title: "Wishlist", href: "/wishlist", icon: Heart },
     { title: "Shopping Cart", href: "/cart", icon: ShoppingCart },
-  ];
-
-  const mainMenuItems = [
-    { title: "Home", href: "/", icon: Home },
-    { title: "All Products", href: "/shop", icon: List  },
-    { title: "Stores", href: "/stores", icon: ShoppingBag },
-    { title: "Categories", href: "/category", icon: Grid3X3 },
-    { title: "Brands", href: "/brands", icon: Tag },
-    { title: "Flash Sales", href: "/deal", icon: Flame },
   ];
 
   const supportMenuItems = [
