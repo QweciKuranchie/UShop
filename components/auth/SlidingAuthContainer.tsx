@@ -616,7 +616,7 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
                 {/* Badge */}
                 <div className="inline-flex items-center gap-2 bg-black/40 border border-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full">
                   <Sparkles className="w-3 h-3 text-[#D4009B]" />
-                  <span className="text-[10px] font-bold tracking-[0.15em] uppercase text-white/90">Student Exclusive</span>
+                  <span className="text-[10px] font-bold tracking-[0.15em] uppercase text-white/90">Exclusive</span>
                 </div>
 
                 {/* Heading */}
