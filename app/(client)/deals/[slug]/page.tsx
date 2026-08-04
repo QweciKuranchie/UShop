@@ -1,5 +1,4 @@
 import Container from "@/components/Container";
-import ProductCard from "@/components/ProductCard";
 import Title from "@/components/Title";
 import DealCountdown from "@/components/DealCountdown";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
@@ -7,7 +6,6 @@ import PaginatedProductGrid from "@/components/PaginatedProductGrid";
 import { Product } from "@/sanity.types";
 import { getDealProducts, getAllProducts } from "@/sanity/Queries";
 import {
-  Flame,
   Zap,
   GraduationCap,
   Tag,
@@ -15,6 +13,7 @@ import {
   Sparkles,
   Package,
   ArrowLeft,
+  LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -32,7 +31,7 @@ const DEAL_CATEGORIES: Record<
     badgeText: string;
     maxDiscount: string;
     bgGradient: string;
-    icon: any;
+    icon: LucideIcon;
   }
 > = {
   flash: {
@@ -118,7 +117,7 @@ const SingleDealCategoryPage = async ({ params }: Props) => {
   } else if (dealKey === "students") {
     filteredProducts = rawProducts.filter((p) => Boolean(p.discount || p.isFlashSale || p.featured));
   } else if (dealKey === "clearance") {
-    filteredProducts = rawProducts.filter((p) => (p.discount && p.discount > 0) || p.status === "refurbished" || p.status === "good");
+    filteredProducts = rawProducts.filter((p) => (p.discount && p.discount > 0) || (p.status as string) === "refurbished" || p.status === "good");
   } else if (dealKey === "black-friday") {
     filteredProducts = rawProducts.filter((p) => Boolean(p.discount || p.isFlashSale || p.status === "hot"));
   } else {
