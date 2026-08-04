@@ -137,20 +137,20 @@ const SingleStorePage = async ({ params }: Props) => {
                   <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
                     {storeName}
                   </h1>
-                  {store.verifiedSeller && (
+                  {Boolean(store.verifiedSeller) && (
                     <CheckCircle2 className="w-5 h-5 text-ushop-pink fill-ushop-pink/10 shrink-0" />
                   )}
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3 text-xs text-gray-600 mb-2">
-                  {store.verifiedStudent && (
+                  {Boolean(store.verifiedStudent) && (
                     <span className="flex items-center gap-1.5 font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/80 px-2.5 py-1 rounded-md">
                       <GraduationCap className="w-3.5 h-3.5 text-emerald-600" />
                       Verified Student
                     </span>
                   )}
 
-                  {store.verifiedSeller && (
+                  {Boolean(store.verifiedSeller) && (
                     <span className="flex items-center gap-1.5 font-semibold bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/20 px-2.5 py-1 rounded-md">
                       <CheckCircle2 className="w-3.5 h-3.5 text-ushop-pink" />
                       Verified Seller
@@ -173,12 +173,12 @@ const SingleStorePage = async ({ params }: Props) => {
 
                   <span className="flex items-center gap-1 font-semibold text-ushop-pink bg-ushop-pink/10 px-2.5 py-1 rounded-md">
                     <Star className="w-3.5 h-3.5 fill-ushop-pink text-ushop-pink" />
-                    {store.rating || 5.0} Rating
+                    {String(store.rating || 5.0)} Rating
                   </span>
                 </div>
 
                 <p className="text-xs text-gray-600 max-w-2xl leading-relaxed">
-                  {store.description || "Verified merchant store on UShop."}
+                  {String(store.description || "Verified merchant store on UShop.")}
                 </p>
               </div>
             </div>
@@ -198,7 +198,7 @@ const SingleStorePage = async ({ params }: Props) => {
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-200">
           <div>
             <Title className="text-xl sm:text-2xl font-bold text-gray-900">
-              Products from {store.name}
+              Products from {storeName}
             </Title>
             <p className="text-xs text-gray-500 mt-1">
               Showing {products.length} {products.length === 1 ? "item" : "items"} available.
