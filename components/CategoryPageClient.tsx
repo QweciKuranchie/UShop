@@ -49,6 +49,7 @@ const CategoryPageClient = ({
                     alt={categoryTitle}
                     width={80}
                     height={80}
+                    priority
                     className="w-full h-full object-contain"
                   />
                 </div>

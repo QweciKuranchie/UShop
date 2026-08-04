@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const sliderData = [
   {
@@ -67,7 +67,6 @@ function HomeBanner() {
             {/* Left content */}
             <div className="flex-1 space-y-5 z-10 max-w-lg mt-8 md:mt-0">
               <div className="inline-flex items-center gap-2 bg-ushop-pink text-white text-[11px] font-semibold px-3.5 py-1.5 rounded-full uppercase tracking-widest w-max">
-                <Sparkles className="w-3.5 h-3.5" />
                 {slide.offer}
               </div>
 
@@ -96,7 +95,7 @@ function HomeBanner() {
                 width={400}
                 height={400}
                 className="relative z-10 w-48 sm:w-56 md:w-72 object-contain drop-shadow-2xl"
-                priority={slide.id === 1}
+                priority
               />
             </div>
           </div>

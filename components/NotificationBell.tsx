@@ -17,7 +17,7 @@ export default function NotificationBell() {
 
   return (
     <Link href="/user/notifications" className="group relative">
-      <Bell className="w-6 h-6 group-hover:text-ushop-purple hoverEffect" />
+      <Bell className="w-6 h-6 group-hover:text-ushop-pink hoverEffect" />
       {unreadNotifications > 0 ? (
         <span
           className={`absolute -top-1 -right-1 bg-ushop-red text-white rounded-full text-xs font-semibold flex items-center justify-center min-w-[14px] h-[14px] ${

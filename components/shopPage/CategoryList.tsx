@@ -18,6 +18,7 @@ export interface ExtendedCategory extends Category {
   parent?: { _id: string; title?: string; slug?: { current?: string }; level?: string };
   productType?: { _id: string; title?: string; slug?: { current?: string } };
   productCount?: number;
+  allowedBrands?: { _id: string; name?: string; slug?: { current?: string } }[];
 }
 
 interface Props {

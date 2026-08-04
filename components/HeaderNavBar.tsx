@@ -1,16 +1,55 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
-import { Flame } from "lucide-react";
+import React, { useState } from "react";
+import { Flame, ChevronDown, Zap, GraduationCap, Tag, ShoppingBag, Sparkles } from "lucide-react";
 import { headerData } from "@/Constants/data";
 import { usePathname } from "next/navigation";
 
+const dealsDropdownItems = [
+  {
+    title: "Flash Sales",
+    badge: "Up to 90% off",
+    href: "/deals/flash",
+    icon: Zap,
+    color: "text-ushop-red",
+  },
+  {
+    title: "Student Deals",
+    badge: "Up to 90% off",
+    href: "/deals/students",
+    icon: GraduationCap,
+    color: "text-emerald-600",
+  },
+  {
+    title: "Clearance",
+    badge: "Up to 50% off",
+    href: "/deals/clearance",
+    icon: Tag,
+    color: "text-amber-600",
+  },
+  {
+    title: "Black Friday",
+    badge: "Mega Deals",
+    href: "/deals/black-friday",
+    icon: ShoppingBag,
+    color: "text-gray-900",
+  },
+  {
+    title: "Special Offers",
+    badge: "Exclusive",
+    href: "/deals/special-offers",
+    icon: Sparkles,
+    color: "text-ushop-pink",
+  },
+];
+
 const HeaderNavBar = () => {
-    const pathname = usePathname();
-    
+  const pathname = usePathname();
+  const [isDealsOpen, setIsDealsOpen] = useState(false);
+
   return (
-    <div className="border-t border-gray-100">
+    <div className="border-t border-gray-100 bg-white">
       {/* ── Row 3: Navigation bar ── */}
       <div className="max-w-7xl mx-auto px-4 hidden md:block">
         <nav
@@ -28,28 +67,85 @@ const HeaderNavBar = () => {
                 }`}
               >
                 {item.title}
-                <span className={`absolute -bottom-0.5 left-1/2 w-0 h-0.5 bg-ushop-pink group-hover:w-12 hoverEffect group-hover:left-0 ${
-                  pathname === item?.href && "text-ushop-purple"
-                }`}/>
-                <span className={`absolute -bottom-0.5 right-1/2 w-0 h-0.5 bg-ushop-pink group-hover:w-12 hoverEffect group-hover:right-0 ${
-                  pathname === item?.href && "text-ushop-pink"
-                }`}/>
+                <span
+                  className={`absolute -bottom-0.5 left-1/2 w-0 h-0.5 bg-ushop-pink group-hover:w-full hoverEffect group-hover:left-0 ${
+                    pathname === item?.href && "w-full left-0"
+                  }`}
+                />
               </Link>
             ))}
           </div>
 
-          {/* Student Deals — highlighted */}
-          <Link
-            href="/deal"
-            className="flex items-center gap-1 text-sm font-bold text-[#E8000B] hover:text-ushop-red transition-colors py-1"
+          {/* Deals & Offers — Dropdown Menu */}
+          <div
+            className="relative group"
+            onMouseEnter={() => setIsDealsOpen(true)}
+            onMouseLeave={() => setIsDealsOpen(false)}
           >
-            <Flame className="w-4 h-4 mb-0.5" />
-            Flash Sales
-          </Link>
+            <Link
+              href="/deals"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-ushop-red/10 text-ushop-red hover:bg-ushop-red hover:text-white transition-all text-xs font-extrabold tracking-wide uppercase"
+            >
+              <Flame className="w-4 h-4 fill-ushop-red group-hover:fill-white text-ushop-red group-hover:text-white animate-pulse shrink-0" />
+              <span>Deals & Offers</span>
+              <span className="px-1.5 py-0.2 bg-ushop-red group-hover:bg-white text-white group-hover:text-ushop-red text-[9px] font-black rounded-md ml-0.5">
+                HOT
+              </span>
+              <ChevronDown className="w-3.5 h-3.5 ml-0.5 transition-transform group-hover:rotate-180" />
+            </Link>
+
+            {/* Dropdown Box */}
+            <div
+              className={`absolute right-0 top-full mt-1 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 p-2 z-50 transition-all duration-200 ${
+                isDealsOpen
+                  ? "opacity-100 visible translate-y-0"
+                  : "opacity-0 invisible -translate-y-2 pointer-events-none"
+              }`}
+            >
+              <div className="px-3 py-2 border-b border-gray-100 mb-1">
+                <p className="text-[11px] font-extrabold uppercase tracking-wider text-gray-400">
+                  Featured Sales & Offers
+                </p>
+              </div>
+
+              {dealsDropdownItems.map((deal) => {
+                const IconComponent = deal.icon;
+                return (
+                  <Link
+                    key={deal.title}
+                    href={deal.href}
+                    className="flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-gray-50 transition-colors group/item"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className={`p-1.5 rounded-lg bg-gray-100 group-hover/item:bg-white shrink-0 ${deal.color}`}>
+                        <IconComponent className="w-4 h-4" />
+                      </div>
+                      <span className="text-xs font-bold text-gray-800 group-hover/item:text-ushop-pink transition-colors">
+                        {deal.title}
+                      </span>
+                    </div>
+
+                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-red-50 text-ushop-red border border-red-100 shrink-0">
+                      {deal.badge}
+                    </span>
+                  </Link>
+                );
+              })}
+
+              <div className="mt-2 pt-2 border-t border-gray-100 text-center">
+                <Link
+                  href="/deals"
+                  className="text-xs font-extrabold text-ushop-pink hover:underline block py-1"
+                >
+                  Browse All Hot Deals →
+                </Link>
+              </div>
+            </div>
+          </div>
         </nav>
       </div>
     </div>
   );
-}
+};
 
 export default HeaderNavBar;

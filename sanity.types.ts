@@ -122,6 +122,8 @@ export type Product = {
     "new" | "hot" | "like_new" | "excellent" | "good" | "fair" | "for_parts";
   variant?: "electronics" | "computing" | "others";
   featured?: boolean;
+  isFeatured?: boolean;
+  isFlashSale?: boolean;
 };
 
 export type LocationReference = {
@@ -206,6 +208,13 @@ export type Brand = {
   _rev: string;
   name?: string;
   slug?: Slug;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
   logo?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -214,6 +223,37 @@ export type Brand = {
     _type: "image";
   };
   description?: string;
+  featured?: boolean;
+  isFeatured?: boolean;
+};
+
+export type University = {
+  _id: string;
+  _type: "university";
+  _createdAt?: string;
+  _updatedAt?: string;
+  _rev?: string;
+  name?: string;
+  slug?: Slug;
+  city?: string;
+  domain?: string;
+  logo?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  description?: string;
+  featured?: boolean;
+  productCount?: number;
 };
 
 export type Address = {

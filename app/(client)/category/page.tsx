@@ -1,212 +1,275 @@
 import Container from "@/components/Container";
 import Title from "@/components/Title";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { getCategories } from "@/sanity/Queries";
 import { Category } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Package, Tag } from "lucide-react";
+import {
+  ArrowRight,
+  Package,
+  Tag,
+  Layers,
+  ShieldCheck,
+  Truck,
+  Zap,
+} from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Top Product Categories | UShop",
+  description: "Browse top tech product categories on UShop. Laptops, smartphones, accessories, appliances, and gaming gear.",
+};
 
 const CategoryPage = async () => {
-  const categories: Category[] = await getCategories();
+  const categories: Category[] = (await getCategories()) || [];
+
+  // Filter only top categories (top-level or featured)
+  const topCategories = categories.filter(
+    (cat: Category & { parent?: unknown; level?: string }) => !cat.parent || cat.level === "top" || cat.featured === true
+  );
+  const displayCategories = topCategories.length > 0 ? topCategories : categories;
+
+  const featuredCategories = displayCategories.filter((cat) => cat.featured);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/5">
-      <Container className="py-10">
-        {/* Breadcrumb */}
-        <div className="mb-8">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Categories</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
+    <div className="min-h-screen bg-gray-50/50 py-6">
+      <Container>
+        {/* Breadcrumb Navigation */}
+        <DynamicBreadcrumb
+          customItems={[{ label: "Categories", href: "/category" }]}
+        />
 
-        <div className="text-center mb-10">
-          <Title className="text-3xl lg:text-4xl font-bold text-ushop-purple-dark mb-3">
-            Shop by Categories
-          </Title>
-          <p className="text-base lg:text-lg text-dark-text max-w-2xl mx-auto mb-6">
-            Discover our wide range of products organized by categories. Find
-            exactly what you&apos;re looking for with ease.
-          </p>
+        {/* Hero Section */}
+        <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-xs border border-gray-100 mb-10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-center sm:text-left">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-ushop-pink/10 text-ushop-pink text-xs font-semibold rounded-full mb-3">
+              <Layers className="w-4 h-4" /> Top Category Directory
+            </span>
+            <Title className="text-2xl sm:text-4xl font-bold text-gray-900 mb-2">
+              Browse Top Categories
+            </Title>
+            <p className="text-gray-600 text-sm max-w-xl">
+              Discover top tech equipment, smartphones, computers, accessories, and electronics sorted by specialized categories.
+            </p>
+          </div>
 
-          {/* View All Products Button */}
-          <div className="flex justify-center">
+          <div className="flex items-center gap-3 shrink-0">
             <Link
               href="/shop"
-              className="inline-flex items-center justify-center gap-2 bg-ushop-purple hover:bg-ushop-pink text-white px-8 py-3 rounded-full font-semibold text-base shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-ushop-purple hover:bg-ushop-purple-dark text-white text-xs font-semibold rounded-xl transition-all shadow-xs"
             >
-              <Package className="w-5 h-5" />
-              View All Products
-              <ArrowRight className="w-5 h-5" />
+              <Package className="w-4 h-4" />
+              <span>All Products</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+
+            <Link
+              href="/brands"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 hover:border-ushop-pink text-gray-700 hover:text-ushop-pink text-xs font-semibold rounded-xl transition-all shadow-xs"
+            >
+              <Tag className="w-4 h-4" />
+              <span>Shop Brands</span>
             </Link>
           </div>
         </div>
 
-        {categories.length > 0 ? (
-          <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-              {categories.map((category) => (
-                <Link
-                  key={category._id}
-                  href={`/category/${category.slug?.current}`}
-                  className="group relative bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 hover:border-ushop-pink transform hover:-translate-y-1"
-                >
-                  {/* Category Image */}
-                  <div className="relative h-24 sm:h-28 lg:h-32 bg-gradient-to-br from-ushop-pink/10 to-ushop_light_bg overflow-hidden">
-                    {category.image ? (
-                      <Image
-                        src={urlFor(category.image).url()}
-                        alt={category.title || "Category"}
-                        fill
-                        className="object-contain group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Package className="w-8 h-8 lg:w-10 lg:h-10 text-ushop-pink opacity-60" />
-                      </div>
-                    )}
+        {/* Featured Collections */}
+        {featuredCategories.length > 0 && (
+          <div className="mb-12">
+            <div className="flex items-center gap-2 mb-6">
+              <h2 className="text-xl font-bold text-gray-900">
+                Featured Collections
+              </h2>
+            </div>
 
-                    {/* Subtle Overlay */}
-                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredCategories.map((category) => {
+                const imageUrl = category.image ? urlFor(category.image).url() : null;
+                const slug = category.slug?.current || "";
 
-                    {/* Featured Badge */}
-                    {category.featured && (
-                      <div className="absolute top-1.5 left-1.5 bg-ushop-pink text-white px-2 py-0.5 rounded-full text-xs font-medium flex items-center gap-1">
-                        <Tag className="w-2 h-2" />
-                        <span className="hidden sm:inline text-xs">
-                          Featured
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Product Count - Removed as not available in Category type */}
-                  </div>
-
-                  {/* Category Content */}
-                  <div className="p-3 lg:p-4">
-                    <div className="flex items-start justify-between mb-1.5">
-                      <h3 className="text-sm lg:text-base font-semibold text-ushop-purple-dark group-hover:text-ushop-pink transition-colors duration-300 line-clamp-1">
-                        {category.title}
-                      </h3>
-                      <ArrowRight className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-ushop-pink group-hover:translate-x-0.5 transition-transform duration-300 flex-shrink-0 ml-2" />
-                    </div>
-
-                    {category.description && (
-                      <p className="text-dark-text text-xs mb-2 line-clamp-1 lg:line-clamp-2">
-                        {category.description}
-                      </p>
-                    )}
-
-                    <div className="flex items-center justify-between text-xs text-light-text">
-                      <span className="capitalize truncate text-xs">
-                        {category.slug?.current?.replace(/-/g, " ")}
+                return (
+                  <Link
+                    key={category._id}
+                    href={`/category/${slug}`}
+                    className="group relative bg-white rounded-3xl p-6 border border-gray-100 shadow-xs hover:shadow-xl hover:border-ushop-pink/30 transition-all duration-300 flex flex-col justify-between overflow-hidden"
+                  >
+                    {/* Top Tag */}
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200/60 px-2.5 py-0.5 rounded-full text-[11px] font-semibold">
+                        Featured
                       </span>
+
                       {category.range && (
-                        <span className="bg-ushop-pink/10 text-ushop-purple px-1.5 py-0.5 rounded text-xs font-medium whitespace-nowrap ml-2">
+                        <span className="bg-ushop-pink/10 text-ushop-pink px-2.5 py-0.5 rounded-md text-[11px] font-medium">
                           {category.range}
                         </span>
                       )}
                     </div>
-                  </div>
 
-                  {/* Hover Effect Bottom Border */}
-                  <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-ushop-pink via-ushop-purple to-ushop-pink transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-                </Link>
-              ))}
+                    {/* Image & Main Info */}
+                    <div className="flex items-center gap-5 my-2">
+                      <div className="relative w-20 h-20 rounded-2xl bg-gradient-to-br from-ushop-pink/5 to-gray-50 border border-gray-100 flex items-center justify-center shrink-0 p-2 overflow-hidden group-hover:scale-105 transition-transform">
+                        {imageUrl ? (
+                          <Image
+                            src={imageUrl}
+                            alt={category.title || "Category"}
+                            fill
+                            className="object-contain p-2"
+                          />
+                        ) : (
+                          <Package className="w-8 h-8 text-ushop-pink" />
+                        )}
+                      </div>
+
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 group-hover:text-ushop-pink transition-colors">
+                          {category.title}
+                        </h3>
+                        {category.description && (
+                          <p className="text-xs text-gray-500 line-clamp-2 mt-1 leading-relaxed">
+                            {category.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Footer Action */}
+                    <div className="pt-4 mt-4 border-t border-gray-100 flex items-center justify-between text-xs font-semibold text-ushop-pink group-hover:gap-2 transition-all">
+                      <span>Explore Collection</span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
+          </div>
+        )}
 
-           {/*
-            <div className="mt-10 text-center">
-              <div className="bg-gradient-to-r from-ushop-pink/5 via-ushop-purple/5 to-ushop-pink/5 rounded-xl p-6 border border-ushop-pink/20">
-                <h3 className="text-lg lg:text-xl font-semibold text-ushop-purple-dark mb-2">
-                  Explore Our Complete Product Range
-                </h3>
-                <p className="text-dark-text text-sm mb-4">
-                  Don&apos;t see what you&apos;re looking for? Browse our entire
-                  collection of products.
+        {/* Top Categories Grid */}
+        {displayCategories.length > 0 ? (
+          <div className="mb-16">
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Top Categories
+                </h2>
+                <p className="text-xs text-gray-500 mt-1">
+                  Explore top product classifications on UShop.
                 </p>
-                <Link
-                  href="/shop"
-                  className="inline-flex items-center justify-center gap-2 bg-ushop-purple hover:bg-ushop-pink text-white px-6 py-2.5 rounded-full font-medium text-sm transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
-                >
-                  <Package className="w-4 h-4" />
-                  View All Products
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
               </div>
             </div>
-            */}
-          </>
-        ) : (
-          <div className="text-center py-12">
-            <div className="bg-white/70 backdrop-blur-sm rounded-xl p-8 shadow-md border border-gray-100/50 max-w-md mx-auto">
-              <Package className="w-16 h-16 text-light-text mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-ushop-purple-dark mb-3">
-                No Categories Available
-              </h3>
-              <p className="text-dark-text text-sm mb-6">
-                It looks like there are no categories set up yet. Check back
-                soon for our product categories!
-              </p>
-              <Link
-                href="/shop"
-                className="inline-flex items-center gap-2 bg-ushop-pink hover:bg-ushop-purple text-white px-6 py-2.5 rounded-full font-medium text-sm transition-colors duration-300"
-              >
-                <Package className="w-4 h-4" />
-                Browse All Products
-              </Link>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {displayCategories.map((category) => {
+                const imageUrl = category.image ? urlFor(category.image).url() : null;
+                const slug = category.slug?.current || "";
+
+                return (
+                  <Link
+                    key={category._id}
+                    href={`/category/${slug}`}
+                    className="group bg-white rounded-2xl border border-gray-100 p-5 shadow-xs hover:shadow-md hover:border-ushop-pink/30 transition-all duration-300 flex flex-col justify-between"
+                  >
+                    <div>
+                      {/* Image Header */}
+                      <div className="relative w-full h-36 rounded-xl bg-gray-50/80 border border-gray-100 flex items-center justify-center mb-4 p-3 overflow-hidden group-hover:bg-ushop-pink/5 transition-colors">
+                        {imageUrl ? (
+                          <Image
+                            src={imageUrl}
+                            alt={category.title || "Category"}
+                            fill
+                            className="object-contain p-3 group-hover:scale-105 transition-transform duration-300"
+                          />
+                        ) : (
+                          <Package className="w-10 h-10 text-ushop-pink/40" />
+                        )}
+
+                        {category.featured && (
+                          <span className="absolute top-2 right-2 bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-2xs">
+                            Featured
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Content */}
+                      <h3 className="font-bold text-gray-900 text-base group-hover:text-ushop-pink transition-colors mb-1">
+                        {category.title}
+                      </h3>
+
+                      {category.description ? (
+                        <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed mb-3">
+                          {category.description}
+                        </p>
+                      ) : (
+                        <p className="text-xs text-gray-400 italic mb-3">
+                          Explore items in {category.title}.
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Footer Action */}
+                    <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-semibold text-gray-700 group-hover:text-ushop-pink transition-colors">
+                      <span>Shop {category.title}</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
+          </div>
+        ) : (
+          <div className="bg-white rounded-3xl border border-gray-100 p-12 text-center max-w-md mx-auto my-12 shadow-xs">
+            <Package className="w-12 h-12 text-ushop-pink/40 mx-auto mb-4" />
+            <h3 className="text-lg font-bold text-gray-900 mb-2">
+              No Categories Available
+            </h3>
+            <p className="text-xs text-gray-500 mb-6">
+              There are currently no active product categories configured. Check back soon!
+            </p>
+            <Link
+              href="/shop"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-ushop-purple hover:bg-ushop-purple-dark text-white text-xs font-semibold rounded-xl transition-colors"
+            >
+              <Package className="w-4 h-4" />
+              <span>Browse All Products</span>
+            </Link>
           </div>
         )}
 
-        {/* Additional Info Section */}
-        {categories.length > 0 && (
-          <div className="mt-12 bg-white/70 backdrop-blur-sm rounded-xl p-6 lg:p-8 shadow-md border border-gray-100/50">
-            <div className="text-center">
-              <h3 className="text-xl lg:text-2xl font-bold text-ushop-purple-dark mb-3">
-                Can&apos;t Find What You&apos;re Looking For?
-              </h3>
-              <p className="text-dark-text mb-6 text-sm lg:text-base">
-                Browse all our products or use our search feature to find
-                specific items.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link
-                  href="/shop"
-                  className="inline-flex items-center justify-center gap-2 bg-ushop-pink hover:bg-ushop-purple text-white px-6 py-2.5 rounded-full font-medium text-sm transition-colors duration-300"
-                >
-                  <Package className="w-4 h-4" />
-                  All Products
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
-                  href="/brands"
-                  className="inline-flex items-center justify-center gap-2 border-2 border-ushop-pink text-ushop-pink hover:bg-ushop-pink hover:text-white px-6 py-2.5 rounded-full font-medium text-sm transition-colors duration-300"
-                >
-                  <Tag className="w-4 h-4" />
-                  Shop by Brands
-                </Link>
-              </div>
+        {/* Feature Badges Footer */}
+        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-xs grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
+          <div className="flex items-center gap-4 p-2">
+            <div className="w-12 h-12 rounded-xl bg-ushop-pink/10 text-ushop-pink flex items-center justify-center shrink-0">
+              <ShieldCheck className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-gray-900">Verified Equipment</h4>
+              <p className="text-xs text-gray-500 mt-0.5">Checked products from trusted merchants & campus sellers.</p>
             </div>
           </div>
-        )}
+
+          <div className="flex items-center gap-4 p-2">
+            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+              <Zap className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-gray-900">Best Direct Prices</h4>
+              <p className="text-xs text-gray-500 mt-0.5">Competitive deals straight from verified vendors.</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 p-2">
+            <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <Truck className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-gray-900">Fast Nationwide Delivery</h4>
+              <p className="text-xs text-gray-500 mt-0.5">Quick campus pick-up & doorstep delivery across Ghana.</p>
+            </div>
+          </div>
+        </div>
       </Container>
     </div>
   );

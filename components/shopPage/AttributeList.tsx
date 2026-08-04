@@ -3,7 +3,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import Title from "../Title";
 import { Badge } from "../ui/badge";
-import { Award, ShieldCheck, Sparkles } from "lucide-react";
+import { Award, ShieldCheck } from "lucide-react";
 
 export interface SanityAttributeRef {
   _id?: string;
@@ -188,7 +188,6 @@ const AttributeList = ({
         <div className="p-4 bg-ushop-pink/5 rounded-xl border border-ushop-pink/20 space-y-4">
           <div className="flex items-center justify-between">
             <Title className="text-sm font-bold text-gray-900 flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-ushop-pink" />
               Dynamic Specs ({dynamicSpecs.categoryTitle})
             </Title>
             {Object.keys(dynamicAttrFilters || {}).length > 0 && (

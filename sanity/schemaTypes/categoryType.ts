@@ -165,6 +165,13 @@ export const categoryType = defineType({
       ],
     }),
     defineField({
+      name: "allowedBrands",
+      title: "Allowed Brands",
+      type: "array",
+      description: "Brands allowed for products in this category.",
+      of: [{ type: "reference", to: [{ type: "brand" }] }],
+    }),
+    defineField({
       name: "description",
       title: "Description",
       type: "text",

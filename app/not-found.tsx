@@ -1,6 +1,12 @@
 import Logo from "@/components/common/Logo";
 import Link from "next/link";
-import { Home, Search, ShoppingBag, Sparkles } from "lucide-react";
+import { Home, Search, ShoppingBag } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "404 - Page Not Found | UShop",
+  description: "The requested page could not be found on UShop.",
+};
 
 const NotFoundPage = () => {
   return (
@@ -22,7 +28,6 @@ const NotFoundPage = () => {
             <h1 className="text-[120px] sm:text-[150px] font-black leading-none bg-gradient-to-br from-ushop-purple via-ushop-pink to-ushop-purple bg-clip-text text-transparent select-none">
               404
             </h1>
-            <Sparkles className="absolute -top-2 -right-4 w-8 h-8 text-ushop-pink animate-pulse" />
           </div>
 
           <h2 className="text-2xl sm:text-3xl font-bold text-dark-color mt-2">

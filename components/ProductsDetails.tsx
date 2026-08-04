@@ -1,63 +1,127 @@
 "use client";
 
-const ProductsDetails = () => {
+import { Product } from "@/sanity.types";
+
+interface AttributeMapItem {
+  key?: string;
+  slug?: string;
+  type?: string;
+  unit?: string;
+  value?: string | number | boolean;
+}
+
+interface ProductsDetailsProps {
+  product?: (Product & {
+    attributeMap?: AttributeMapItem[];
+    brand?: { name?: string; title?: string };
+    productClassification?: { title?: string };
+    category?: { title?: string };
+    store?: { name?: string; location?: { name?: string; city?: string } };
+  }) | null;
+}
+
+const ProductsDetails = ({ product }: ProductsDetailsProps) => {
+  const attributes = product?.attributeMap || [];
+
+  // Build rows array from dynamic attributeMap or product properties
+  const rows: { label: string; value: string }[] = [];
+
+  if (product?.brand?.name || product?.brand?.title) {
+    rows.push({
+      label: "Brand",
+      value: (product.brand.name || product.brand.title)!,
+    });
+  }
+
+  if (product?.productClassification?.title) {
+    rows.push({
+      label: "Classification",
+      value: product.productClassification.title,
+    });
+  }
+
+  if (product?.category?.title) {
+    rows.push({
+      label: "Category",
+      value: product.category.title,
+    });
+  }
+
+  if (product?.variant) {
+    rows.push({
+      label: "Condition / Variant",
+      value: product.variant,
+    });
+  }
+
+  if (product?.stock !== undefined) {
+    rows.push({
+      label: "Stock Quantity",
+      value: product.stock > 0 ? `${product.stock} units available` : "Out of Stock",
+    });
+  }
+
+  // Add custom dynamic attributes from attributeMap
+  attributes.forEach((attr) => {
+    if (attr.key && attr.value !== undefined && attr.value !== null) {
+      const valStr =
+        typeof attr.value === "boolean"
+          ? attr.value
+            ? "Yes"
+            : "No"
+          : String(attr.value);
+      const displayVal = attr.unit ? `${valStr} ${attr.unit}` : valStr;
+
+      if (!rows.some((r) => r.label.toLowerCase() === attr.key?.toLowerCase())) {
+        rows.push({
+          label: attr.key,
+          value: displayVal,
+        });
+      }
+    }
+  });
+
   return (
     <div className="w-full space-y-8 mb-10">
       {/* Description Section */}
       <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
         <h2 className="text-xl font-bold text-zinc-900 mb-4 flex items-center gap-2">
           <span className="w-1 h-5 bg-ushop-pink rounded-full"></span>
-          Description
+          Product Description
         </h2>
-        <div className="prose prose-sm max-w-none text-gray-600">
-          <p className="mb-4">
-            In ducimus quod sed eum repellendus ea fugiat. Pariatur et illo at
-            iure harum. Molestiae a itaque voluptas explicabo praesentium.
-            Possimus omnis aut architecto et. Repellendus ab ipsa in non
-            doloremque tenetur est doloremque.
-          </p>
-          <p className="mb-4">
-            Quam in facere soluta consequatur voluptatem beatae asperiores. Qui
-            quia itaque illo eos quibusdam voluptatem et. Est aut deserunt iste.
-            Et ipsum eius ut odit deleniti.
-          </p>
-          <p>
-            Officia praesentium ipsam perferendis possimus ex culpa voluptatem
-            dolore. Aut id sit et vitae. Quis unde doloremque quisquam facere.
-            In qui eos est voluptatem repudiandae blanditiis consequatur.
-          </p>
+        <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed whitespace-pre-line">
+          {product?.description || "No description provided for this product."}
         </div>
       </div>
 
       {/* Additional Information Section */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-        <h2 className="text-xl font-bold text-zinc-900 mb-4 flex items-center gap-2">
-          <span className="w-1 h-5 bg-ushop-pink rounded-full"></span>
-          Additional Information
-        </h2>
-        <div className="overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <tbody className="bg-white divide-y divide-gray-200">
-              <tr className="hover:bg-gray-50 transition-colors">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 w-1/3">
-                  Weight
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  190 kg
-                </td>
-              </tr>
-              <tr className="hover:bg-gray-50 transition-colors">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 w-1/3">
-                  Dimensions
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  3 × 72 × 109 cm
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      {rows.length > 0 && (
+        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+          <h2 className="text-xl font-bold text-zinc-900 mb-4 flex items-center gap-2">
+            <span className="w-1 h-5 bg-ushop-pink rounded-full"></span>
+            Specifications & Details
+          </h2>
+          <div className="overflow-hidden rounded-lg border border-gray-100">
+            <table className="min-w-full divide-y divide-gray-200">
+              <tbody className="bg-white divide-y divide-gray-100">
+                {rows.map((row, idx) => (
+                  <tr
+                    key={idx}
+                    className="hover:bg-gray-50/80 transition-colors odd:bg-gray-50/40"
+                  >
+                    <td className="px-6 py-3.5 text-sm font-semibold text-gray-900 w-1/3">
+                      {row.label}
+                    </td>
+                    <td className="px-6 py-3.5 text-sm text-gray-700 font-medium">
+                      {row.value}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

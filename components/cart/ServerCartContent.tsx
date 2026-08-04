@@ -182,6 +182,7 @@ export function ServerCartContent({
                   }
                   alt={item.product.name || "Product"}
                   fill
+                  sizes="96px"
                   className="object-cover rounded-md"
                 />
               </div>

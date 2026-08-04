@@ -79,7 +79,7 @@ const NoProductsAvailable = ({
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/shop"
-            className="inline-flex items-center justify-center gap-2 bg-ushop-purple hover:bg-ushop-purple-dark text-white px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105"
+            className="inline-flex items-center justify-center gap-2 bg-ushop-pink hover:bg-ushop-pink/90 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105"
           >
             <Grid3X3 className="w-4 h-4" />
             Browse All Products
@@ -88,7 +88,7 @@ const NoProductsAvailable = ({
 
           <Link
             href="/category"
-            className="inline-flex items-center justify-center gap-2 border border-ushop-purple text-ushop-purple hover:bg-ushop-purple hover:text-white px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-300"
+            className="inline-flex items-center justify-center gap-2 border border-ushop-pink text-ushop-pink hover:bg-ushop-pink hover:text-white px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-300"
           >
             <Package className="w-4 h-4" />
             View Categories

@@ -13,6 +13,7 @@ import AddToWishlistBtn from "@/components/AddToWishlistBtn";
 import { Product } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
+import Link from "next/link";
 import {
   CornerDownLeft,
   StarIcon,
@@ -22,6 +23,10 @@ import {
   Palette,
   HelpCircle,
   Share2,
+  Store,
+  CheckCircle2,
+  MapPin,
+  ExternalLink,
 } from "lucide-react";
 import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -40,12 +45,14 @@ interface ProductContentProps {
     totalReviews?: number;
   };
   relatedProducts: Product[];
+  sellerProducts?: Product[];
   brand: { brandName?: string }[] | null;
 }
 
 const ProductContent = ({
   product,
   relatedProducts,
+  sellerProducts,
   brand,
 }: ProductContentProps) => {
   const averageRating = product?.averageRating || 0;
@@ -53,6 +60,35 @@ const ProductContent = ({
 
   // Active image selector state
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  // Build category hierarchy array from root ancestor down to leaf
+  const buildCategoryHierarchy = (cat: { title?: string; slug?: { current?: string }; parent?: unknown }) => {
+    const list: Array<{ title: string; slug: string }> = [];
+    let current: { title?: string; slug?: { current?: string }; parent?: unknown } | undefined = cat;
+    while (current) {
+      if (current.title) {
+        list.unshift({
+          title: current.title,
+          slug: current.slug?.current || "",
+        });
+      }
+      current = current.parent as typeof current;
+    }
+    return list;
+  };
+
+  const productObj = product as unknown as Record<string, unknown>;
+  const productClassification = productObj?.productClassification as { title?: string; slug?: { current?: string } } | undefined;
+  const categoryHierarchy = buildCategoryHierarchy(productObj?.category as Parameters<typeof buildCategoryHierarchy>[0]);
+  const storeData = productObj?.store as {
+    name?: string;
+    slug?: { current?: string };
+    logo?: unknown;
+    location?: { name?: string; city?: string };
+    ownerName?: string;
+    verifiedStudent?: boolean;
+    verifiedSeller?: boolean;
+  } | undefined;
 
   return (
     <ProductAnimationWrapper>
@@ -62,6 +98,13 @@ const ProductContent = ({
           productData={{
             name: product?.name || "",
             slug: product?.slug?.current || "",
+            classification: productClassification
+              ? {
+                  title: productClassification.title,
+                  slug: productClassification.slug?.current,
+                }
+              : undefined,
+            categoryHierarchy,
           }}
         />
 
@@ -200,6 +243,64 @@ const ProductContent = ({
               ) : null}
             </div>
 
+            {/* Store / Merchant Showcase Card */}
+            <ProductActionWrapper delay={0.25}>
+              <div className="bg-white border border-zinc-200/90 rounded-2xl p-4 my-4 shadow-2xs hover:border-ushop-pink/40 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3.5">
+                  {/* Store Logo or Fallback Icon */}
+                  <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-ushop-pink/10 border border-ushop-pink/20 flex items-center justify-center shrink-0">
+                    {storeData?.logo ? (
+                      <Image
+                        src={urlFor(storeData.logo).url()}
+                        alt={storeData.name || "Store Logo"}
+                        fill
+                        sizes="48px"
+                        className="object-cover"
+                      />
+                    ) : (
+                      <Store className="w-6 h-6 text-ushop-pink" />
+                    )}
+                  </div>
+
+                  {/* Store Info */}
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <h4 className="font-bold text-zinc-900 text-sm sm:text-base">
+                        {storeData?.name || "Verified Student Seller"}
+                      </h4>
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 fill-emerald-50 shrink-0" />
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-500 mt-0.5">
+                      {storeData?.location?.name && (
+                        <span className="flex items-center gap-1 text-zinc-600 font-medium">
+                          <MapPin className="w-3.5 h-3.5 text-ushop-pink" />
+                          {storeData.location.name}
+                        </span>
+                      )}
+                      <span className="text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100/60">
+                        Verified Store
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Option to Visit Store before add to cart */}
+                <Link
+                  href={
+                    storeData?.slug?.current
+                      ? `/stores/${storeData.slug.current}`
+                      : "/stores"
+                  }
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 bg-ushop-purple hover:bg-ushop-purple-dark text-white text-xs font-semibold rounded-xl transition-colors shrink-0 shadow-xs group"
+                >
+                  <Store className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  <span>Visit Store</span>
+                  <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+                </Link>
+              </div>
+            </ProductActionWrapper>
+
             {/* Action Buttons */}
             <ProductActionWrapper delay={0.3}>
               <div className="flex items-center gap-4">
@@ -271,7 +372,7 @@ const ProductContent = ({
 
         {/* Product Details Section */}
         <ProductSectionWrapper delay={0.6}>
-          <ProductsDetails />
+          <ProductsDetails product={product} />
         </ProductSectionWrapper>
 
         {/* Trust Indicators & Guarantees */}
@@ -319,14 +420,33 @@ const ProductContent = ({
           <ProductReviews
             productId={product._id}
             productName={product.name || "this product"}
+            initialReviews={productObj?.reviews as Parameters<typeof ProductReviews>[0]["initialReviews"]}
           />
         </ProductSectionWrapper>
 
-        {/* Related Products */}
+        {/* More from Seller */}
+        {sellerProducts && sellerProducts.length > 0 ? (
+          <ProductSectionWrapper delay={0.95}>
+            <RelatedProducts
+              title={`More from ${storeData?.name || "this Seller"}`}
+              subtitle="Other items listed by this vendor"
+              relatedProducts={sellerProducts}
+              viewMoreHref={
+                storeData?.slug?.current
+                  ? `/stores/${storeData.slug.current}`
+                  : "/stores"
+              }
+            />
+          </ProductSectionWrapper>
+        ) : null}
+
+        {/* You May Also Like */}
         <ProductSectionWrapper delay={1.0}>
           <RelatedProducts
-            currentProduct={product}
+            title="You May Also Like"
+            subtitle="Discover similar products in this category"
             relatedProducts={relatedProducts}
+            viewMoreHref="/shop"
           />
         </ProductSectionWrapper>
       </Container>

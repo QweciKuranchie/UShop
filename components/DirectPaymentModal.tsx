@@ -17,7 +17,6 @@ import {
   X,
   ShieldCheck,
   Lock,
-  Sparkles,
 } from "lucide-react";
 import PriceFormatter from "./PriceFormatter";
 import { cn } from "@/lib/utils";
@@ -104,7 +103,6 @@ const DirectPaymentModal: React.FC<Props> = ({
             <div className="space-y-2">
               <h3 className="text-2xl font-bold text-shop_dark_green flex items-center justify-center gap-2">
                 Secure Payment
-                <Sparkles className="w-5 h-5 text-shop_orange animate-pulse" />
               </h3>
               <p className="text-gray-600 leading-relaxed">
                 Complete your payment securely with Stripe

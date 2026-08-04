@@ -15,6 +15,7 @@ import { userType } from "./userType";
 import { userAccessRequestType } from "./userAccessRequestType";
 import { reviewType } from "./reviewType";
 import { subscriptionType } from "./subscriptionType";
+import { universityType } from "./universityType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -27,6 +28,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     orderType,
     storeType,
     locationType,
+    universityType,
     bannerType,
     contactType,
     sentNotificationType,

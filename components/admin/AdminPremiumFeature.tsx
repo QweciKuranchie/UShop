@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Crown, Sparkles, ArrowRight, Lock } from "lucide-react";
+import { Crown, ArrowRight, Lock } from "lucide-react";
 import Link from "next/link";
 
 interface AdminPremiumFeatureProps {
@@ -116,7 +116,7 @@ export default function AdminPremiumFeature({
                     className="bg-white/80 backdrop-blur-sm rounded-xl p-4 flex items-center gap-3 shadow-md hover:shadow-lg transition-shadow"
                   >
                     <div className="bg-purple-100 p-2 rounded-lg">
-                      <Sparkles className="w-5 h-5 text-purple-600" />
+                      <Crown className="w-5 h-5 text-purple-600" />
                     </div>
                     <span className="text-gray-700 font-medium">{feature}</span>
                   </motion.div>
@@ -155,7 +155,7 @@ export default function AdminPremiumFeature({
                 className="mt-8 text-center"
               >
                 <div className="inline-flex items-center gap-2 bg-purple-100/50 px-6 py-3 rounded-full">
-                  <Sparkles className="w-4 h-4 text-purple-600" />
+                  <Crown className="w-4 h-4 text-purple-600" />
                   <span className="text-sm text-purple-900 font-medium">
                     One-time payment • Lifetime access • All future updates
                     included

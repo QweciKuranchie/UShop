@@ -10,7 +10,7 @@ interface Props {
 const HomeTabBar = ({ selectedTab, onTabSelect }: Props) => {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden -mx-6 px-6 sm:mx-0 sm:px-0 text-sm font-semibold w-full sm:w-auto">
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-thin scrollbar-thumb-ushop-pink/40 scrollbar-track-transparent -mx-6 px-6 sm:mx-0 sm:px-0 text-sm font-semibold w-full sm:w-auto">
         {productType?.map((item) => (
           <button
             onClick={() => onTabSelect(item?.title)}

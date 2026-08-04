@@ -208,37 +208,51 @@ const Footer = () => {
 
               {/* Payment logos from /assets/icons/footer/ */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-400 mr-1">
+                <span className="text-xs text-gray-400 font-medium mr-1">
                   Accepted payments:
                 </span>
-                <Image
-                  src="/assets/icons/footer/Momo.png"
-                  alt="Mobile Money"
-                  width={32}
-                  height={24}
-                  className="h-6 w-auto"
-                />
-                <Image
-                  src="/assets/icons/footer/TCash.png"
-                  alt="Telecel Cash"
-                  width={32}
-                  height={24}
-                  className="h-6 w-auto"
-                />
-                <Image
-                  src="/assets/icons/footer/AT money.png"
-                  alt="AT Money"
-                  width={32}
-                  height={24}
-                  className="h-6 w-auto"
-                />
-                <Image
-                  src="/assets/icons/footer/visa.png"
-                  alt="Visa"
-                  width={32}
-                  height={24}
-                  className="h-6 w-auto"
-                />
+                <div className="flex items-center gap-2">
+                  <div className="bg-slate-800/90 border border-slate-700/80 rounded-md p-1 h-7.5 px-1.5 flex items-center justify-center shadow-xs hover:border-slate-600 transition-colors">
+                    <Image
+                      src="/assets/icons/footer/Momo.png"
+                      alt="MTN Mobile Money"
+                      width={100}
+                      height={60}
+                      unoptimized
+                      className="h-5 w-auto object-contain"
+                    />
+                  </div>
+                  <div className="bg-slate-800/90 border border-slate-700/80 rounded-md p-1 h-7.5 px-1.5 flex items-center justify-center shadow-xs hover:border-slate-600 transition-colors">
+                    <Image
+                      src="/assets/icons/footer/TCash.png"
+                      alt="Telecel Cash"
+                      width={100}
+                      height={60}
+                      unoptimized
+                      className="h-5 w-auto object-contain"
+                    />
+                  </div>
+                  <div className="bg-slate-800/90 border border-slate-700/80 rounded-md p-1 h-7.5 px-1.5 flex items-center justify-center shadow-xs hover:border-slate-600 transition-colors">
+                    <Image
+                      src="/assets/icons/footer/AT money.png"
+                      alt="AT Money"
+                      width={100}
+                      height={60}
+                      unoptimized
+                      className="h-5 w-auto object-contain"
+                    />
+                  </div>
+                  <div className="bg-slate-800/90 border border-slate-700/80 rounded-md p-1 h-7.5 px-1.5 flex items-center justify-center shadow-xs hover:border-slate-600 transition-colors">
+                    <Image
+                      src="/assets/icons/footer/visa.png"
+                      alt="Visa"
+                      width={100}
+                      height={60}
+                      unoptimized
+                      className="h-5 w-auto object-contain"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

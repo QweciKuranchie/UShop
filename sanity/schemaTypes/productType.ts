@@ -54,7 +54,33 @@ export const productType = defineType({
       type: "reference",
       group: "main",
       to: [{ type: "brand" }],
-      description: "Select brand (or Generic/No Brand)",
+      description: "Select brand (filtered by selected category)",
+      options: {
+        filter: async ({ document, getClient }) => {
+          const categoryRef = (
+            document?.category as { _ref?: string } | undefined
+          )?._ref;
+
+          if (!categoryRef) {
+            return { filter: '_type == "brand"' };
+          }
+
+          const client = getClient({ apiVersion: "2026-07-07" });
+          const categoryDoc = await client.fetch(
+            `*[_id == $id || _id == "drafts." + $id][0]{ "brandRefs": allowedBrands[]._ref }`,
+            { id: categoryRef.replace(/^drafts\./, "") }
+          );
+
+          if (categoryDoc?.brandRefs && categoryDoc.brandRefs.length > 0) {
+            return {
+              filter: "_id in $brandRefs",
+              params: { brandRefs: categoryDoc.brandRefs },
+            };
+          }
+
+          return { filter: '_type == "brand"' };
+        },
+      },
     }),
     defineField({
       name: "productClassification",
@@ -202,6 +228,14 @@ export const productType = defineType({
       type: "boolean",
       group: "main",
       description: "Toggle featured placement on homepage/shop",
+      initialValue: false,
+    }),
+    defineField({
+      name: "isFlashSale",
+      title: "Flash Sale / Daily Deal",
+      type: "boolean",
+      group: "main",
+      description: "Toggle flash sale / daily deal showcase on the homepage",
       initialValue: false,
     }),
 

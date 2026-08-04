@@ -56,6 +56,7 @@ const ResponsiveOrdersComponent = ({
                     src={urlFor(imageUrl).url()}
                     alt={item.product?.name || "Product"}
                     fill
+                    sizes="40px"
                     className="object-cover"
                   />
                 ) : (

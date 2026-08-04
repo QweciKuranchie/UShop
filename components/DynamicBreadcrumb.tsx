@@ -23,6 +23,14 @@ interface DynamicBreadcrumbProps {
   productData?: {
     name: string;
     slug: string;
+    classification?: {
+      title?: string;
+      slug?: string;
+    };
+    categoryHierarchy?: Array<{
+      title?: string;
+      slug?: string;
+    }>;
   };
   categoryData?: {
     name: string;
@@ -171,6 +179,28 @@ const DynamicBreadcrumb = ({
 
       // Handle dynamic routes with provided data
       if (parentSegment === "product" && productData && isLast) {
+        if (productData.classification?.title) {
+          breadcrumbs.push({
+            label: productData.classification.title,
+            href: productData.classification.slug
+              ? `/shop?classification=${productData.classification.slug}`
+              : "/shop",
+            isLast: false,
+          });
+        }
+
+        if (productData.categoryHierarchy && productData.categoryHierarchy.length > 0) {
+          productData.categoryHierarchy.forEach((cat) => {
+            if (cat.title) {
+              breadcrumbs.push({
+                label: cat.title,
+                href: cat.slug ? `/shop?category=${cat.slug}` : "/shop",
+                isLast: false,
+              });
+            }
+          });
+        }
+
         breadcrumbs.push({
           label: productData.name,
           href: undefined,
