@@ -602,9 +602,11 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
                 <Image
                   alt="Students using tech products and laptops"
                   className="w-full h-full object-cover opacity-80"
-                  src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&auto=format&fit=crop&q=80"
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=80"
                   fill
                   sizes="50vw"
+                  priority
+                  unoptimized={true}
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-[#520f85]/55 via-[rgba(82,15,133,0.35)] to-[#191022]/80" />
               </div>
@@ -661,6 +663,7 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-llH9qahVl1cL5QpV15iSOUpxhHrkLBHed_nTgR2B3TNE9N75P1em7L54H-OLN9_i_OnJ3OSpFAkVW_mc0PI7H1E_7ETgi2JNktF7Fq52vH8zFLngbFowghwbfQymwy4PjWTwvhiK_jpM2Dzgwnm8bc0WgwabLQ_qSSpu-hjsd9X9RoBq4IIq9btA0KiMgJxumPq5gFzXkyrCsKLEuNGp12qIXoYsVkPzoPOGAf2yKbQJ-gWuNFMY4sNSRWWlBUQoTdRV7-l4R3E"
                   fill
                   sizes="50vw"
+                  unoptimized={true}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#191022] via-[rgba(25,16,34,0.65)] to-transparent" />
               </div>
