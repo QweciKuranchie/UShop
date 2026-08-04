@@ -1,19 +1,13 @@
 import {
   X,
-  Home,
-  ShoppingBag,
-  Flame,
   User,
   ShoppingCart,
   Heart,
   Package,
-  Tag,
   Phone,
   HelpCircle,
   Info,
-  Grid3X3,
   Logs,
-  List,
   LogOut,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -21,7 +15,8 @@ import { FC, useState, useEffect } from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useOutsideClick } from "@/hooks";
-import { categoriesData } from "@/Constants/data";
+import { useAuthModal } from "@/hooks/useAuthModal";
+import { headerData, categoriesData } from "@/Constants/data";
 import { ClerkLoaded, SignedIn, SignedOut, SignOutButton, useAuth } from "@clerk/nextjs";
 import useStore from "@/store";
 import Logo from "../common/Logo";
@@ -54,6 +49,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
   const { isSignedIn } = useAuth();
   const sidebarRef = useOutsideClick<HTMLDivElement>(onClose);
   const { items, favoriteProduct } = useStore();
+  const { openAuthModal } = useAuthModal();
   const [universities, setUniversities] = useState<University[]>(DEFAULT_SIDEBAR_UNIVERSITIES);
 
   useEffect(() => {
@@ -106,15 +102,6 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
     { title: "Shopping Cart", href: "/cart", icon: ShoppingCart },
   ];
 
-  const mainMenuItems = [
-    { title: "Home", href: "/", icon: Home },
-    { title: "All Products", href: "/shop", icon: List  },
-    { title: "Stores", href: "/stores", icon: ShoppingBag },
-    { title: "Categories", href: "/category", icon: Grid3X3 },
-    { title: "Brands", href: "/brands", icon: Tag },
-    { title: "Flash Sales", href: "/deal", icon: Flame },
-  ];
-
   const supportMenuItems = [
     { title: "Help Center", href: "/help", icon: HelpCircle },
     { title: "Customer Service", href: "/support", icon: Phone },
@@ -157,16 +144,24 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
                   Log in to access your orders, track purchases, and manage your wishlist.
                 </p>
                 <div className="grid grid-cols-2 gap-3 pt-1">
-                  <Link onClick={onClose} href="/sign-in" className="w-full">
-                    <button className="w-full text-center text-ushop-purple border border-ushop-purple/20 hover:border-ushop-pink hover:bg-ushop-pink hover:text-white px-4 py-2.5 rounded-xl hoverEffect font-semibold text-xs cursor-pointer bg-white shadow-xs">
-                      Login
-                    </button>
-                  </Link>
-                  <Link onClick={onClose} href="/sign-up" className="w-full">
-                    <button className="w-full text-center text-white bg-ushop-purple hover:bg-ushop-pink px-4 py-2.5 rounded-xl hoverEffect font-semibold text-xs cursor-pointer shadow-xs">
-                      Register
-                    </button>
-                  </Link>
+                  <button
+                    onClick={() => {
+                      onClose();
+                      openAuthModal("sign-in");
+                    }}
+                    className="w-full text-center text-ushop-purple border border-ushop-purple/20 hover:border-ushop-pink hover:bg-ushop-pink hover:text-white px-4 py-2.5 rounded-xl hoverEffect font-semibold text-xs cursor-pointer bg-white shadow-xs"
+                  >
+                    Login
+                  </button>
+                  <button
+                    onClick={() => {
+                      onClose();
+                      openAuthModal("sign-up");
+                    }}
+                    className="w-full text-center text-white bg-ushop-purple hover:bg-ushop-pink px-4 py-2.5 rounded-xl hoverEffect font-semibold text-xs cursor-pointer shadow-xs"
+                  >
+                    Register
+                  </button>
                 </div>
               </div>
             </SignedOut>
@@ -269,20 +264,23 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
             Navigation
           </h3>
           <div className="flex flex-col gap-2">
-            {mainMenuItems.map((item) => {
+            {headerData.map((item) => {
               const Icon = item.icon;
+              const isActive = pathname === item.href;
               return (
                 <Link
                   onClick={onClose}
                   key={item.title}
                   href={item.href}
                   className={`flex items-center gap-3 p-2 rounded-md text-sm font-medium tracking-wide border-l-2 transition-all duration-200 hover:text-ushop-pink hover:bg-ushop-pink/10 hover:border-ushop-pink group ${
-                    pathname === item.href
+                    isActive
                       ? "text-ushop-purple bg-ushop-purple/10 border-ushop-purple font-semibold"
                       : "text-zinc-600 border-transparent"
                   }`}
                 >
-                  <Icon size={18} className="text-ushop-pink group-hover:text-ushop-pink transition-colors duration-200" />
+                  {Icon && (
+                    <Icon size={18} className="text-ushop-pink group-hover:text-ushop-pink transition-colors duration-200" />
+                  )}
                   {item.title}
                 </Link>
               );

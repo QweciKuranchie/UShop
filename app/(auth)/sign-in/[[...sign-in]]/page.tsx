@@ -1,9 +1,5 @@
-import { SignIn } from "@clerk/nextjs";
+import SlidingAuthContainer from "@/components/auth/SlidingAuthContainer";
 
 export default function SignInPage() {
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <SignIn />
-    </div>
-  );
+  return <SlidingAuthContainer initialMode="sign-in" />;
 }

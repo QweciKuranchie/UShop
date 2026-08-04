@@ -58,22 +58,28 @@ const HeaderNavBar = () => {
         >
           <div className="flex flex-row items-center gap-6">
             {/* Navigation links — Only shown on desktop */}
-            {headerData?.map((item) => (
-              <Link
-                key={item?.title}
-                href={item?.href}
-                className={`text-sm capitalize font-semibold text-gray-700 hover:text-ushop-pink hoverEffect relative group ${
-                  pathname === item?.href && "text-ushop-pink"
-                }`}
-              >
-                {item.title}
-                <span
-                  className={`absolute -bottom-0.5 left-1/2 w-0 h-0.5 bg-ushop-pink group-hover:w-full hoverEffect group-hover:left-0 ${
-                    pathname === item?.href && "w-full left-0"
+            {headerData?.map((item) => {
+              const IconComponent = item?.icon;
+              const isActive = pathname === item?.href;
+
+              return (
+                <Link
+                  key={item?.title}
+                  href={item?.href}
+                  className={`flex items-center gap-1.5 text-sm capitalize font-semibold py-1 transition-colors relative group ${
+                    isActive ? "text-ushop-pink" : "text-gray-700 hover:text-ushop-pink"
                   }`}
-                />
-              </Link>
-            ))}
+                >
+                  {IconComponent && <IconComponent className="w-4 h-4 shrink-0" />}
+                  <span>{item?.title}</span>
+                  <span
+                    className={`absolute -bottom-1 left-0 h-0.5 bg-ushop-pink transition-all duration-300 ${
+                      isActive ? "w-full" : "w-0 group-hover:w-full"
+                    }`}
+                  />
+                </Link>
+              );
+            })}
           </div>
 
           {/* Deals & Offers — Dropdown Menu */}

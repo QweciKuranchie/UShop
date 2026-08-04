@@ -1,4 +1,6 @@
-import { SignInButton, SignUpButton } from "@clerk/nextjs";
+"use client";
+
+import { useAuthModal } from "@/hooks/useAuthModal";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -10,6 +12,8 @@ import {
 import Logo from "./common/Logo";
 
 const NoAccessToCart = ({ details }: { details?: string }) => {
+  const { openAuthModal } = useAuthModal();
+
   return (
     <div className="flex items-center justify-center py-12 md:py-32 bg-gray-100 p-4">
       <Card className="w-full max-w-md">
@@ -27,21 +31,26 @@ const NoAccessToCart = ({ details }: { details?: string }) => {
               ? details
               : " Log in to view your cart items and checkout. Don't miss out on your favorite products!"}
           </p>
-          <SignInButton mode="modal">
-            <Button className="w-full font-semibold" size="lg">
-              Sign in
-            </Button>
-          </SignInButton>
+          <Button
+            onClick={() => openAuthModal("sign-in")}
+            className="w-full font-semibold cursor-pointer"
+            size="lg"
+          >
+            Sign in
+          </Button>
         </CardContent>
         <CardFooter className="flex flex-col space-y-2">
           <div className="text-sm text-muted-foreground text-center">
             Don&rsquo;t have an account?
           </div>
-          <SignUpButton mode="modal">
-            <Button variant="outline" className="w-full" size="lg">
-              Create an account
-            </Button>
-          </SignUpButton>
+          <Button
+            onClick={() => openAuthModal("sign-up")}
+            variant="outline"
+            className="w-full cursor-pointer"
+            size="lg"
+          >
+            Create an account
+          </Button>
         </CardFooter>
       </Card>
     </div>

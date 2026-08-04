@@ -14,8 +14,6 @@ import SignUp from "./SignUp";
 import MobileMenu from "./layout/MobileMenu";
 import {
   ClerkLoaded,
-  SignInButton,
-  SignUpButton,
   SignedIn,
   SignedOut,
   UserButton,
@@ -61,12 +59,8 @@ const Header = () => {
               {isMounted && (
                 <ClerkLoaded>
                   <SignedOut>
-                    <SignInButton mode="modal">
-                      <SignIn />
-                    </SignInButton>
-                    <SignUpButton mode="modal">
-                      <SignUp />
-                    </SignUpButton>
+                    <SignIn />
+                    <SignUp />
                   </SignedOut>
                   <SignedIn>
                     <UserButton />

@@ -9,6 +9,7 @@ import { shadcn } from "@clerk/ui/themes";
 import { UserDataProvider } from "@/contexts/UserDataContext";
 import { SanityLive } from "@/sanity/lib/live";
 import { Toaster } from "sonner";
+import AuthModal from "@/components/auth/AuthModal";
 import ScrollToTop from "@/components/ScrollToTop";
 
 export const metadata: Metadata = {
@@ -45,6 +46,7 @@ export default function RootLayout({
             <SanityLive />
             <Toaster position="bottom-right" />
             <ScrollToTop />
+            <AuthModal />
           </UserDataProvider>
         </ClerkProvider>
   );
