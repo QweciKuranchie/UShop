@@ -43,9 +43,12 @@ const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
 interface ProductCardProps {
   product: Product;
   priority?: boolean;
+  isFlashSale?: boolean;
 }
 
-const ProductCard = ({ product, priority = false }: ProductCardProps) => {
+const ProductCard = ({ product, priority = false, isFlashSale = false }: ProductCardProps) => {
+  const isHotOrFlash = isFlashSale || Boolean(product?.isFlashSale) || product?.status === "hot";
+
   return (
     <div className="text-sm border-[1px] border-dark-blue/20 rounded-md bg-white group">
       <div className="relative group overflow-hidden bg-ushop_light_bg">
@@ -63,34 +66,38 @@ const ProductCard = ({ product, priority = false }: ProductCardProps) => {
           />
           </Link>
         )}
-        <AddToWishlistBtn product={product} className="absolute top-2 right-2 z-10" />
-        {product?.status && STATUS_CONFIG[product.status] && (
+        {/* Top-right action icons container (Wishlist + Flame icon if Flash Sale) */}
+        <div className="absolute top-2 right-2 z-10 flex flex-col items-center gap-1.5">
+          <AddToWishlistBtn product={product} />
+          {isHotOrFlash && (
+            <Link
+              href="/deals"
+              aria-label="Flash Deal"
+              title="Flash Deal"
+              className="p-1.5 rounded-full bg-white/95 shadow-md border border-red-100 hover:scale-110 transition-transform duration-200"
+            >
+              <Flame
+                size={16}
+                className="text-ushop-red fill-ushop-red animate-pulse"
+              />
+            </Link>
+          )}
+        </div>
+
+        {/* Top-left status badge (if not flash sale or if normal status exists) */}
+        {!product?.isFlashSale && product?.status && STATUS_CONFIG[product.status] && (
           <span
             className={`absolute top-2 left-2 z-10 text-xs border px-2 py-0.5 rounded-full font-medium tracking-wider hoverEffect ${STATUS_CONFIG[product.status].className}`}
           >
             {STATUS_CONFIG[product.status].label}
           </span>
         )}
-        {product?.status === "hot" && (
-          <Link
-            href={"/deal"}
-            aria-label="Hot deals"
-            title="Hot deals"
-            className="absolute top-2 left-2 z-10 text-xs border
-         border-ushop_orange/50 px-2 rounded-full 
-         group-hover:border-ushop_orange hover:text-ushop-pink hoverEffect"
-          >
-            <Flame
-              size={18}
-              fill="#fb6c08"
-              className="text-ushop_orange/50 group-hover:text-ushop_orange hoverEffect"
-            />
-          </Link>
-        )}
+
+        {/* Discount Tag */}
         {typeof product?.discount === "number" && product.discount > 0 ? (
           <div
             className={`absolute left-2 z-10 bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/20 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg hoverEffect ${
-              product?.status ? "top-8" : "top-2"
+              !product?.isFlashSale && product?.status ? "top-8" : "top-2"
             }`}
           >
             -{product.discount}%

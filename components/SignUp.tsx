@@ -1,10 +1,21 @@
-import React, { ButtonHTMLAttributes } from 'react'
+"use client";
+
+import React, { ButtonHTMLAttributes } from 'react';
+import { useAuthModal } from '@/hooks/useAuthModal';
 
 const SignUp = React.forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement>>(
-  (props, ref) => {
+  ({ onClick, ...props }, ref) => {
+    const { openAuthModal } = useAuthModal();
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      openAuthModal("sign-up");
+      if (onClick) onClick(e);
+    };
+
     return (
       <button
         ref={ref}
+        onClick={handleClick}
         {...props}
         className='text-ushop-purple border border-ushop-pink px-6 py-2 rounded-full hover:bg-ushop-pink hover:text-white hoverEffect cursor-pointer'
       >
@@ -16,4 +27,4 @@ const SignUp = React.forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButt
 
 SignUp.displayName = "SignUp";
 
-export default SignUp
+export default SignUp;

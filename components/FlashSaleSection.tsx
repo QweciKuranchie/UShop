@@ -99,14 +99,7 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ products }) => {
       {/* Deal Products Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {dealProducts.map((product) => (
-          <div key={product._id} className="relative group">
-            {/* Flash Deal Tag */}
-            <div className="absolute top-3 left-3 z-10 bg-ushop-red text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1">
-              <Zap className="w-3 h-3 fill-white" />
-              HOT DEAL
-            </div>
-            <ProductCard product={product} />
-          </div>
+          <ProductCard key={product._id} product={product} isFlashSale={true} />
         ))}
       </div>
     </section>
