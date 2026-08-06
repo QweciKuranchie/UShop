@@ -343,7 +343,7 @@ export function CheckoutContent() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <CreditCard className="w-5 h-5" />
+              <CreditCard className="w-5 h-5 text-ushop-pink" />
               Payment Method
             </CardTitle>
           </CardHeader>
@@ -355,39 +355,20 @@ export function CheckoutContent() {
               }
               className="space-y-3"
             >
-              <div className="flex items-start space-x-3 p-3 border rounded-lg">
-                <RadioGroupItem
-                  value={PAYMENT_METHODS.CASH_ON_DELIVERY}
-                  id="cod"
-                  className="mt-1"
-                />
-                <div className="flex-1">
-                  <Label htmlFor="cod" className="cursor-pointer">
-                    <div className="flex items-center gap-2 font-medium">
-                      <Truck className="w-4 h-4" />
-                      Cash on Delivery
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Pay when your order is delivered to your doorstep
-                    </p>
-                  </Label>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-3 p-3 border rounded-lg">
+              <div className={`flex items-start space-x-3 p-3 border rounded-lg transition-colors ${selectedPaymentMethod === PAYMENT_METHODS.STRIPE ? "border-ushop-pink bg-ushop_light_pink/30" : ""}`}>
                 <RadioGroupItem
                   value={PAYMENT_METHODS.STRIPE}
                   id="stripe"
-                  className="mt-1"
+                  className="mt-1 accent-ushop-purple"
                 />
                 <div className="flex-1">
                   <Label htmlFor="stripe" className="cursor-pointer">
                     <div className="flex items-center gap-2 font-medium">
-                      <CreditCard className="w-4 h-4" />
+                      <CreditCard className="w-4 h-4 text-ushop-purple-dark" />
                       Credit/Debit Card
                     </div>
                     <p className="text-sm text-muted-foreground mt-1">
-                      Pay securely with your credit or debit card via Stripe
+                      Pay securely with your credit or debit card
                     </p>
                   </Label>
                 </div>
@@ -399,7 +380,7 @@ export function CheckoutContent() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <MapPin className="w-5 h-5" />
+              <MapPin className="w-5 h-5 text-ushop-pink" />
               Shipping Address
             </CardTitle>
           </CardHeader>
@@ -443,7 +424,7 @@ export function CheckoutContent() {
                         </p>
                       )}
                     </div>
-                    <div className="flex items-center gap-1 text-xs text-green-600 font-medium bg-green-50 px-2 py-1 rounded">
+                    <div className="flex items-center gap-1 text-xs text-ushop-purple-dark font-semibold bg-ushop_light_pink border border-ushop-pink/20 px-2.5 py-1 rounded">
                       ✓ Selected
                     </div>
                   </div>
@@ -557,7 +538,7 @@ export function CheckoutContent() {
           <Button
             onClick={handlePayNowClick}
             disabled={isPlacingOrder || !selectedAddress || cart.length === 0}
-            className="w-full h-12 text-lg font-semibold"
+            className="w-full h-12 text-lg font-semibold bg-ushop-purple-dark hover:bg-ushop-purple text-white shadow-md shadow-purple-900/10 cursor-pointer transition-colors"
             size="lg"
           >
             {isPlacingOrder && actionType === "pay" ? (
@@ -567,45 +548,16 @@ export function CheckoutContent() {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <CreditCard className="w-5 h-5" />
+                <CreditCard className="w-5 h-5 text-ushop_light_pink" />
                 Pay Now
-              </div>
-            )}
-          </Button>
-
-          <Button
-            onClick={() => handlePlaceOrder("order")}
-            disabled={isPlacingOrder || !selectedAddress || cart.length === 0}
-            variant="outline"
-            className="w-full h-12 text-lg font-semibold"
-            size="lg"
-          >
-            {isPlacingOrder && actionType === "order" ? (
-              <div className="flex items-center gap-2">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Placing Order...
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Package className="w-5 h-5" />
-                Place Order (Pay Later)
               </div>
             )}
           </Button>
         </div>
 
         <div className="text-center text-xs text-muted-foreground">
-          {selectedPaymentMethod === PAYMENT_METHODS.STRIPE ? (
-            <>
-              <p>🔒 Secure checkout powered by Stripe</p>
-              <p>Your payment information is encrypted and secure</p>
-            </>
-          ) : (
-            <>
-              <p>💵 Pay when your order arrives</p>
-              <p>Cash payment to delivery agent</p>
-            </>
-          )}
+          <p>🔒 Secure checkout</p>
+          <p>Your payment information is encrypted and secure</p>
         </div>
       </div>
 
@@ -624,8 +576,8 @@ export function CheckoutContent() {
             <DialogTitle>Select Payment Method</DialogTitle>
           </VisuallyHidden.Root>
           <div className="text-center space-y-4">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 border-4 border-blue-100">
-              <CreditCard className="h-8 w-8 text-blue-600" />
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-ushop_light_pink border-4 border-ushop-pink/20">
+              <CreditCard className="h-8 w-8 text-ushop-purple-dark" />
             </div>
             <div className="space-y-2">
               <h3 className="text-xl font-bold text-gray-900">
@@ -639,7 +591,7 @@ export function CheckoutContent() {
           <div className="flex flex-col gap-3 pt-6">
             <Button
               onClick={() => handlePaymentMethodSelect("stripe")}
-              className="w-full h-12 bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 font-semibold shadow-lg hover:shadow-blue-200"
+              className="w-full h-12 bg-ushop-purple-dark hover:bg-ushop-purple text-white font-semibold shadow-md hover:shadow-purple-900/20"
               disabled={isPlacingOrder}
             >
               <CreditCard className="w-5 h-5 mr-2" />
@@ -647,7 +599,7 @@ export function CheckoutContent() {
             </Button>
             <Button
               onClick={() => handlePaymentMethodSelect("clerk")}
-              className="w-full h-12 bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 font-semibold shadow-lg hover:shadow-purple-200"
+              className="w-full h-12 bg-ushop-pink hover:bg-ushop-pink/90 text-white font-semibold shadow-md hover:shadow-pink-900/20"
               disabled={isPlacingOrder}
             >
               <Wallet className="w-5 h-5 mr-2" />

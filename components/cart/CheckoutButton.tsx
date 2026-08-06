@@ -174,7 +174,7 @@ export function CheckoutButton({ cart, selectedAddress }: CheckoutButtonProps) {
               !selectedAddress ||
               cart.length === 0
             }
-            className="w-full h-12 text-lg font-semibold"
+            className="w-full h-12 text-lg font-semibold bg-ushop-purple-dark hover:bg-ushop-purple text-white shadow-md shadow-purple-900/10 cursor-pointer transition-colors"
             size="lg"
           >
             {actionType === "checkout" ? (
@@ -184,39 +184,16 @@ export function CheckoutButton({ cart, selectedAddress }: CheckoutButtonProps) {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <CreditCard className="w-5 h-5" />
+                <CreditCard className="w-5 h-5 text-ushop_light_pink" />
                 Proceed to Checkout
-              </div>
-            )}
-          </Button>
-
-          <Button
-            onClick={handlePlaceOrder}
-            disabled={
-              isPlacingOrder ||
-              hasOutOfStockItems ||
-              !selectedAddress ||
-              cart.length === 0
-            }
-            variant="outline"
-            className="w-full h-12 text-lg font-semibold"
-            size="lg"
-          >
-            {isPlacingOrder && actionType === "order" ? (
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 border-2 border-gray-600 border-t-transparent rounded-full animate-spin" />
-                Placing Order...
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Package className="w-5 h-5" />
-                Place Order (Pay Later)
               </div>
             )}
           </Button>
         </div>
 
-          <p>🔒 Secure checkout</p>
+        <p className="text-xs text-muted-foreground flex items-center justify-center gap-1 font-medium">
+          <span className="text-ushop-purple-dark">🔒</span> Secure checkout
+        </p>
       </div>
     </>
   );

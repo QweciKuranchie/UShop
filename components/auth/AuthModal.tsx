@@ -32,7 +32,7 @@ export default function AuthModal() {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200">
       {/* Backdrop overlay click handler */}
       <div
         className="absolute inset-0"
@@ -41,11 +41,11 @@ export default function AuthModal() {
       />
 
       {/* Modal Dialog Box */}
-      <div className="relative z-10 w-full max-w-[900px] flex items-center justify-center">
+      <div className="relative z-10 w-full max-w-[880px] my-auto flex flex-col items-center justify-center">
         {/* Prominent High-Contrast Close Button */}
         <button
           onClick={closeAuthModal}
-          className="absolute -top-12 right-2 sm:-top-14 sm:right-0 z-[150] inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-purple-950 font-bold text-xs shadow-2xl border border-purple-100 hover:bg-purple-50 hover:text-ushop-pink hover:scale-105 transition-all cursor-pointer"
+          className="absolute -top-11 right-0 z-[200] inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 text-purple-950 font-extrabold text-xs shadow-xl border border-purple-100 hover:bg-white hover:text-ushop-pink hover:scale-105 transition-all cursor-pointer"
           aria-label="Close authentication modal"
         >
           <X className="w-4 h-4 text-ushop-pink stroke-[2.5]" />

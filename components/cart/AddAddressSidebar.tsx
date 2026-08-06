@@ -115,7 +115,7 @@ export function AddAddressSidebar({
       <SheetContent side="right" className="w-full sm:max-w-md">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
-            <MapPin className="w-5 h-5" />
+            <MapPin className="w-5 h-5 text-ushop-pink" />
             {isFirstAddress ? "Add Your First Address" : "Add New Address"}
           </SheetTitle>
           <SheetDescription>
@@ -223,7 +223,7 @@ export function AddAddressSidebar({
                   handleInputChange("isDefault", e.target.checked)
                 }
                 disabled={isPending || isFirstAddress}
-                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                className="h-4 w-4 rounded border-gray-300 text-ushop-purple focus:ring-ushop-purple"
               />
               <Label htmlFor="isDefault" className="text-sm">
                 {isFirstAddress
@@ -244,7 +244,7 @@ export function AddAddressSidebar({
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isPending} className="flex-1">
+              <Button type="submit" disabled={isPending} className="flex-1 bg-ushop-purple-dark hover:bg-ushop-purple text-white font-semibold">
                 {isPending ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />

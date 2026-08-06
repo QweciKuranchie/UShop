@@ -108,11 +108,7 @@ export function ServerCartContent({
 
   const grossSubtotal = getSubTotalPrice(); // Gross amount (before discount)
   const totalDiscount = getTotalDiscount(); // Total discount amount
-  const currentSubtotal = grossSubtotal - totalDiscount; // After discount
-  const shipping = currentSubtotal > 100 ? 0 : 10;
-  const tax =
-    currentSubtotal * (parseFloat(process.env.TAX_AMOUNT || "0") || 0);
-  const finalTotal = currentSubtotal + shipping + tax;
+  const finalTotal = grossSubtotal - totalDiscount; // Final total on cart page (before shipping/tax at checkout)
 
   // Don't show order placement skeleton in ServerCartContent
   // The overlay is handled by CheckoutButton component instead
@@ -154,7 +150,7 @@ export function ServerCartContent({
             </div>
             <div className="mt-4">
               <Link href="/user/orders">
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full border-ushop-pink/40 text-ushop-purple hover:bg-ushop-pink hover:text-white font-semibold transition-colors">
                   View All Orders
                 </Button>
               </Link>
@@ -192,7 +188,7 @@ export function ServerCartContent({
                 <div className="flex justify-between">
                   <div>
                     <Link href={`/product/${item.product.slug?.current}`}>
-                      <h3 className="font-semibold hover:text-primary transition-colors">
+                      <h3 className="font-semibold hover:text-ushop-pink transition-colors">
                         {item.product.name}
                       </h3>
                     </Link>
@@ -208,8 +204,8 @@ export function ServerCartContent({
                             return (
                               <Badge
                                 key={idx}
-                                variant="secondary"
-                                className="text-xs"
+                                variant="outline"
+                                className="text-xs bg-ushop_light_pink text-ushop-purple-dark border-ushop-pink/20 font-medium"
                               >
                                 {label}
                               </Badge>
@@ -262,7 +258,7 @@ export function ServerCartContent({
         {/* Continue Shopping */}
         <div className="flex flex-col gap-2 w-48">
           <Link href="/shop">
-            <Button variant="outline" className="w-full">
+            <Button variant="outline" className="w-full border-ushop-pink/40 text-ushop-purple hover:bg-ushop-pink hover:text-white font-semibold transition-colors">
               Continue Shopping
             </Button>
           </Link>
@@ -304,35 +300,11 @@ export function ServerCartContent({
                 </span>
               </div>
             )}
-            <div className="flex justify-between">
-              <span>Shipping</span>
-              {shipping === 0 ? (
-                <span className="text-green-600 font-medium">Free</span>
-              ) : (
-                <PriceFormatter amount={shipping} />
-              )}
-            </div>
-            <div className="flex justify-between">
-              <span>Tax</span>
-              <PriceFormatter amount={tax} />
-            </div>
             <Separator />
             <div className="flex justify-between text-lg font-bold">
               <span>Total</span>
               <PriceFormatter amount={finalTotal} />
             </div>
-
-            {shipping === 0 && (
-              <p className="text-sm text-green-600">
-                🎉 You got free shipping!
-              </p>
-            )}
-            {currentSubtotal < 100 && (
-              <p className="text-sm text-muted-foreground">
-                Add <PriceFormatter amount={100 - currentSubtotal} /> more for
-                free shipping
-              </p>
-            )}
           </div>
 
           {/* Checkout */}

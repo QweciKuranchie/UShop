@@ -60,7 +60,7 @@ const ProductCard = ({ product, priority = false, isFlashSale = false }: Product
             priority={priority}
             width={700}
             height={700}
-            className={`w-full h-52 md:h-64 object-cover overflow-hidden transition-transform
+            className={`w-full h-44 sm:h-52 md:h-64 object-cover overflow-hidden transition-transform
                bg-ushop_light_bg hoverEffect
                 ${product?.stock !== 0 ? "group-hover:scale-105" : "opacity-50"}`}
           />

@@ -53,6 +53,7 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
   // Sign Up state
   const [signUpFirstName, setSignUpFirstName] = useState("");
   const [signUpLastName, setSignUpLastName] = useState("");
+  const [signUpEmail, setSignUpEmail] = useState("");
   const [signUpUsername, setSignUpUsername] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
   const [signUpConfirmPassword, setSignUpConfirmPassword] = useState("");
@@ -69,6 +70,7 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
   const [touchedSignUp, setTouchedSignUp] = useState({
     firstName: false,
     lastName: false,
+    email: false,
     username: false,
     password: false,
     confirmPassword: false,
@@ -80,11 +82,8 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
   const USERNAME_REGEX = /^[a-zA-Z0-9_.-]+$/;
 
   // Sign In Validation
-  const isSignInIdentifierValid =
-    signInIdentifier.trim().length >= 3 &&
-    (!signInIdentifier.includes("@") || EMAIL_REGEX.test(signInIdentifier.trim()));
+  const isSignInIdentifierValid = signInIdentifier.trim().length >= 3;
   const isSignInPasswordValid = signInPassword.length >= 6;
-  const isSignInFormValid = isSignInIdentifierValid && isSignInPasswordValid;
 
   // Password Checklist validation rules
   const passwordCriteria = {
@@ -99,9 +98,9 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
   // Sign Up Validation
   const isFirstNameValid = signUpFirstName.trim().length >= 2 && NAME_REGEX.test(signUpFirstName.trim());
   const isLastNameValid = signUpLastName.trim().length >= 2 && NAME_REGEX.test(signUpLastName.trim());
+  const isSignUpEmailValid = EMAIL_REGEX.test(signUpEmail.trim());
   const isSignUpUsernameValid =
-    signUpUsername.trim().length >= 3 &&
-    (signUpUsername.includes("@") ? EMAIL_REGEX.test(signUpUsername.trim()) : USERNAME_REGEX.test(signUpUsername.trim()));
+    !signUpUsername.trim() || USERNAME_REGEX.test(signUpUsername.trim());
   const isSignUpPasswordValid =
     passwordCriteria.hasMinLength &&
     passwordCriteria.hasUpper &&
@@ -109,13 +108,6 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
     passwordCriteria.hasNumber &&
     passwordCriteria.hasSpecial &&
     passwordCriteria.passwordsMatch;
-
-  const isSignUpFormValid =
-    isFirstNameValid &&
-    isLastNameValid &&
-    isSignUpUsernameValid &&
-    isSignUpPasswordValid &&
-    acceptedTerms;
 
   const { isLoaded: isSignInLoaded, signIn, setActive: setSignInActive } = useSignIn();
   const { isLoaded: isSignUpLoaded, signUp, setActive: setSignUpActive } = useSignUp();
@@ -150,17 +142,18 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
     setSignInError("");
     setTouchedSignIn({ identifier: true, password: true });
 
-    if (!isSignInFormValid) {
-      setSignInError("Please enter a valid username/email and password.");
+    const trimmedIdentifier = signInIdentifier.trim();
+    if (!trimmedIdentifier || !signInPassword) {
+      setSignInError("Please enter your email/username and password.");
       return;
     }
 
-    if (!isSignInLoaded) return;
+    if (!isSignInLoaded || !signIn) return;
     setIsSignInLoading(true);
 
     try {
       const result = await signIn.create({
-        identifier: signInIdentifier,
+        identifier: trimmedIdentifier,
         password: signInPassword,
       });
 
@@ -168,15 +161,32 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
         await setSignInActive({ session: result.createdSessionId });
         if (isModal) {
           closeAuthModal();
+        }
+        window.location.href = "/";
+      } else if (result.status === "needs_first_factor") {
+        const passwordResult = await signIn.attemptFirstFactor({
+          strategy: "password",
+          password: signInPassword,
+        });
+        if (passwordResult.status === "complete") {
+          await setSignInActive({ session: passwordResult.createdSessionId });
+          if (isModal) {
+            closeAuthModal();
+          }
+          window.location.href = "/";
         } else {
-          router.push("/");
+          setSignInError("Sign-in verification incomplete. Please try again.");
         }
       } else {
         setSignInError("Additional sign-in verification required.");
       }
     } catch (err: unknown) {
-      const errorObj = err as { errors?: Array<{ message?: string }> };
-      setSignInError(errorObj?.errors?.[0]?.message || "Login failed. Please check your credentials.");
+      const errorObj = err as { errors?: Array<{ message?: string; longMessage?: string }> };
+      const msg =
+        errorObj?.errors?.[0]?.longMessage ||
+        errorObj?.errors?.[0]?.message ||
+        "Login failed. Please check your email/username and password.";
+      setSignInError(msg);
     } finally {
       setIsSignInLoading(false);
     }
@@ -188,44 +198,50 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
     setTouchedSignUp({
       firstName: true,
       lastName: true,
+      email: true,
       username: true,
       password: true,
       confirmPassword: true,
     });
 
-    if (!isSignUpFormValid) {
-      if (!isFirstNameValid || !isLastNameValid) {
-        setSignUpError("Please enter valid First and Last names (only letters and spaces, at least 2 characters).");
-      } else if (!isSignUpUsernameValid) {
-        setSignUpError("Please enter a valid Username (at least 3 alphanumeric chars) or Email address.");
-      } else if (!isSignUpPasswordValid) {
-        setSignUpError("Please fulfill all password security requirements.");
-      } else if (!acceptedTerms) {
-        setSignUpError("Please accept the Terms of Service and Privacy Policy to continue.");
-      }
+    if (!isSignUpEmailValid) {
+      setSignUpError("Please enter a valid Email Address (e.g. yourname@gmail.com).");
+      return;
+    }
+    if (!isFirstNameValid || !isLastNameValid) {
+      setSignUpError("Please enter valid First and Last names (at least 2 letters).");
+      return;
+    }
+    if (!isSignUpPasswordValid) {
+      setSignUpError("Please fulfill all password security requirements.");
+      return;
+    }
+    if (!acceptedTerms) {
+      setSignUpError("Please accept the Terms of Service and Privacy Policy to continue.");
       return;
     }
 
-    if (!isSignUpLoaded) return;
+    if (!isSignUpLoaded || !signUp) return;
     setIsSignUpLoading(true);
 
     try {
-      const isEmail = signUpUsername.includes("@");
-      const emailAddress = isEmail ? signUpUsername : `${signUpUsername.toLowerCase()}@ushop.com`;
-
       await signUp.create({
-        firstName: signUpFirstName,
-        lastName: signUpLastName,
-        emailAddress: emailAddress,
-        username: !isEmail && signUpUsername ? signUpUsername : undefined,
+        firstName: signUpFirstName.trim(),
+        lastName: signUpLastName.trim(),
+        emailAddress: signUpEmail.trim(),
+        username: signUpUsername.trim() ? signUpUsername.trim() : undefined,
         password: signUpPassword,
       });
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setPendingVerification(true);
     } catch (err: unknown) {
-      const errorObj = err as { errors?: Array<{ message?: string }> };
-      setSignUpError(errorObj?.errors?.[0]?.message || "Sign up failed. Please try again.");
+      const errorObj = err as { errors?: Array<{ message?: string; longMessage?: string }> };
+      const msg =
+        errorObj?.errors?.[0]?.longMessage ||
+        errorObj?.errors?.[0]?.message ||
+        "Sign up failed. Please check your information and try again.";
+      setSignUpError(msg);
     } finally {
       setIsSignUpLoading(false);
     }
@@ -235,27 +251,48 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
     e.preventDefault();
     setSignUpError("");
 
-    if (!isSignUpLoaded) return;
+    if (!verificationCode.trim()) {
+      setSignUpError("Please enter the verification code sent to your email.");
+      return;
+    }
+
+    if (!isSignUpLoaded || !signUp) return;
     setIsSignUpLoading(true);
 
     try {
       const completeSignUp = await signUp.attemptEmailAddressVerification({
-        code: verificationCode,
+        code: verificationCode.trim(),
       });
 
       if (completeSignUp.status === "complete") {
-        await setSignUpActive({ session: completeSignUp.createdSessionId });
-        if (isModal) {
-          closeAuthModal();
-        } else {
-          router.push("/");
+        if (completeSignUp.createdSessionId) {
+          await setSignUpActive({ session: completeSignUp.createdSessionId });
         }
+        window.location.href = "/";
+      } else if (signUp.status === "complete" && signUp.createdSessionId) {
+        await setSignUpActive({ session: signUp.createdSessionId });
+        window.location.href = "/";
       } else {
-        setSignUpError("Verification incomplete. Please check the code.");
+        setSignUpError(`Verification status: ${completeSignUp.status}. Please check the code.`);
       }
     } catch (err: unknown) {
-      const errorObj = err as { errors?: Array<{ message?: string }> };
-      setSignUpError(errorObj?.errors?.[0]?.message || "Invalid verification code.");
+      const errorObj = err as { errors?: Array<{ message?: string; longMessage?: string; code?: string }> };
+      const errCode = errorObj?.errors?.[0]?.code;
+      const errMsg = errorObj?.errors?.[0]?.longMessage || errorObj?.errors?.[0]?.message;
+
+      // Handle already verified state gracefully
+      if (
+        errCode === "complete_signup_already_verified" ||
+        errMsg?.toLowerCase().includes("already verified") ||
+        signUp?.status === "complete"
+      ) {
+        if (signUp?.createdSessionId) {
+          await setSignUpActive({ session: signUp.createdSessionId });
+          window.location.href = "/";
+          return;
+        }
+      }
+      setSignUpError(errMsg || "Invalid verification code. Please try again.");
     } finally {
       setIsSignUpLoading(false);
     }
@@ -286,7 +323,9 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
           {pendingVerification ? (
             <form onSubmit={handleVerifyCodeSubmit} className="auth-form">
               <h1>Verify Email</h1>
-              <p className="auth-subtitle">Enter the verification code sent to your email</p>
+              <p className="auth-subtitle">
+                Enter the verification code sent to <span className="font-bold text-ushop-purple">{signUpEmail}</span>
+              </p>
               {signUpError && <div className="auth-error">{signUpError}</div>}
               
               <div className="auth-input-group">
@@ -294,7 +333,7 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
                 <input
                   type="text"
                   className="auth-input"
-                  placeholder="Verification Code"
+                  placeholder="6-digit Verification Code"
                   value={verificationCode}
                   onChange={(e) => setVerificationCode(e.target.value)}
                   required
@@ -302,7 +341,15 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
               </div>
 
               <button type="submit" className="auth-button" disabled={isSignUpLoading} style={{ width: "100%", marginTop: "16px" }}>
-                {isSignUpLoading ? "Verifying..." : "Verify Code"}
+                {isSignUpLoading ? "Verifying..." : "Verify & Complete"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setPendingVerification(false)}
+                className="mt-3 text-xs text-ushop-purple hover:underline font-semibold cursor-pointer"
+              >
+                ← Back / Change Email
               </button>
             </form>
           ) : (
@@ -357,16 +404,29 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
               </div>
 
               <div className="auth-input-group">
+                <Mail className="auth-input-icon" />
+                <input
+                  type="email"
+                  name="email"
+                  className={`auth-input ${touchedSignUp.email && !isSignUpEmailValid ? "!border-rose-400" : ""}`}
+                  placeholder="Email Address (e.g. name@gmail.com)"
+                  value={signUpEmail}
+                  onChange={(e) => setSignUpEmail(e.target.value)}
+                  onBlur={() => setTouchedSignUp((prev) => ({ ...prev, email: true }))}
+                  required
+                />
+              </div>
+
+              <div className="auth-input-group">
                 <User className="auth-input-icon" />
                 <input
                   type="text"
                   name="username"
                   className={`auth-input ${touchedSignUp.username && !isSignUpUsernameValid ? "!border-rose-400" : ""}`}
-                  placeholder="Username or Email"
+                  placeholder="Username (Optional)"
                   value={signUpUsername}
                   onChange={(e) => setSignUpUsername(e.target.value)}
                   onBlur={() => setTouchedSignUp((prev) => ({ ...prev, username: true }))}
-                  required
                 />
               </div>
 
