@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export default function EmptyCart() {
   return (
-    <div className="py-10 md:py-20 bg-linear-to-b from-blue-50 to-white flex items-center justify-center p-4">
+    <div className="py-10 md:py-20 bg-linear-to-b from-purple-50/40 via-pink-50/20 to-white flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -43,7 +43,7 @@ export default function EmptyCart() {
               duration: 3,
               ease: "linear",
             }}
-            className="absolute -top-4 -right-4 bg-blue-500 rounded-full p-2"
+            className="absolute -top-4 -right-4 bg-ushop-pink rounded-full p-2 shadow-md"
           >
             <ShoppingCart size={24} className="text-white" />
           </motion.div>
@@ -62,7 +62,7 @@ export default function EmptyCart() {
         <div>
           <Link
             href="/"
-            className="block bg-dark-color/5 border border-dark-color/20 text-center py-2.5 rounded-full text-sm font-semibold tracking-wide hover:border-dark-color hover:bg-dark-color hover:text-white hoverEffect"
+            className="block bg-ushop-purple-dark text-white text-center py-2.5 rounded-full text-sm font-semibold tracking-wide hover:bg-ushop-purple shadow-md shadow-purple-900/10 hoverEffect"
           >
             Discover Products
           </Link>

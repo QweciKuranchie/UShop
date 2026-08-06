@@ -9,6 +9,7 @@ import {
   Info,
   Logs,
   LogOut,
+  Flame,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { FC, useState, useEffect } from "react";
@@ -264,6 +265,24 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
             Navigation
           </h3>
           <div className="flex flex-col gap-2">
+            <Link
+              onClick={onClose}
+              href="/deals"
+              className={`flex items-center justify-between p-2 rounded-md text-sm font-bold tracking-wide border-l-2 transition-all duration-200 hover:text-ushop-pink hover:bg-ushop-pink/10 hover:border-ushop-pink group ${
+                pathname?.startsWith("/deals")
+                  ? "text-ushop-red bg-red-50 border-ushop-red font-extrabold"
+                  : "text-ushop-red border-transparent"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <Flame size={18} className="text-ushop-red fill-ushop-red animate-pulse" />
+                <span>Deals & Offers</span>
+              </div>
+              <span className="px-1.5 py-0.5 bg-ushop-red text-white text-[9px] font-black rounded-md uppercase">
+                HOT
+              </span>
+            </Link>
+
             {headerData.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
@@ -383,7 +402,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
           </p>
           <Link
             onClick={onClose}
-            href="/deal"
+            href="/deals"
             className="inline-block text-xs font-semibold text-ushop-purple bg-white hover:bg-ushop-pink hover:text-white px-4 py-1.5 rounded-full transition-colors duration-200 shadow-sm"
           >
             Shop Now

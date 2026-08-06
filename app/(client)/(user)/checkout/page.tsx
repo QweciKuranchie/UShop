@@ -42,7 +42,7 @@ export default async function CheckoutPage({ searchParams }: Props) {
 
         {/* Checkout Header */}
         <div className="flex items-center gap-2 mb-6">
-          <ShoppingBag className="w-6 h-6" />
+          <ShoppingBag className="w-6 h-6 text-ushop-purple-dark" />
           <h1 className="text-2xl font-bold">Complete Payment</h1>
         </div>
 
@@ -68,7 +68,7 @@ export default async function CheckoutPage({ searchParams }: Props) {
 
       {/* Checkout Header */}
       <div className="flex items-center gap-2 mb-6">
-        <ShoppingBag className="w-6 h-6" />
+        <ShoppingBag className="w-6 h-6 text-ushop-purple-dark" />
         <h1 className="text-2xl font-bold">Checkout</h1>
       </div>
 

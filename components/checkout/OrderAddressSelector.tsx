@@ -63,14 +63,14 @@ export function OrderAddressSelector({
             <RadioGroupItem
               value={address._id}
               id={address._id}
-              className="mt-1"
+              className="mt-1 accent-ushop-purple"
             />
             <Label htmlFor={address._id} className="flex-1 cursor-pointer">
               <div className="space-y-1">
                 <div className="font-medium flex items-center gap-2">
                   {address.name}
                   {address.default && (
-                    <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                    <span className="text-xs bg-ushop_light_pink text-ushop-purple-dark border border-ushop-pink/20 font-semibold px-2 py-0.5 rounded">
                       Most Recent
                     </span>
                   )}

@@ -121,10 +121,10 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2">
-                <Package className="w-5 h-5" />
+                <Package className="w-5 h-5 text-ushop-pink" />
                 Order #{order.orderNumber?.slice(-8)}
               </CardTitle>
-              <Badge variant="outline" className="capitalize">
+              <Badge variant="outline" className="capitalize bg-ushop_light_pink text-ushop-purple-dark border-ushop-pink/20">
                 {order.status}
               </Badge>
             </div>
@@ -150,7 +150,7 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <MapPin className="w-5 h-5" />
+              <MapPin className="w-5 h-5 text-ushop-pink" />
               Shipping Address
             </CardTitle>
           </CardHeader>
@@ -169,7 +169,7 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <CreditCard className="w-5 h-5" />
+              <CreditCard className="w-5 h-5 text-ushop-pink" />
               Payment Method
             </CardTitle>
           </CardHeader>
@@ -181,39 +181,20 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
               }
               className="space-y-3"
             >
-              <div className="flex items-start space-x-3 p-3 border rounded-lg">
+              <div className={`flex items-start space-x-3 p-3 border rounded-lg transition-colors ${selectedPaymentMethod === PAYMENT_METHODS.STRIPE ? "border-ushop-pink bg-ushop_light_pink/30" : ""}`}>
                 <RadioGroupItem
                   value={PAYMENT_METHODS.STRIPE}
                   id="stripe"
-                  className="mt-1"
+                  className="mt-1 accent-ushop-purple"
                 />
                 <div className="flex-1">
                   <Label htmlFor="stripe" className="cursor-pointer">
                     <div className="flex items-center gap-2 font-medium">
-                      <CreditCard className="w-4 h-4" />
+                      <CreditCard className="w-4 h-4 text-ushop-purple-dark" />
                       Credit/Debit Card
                     </div>
                     <p className="text-sm text-muted-foreground mt-1">
                       Pay securely with your credit or debit card via Stripe
-                    </p>
-                  </Label>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-3 p-3 border rounded-lg">
-                <RadioGroupItem
-                  value={PAYMENT_METHODS.CASH_ON_DELIVERY}
-                  id="cod"
-                  className="mt-1"
-                />
-                <div className="flex-1">
-                  <Label htmlFor="cod" className="cursor-pointer">
-                    <div className="flex items-center gap-2 font-medium">
-                      <Truck className="w-4 h-4" />
-                      Cash on Delivery
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Pay when your order is delivered to your doorstep
                     </p>
                   </Label>
                 </div>
@@ -297,13 +278,9 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
         </Card>
 
         <Button
-          onClick={
-            selectedPaymentMethod === PAYMENT_METHODS.STRIPE
-              ? handlePayNow
-              : handleCODPayment
-          }
+          onClick={handlePayNow}
           disabled={isProcessing}
-          className="w-full h-12 text-lg font-semibold"
+          className="w-full h-12 text-lg font-semibold bg-ushop-purple-dark hover:bg-ushop-purple text-white shadow-md shadow-purple-900/10 cursor-pointer transition-colors"
           size="lg"
         >
           {isProcessing ? (
@@ -313,22 +290,13 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              {selectedPaymentMethod === PAYMENT_METHODS.STRIPE ? (
-                <>
-                  <CreditCard className="w-5 h-5" />
-                  Pay <PriceFormatter amount={order.totalPrice} />
-                </>
-              ) : (
-                <>
-                  <Truck className="w-5 h-5" />
-                  Confirm COD Order
-                </>
-              )}
+              <CreditCard className="w-5 h-5 text-ushop_light_pink" />
+              Pay <PriceFormatter amount={order.totalPrice} />
             </div>
           )}
         </Button>
 
-        <Button asChild variant="outline" className="w-full">
+        <Button asChild variant="outline" className="w-full border-ushop-pink/40 text-ushop-purple hover:bg-ushop-pink hover:text-white font-semibold transition-colors">
           <Link href="/user/orders" className="flex items-center gap-2">
             <ArrowLeft className="w-4 h-4" />
             Back to Orders
@@ -336,17 +304,8 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
         </Button>
 
         <div className="text-center text-xs text-muted-foreground">
-          {selectedPaymentMethod === PAYMENT_METHODS.STRIPE ? (
-            <>
-              <p>🔒 Secure payment powered by Stripe</p>
-              <p>Your payment information is encrypted and secure</p>
-            </>
-          ) : (
-            <>
-              <p>💵 Pay when your order arrives</p>
-              <p>Cash payment to delivery agent</p>
-            </>
-          )}
+          <p>🔒 Secure payment</p>
+          <p>Your payment information is encrypted and secure</p>
         </div>
       </div>
     </div>

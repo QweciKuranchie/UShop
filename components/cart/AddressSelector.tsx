@@ -70,16 +70,16 @@ export function AddressSelector({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <MapPin className="w-5 h-5" />
+            <MapPin className="w-5 h-5 text-ushop-pink" />
             Shipping Address
           </CardTitle>
           <CardDescription>Add a shipping address to continue</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
-            <MapPin className="w-12 h-12 mx-auto mb-4 opacity-50" />
+            <MapPin className="w-12 h-12 mx-auto mb-4 text-ushop-pink opacity-60" />
             <p className="text-muted-foreground mb-4">No saved addresses yet</p>
-            <Button onClick={() => setIsSidebarOpen(true)} className="w-full">
+            <Button onClick={() => setIsSidebarOpen(true)} className="w-full bg-ushop-purple-dark hover:bg-ushop-purple text-white font-semibold shadow-sm">
               <Plus className="w-4 h-4 mr-2" />
               Add Your First Address
             </Button>
@@ -101,7 +101,7 @@ export function AddressSelector({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <MapPin className="w-5 h-5" />
+          <MapPin className="w-5 h-5 text-ushop-pink" />
           Shipping Address
         </CardTitle>
         <CardDescription>
@@ -121,14 +121,14 @@ export function AddressSelector({
               <RadioGroupItem
                 value={address._id}
                 id={address._id}
-                className="mt-1"
+                className="mt-1 accent-ushop-purple"
               />
               <Label htmlFor={address._id} className="flex-1 cursor-pointer">
                 <div className="space-y-1">
                   <div className="font-medium flex items-center gap-2">
                     {address.name}
                     {address.default && (
-                      <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                      <span className="text-xs bg-ushop_light_pink text-ushop-purple-dark border border-ushop-pink/20 font-semibold px-2 py-0.5 rounded">
                         Default
                       </span>
                     )}
@@ -148,7 +148,7 @@ export function AddressSelector({
         {hasMoreAddresses && (
           <Button
             variant="outline"
-            className="w-full border-dashed"
+            className="w-full border-dashed border-ushop-pink/40 text-ushop-purple hover:bg-ushop-pink hover:text-white font-semibold transition-colors"
             onClick={() => setIsAllAddressesSidebarOpen(true)}
           >
             <List className="w-4 h-4 mr-2" />
@@ -158,7 +158,7 @@ export function AddressSelector({
 
         <Button
           variant="outline"
-          className="w-full"
+          className="w-full border-ushop-pink/40 text-ushop-purple hover:bg-ushop-pink hover:text-white font-semibold transition-colors"
           onClick={() => setIsSidebarOpen(true)}
         >
           <Plus className="w-4 h-4 mr-2" />
