@@ -16,8 +16,8 @@ import {
   ClerkLoaded,
   SignedIn,
   SignedOut,
-  UserButton,
 } from "@clerk/nextjs";
+import UserDropdown from "./UserDropdown";
 
 const Header = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -63,7 +63,7 @@ const Header = () => {
                     <SignUp />
                   </SignedOut>
                   <SignedIn>
-                    <UserButton />
+                    <UserDropdown />
                   </SignedIn>
                 </ClerkLoaded>
               )}

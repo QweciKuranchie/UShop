@@ -23,6 +23,8 @@ export const PAYMENT_METHODS = {
   STRIPE: "stripe",
   CLERK: "clerk",
   CARD: "card",
+  MOBILE_MONEY: "mobile_money",
+  PAY_ON_DELIVERY: "pay_on_delivery",
 } as const;
 
 export type OrderStatus = (typeof ORDER_STATUSES)[keyof typeof ORDER_STATUSES];

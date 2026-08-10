@@ -145,24 +145,20 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
                   Log in to access your orders, track purchases, and manage your wishlist.
                 </p>
                 <div className="grid grid-cols-2 gap-3 pt-1">
-                  <button
-                    onClick={() => {
-                      onClose();
-                      openAuthModal("sign-in");
-                    }}
-                    className="w-full text-center text-ushop-purple border border-ushop-purple/20 hover:border-ushop-pink hover:bg-ushop-pink hover:text-white px-4 py-2.5 rounded-xl hoverEffect font-semibold text-xs cursor-pointer bg-white shadow-xs"
+                  <Link
+                    href="/sign-in"
+                    onClick={onClose}
+                    className="w-full text-center text-ushop-purple border border-ushop-purple/20 hover:border-ushop-pink hover:bg-ushop-pink hover:text-white px-4 py-2.5 rounded-xl hoverEffect font-semibold text-xs cursor-pointer bg-white shadow-xs block"
                   >
                     Login
-                  </button>
-                  <button
-                    onClick={() => {
-                      onClose();
-                      openAuthModal("sign-up");
-                    }}
-                    className="w-full text-center text-white bg-ushop-purple hover:bg-ushop-pink px-4 py-2.5 rounded-xl hoverEffect font-semibold text-xs cursor-pointer shadow-xs"
+                  </Link>
+                  <Link
+                    href="/sign-up"
+                    onClick={onClose}
+                    className="w-full text-center text-white bg-ushop-purple hover:bg-ushop-pink px-4 py-2.5 rounded-xl hoverEffect font-semibold text-xs cursor-pointer shadow-xs block"
                   >
                     Register
-                  </button>
+                  </Link>
                 </div>
               </div>
             </SignedOut>

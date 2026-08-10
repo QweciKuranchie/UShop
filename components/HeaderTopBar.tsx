@@ -35,7 +35,7 @@ const HeaderTopBar = () => {
           {/* "My Orders" navigates to the orders sub-page that exists,
                 not /dashboard which is the generic overview. */}
           <Link
-            href="/orders"
+            href="/user/orders"
             className="font-bold hover:text-gray-300 transition-colors hidden sm:inline"
           >
             Track Orders

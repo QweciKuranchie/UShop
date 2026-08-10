@@ -4,13 +4,6 @@ import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -51,6 +44,7 @@ export default function LocationSelector({
   >([]);
   const [loadingStates, setLoadingStates] = useState(false);
   const [loadingCities, setLoadingCities] = useState(false);
+
   // Load states when country changes
   useEffect(() => {
     let active = true;
@@ -208,10 +202,10 @@ export default function LocationSelector({
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Breadcrumb Navigation */}
-      <div className="bg-gray-50 rounded-lg p-4 border">
+      <div className="bg-ushop_light_pink/40 rounded-xl p-4 border border-ushop-pink/20">
         <div className="flex items-center space-x-2 mb-3">
-          <MapPin className="h-4 w-4 text-blue-600" />
-          <span className="text-sm font-medium text-gray-700">
+          <MapPin className="h-4 w-4 text-ushop-pink" />
+          <span className="text-sm font-semibold text-ushop-purple-dark">
             Location Selection
           </span>
         </div>
@@ -222,14 +216,14 @@ export default function LocationSelector({
               {value.country ? (
                 <BreadcrumbLink
                   onClick={resetToCountry}
-                  className="cursor-pointer hover:text-blue-600"
+                  className="cursor-pointer hover:text-ushop-pink text-xs font-medium"
                 >
-                  <Globe className="h-3 w-3 mr-1" />
+                  <Globe className="h-3 w-3 mr-1 inline" />
                   Country
                 </BreadcrumbLink>
               ) : (
-                <BreadcrumbPage className="text-blue-600 font-medium">
-                  <Globe className="h-3 w-3 mr-1" />
+                <BreadcrumbPage className="text-ushop-pink font-semibold text-xs">
+                  <Globe className="h-3 w-3 mr-1 inline" />
                   Select Country
                 </BreadcrumbPage>
               )}
@@ -242,12 +236,12 @@ export default function LocationSelector({
                   {value.state ? (
                     <BreadcrumbLink
                       onClick={resetToState}
-                      className="cursor-pointer hover:text-blue-600"
+                      className="cursor-pointer hover:text-ushop-pink text-xs font-medium"
                     >
                       {value.country}
                     </BreadcrumbLink>
                   ) : (
-                    <BreadcrumbPage className="text-blue-600 font-medium">
+                    <BreadcrumbPage className="text-ushop-pink font-semibold text-xs">
                       {value.country}
                     </BreadcrumbPage>
                   )}
@@ -262,12 +256,12 @@ export default function LocationSelector({
                   {value.city ? (
                     <BreadcrumbLink
                       onClick={resetToCity}
-                      className="cursor-pointer hover:text-blue-600"
+                      className="cursor-pointer hover:text-ushop-pink text-xs font-medium"
                     >
                       {value.state}
                     </BreadcrumbLink>
                   ) : (
-                    <BreadcrumbPage className="text-blue-600 font-medium">
+                    <BreadcrumbPage className="text-ushop-pink font-semibold text-xs">
                       {value.state}
                     </BreadcrumbPage>
                   )}
@@ -279,7 +273,7 @@ export default function LocationSelector({
               <>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="text-blue-600 font-medium">
+                  <BreadcrumbPage className="text-ushop-pink font-semibold text-xs">
                     {value.city}
                   </BreadcrumbPage>
                 </BreadcrumbItem>
@@ -291,93 +285,83 @@ export default function LocationSelector({
 
       {/* Country Selection */}
       <div>
-        <Label htmlFor="country" className="text-sm font-medium">
+        <Label htmlFor="country" className="text-sm font-semibold text-ushop-purple-dark">
           Country *
         </Label>
-        <Select value={value.countryCode} onValueChange={handleCountryChange}>
-          <SelectTrigger className="mt-1">
-            <SelectValue placeholder="Select a country" />
-          </SelectTrigger>
-          <SelectContent>
-            {countries.map((country) => (
-              <SelectItem key={country.isoCode} value={country.isoCode}>
-                <div className="flex items-center space-x-2">
-                  <span className="text-lg">{country.flag}</span>
-                  <span>{country.name}</span>
-                </div>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <select
+          id="country"
+          value={value.countryCode}
+          onChange={(e) => handleCountryChange(e.target.value)}
+          className="mt-1 flex h-10 w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-ushop-pink focus:outline-none focus:ring-2 focus:ring-ushop-pink/20"
+        >
+          <option value="">Select a country</option>
+          {countries.map((country) => (
+            <option key={country.isoCode} value={country.isoCode}>
+              {country.flag} {country.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* State/Province Selection */}
       {value.countryCode && (
         <div>
-          <Label htmlFor="state" className="text-sm font-medium">
+          <Label htmlFor="state" className="text-sm font-semibold text-ushop-purple-dark">
             {value.country === "United States" ? "State" : "State/Province"} *
           </Label>
-          <Select
+          <select
+            id="state"
             value={value.stateCode}
-            onValueChange={handleStateChange}
+            onChange={(e) => handleStateChange(e.target.value)}
             disabled={loadingStates || states.length === 0}
+            className="mt-1 flex h-10 w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-ushop-pink focus:outline-none focus:ring-2 focus:ring-ushop-pink/20"
           >
-            <SelectTrigger className="mt-1">
-              <SelectValue
-                placeholder={
-                  loadingStates
-                    ? "Loading states..."
-                    : states.length === 0
-                    ? "No states available"
-                    : `Select a ${
-                        value.country === "United States"
-                          ? "state"
-                          : "state/province"
-                      }`
-                }
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {states.map((state) => (
-                <SelectItem key={state.isoCode} value={state.isoCode}>
-                  {state.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            <option value="">
+              {loadingStates
+                ? "Loading states..."
+                : states.length === 0
+                ? "No states available"
+                : `Select a ${
+                    value.country === "United States"
+                      ? "state"
+                      : "state/province"
+                  }`}
+            </option>
+            {states.map((state) => (
+              <option key={state.isoCode} value={state.isoCode}>
+                {state.name}
+              </option>
+            ))}
+          </select>
         </div>
       )}
 
       {/* City Selection */}
       {value.stateCode && (
         <div>
-          <Label htmlFor="city" className="text-sm font-medium">
+          <Label htmlFor="city" className="text-sm font-semibold text-ushop-purple-dark">
             City *
           </Label>
-          <Select
+          <select
+            id="city"
             value={value.city}
-            onValueChange={handleCityChange}
+            onChange={(e) => handleCityChange(e.target.value)}
             disabled={loadingCities || cities.length === 0}
+            className="mt-1 flex h-10 w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-ushop-pink focus:outline-none focus:ring-2 focus:ring-ushop-pink/20"
           >
-            <SelectTrigger className="mt-1">
-              <SelectValue
-                placeholder={
-                  loadingCities
-                    ? "Loading cities..."
-                    : cities.length === 0
-                    ? "No cities available or enter manually below"
-                    : "Select a city"
-                }
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {cities.map((city) => (
-                <SelectItem key={city.name} value={city.name}>
-                  {city.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            <option value="">
+              {loadingCities
+                ? "Loading cities..."
+                : cities.length === 0
+                ? "No cities available or enter manually below"
+                : "Select a city"}
+            </option>
+            {cities.map((city) => (
+              <option key={city.name} value={city.name}>
+                {city.name}
+              </option>
+            ))}
+          </select>
 
           {/* Manual city input if no cities in database */}
           {value.stateCode && cities.length === 0 && (
@@ -386,7 +370,7 @@ export default function LocationSelector({
                 placeholder="Enter city name manually"
                 value={value.city}
                 onChange={(e) => handleCityChange(e.target.value)}
-                className="text-sm"
+                className="text-sm rounded-xl focus:border-ushop-pink focus:ring-ushop-pink/20"
               />
             </div>
           )}
@@ -396,7 +380,7 @@ export default function LocationSelector({
       {/* Sub-area/District (Optional) */}
       {value.city && (
         <div>
-          <Label htmlFor="subarea" className="text-sm font-medium">
+          <Label htmlFor="subarea" className="text-sm font-semibold text-ushop-purple-dark">
             Sub-area/District (Optional)
           </Label>
           <Input
@@ -404,7 +388,7 @@ export default function LocationSelector({
             placeholder="Enter area, district, or neighborhood"
             value={value.subArea || ""}
             onChange={(e) => handleSubAreaChange(e.target.value)}
-            className="mt-1"
+            className="mt-1 rounded-xl focus:border-ushop-pink focus:ring-ushop-pink/20"
           />
         </div>
       )}
@@ -412,7 +396,7 @@ export default function LocationSelector({
       {/* ZIP/Postal Code */}
       {value.country && (
         <div>
-          <Label htmlFor="zipcode" className="text-sm font-medium">
+          <Label htmlFor="zipcode" className="text-sm font-semibold text-ushop-purple-dark">
             {value.country === "United States" ? "ZIP Code" : "Postal Code"} *
           </Label>
           <Input
@@ -424,7 +408,7 @@ export default function LocationSelector({
             }
             value={value.zipCode}
             onChange={(e) => handleZipChange(e.target.value)}
-            className="mt-1"
+            className="mt-1 rounded-xl focus:border-ushop-pink focus:ring-ushop-pink/20"
           />
         </div>
       )}

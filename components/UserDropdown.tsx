@@ -50,7 +50,7 @@ const UserDropdown = () => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
-        <button className="flex items-center gap-2 py-1 px-2 rounded-lg hover:bg-ushop_light_bg group border border-ushop-pink/20 hover:border-ushop-pink hoverEffect">
+        <div className="flex items-center gap-2 py-1 px-2 rounded-lg hover:bg-ushop_light_bg group border border-ushop-pink/20 hover:border-ushop-pink hoverEffect cursor-pointer">
           <div className="relative">
             {user.imageUrl ? (
               <Image
@@ -70,7 +70,7 @@ const UserDropdown = () => {
               {user.firstName || "User"}
             </span>
           </div>
-        </button>
+        </div>
       </PopoverTrigger>
 
       <PopoverContent className="w-72 p-0" align="end" sideOffset={5}>
@@ -160,7 +160,7 @@ const UserDropdown = () => {
           </Link>
 
           <Link
-            href="/user"
+            href="/user/dashboard"
             onClick={handleLinkClick}
             className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-ushop_light_bg transition-colors duration-200 group"
           >
@@ -209,7 +209,7 @@ const UserDropdown = () => {
           </Link>
           {isAdmin && (
             <Link
-              href="/admin"
+              href="/user/admin/manage-users"
               onClick={handleLinkClick}
               className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-ushop_light_bg transition-colors duration-200 group"
             >

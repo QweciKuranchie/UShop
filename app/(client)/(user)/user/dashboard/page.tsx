@@ -265,7 +265,7 @@ export default function UserDashboardPage() {
             </div>
             <div>
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold text-gray-900">
+                <h1 className="text-3xl font-bold text-ushop-purple-dark">
                   Welcome back,{" "}
                   {user?.firstName ||
                     user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] ||
@@ -737,7 +737,7 @@ export default function UserDashboardPage() {
                         {getActivityIcon(activity.type)}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 leading-tight">
+                        <p className="text-sm font-medium text-ushop-purple-dark leading-tight">
                           {activity.title}
                         </p>
                         <p className="text-sm text-gray-500 mt-1">

@@ -10,6 +10,10 @@ interface AuthModalState {
 export const useAuthModal = create<AuthModalState>((set) => ({
   isOpen: false,
   mode: "sign-in",
-  openAuthModal: (mode = "sign-in") => set({ isOpen: true, mode }),
+  openAuthModal: (mode = "sign-in") => {
+    if (typeof window !== "undefined") {
+      window.location.href = `/${mode}`;
+    }
+  },
   closeAuthModal: () => set({ isOpen: false }),
 }));
