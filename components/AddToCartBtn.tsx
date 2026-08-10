@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Product } from "@/sanity.types";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -17,8 +17,14 @@ interface Props {
 }
 
 const AddToCartBtn = ({ product, className, showQuantity = true }: Props) => {
+  const [isMounted, setIsMounted] = useState(false);
   const { addItem, getItemCount } = useCartStore();
-  const itemCount = getItemCount(product?._id);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const itemCount = isMounted ? getItemCount(product?._id) : 0;
   const isOutOfStock = product?.stock === 0;
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -43,7 +49,7 @@ const AddToCartBtn = ({ product, className, showQuantity = true }: Props) => {
     }
   };
 
-  if (showQuantity && itemCount > 0) {
+  if (isMounted && showQuantity && itemCount > 0) {
     return (
       <div className="w-full flex items-center justify-center">
         <QuantityButtons product={product} className={className} />

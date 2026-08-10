@@ -41,15 +41,21 @@ interface Props {
 const Shop = ({ categories, brands, classifications = [] }: Props) => {
   const searchParams = useSearchParams();
   const brandParams = searchParams?.get("brand");
+  const categoryParams = searchParams?.get("category");
+  const queryParams = searchParams?.get("query") || searchParams?.get("q");
+  const conditionParams = searchParams?.get("condition");
+  const priceParams = searchParams?.get("price");
+
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, startTransition] = useTransition();
+  const [searchQuery, setSearchQuery] = useState<string | null>(queryParams || null);
   const [selectedClassification, setSelectedClassification] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(categoryParams || null);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(
     brandParams || null
   );
-  const [selectedPrice, setSelectedPrice] = useState<string | null>(null);
-  const [selectedCondition, setSelectedCondition] = useState<string | null>(null);
+  const [selectedPrice, setSelectedPrice] = useState<string | null>(priceParams || null);
+  const [selectedCondition, setSelectedCondition] = useState<string | null>(conditionParams || null);
   const [selectedWarranty, setSelectedWarranty] = useState<string | null>(null);
   const [dynamicAttrFilters, setDynamicAttrFilters] = useState<Record<string, string>>({});
   const [showMobileFilters, setShowMobileFilters] = useState(false);
@@ -117,8 +123,11 @@ const Shop = ({ categories, brands, classifications = [] }: Props) => {
           maxPrice = max;
         }
 
+        const searchPattern = searchQuery ? `*${searchQuery}*` : null;
+
         const query = `
         *[_type == 'product' 
+          && (!defined($searchPattern) || name match $searchPattern || description match $searchPattern)
           && (!defined($selectedClassification) || productClassification->slug.current == $selectedClassification || productClassification->_id == $selectedClassification)
           && (!defined($selectedCategory) || references(*[_type == "category" && (slug.current == $selectedCategory || parent->slug.current == $selectedCategory || parent->parent->slug.current == $selectedCategory)]._id))
           && (!defined($selectedBrand) || references(*[_type == "brand" && slug.current == $selectedBrand]._id))
@@ -139,6 +148,7 @@ const Shop = ({ categories, brands, classifications = [] }: Props) => {
         const data: ExtendedProduct[] = await client.fetch(
           query,
           {
+            searchPattern,
             selectedClassification,
             selectedCategory,
             selectedBrand,

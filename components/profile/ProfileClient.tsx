@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -101,7 +101,7 @@ export default function ProfileClient({ userData }: ProfileClientProps) {
   const [loadingAddresses, setLoadingAddresses] = useState(false);
   const [deletingAddressId, setDeletingAddressId] = useState<string | null>(null);
 
-  const fetchAddresses = async () => {
+  const fetchAddresses = useCallback(async () => {
     try {
       setLoadingAddresses(true);
       const res = await fetch("/api/user/addresses");
@@ -117,11 +117,11 @@ export default function ProfileClient({ userData }: ProfileClientProps) {
       setLoadingAddresses(false);
       router.refresh();
     }
-  };
+  }, [router]);
 
   useEffect(() => {
     fetchAddresses();
-  }, []);
+  }, [fetchAddresses]);
 
   const handleDeleteAddress = async (addressId: string) => {
     if (!confirm("Are you sure you want to delete this address?")) return;

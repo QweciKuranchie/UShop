@@ -16,7 +16,6 @@ import { FC, useState, useEffect } from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useOutsideClick } from "@/hooks";
-import { useAuthModal } from "@/hooks/useAuthModal";
 import { headerData, categoriesData } from "@/Constants/data";
 import { ClerkLoaded, SignedIn, SignedOut, SignOutButton, useAuth } from "@clerk/nextjs";
 import useStore from "@/store";
@@ -50,7 +49,6 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
   const { isSignedIn } = useAuth();
   const sidebarRef = useOutsideClick<HTMLDivElement>(onClose);
   const { items, favoriteProduct } = useStore();
-  const { openAuthModal } = useAuthModal();
   const [universities, setUniversities] = useState<University[]>(DEFAULT_SIDEBAR_UNIVERSITIES);
 
   useEffect(() => {

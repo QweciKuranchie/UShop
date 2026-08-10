@@ -208,7 +208,7 @@ export function AddAddressSidebar({
             </Label>
             <select
               id="type"
-              value={formData.type === ("office" as any) ? "work" : formData.type}
+              value={(formData.type as string) === "office" ? "work" : formData.type}
               onChange={(e) =>
                 handleInputChange(
                   "type",

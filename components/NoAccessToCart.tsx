@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useAuthModal } from "@/hooks/useAuthModal";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -13,7 +12,6 @@ import {
 import Logo from "./common/Logo";
 
 const NoAccessToCart = ({ details }: { details?: string }) => {
-  const { openAuthModal } = useAuthModal();
 
   return (
     <div className="flex items-center justify-center py-12 md:py-32 bg-gray-100 p-4">
