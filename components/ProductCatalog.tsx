@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useState, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { Brand, Category, Product } from "@/sanity.types";
 import ProductCard from "./ProductCard";
 import { motion, AnimatePresence } from "motion/react";
@@ -53,7 +53,10 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
 
   const [products] = useState<Product[]>(initialProducts);
   const [loading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(paramQuery);
+  const [userQuery, setUserQuery] = useState<string | null>(null);
+
+  const searchQuery = userQuery !== null ? userQuery : paramQuery;
+  const setSearchQuery = (q: string) => setUserQuery(q);
 
   // Calculate max price from products dynamically
   const maxObservedPrice = useMemo(() => {
@@ -64,19 +67,12 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, maxObservedPrice]);
+  const [customPriceRange, setCustomPriceRange] = useState<[number, number] | null>(null);
+
+  const priceRange: [number, number] = customPriceRange ?? [0, maxObservedPrice];
+  const setPriceRange = (val: [number, number]) => setCustomPriceRange(val);
+
   const [sortBy, setSortBy] = useState<SortOption>("name-asc");
-
-  // Keep searchQuery synced when URL search params change
-  useEffect(() => {
-    if (paramQuery && paramQuery !== searchQuery) {
-      setSearchQuery(paramQuery);
-    }
-  }, [paramQuery, searchQuery]);
-
-  useEffect(() => {
-    setPriceRange([0, maxObservedPrice]);
-  }, [maxObservedPrice]);
 
   const [viewMode, setViewMode] = useState<"grid" | "large">("grid");
   const [showFilters, setShowFilters] = useState(false);
@@ -184,11 +180,11 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
 
   // Reset all filters
   const resetFilters = () => {
-    setSearchQuery("");
+    setUserQuery("");
     setSelectedCategories([]);
     setSelectedBrands([]);
     setSelectedConditions([]);
-    setPriceRange([0, maxObservedPrice]);
+    setCustomPriceRange(null);
     setSortBy("name-asc");
   };
 
@@ -465,6 +461,8 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
                       </div>
                     ))}
                   </CollapsibleContent>
+                </Collapsible>
+
                 <Separator />
 
                 {/* Item Condition */}
@@ -542,7 +540,7 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
                         onValueChange={(value) =>
                           setPriceRange(value as [number, number])
                         }
-                        max={maxPrice}
+                        max={maxObservedPrice}
                         min={0}
                         step={10}
                         className="w-full"

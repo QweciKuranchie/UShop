@@ -48,7 +48,7 @@ const Shop = ({ categories, brands, classifications = [] }: Props) => {
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, startTransition] = useTransition();
-  const [searchQuery, setSearchQuery] = useState<string | null>(queryParams || null);
+  const searchQuery = queryParams || null;
   const [selectedClassification, setSelectedClassification] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(categoryParams || null);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(
@@ -207,6 +207,7 @@ const Shop = ({ categories, brands, classifications = [] }: Props) => {
       }
     });
   }, [
+    searchQuery,
     selectedClassification,
     selectedCategory,
     selectedBrand,
