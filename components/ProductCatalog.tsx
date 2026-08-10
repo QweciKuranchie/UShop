@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Brand, Category, Product } from "@/sanity.types";
 import ProductCard from "./ProductCard";
 import { motion, AnimatePresence } from "motion/react";
@@ -47,13 +48,25 @@ type SortOption =
   | "popular";
 
 const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const initialQuery = searchParams.get("query") || searchParams.get("q") || "";
+
   const [products] = useState<Product[]>(initialProducts);
   const [loading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [sortBy, setSortBy] = useState<SortOption>("name-asc");
+
+  // Keep searchQuery synced with URL changes
+  useEffect(() => {
+    const paramQuery = searchParams.get("query") || searchParams.get("q") || "";
+    setSearchQuery(paramQuery);
+  }, [searchParams]);
   const [viewMode, setViewMode] = useState<"grid" | "large">("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState({

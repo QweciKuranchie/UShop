@@ -84,7 +84,7 @@ const DirectPaymentModal: React.FC<Props> = ({
         <DialogOverlay className="bg-black/60 backdrop-blur-sm" />
         <DialogPrimitive.Content
           className={cn(
-            "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-6 border-2 border-shop_dark_green/20 bg-white p-8 shadow-2xl duration-300",
+            "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-6 border-2 border-ushop-purple/20 bg-white p-8 shadow-2xl duration-300",
             "data-[state=open]:animate-in data-[state=closed]:animate-out",
             "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
             "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
@@ -97,11 +97,11 @@ const DirectPaymentModal: React.FC<Props> = ({
 
           {/* Header with Icon */}
           <div className="text-center space-y-4">
-            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br from-shop_dark_green to-shop_light_green shadow-lg ring-4 ring-shop_dark_green/10 animate-scale-in">
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-ushop-purple-dark to-ushop-pink shadow-lg ring-4 ring-ushop-purple/10 animate-scale-in">
               <Lock className="h-10 w-10 text-white" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-2xl font-bold text-shop_dark_green flex items-center justify-center gap-2">
+              <h3 className="text-2xl font-bold text-ushop-purple-dark flex items-center justify-center gap-2">
                 Secure Payment
               </h3>
               <p className="text-gray-600 leading-relaxed">
@@ -111,20 +111,20 @@ const DirectPaymentModal: React.FC<Props> = ({
           </div>
 
           {/* Order Summary Card */}
-          <div className="relative p-6 bg-linear-to-br from-shop_light_pink to-white rounded-xl border-2 border-shop_dark_green/10 shadow-md animate-fade-in">
+          <div className="relative p-6 bg-gradient-to-br from-ushop-purple/5 to-white rounded-xl border-2 border-ushop-purple/10 shadow-md animate-fade-in">
             <div className="absolute -top-3 -right-3">
-              <div className="flex items-center gap-1 bg-shop_light_green text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+              <div className="flex items-center gap-1 bg-ushop-pink text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 Verified
               </div>
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-shop_dark_green/10">
+              <div className="flex items-center justify-between pb-3 border-b border-ushop-purple/10">
                 <span className="text-sm font-medium text-gray-700">
                   Order Number
                 </span>
-                <span className="font-bold text-shop_dark_green bg-white px-4 py-1.5 rounded-full text-sm border-2 border-shop_dark_green/20 shadow-sm">
+                <span className="font-bold text-ushop-purple-dark bg-white px-4 py-1.5 rounded-full text-sm border-2 border-ushop-purple/20 shadow-sm">
                   #{orderNumber?.slice(-8) || "N/A"}
                 </span>
               </div>
@@ -136,7 +136,7 @@ const DirectPaymentModal: React.FC<Props> = ({
                   </span>
                   <PriceFormatter
                     amount={orderTotal}
-                    className="text-3xl font-bold text-shop_dark_green"
+                    className="text-3xl font-bold text-ushop-purple-dark"
                   />
                 </div>
               </div>
@@ -144,9 +144,9 @@ const DirectPaymentModal: React.FC<Props> = ({
           </div>
 
           {/* Security Badge */}
-          <div className="flex items-center justify-center gap-2 p-4 bg-shop_dark_green/5 rounded-lg border border-shop_dark_green/10 animate-fade-in">
-            <Lock className="w-4 h-4 text-shop_dark_green" />
-            <span className="text-sm text-shop_dark_green font-semibold">
+          <div className="flex items-center justify-center gap-2 p-4 bg-ushop-purple/5 rounded-lg border border-ushop-purple/10 animate-fade-in">
+            <Lock className="w-4 h-4 text-ushop-purple-dark" />
+            <span className="text-sm text-ushop-purple-dark font-semibold">
               Protected by 256-bit SSL encryption
             </span>
           </div>
@@ -154,21 +154,21 @@ const DirectPaymentModal: React.FC<Props> = ({
           {/* Payment Flow Steps */}
           <div className="flex items-center justify-center gap-3 text-xs text-gray-500 animate-fade-in">
             <div className="flex flex-col items-center gap-1">
-              <div className="w-8 h-8 bg-shop_dark_green rounded-full flex items-center justify-center text-white font-bold">
+              <div className="w-8 h-8 bg-ushop-purple-dark rounded-full flex items-center justify-center text-white font-bold">
                 1
               </div>
               <span className="font-medium">Secure</span>
             </div>
-            <div className="w-8 h-0.5 bg-shop_dark_green/30"></div>
+            <div className="w-8 h-0.5 bg-ushop-purple/30"></div>
             <div className="flex flex-col items-center gap-1">
-              <div className="w-8 h-8 bg-shop_orange rounded-full flex items-center justify-center text-white font-bold">
+              <div className="w-8 h-8 bg-ushop-pink rounded-full flex items-center justify-center text-white font-bold">
                 2
               </div>
               <span className="font-medium">Pay</span>
             </div>
-            <div className="w-8 h-0.5 bg-shop_dark_green/30"></div>
+            <div className="w-8 h-0.5 bg-ushop-purple/30"></div>
             <div className="flex flex-col items-center gap-1">
-              <div className="w-8 h-8 bg-shop_light_green rounded-full flex items-center justify-center text-white font-bold">
+              <div className="w-8 h-8 bg-ushop-purple rounded-full flex items-center justify-center text-white font-bold">
                 3
               </div>
               <span className="font-medium">Complete</span>
@@ -189,7 +189,7 @@ const DirectPaymentModal: React.FC<Props> = ({
             <Button
               onClick={handlePayNow}
               disabled={isProcessing}
-              className="flex-1 h-12 bg-linear-to-r from-shop_dark_green to-shop_light_green hover:from-shop_btn_dark_green hover:to-shop_dark_green text-white font-bold transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
+              className="flex-1 h-12 bg-gradient-to-r from-ushop-purple-dark to-ushop-pink hover:from-ushop-purple-dark/90 hover:to-ushop-pink/90 text-white font-bold transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
             >
               {isProcessing ? (
                 <div className="flex items-center justify-center gap-2">
@@ -208,21 +208,21 @@ const DirectPaymentModal: React.FC<Props> = ({
           {/* Trust Indicators */}
           <div className="flex items-center justify-center gap-6 text-xs text-gray-400 border-t border-gray-100 pt-4 animate-fade-in">
             <div className="flex items-center gap-1">
-              <span className="text-shop_light_green">🔒</span>
+              <span className="text-ushop-pink">🔒</span>
               <span>SSL Secured</span>
             </div>
             <div className="flex items-center gap-1">
-              <span className="text-shop_orange">⚡</span>
+              <span className="text-ushop-pink">⚡</span>
               <span>Instant</span>
             </div>
             <div className="flex items-center gap-1">
-              <span className="text-shop_dark_green">🛡️</span>
+              <span className="text-ushop-purple">🛡️</span>
               <span>Protected</span>
             </div>
           </div>
 
           {/* Close Button */}
-          <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-2 opacity-70 ring-offset-background transition-all hover:opacity-100 hover:bg-gray-100 focus:outline-hidden focus:ring-2 focus:ring-shop_dark_green focus:ring-offset-2 disabled:pointer-events-none">
+          <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-2 opacity-70 ring-offset-background transition-all hover:opacity-100 hover:bg-gray-100 focus:outline-hidden focus:ring-2 focus:ring-ushop-purple focus:ring-offset-2 disabled:pointer-events-none">
             <X className="h-4 w-4 text-gray-600" />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>

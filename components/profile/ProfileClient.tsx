@@ -49,7 +49,7 @@ interface Address {
   zip: string;
   country: string;
   default: boolean;
-  type: "home" | "office" | "other" | "work" | "school";
+  type?: string;
   createdAt?: string;
   phone?: string;
 }

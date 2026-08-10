@@ -25,7 +25,7 @@ interface Address {
   zip: string;
   country: string;
   default: boolean;
-  type: "home" | "office" | "other" | "work" | "school";
+  type?: string;
   phone?: string;
   subArea?: string;
   countryCode?: string;
