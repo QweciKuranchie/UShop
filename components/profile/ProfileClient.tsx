@@ -120,8 +120,25 @@ export default function ProfileClient({ userData }: ProfileClientProps) {
   }, [router]);
 
   useEffect(() => {
-    fetchAddresses();
-  }, [fetchAddresses]);
+    let ignore = false;
+    async function loadAddresses() {
+      try {
+        const res = await fetch("/api/user/addresses");
+        if (res.ok && !ignore) {
+          const data = await res.json();
+          if (data.addresses) {
+            setAddresses(data.addresses);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching addresses:", err);
+      }
+    }
+    loadAddresses();
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const handleDeleteAddress = async (addressId: string) => {
     if (!confirm("Are you sure you want to delete this address?")) return;
