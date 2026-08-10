@@ -63,7 +63,14 @@ const BrandList = ({
         {displayBrands.map((brand) => (
           <div
             key={brand?._id}
-            onClick={() => setSelectedBrand(brand?.slug?.current as string)}
+            onClick={() => {
+              const currentSlug = brand?.slug?.current as string;
+              if (selectedBrand === currentSlug) {
+                setSelectedBrand(null);
+              } else {
+                setSelectedBrand(currentSlug);
+              }
+            }}
             className="group flex items-center space-x-3 px-2 py-1 -mx-2 rounded-md hover:bg-ushop-pink/10 cursor-pointer transition-colors duration-150"
           >
             <RadioGroupItem

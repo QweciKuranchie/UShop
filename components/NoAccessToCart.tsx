@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuthModal } from "@/hooks/useAuthModal";
+import Link from "next/link";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -12,7 +12,6 @@ import {
 import Logo from "./common/Logo";
 
 const NoAccessToCart = ({ details }: { details?: string }) => {
-  const { openAuthModal } = useAuthModal();
 
   return (
     <div className="flex items-center justify-center py-12 md:py-32 bg-gray-100 p-4">
@@ -32,11 +31,11 @@ const NoAccessToCart = ({ details }: { details?: string }) => {
               : " Log in to view your cart items and checkout. Don't miss out on your favorite products!"}
           </p>
           <Button
-            onClick={() => openAuthModal("sign-in")}
+            asChild
             className="w-full font-semibold cursor-pointer"
             size="lg"
           >
-            Sign in
+            <Link href="/sign-in">Sign in</Link>
           </Button>
         </CardContent>
         <CardFooter className="flex flex-col space-y-2">
@@ -44,12 +43,12 @@ const NoAccessToCart = ({ details }: { details?: string }) => {
             Don&rsquo;t have an account?
           </div>
           <Button
-            onClick={() => openAuthModal("sign-up")}
+            asChild
             variant="outline"
             className="w-full cursor-pointer"
             size="lg"
           >
-            Create an account
+            <Link href="/sign-up">Create an account</Link>
           </Button>
         </CardFooter>
       </Card>

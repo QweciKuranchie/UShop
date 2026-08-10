@@ -134,12 +134,15 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    const addressTypeVal = type === "office" ? "work" : (type || "home");
+
     // Create new address document
     const addressDoc: { _type: string; [key: string]: unknown } = {
       _type: "address",
       name,
       email: user.emailAddresses[0]?.emailAddress,
       address,
+      streetAddress: address,
       city,
       state,
       zip,
@@ -148,7 +151,8 @@ export async function POST(request: NextRequest) {
       stateCode: stateCode || "",
       subArea: subArea || "",
       default: isDefault || false,
-      type: type || "home",
+      type: addressTypeVal,
+      addressType: addressTypeVal,
       user: {
         _type: "reference",
         _ref: sanityUser._id,
@@ -259,12 +263,15 @@ export async function PUT(request: NextRequest) {
       }
     }
 
+    const addressTypeVal = type === "office" ? "work" : (type || "home");
+
     // Update the address
     const updatedAddress = await backendClient
       .patch(_id)
       .set({
         name,
         address,
+        streetAddress: address,
         city,
         state,
         zip,
@@ -273,7 +280,8 @@ export async function PUT(request: NextRequest) {
         stateCode: stateCode || "",
         subArea: subArea || "",
         default: isDefault || false,
-        type: type || "home",
+        type: addressTypeVal,
+        addressType: addressTypeVal,
         phone: phone || null,
         updatedAt: new Date().toISOString(),
       })

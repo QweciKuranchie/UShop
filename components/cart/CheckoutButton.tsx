@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CreditCard, Package } from "lucide-react";
+import { CreditCard } from "lucide-react";
 import useCartStore, { CartItem } from "@/store";
 import { toast } from "sonner";
 import { useUser } from "@clerk/nextjs";

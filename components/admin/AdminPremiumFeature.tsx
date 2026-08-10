@@ -140,7 +140,7 @@ export default function AdminPremiumFeature({
                 </Link>
 
                 <Link
-                  href="/admin"
+                  href="/user/admin/manage-users"
                   className="px-8 py-4 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition-colors"
                 >
                   Back to Dashboard

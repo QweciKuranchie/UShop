@@ -4,6 +4,7 @@ import React, { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   Sheet,
   SheetContent,
@@ -12,8 +13,19 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { MapPin, Loader2 } from "lucide-react";
+import LocationSelector from "@/components/ui/location-selector";
+import { MapPin, Loader2, Save, X } from "lucide-react";
 import { toast } from "sonner";
+
+interface LocationData {
+  country: string;
+  countryCode: string;
+  state: string;
+  stateCode: string;
+  city: string;
+  subArea?: string;
+  zipCode: string;
+}
 
 interface AddAddressSidebarProps {
   userEmail: string;
@@ -37,9 +49,27 @@ export function AddAddressSidebar({
     city: "",
     state: "",
     zip: "",
+    country: "",
+    countryCode: "",
+    stateCode: "",
+    subArea: "",
     phone: "",
-    isDefault: isFirstAddress, // First address is default by default
+    type: "home" as "home" | "office" | "other" | "work" | "school",
+    isDefault: isFirstAddress,
   });
+
+  const handleLocationChange = (location: LocationData) => {
+    setFormData((prev) => ({
+      ...prev,
+      country: location.country,
+      countryCode: location.countryCode,
+      state: location.state,
+      stateCode: location.stateCode,
+      city: location.city,
+      subArea: location.subArea || "",
+      zip: location.zipCode || "",
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,21 +79,34 @@ export function AddAddressSidebar({
       !formData.address ||
       !formData.city ||
       !formData.state ||
-      !formData.zip
+      !formData.zip ||
+      !formData.country
     ) {
-      toast.error("Please fill in all required fields");
+      toast.error("Please fill in all required fields including location details");
       return;
     }
 
     startTransition(async () => {
       try {
-        // Use API route instead of server action for better error handling
         const response = await fetch("/api/user/addresses", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            name: formData.name,
+            address: formData.address,
+            city: formData.city,
+            state: formData.state,
+            zip: formData.zip,
+            country: formData.country,
+            countryCode: formData.countryCode,
+            stateCode: formData.stateCode,
+            subArea: formData.subArea,
+            phone: formData.phone,
+            type: formData.type,
+            default: formData.isDefault,
+          }),
         });
 
         if (!response.ok) {
@@ -71,7 +114,6 @@ export function AddAddressSidebar({
           throw new Error(errorData.error || "Failed to create address");
         }
 
-        await response.json();
         toast.success("Address saved successfully!");
         setFormData({
           name: "",
@@ -79,16 +121,19 @@ export function AddAddressSidebar({
           city: "",
           state: "",
           zip: "",
+          country: "",
+          countryCode: "",
+          stateCode: "",
+          subArea: "",
           phone: "",
+          type: "home",
           isDefault: false,
         });
         onClose();
 
-        // Call the callback to refresh addresses if provided
         if (onAddressAdded) {
           await onAddressAdded();
         } else {
-          // Fallback to page refresh if no callback provided
           window.location.reload();
         }
       } catch (error) {
@@ -112,149 +157,158 @@ export function AddAddressSidebar({
 
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-      <SheetContent side="right" className="w-full sm:max-w-md">
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
+      <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto border-l border-ushop-pink/20">
+        <SheetHeader className="sticky top-0 bg-white z-10 pb-4 border-b border-ushop-pink/15">
+          <SheetTitle className="flex items-center gap-2 text-ushop-purple-dark font-bold text-xl">
             <MapPin className="w-5 h-5 text-ushop-pink" />
             {isFirstAddress ? "Add Your First Address" : "Add New Address"}
           </SheetTitle>
-          <SheetDescription>
-            Add a shipping address to {userEmail}
+          <SheetDescription className="text-gray-500 text-sm">
+            Add a shipping address for {userEmail}
           </SheetDescription>
         </SheetHeader>
 
-        <form onSubmit={handleSubmit} className="flex flex-col h-full px-3">
-          <div className="flex-1 space-y-6 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-sm font-medium">
-                Address Name *
-              </Label>
-              <Input
-                id="name"
-                placeholder="e.g., Home, Work, Office"
-                value={formData.name}
-                onChange={(e) => handleInputChange("name", e.target.value)}
-                disabled={isPending}
-                className="w-full"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone" className="text-sm font-medium">
-                Phone Number
-              </Label>
-              <Input
-                id="phone"
-                type="tel"
-                placeholder="(555) 123-4567"
-                value={formData.phone}
-                onChange={(e) => handleInputChange("phone", e.target.value)}
-                disabled={isPending}
-                className="w-full"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="address" className="text-sm font-medium">
-                Street Address *
-              </Label>
-              <Input
-                id="address"
-                placeholder="123 Main Street, Apt 4B"
-                value={formData.address}
-                onChange={(e) => handleInputChange("address", e.target.value)}
-                disabled={isPending}
-                className="w-full"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="city" className="text-sm font-medium">
-                  City *
-                </Label>
-                <Input
-                  id="city"
-                  placeholder="New York"
-                  value={formData.city}
-                  onChange={(e) => handleInputChange("city", e.target.value)}
-                  disabled={isPending}
-                  className="w-full"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="state" className="text-sm font-medium">
-                  State *
-                </Label>
-                <Input
-                  id="state"
-                  placeholder="NY"
-                  maxLength={2}
-                  value={formData.state}
-                  onChange={(e) =>
-                    handleInputChange("state", e.target.value.toUpperCase())
-                  }
-                  disabled={isPending}
-                  className="w-full"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="zip" className="text-sm font-medium">
-                ZIP Code *
-              </Label>
-              <Input
-                id="zip"
-                placeholder="12345"
-                value={formData.zip}
-                onChange={(e) => handleInputChange("zip", e.target.value)}
-                disabled={isPending}
-                className="w-full"
-              />
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="isDefault"
-                checked={formData.isDefault}
-                onChange={(e) =>
-                  handleInputChange("isDefault", e.target.checked)
-                }
-                disabled={isPending || isFirstAddress}
-                className="h-4 w-4 rounded border-gray-300 text-ushop-purple focus:ring-ushop-purple"
-              />
-              <Label htmlFor="isDefault" className="text-sm">
-                {isFirstAddress
-                  ? "This will be your default address"
-                  : "Set as default address"}
-              </Label>
-            </div>
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Address Name */}
+          <div>
+            <Label htmlFor="name" className="text-sm font-semibold text-ushop-purple-dark">
+              Address Name *
+            </Label>
+            <Input
+              id="name"
+              placeholder="e.g., Home, Office, Mom's House"
+              value={formData.name}
+              onChange={(e) => handleInputChange("name", e.target.value)}
+              disabled={isPending}
+              required
+              className="mt-1 rounded-xl focus:border-ushop-pink focus:ring-ushop-pink/20"
+            />
           </div>
 
-          <SheetFooter className="flex-shrink-0">
-            <div className="flex gap-2 w-full">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onClose()}
-                disabled={isPending}
-                className="flex-1"
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isPending} className="flex-1 bg-ushop-purple-dark hover:bg-ushop-purple text-white font-semibold">
-                {isPending ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Adding...
-                  </>
-                ) : (
-                  "Add Address"
-                )}
-              </Button>
+          {/* Phone Number */}
+          <div>
+            <Label htmlFor="phone" className="text-sm font-semibold text-ushop-purple-dark">
+              Phone Number
+            </Label>
+            <Input
+              id="phone"
+              type="tel"
+              placeholder="e.g., (555) 123-4567"
+              value={formData.phone}
+              onChange={(e) => handleInputChange("phone", e.target.value)}
+              disabled={isPending}
+              className="mt-1 rounded-xl focus:border-ushop-pink focus:ring-ushop-pink/20"
+            />
+          </div>
+
+          {/* Address Type */}
+          <div>
+            <Label htmlFor="type" className="text-sm font-semibold text-ushop-purple-dark">
+              Address Type
+            </Label>
+            <select
+              id="type"
+              value={(formData.type as string) === "office" ? "work" : formData.type}
+              onChange={(e) =>
+                handleInputChange(
+                  "type",
+                  e.target.value as "home" | "work" | "school" | "other"
+                )
+              }
+              disabled={isPending}
+              className="mt-1 flex h-10 w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-ushop-pink focus:outline-none focus:ring-2 focus:ring-ushop-pink/20"
+            >
+              <option value="home">Home</option>
+              <option value="work">Work / Office</option>
+              <option value="school">School / Campus</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          {/* Street Address */}
+          <div>
+            <Label htmlFor="address" className="text-sm font-semibold text-ushop-purple-dark">
+              Street Address *
+            </Label>
+            <Input
+              id="address"
+              placeholder="Enter your street address (house number, street name, unit)"
+              value={formData.address}
+              onChange={(e) => handleInputChange("address", e.target.value)}
+              disabled={isPending}
+              required
+              className="mt-1 rounded-xl focus:border-ushop-pink focus:ring-ushop-pink/20"
+            />
+          </div>
+
+          {/* Location Selector */}
+          <div>
+            <LocationSelector
+              value={{
+                country: formData.country,
+                countryCode: formData.countryCode,
+                state: formData.state,
+                stateCode: formData.stateCode,
+                city: formData.city,
+                subArea: formData.subArea,
+                zipCode: formData.zip,
+              }}
+              onChange={handleLocationChange}
+              className="mt-1"
+            />
+          </div>
+
+          {/* Default Address Switch */}
+          <div className="flex items-center justify-between p-4 bg-ushop_light_pink/30 border border-ushop-pink/20 rounded-xl">
+            <div className="space-y-1">
+              <Label htmlFor="isDefault" className="text-sm font-semibold text-ushop-purple-dark">
+                Set as Default Address
+              </Label>
+              <p className="text-xs text-gray-500">
+                {isFirstAddress
+                  ? "First address is default automatically"
+                  : "Use as primary shipping address"}
+              </p>
             </div>
+            <Switch
+              id="isDefault"
+              checked={formData.isDefault}
+              onCheckedChange={(checked) =>
+                handleInputChange("isDefault", checked)
+              }
+              disabled={isPending || isFirstAddress}
+            />
+          </div>
+
+          {/* Footer Actions */}
+          <SheetFooter className="flex gap-2 pt-4 border-t border-gray-200">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onClose()}
+              disabled={isPending}
+              className="flex-1 border-ushop-pink/30 text-ushop-purple-dark hover:bg-ushop_light_pink/50 rounded-xl py-2.5"
+            >
+              <X className="w-4 h-4 mr-2" />
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="flex-1 bg-ushop-pink hover:bg-ushop-magenta text-white font-semibold shadow-sm transition-all rounded-xl py-2.5"
+            >
+              {isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Adding...
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4 mr-2" />
+                  Add Address
+                </>
+              )}
+            </Button>
           </SheetFooter>
         </form>
       </SheetContent>

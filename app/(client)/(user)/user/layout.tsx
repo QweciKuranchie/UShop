@@ -96,12 +96,12 @@ export default function UserLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen py-5 bg-gradient-to-br from-shop_light_bg via-white to-shop_light_pink/20">
+    <div className="min-h-screen py-5 bg-gradient-to-br from-ushop_light_bg via-white to-ushop_light_pink/30">
       <Container className="py-6">
         <div className="flex flex-col gap-6">
           {/* Mobile Header */}
           <div className="lg:hidden">
-            <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-shop_light_green/10">
+            <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-ushop-pink/15">
               <div className="flex items-center space-x-3">
                 {user?.imageUrl ? (
                   <Image
@@ -109,15 +109,15 @@ export default function UserLayout({
                     alt="User avatar"
                     width={40}
                     height={40}
-                    className="w-10 h-10 rounded-full object-cover border-2 border-shop_light_green/30"
+                    className="w-10 h-10 rounded-full object-cover border-2 border-ushop-pink/40"
                   />
                 ) : (
-                  <div className="w-10 h-10 rounded-full bg-shop_light_green/20 flex items-center justify-center">
-                    <User className="h-6 w-6 text-shop_dark_green" />
+                  <div className="w-10 h-10 rounded-full bg-ushop_light_pink flex items-center justify-center">
+                    <User className="h-6 w-6 text-ushop-purple-dark" />
                   </div>
                 )}
                 <div>
-                  <h2 className="font-semibold text-gray-900">
+                  <h2 className="font-semibold text-ushop-purple-dark">
                     {user?.firstName} {user?.lastName}
                   </h2>
                   <p className="text-sm text-gray-500">User Dashboard</p>
@@ -140,9 +140,9 @@ export default function UserLayout({
 
           {/* Desktop Top Navigation */}
           <div className="hidden lg:block">
-            <div className="bg-white rounded-2xl shadow-xl border border-shop_light_green/10 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-xl border border-ushop-pink/15 overflow-hidden">
               {/* User Profile Header */}
-              <div className="p-6 bg-gradient-to-r from-shop_dark_green to-shop_light_green text-white">
+              <div className="p-6 bg-gradient-to-r from-ushop-purple-dark via-ushop-purple to-ushop-pink text-white">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     {user?.imageUrl ? (
@@ -197,16 +197,16 @@ export default function UserLayout({
                         className={cn(
                           "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border",
                           isActive
-                            ? "bg-shop_light_green/10 border-shop_light_green/30 shadow-sm"
-                            : "hover:bg-gray-50 border-gray-200 hover:border-shop_light_green/30"
+                            ? "bg-ushop_light_pink/60 border-ushop-pink/40 shadow-sm"
+                            : "hover:bg-ushop_light_pink/30 border-gray-200 hover:border-ushop-pink/30"
                         )}
                       >
                         <div
                           className={cn(
                             "p-2 rounded-lg transition-colors",
                             isActive
-                              ? "bg-shop_light_green text-white"
-                              : "bg-gray-100 text-gray-600 group-hover:bg-shop_light_green/20 group-hover:text-shop_dark_green"
+                              ? "bg-ushop-purple text-white shadow-sm"
+                              : "bg-gray-100 text-gray-600 group-hover:bg-ushop-purple/20 group-hover:text-ushop-purple-dark"
                           )}
                         >
                           <item.icon className="h-4 w-4" />
@@ -216,8 +216,8 @@ export default function UserLayout({
                             className={cn(
                               "font-medium text-sm",
                               isActive
-                                ? "text-shop_dark_green"
-                                : "text-gray-900"
+                                ? "text-ushop-purple-dark font-semibold"
+                                : "text-ushop-purple-dark"
                             )}
                           >
                             {item.title}
@@ -286,9 +286,9 @@ export default function UserLayout({
 
           {/* Mobile Sidebar */}
           <div className={cn("lg:hidden", sidebarOpen ? "block" : "hidden")}>
-            <div className="bg-white rounded-2xl shadow-xl border border-shop_light_green/10 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-xl border border-ushop-pink/15 overflow-hidden">
               {/* User Profile Section */}
-              <div className="p-6 bg-gradient-to-r from-shop_dark_green to-shop_light_green text-white">
+              <div className="p-6 bg-gradient-to-r from-ushop-purple-dark via-ushop-purple to-ushop-pink text-white">
                 <div className="flex items-center space-x-4">
                   {user?.imageUrl ? (
                     <Image
@@ -330,8 +330,8 @@ export default function UserLayout({
                       className={cn(
                         "flex items-center justify-between p-4 rounded-xl transition-all duration-200 group",
                         isActive
-                          ? "bg-shop_light_green/10 border border-shop_light_green/30 shadow-sm"
-                          : "hover:bg-gray-50 border border-transparent"
+                          ? "bg-ushop_light_pink/60 border border-ushop-pink/40 shadow-sm"
+                          : "hover:bg-ushop_light_pink/30 border border-transparent"
                       )}
                     >
                       <div className="flex items-center space-x-3">
@@ -339,8 +339,8 @@ export default function UserLayout({
                           className={cn(
                             "p-2 rounded-lg transition-colors",
                             isActive
-                              ? "bg-shop_light_green text-white"
-                              : "bg-gray-100 text-gray-600 group-hover:bg-shop_light_green/20 group-hover:text-shop_dark_green"
+                              ? "bg-ushop-purple text-white"
+                              : "bg-gray-100 text-gray-600 group-hover:bg-ushop-purple/20 group-hover:text-ushop-purple-dark"
                           )}
                         >
                           <item.icon className="h-5 w-5" />
@@ -350,7 +350,7 @@ export default function UserLayout({
                             className={cn(
                               "font-medium",
                               isActive
-                                ? "text-shop_dark_green"
+                                ? "text-ushop-purple-dark font-semibold"
                                 : "text-gray-900"
                             )}
                           >
@@ -364,7 +364,7 @@ export default function UserLayout({
                       <ChevronRight
                         className={cn(
                           "h-4 w-4 transition-colors",
-                          isActive ? "text-shop_dark_green" : "text-gray-400"
+                          isActive ? "text-ushop-purple-dark" : "text-gray-400"
                         )}
                       />
                     </Link>
@@ -448,7 +448,7 @@ export default function UserLayout({
 
           {/* Main Content */}
           <div className="w-full">
-            <div className="bg-white rounded-2xl shadow-xl border border-shop_light_green/10 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-xl border border-ushop-pink/15 overflow-hidden">
               <div className="p-6 lg:p-8">{children}</div>
             </div>
           </div>

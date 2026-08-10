@@ -1,26 +1,19 @@
 "use client";
 
-import React, { ButtonHTMLAttributes } from 'react';
-import { useAuthModal } from '@/hooks/useAuthModal';
+import React, { AnchorHTMLAttributes } from 'react';
+import Link from 'next/link';
 
-const SignIn = React.forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement>>(
-  ({ onClick, ...props }, ref) => {
-    const { openAuthModal } = useAuthModal();
-
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      openAuthModal("sign-in");
-      if (onClick) onClick(e);
-    };
-
+const SignIn = React.forwardRef<HTMLAnchorElement, AnchorHTMLAttributes<HTMLAnchorElement>>(
+  ({ className, children, ...props }, ref) => {
     return (
-      <button
+      <Link
         ref={ref}
-        onClick={handleClick}
+        href="/sign-in"
+        className={className || 'text-ushop-purple border border-ushop-pink px-6 py-2 rounded-full hover:bg-ushop-pink hover:text-white hoverEffect cursor-pointer flex items-center justify-center font-semibold text-sm'}
         {...props}
-        className='text-ushop-purple border border-ushop-pink px-6 py-2 rounded-full hover:bg-ushop-pink hover:text-white hoverEffect cursor-pointer'
       >
-        Login
-      </button>
+        {children || "Login"}
+      </Link>
     );
   }
 );

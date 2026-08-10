@@ -12,13 +12,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { showToast } from "@/lib/toast";
 import LocationSelector from "@/components/ui/location-selector";
 import { MapPin, Save, X, Trash2 } from "lucide-react";
@@ -32,7 +25,7 @@ interface Address {
   zip: string;
   country: string;
   default: boolean;
-  type: "home" | "office" | "other";
+  type?: string;
   phone?: string;
   subArea?: string;
   countryCode?: string;
@@ -98,7 +91,6 @@ export default function AddressEditSidebar({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Enhanced validation
     if (
       !formData.name ||
       !formData.address ||
@@ -138,14 +130,14 @@ export default function AddressEditSidebar({
           }.`
         );
         onClose();
-        // Call callback to refresh addresses instead of page reload
         if (onAddressChange) {
           onAddressChange();
         }
       } else {
         console.error("API Error:", result);
         throw new Error(
-          result.error || `Failed to ${isEditing ? "update" : "add"} address`
+          result.error ||
+            `Failed to ${isEditing ? "update" : "create"} address`
         );
       }
     } catch (error) {
@@ -154,9 +146,7 @@ export default function AddressEditSidebar({
         "Error",
         error instanceof Error
           ? error.message
-          : `Failed to ${
-              isEditing ? "update" : "add"
-            } address. Please try again.`
+          : `Failed to ${isEditing ? "update" : "create"} address`
       );
     } finally {
       setLoading(false);
@@ -164,19 +154,17 @@ export default function AddressEditSidebar({
   };
 
   const handleDelete = async () => {
-    if (!isEditing || !address?._id) return;
+    if (!address?._id) return;
 
-    if (!confirm("Are you sure you want to delete this address?")) return;
+    if (!confirm("Are you sure you want to delete this address?")) {
+      return;
+    }
 
     setDeleteLoading(true);
 
     try {
-      const response = await fetch(`/api/user/addresses`, {
+      const response = await fetch(`/api/user/addresses?id=${address._id}`, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ addressId: address._id }),
       });
 
       if (response.ok) {
@@ -185,7 +173,6 @@ export default function AddressEditSidebar({
           "Your address has been successfully deleted."
         );
         onClose();
-        // Call callback to refresh addresses instead of page reload
         if (onAddressChange) {
           onAddressChange();
         }
@@ -209,13 +196,13 @@ export default function AddressEditSidebar({
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
-        <SheetHeader className="sticky top-0 bg-white z-10 pb-4 border-b">
-          <SheetTitle className="flex items-center space-x-2">
-            <MapPin className="h-5 w-5" />
+      <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto border-l border-ushop-pink/20">
+        <SheetHeader className="sticky top-0 bg-white z-10 pb-4 border-b border-ushop-pink/15">
+          <SheetTitle className="flex items-center space-x-2 text-ushop-purple-dark font-bold text-xl">
+            <MapPin className="h-5 w-5 text-ushop-pink" />
             <span>{isEditing ? "Edit" : "Add"} Shipping Address</span>
           </SheetTitle>
-          <SheetDescription>
+          <SheetDescription className="text-gray-500 text-sm">
             {isEditing
               ? "Update your shipping address information."
               : "Add a new shipping address to your account."}
@@ -226,63 +213,69 @@ export default function AddressEditSidebar({
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Address Name */}
             <div>
-              <Label htmlFor="name">Address Name *</Label>
+              <Label htmlFor="name" className="text-sm font-semibold text-ushop-purple-dark">
+                Address Name *
+              </Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => handleInputChange("name", e.target.value)}
                 placeholder="e.g., Home, Office, Mom's House"
                 required
-                className="mt-1"
+                className="mt-1 rounded-xl focus:border-ushop-pink focus:ring-ushop-pink/20"
               />
             </div>
 
             {/* Phone Number */}
             <div>
-              <Label htmlFor="phone">Phone Number</Label>
+              <Label htmlFor="phone" className="text-sm font-semibold text-ushop-purple-dark">
+                Phone Number
+              </Label>
               <Input
                 id="phone"
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => handleInputChange("phone", e.target.value)}
                 placeholder="e.g., (555) 123-4567"
-                className="mt-1"
+                className="mt-1 rounded-xl focus:border-ushop-pink focus:ring-ushop-pink/20"
               />
             </div>
 
             {/* Address Type */}
             <div>
-              <Label htmlFor="type">Address Type</Label>
-              <Select
-                value={formData.type}
-                onValueChange={(value) =>
+              <Label htmlFor="type" className="text-sm font-semibold text-ushop-purple-dark">
+                Address Type
+              </Label>
+              <select
+                id="type"
+                value={(formData.type as string) === "office" ? "work" : formData.type}
+                onChange={(e) =>
                   handleInputChange(
                     "type",
-                    value as "home" | "office" | "other"
+                    e.target.value as "home" | "work" | "school" | "other"
                   )
                 }
+                className="mt-1 flex h-10 w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-ushop-pink focus:outline-none focus:ring-2 focus:ring-ushop-pink/20"
               >
-                <SelectTrigger className="mt-1">
-                  <SelectValue placeholder="Select address type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="home">Home</SelectItem>
-                  <SelectItem value="office">Office</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
+                <option value="home">Home</option>
+                <option value="work">Work / Office</option>
+                <option value="school">School / Campus</option>
+                <option value="other">Other</option>
+              </select>
             </div>
 
             {/* Street Address */}
             <div>
-              <Label htmlFor="address">Street Address *</Label>
+              <Label htmlFor="address" className="text-sm font-semibold text-ushop-purple-dark">
+                Street Address *
+              </Label>
               <Input
                 id="address"
                 value={formData.address}
                 onChange={(e) => handleInputChange("address", e.target.value)}
                 placeholder="Enter your street address (house number, street name, apartment/unit)"
                 required
-                className="mt-1"
+                className="mt-1 rounded-xl focus:border-ushop-pink focus:ring-ushop-pink/20"
               />
             </div>
 
@@ -304,9 +297,9 @@ export default function AddressEditSidebar({
             </div>
 
             {/* Default Address Switch */}
-            <div className="flex items-center justify-between p-4 border rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-ushop_light_pink/30 border border-ushop-pink/20 rounded-xl">
               <div className="space-y-1">
-                <Label htmlFor="default" className="text-sm font-medium">
+                <Label htmlFor="default" className="text-sm font-semibold text-ushop-purple-dark">
                   Set as Default Address
                 </Label>
                 <p className="text-xs text-gray-500">
@@ -323,8 +316,12 @@ export default function AddressEditSidebar({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex space-x-3 pt-6 border-t">
-              <Button type="submit" className="flex-1" disabled={loading}>
+            <div className="flex space-x-3 pt-6 border-t border-gray-200">
+              <Button
+                type="submit"
+                className="flex-1 bg-ushop-pink hover:bg-ushop-magenta text-white font-semibold shadow-sm transition-all rounded-xl py-2.5"
+                disabled={loading}
+              >
                 {loading ? (
                   <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -343,6 +340,7 @@ export default function AddressEditSidebar({
                 variant="outline"
                 onClick={onClose}
                 disabled={loading || deleteLoading}
+                className="border-ushop-pink/30 text-ushop-purple-dark hover:bg-ushop_light_pink/50 rounded-xl py-2.5"
               >
                 <X className="h-4 w-4 mr-2" />
                 Cancel
@@ -351,13 +349,13 @@ export default function AddressEditSidebar({
 
             {/* Delete Button for Editing */}
             {isEditing && (
-              <div className="pt-4 border-t">
+              <div className="pt-4 border-t border-gray-100">
                 <Button
                   type="button"
                   variant="destructive"
                   onClick={handleDelete}
                   disabled={deleteLoading || loading}
-                  className="w-full"
+                  className="w-full rounded-xl py-2.5 font-semibold"
                 >
                   {deleteLoading ? (
                     <div className="flex items-center space-x-2">

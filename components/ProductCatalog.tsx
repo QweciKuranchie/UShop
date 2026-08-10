@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { Brand, Category, Product } from "@/sanity.types";
 import ProductCard from "./ProductCard";
 import { motion, AnimatePresence } from "motion/react";
@@ -47,26 +48,40 @@ type SortOption =
   | "popular";
 
 const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
+  const searchParams = useSearchParams();
+  const paramQuery = searchParams.get("query") || searchParams.get("q") || "";
+
   const [products] = useState<Product[]>(initialProducts);
   const [loading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [userQuery, setUserQuery] = useState<string | null>(null);
+
+  const searchQuery = userQuery !== null ? userQuery : paramQuery;
+  const setSearchQuery = (q: string) => setUserQuery(q);
+
+  // Calculate max price from products dynamically
+  const maxObservedPrice = useMemo(() => {
+    const prices = products.map((p) => p.price || 0);
+    return Math.max(...prices, 1000);
+  }, [products]);
+
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
+  const [customPriceRange, setCustomPriceRange] = useState<[number, number] | null>(null);
+
+  const priceRange: [number, number] = customPriceRange ?? [0, maxObservedPrice];
+  const setPriceRange = (val: [number, number]) => setCustomPriceRange(val);
+
   const [sortBy, setSortBy] = useState<SortOption>("name-asc");
+
   const [viewMode, setViewMode] = useState<"grid" | "large">("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState({
     categories: true,
     brands: true,
     price: true,
+    conditions: true,
   });
-
-  // Calculate price range from products
-  const maxPrice = useMemo(() => {
-    const prices = products.map((p) => p.price || 0);
-    return Math.max(...prices) || 1000;
-  }, [products]);
 
   // Filter and sort products - Using useMemo for better performance
   const filteredProducts = useMemo(() => {
@@ -82,17 +97,46 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
       );
     }
 
-    // Category filter
+    // Category filter - support both product.category (singular) and product.categories (array)
     if (selectedCategories.length > 0) {
-      filtered = filtered.filter((product) =>
-        product.categories?.some((cat) => selectedCategories.includes(cat._ref))
-      );
+      filtered = filtered.filter((product) => {
+        const prod = product as {
+          category?: { _id?: string; _ref?: string } | string;
+          categories?: { _ref?: string; _id?: string }[];
+        };
+
+        const matchesArray = prod.categories?.some((cat) => {
+          const catId = typeof cat === "string" ? cat : cat?._ref || cat?._id;
+          return catId ? selectedCategories.includes(catId) : false;
+        });
+
+        if (matchesArray) return true;
+
+        if (prod.category) {
+          const singleCatId =
+            typeof prod.category === "string"
+              ? prod.category
+              : prod.category._ref || prod.category._id;
+          if (singleCatId && selectedCategories.includes(singleCatId)) {
+            return true;
+          }
+        }
+
+        return false;
+      });
     }
 
     // Brand filter
     if (selectedBrands.length > 0) {
       filtered = filtered.filter((product) =>
         selectedBrands.includes(product.brand?._ref || "")
+      );
+    }
+
+    // Condition filter
+    if (selectedConditions.length > 0) {
+      filtered = filtered.filter((product) =>
+        product.status ? selectedConditions.includes(product.status) : false
       );
     }
 
@@ -129,16 +173,18 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
     searchQuery,
     selectedCategories,
     selectedBrands,
+    selectedConditions,
     priceRange,
     sortBy,
   ]);
 
   // Reset all filters
   const resetFilters = () => {
-    setSearchQuery("");
+    setUserQuery("");
     setSelectedCategories([]);
     setSelectedBrands([]);
-    setPriceRange([0, maxPrice]);
+    setSelectedConditions([]);
+    setCustomPriceRange(null);
     setSortBy("name-asc");
   };
 
@@ -147,7 +193,8 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
     (searchQuery ? 1 : 0) +
     selectedCategories.length +
     selectedBrands.length +
-    (priceRange[0] > 0 || priceRange[1] < maxPrice ? 1 : 0);
+    selectedConditions.length +
+    (priceRange[0] > 0 || priceRange[1] < maxObservedPrice ? 1 : 0);
 
   // Handle category toggle
   const toggleCategory = (categoryId: string) => {
@@ -284,12 +331,25 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
                 </Badge>
               ) : null;
             })}
-            {(priceRange[0] > 0 || priceRange[1] < maxPrice) && (
+            {selectedConditions.map((condId) => (
+              <Badge key={condId} variant="secondary" className="gap-1 capitalize">
+                {condId.replace("_", " ")}
+                <X
+                  className="w-3 h-3 cursor-pointer"
+                  onClick={() =>
+                    setSelectedConditions((prev) =>
+                      prev.filter((id) => id !== condId)
+                    )
+                  }
+                />
+              </Badge>
+            ))}
+            {(priceRange[0] > 0 || priceRange[1] < maxObservedPrice) && (
               <Badge variant="secondary" className="gap-1">
                 GH₵{priceRange[0]} - GH₵{priceRange[1]}
                 <X
                   className="w-3 h-3 cursor-pointer"
-                  onClick={() => setPriceRange([0, maxPrice])}
+                  onClick={() => setPriceRange([0, maxObservedPrice])}
                 />
               </Badge>
             )}
@@ -405,6 +465,59 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
 
                 <Separator />
 
+                {/* Item Condition */}
+                <Collapsible
+                  open={isFilterOpen.conditions}
+                  onOpenChange={(open) =>
+                    setIsFilterOpen((prev) => ({ ...prev, conditions: open }))
+                  }
+                >
+                  <CollapsibleTrigger className="flex items-center justify-between w-full text-left">
+                    <span className="font-medium">Item Condition</span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${
+                        isFilterOpen.conditions ? "rotate-180" : ""
+                      }`}
+                    />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-3 space-y-2">
+                    {[
+                      { id: "new", label: "Brand New" },
+                      { id: "refurbished", label: "Refurbished" },
+                      { id: "like_new", label: "Like New" },
+                      { id: "excellent", label: "Excellent" },
+                      { id: "good", label: "Good" },
+                      { id: "fair", label: "Fair" },
+                      { id: "for_parts", label: "For Parts" },
+                    ].map((cond) => (
+                      <div
+                        key={cond.id}
+                        className="flex items-center space-x-2"
+                      >
+                        <Checkbox
+                          id={cond.id}
+                          checked={selectedConditions.includes(cond.id)}
+                          onCheckedChange={() => {
+                            setSelectedConditions((prev) =>
+                              prev.includes(cond.id)
+                                ? prev.filter((id) => id !== cond.id)
+                                : [...prev, cond.id]
+                            );
+                          }}
+                        />
+                        <label
+                          htmlFor={cond.id}
+                          className="text-sm flex-1 cursor-pointer"
+                        >
+                          {cond.label}
+                        </label>
+                      </div>
+                    ))}
+                  </CollapsibleContent>
+                </Collapsible>
+
+                <Separator />
+
                 {/* Price Range */}
                 <Collapsible
                   open={isFilterOpen.price}
@@ -427,7 +540,7 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
                         onValueChange={(value) =>
                           setPriceRange(value as [number, number])
                         }
-                        max={maxPrice}
+                        max={maxObservedPrice}
                         min={0}
                         step={10}
                         className="w-full"

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -11,8 +11,9 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { MapPin, Check } from "lucide-react";
+import { MapPin, Check, Trash2, Loader2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { toast } from "sonner";
 
 interface Address {
   _id: string;
@@ -32,6 +33,7 @@ interface AllAddressesSidebarProps {
   addresses: Address[];
   selectedAddress: Address | null;
   onAddressSelect: (address: Address) => void;
+  onAddressDeleted?: () => void;
 }
 
 export function AllAddressesSidebar({
@@ -40,27 +42,57 @@ export function AllAddressesSidebar({
   addresses,
   selectedAddress,
   onAddressSelect,
+  onAddressDeleted,
 }: AllAddressesSidebarProps) {
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
   const handleSelectAddress = (address: Address) => {
     onAddressSelect(address);
     onClose();
   };
 
+  const handleDeleteAddress = async (e: React.MouseEvent, addressId: string) => {
+    e.stopPropagation();
+    if (!confirm("Are you sure you want to delete this address?")) return;
+    try {
+      setDeletingId(addressId);
+      const res = await fetch(`/api/user/addresses?id=${addressId}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        toast.success("Address deleted");
+        if (onAddressDeleted) {
+          onAddressDeleted();
+        } else {
+          window.location.reload();
+        }
+      } else {
+        const data = await res.json();
+        toast.error(data.error || "Failed to delete address");
+      }
+    } catch (err) {
+      console.error("Delete address error:", err);
+      toast.error("Failed to delete address");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-full sm:max-w-lg">
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
-            <MapPin className="w-5 h-5" />
+      <SheetContent side="right" className="w-full sm:max-w-lg border-l border-ushop-pink/20">
+        <SheetHeader className="pb-4 border-b border-ushop-pink/15">
+          <SheetTitle className="flex items-center gap-2 text-ushop-purple-dark font-bold text-xl">
+            <MapPin className="w-5 h-5 text-ushop-pink" />
             Select Shipping Address
           </SheetTitle>
-          <SheetDescription>
+          <SheetDescription className="text-gray-500 text-sm">
             Choose from {addresses.length} saved address
             {addresses.length !== 1 ? "es" : ""}
           </SheetDescription>
         </SheetHeader>
 
-        <ScrollArea className="h-[calc(100vh-180px)] mt-6 p-5">
+        <ScrollArea className="h-[calc(100vh-180px)] mt-4 pr-3">
           <RadioGroup
             value={selectedAddress?._id || ""}
             onValueChange={(value) => {
@@ -73,11 +105,11 @@ export function AllAddressesSidebar({
               <div
                 key={address._id}
                 className={`
-                  relative border rounded-lg p-4 cursor-pointer transition-all
+                  relative border rounded-xl p-4 cursor-pointer transition-all bg-white
                   ${
                     selectedAddress?._id === address._id
-                      ? "border-primary bg-primary/5 shadow-sm"
-                      : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                      ? "border-ushop-pink bg-ushop_light_pink/30 shadow-sm"
+                      : "border-gray-200 hover:border-ushop-pink/40 hover:bg-ushop_light_pink/10"
                   }
                 `}
                 onClick={() => handleSelectAddress(address)}
@@ -86,7 +118,7 @@ export function AllAddressesSidebar({
                   <RadioGroupItem
                     value={address._id}
                     id={`address-${address._id}`}
-                    className="mt-1"
+                    className="mt-1 accent-ushop-purple text-ushop-purple"
                   />
                   <Label
                     htmlFor={`address-${address._id}`}
@@ -94,17 +126,17 @@ export function AllAddressesSidebar({
                   >
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <div className="font-semibold text-base">
+                        <div className="font-bold text-ushop-purple-dark text-base">
                           {address.name}
                         </div>
                         <div className="flex items-center gap-2">
                           {address.default && (
-                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
+                            <span className="text-xs bg-ushop_light_pink text-ushop-pink border border-ushop-pink/30 px-2 py-0.5 rounded-full font-semibold">
                               Default
                             </span>
                           )}
                           {selectedAddress?._id === address._id && (
-                            <Check className="w-5 h-5 text-primary" />
+                            <Check className="w-5 h-5 text-ushop-pink" />
                           )}
                         </div>
                       </div>
@@ -115,20 +147,35 @@ export function AllAddressesSidebar({
                         {address.city}, {address.state} {address.zip}
                       </div>
                       {address.email && (
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-gray-400">
                           {address.email}
                         </div>
                       )}
                     </div>
                   </Label>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={(e) => handleDeleteAddress(e, address._id)}
+                    disabled={deletingId === address._id}
+                    className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 h-auto rounded-lg ml-1"
+                    title="Delete Address"
+                  >
+                    {deletingId === address._id ? (
+                      <Loader2 className="w-4 h-4 animate-spin text-red-500" />
+                    ) : (
+                      <Trash2 className="w-4 h-4" />
+                    )}
+                  </Button>
                 </div>
               </div>
             ))}
           </RadioGroup>
         </ScrollArea>
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 bg-white border-t">
-          <Button variant="outline" className="w-full" onClick={onClose}>
+        <div className="absolute bottom-0 left-0 right-0 p-6 bg-white border-t border-gray-100">
+          <Button variant="outline" className="w-full rounded-xl border-ushop-pink/30 text-ushop-purple-dark hover:bg-ushop_light_pink/50 font-semibold" onClick={onClose}>
             Cancel
           </Button>
         </div>

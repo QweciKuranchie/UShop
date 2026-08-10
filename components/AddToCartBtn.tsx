@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useSyncExternalStore } from "react";
 import { Product } from "@/sanity.types";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,16 @@ import { toast } from "sonner";
 import { trackAddToCart } from "@/lib/analytics";
 import QuantityButtons from "./QuantityButtons";
 
+const emptySubscribe = () => () => {};
+
+function useIsClient() {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
+}
+
 interface Props {
   product: Product;
   className?: string;
@@ -17,8 +27,10 @@ interface Props {
 }
 
 const AddToCartBtn = ({ product, className, showQuantity = true }: Props) => {
+  const isClient = useIsClient();
   const { addItem, getItemCount } = useCartStore();
-  const itemCount = getItemCount(product?._id);
+
+  const itemCount = isClient ? getItemCount(product?._id) : 0;
   const isOutOfStock = product?.stock === 0;
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -43,7 +55,7 @@ const AddToCartBtn = ({ product, className, showQuantity = true }: Props) => {
     }
   };
 
-  if (showQuantity && itemCount > 0) {
+  if (isClient && showQuantity && itemCount > 0) {
     return (
       <div className="w-full flex items-center justify-center">
         <QuantityButtons product={product} className={className} />
