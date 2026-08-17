@@ -455,6 +455,16 @@
     min-height: 460px;
     justify-content: center;
   }
+  .auth-input {
+    padding: 10px 14px 10px 38px;
+    font-size: 13.5px;
+    border-radius: 12px;
+  }
+  .auth-input-icon {
+    left: 12px;
+    width: 16px;
+    height: 16px;
+  }
   .auth-form h1 {
     font-size: 22px;
     margin-bottom: 4px;

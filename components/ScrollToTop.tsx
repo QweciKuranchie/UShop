@@ -49,7 +49,7 @@ export default function ScrollToTop() {
           transition={{ duration: 0.2, ease: "easeOut" }}
           onClick={scrollToTop}
           aria-label="Scroll back to top"
-          className="fixed bottom-24 right-6 z-40 p-3 rounded-full bg-ushop-pink hover:bg-ushop-pink/80 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-ushop-pink focus:ring-offset-2 transition-all duration-200 group cursor-pointer"
+          className="fixed bottom-[calc(6rem+env(safe-area-inset-bottom,0px))] right-6 z-40 p-3 rounded-full bg-ushop-pink hover:bg-ushop-pink/80 text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-ushop-pink focus:ring-offset-2 transition-all duration-200 group cursor-pointer"
         >
           <ChevronUp className="w-6 h-6 group-hover:-translate-y-0.5 transition-transform duration-200" />
         </motion.button>

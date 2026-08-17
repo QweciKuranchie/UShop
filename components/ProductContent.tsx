@@ -127,12 +127,12 @@ const ProductContent = ({
 
                 {/* Thumbnails */}
                 {product.images.length > 1 && (
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex overflow-x-auto gap-2.5 pb-2 scrollbar-none sm:flex-wrap">
                     {product.images.map((img, idx) => (
                       <button
                         key={idx}
                         onClick={() => setActiveImageIndex(idx)}
-                        className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 bg-ushop_light_bg hoverEffect ${
+                        className={`relative w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-xl overflow-hidden border-2 bg-ushop_light_bg hoverEffect ${
                           idx === activeImageIndex
                             ? "border-ushop-pink shadow-xs"
                             : "border-zinc-200/60 hover:border-zinc-300"
@@ -315,7 +315,7 @@ const ProductContent = ({
             </ProductActionWrapper>
 
             {/* Action Links */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-100 py-5">
+            <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center sm:justify-between border-b border-zinc-100 py-5">
               <button className="flex items-center gap-2 text-sm text-zinc-700 hover:text-ushop-pink hoverEffect transition-colors">
                 <Palette size={16} />
                 <span>Compare color</span>

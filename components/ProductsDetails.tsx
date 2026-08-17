@@ -109,10 +109,10 @@ const ProductsDetails = ({ product }: ProductsDetailsProps) => {
                     key={idx}
                     className="hover:bg-gray-50/80 transition-colors odd:bg-gray-50/40"
                   >
-                    <td className="px-6 py-3.5 text-sm font-semibold text-gray-900 w-1/3">
+                    <td className="px-3 py-2.5 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-semibold text-gray-900 w-1/3">
                       {row.label}
                     </td>
-                    <td className="px-6 py-3.5 text-sm text-gray-700 font-medium">
+                    <td className="px-3 py-2.5 sm:px-6 sm:py-3.5 text-xs sm:text-sm text-gray-700 font-medium">
                       {row.value}
                     </td>
                   </tr>
