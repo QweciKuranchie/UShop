@@ -69,7 +69,10 @@ const ProductCatalog = ({ initialProducts, categories, brands }: Props) => {
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
   const [customPriceRange, setCustomPriceRange] = useState<[number, number] | null>(null);
 
-  const priceRange: [number, number] = customPriceRange ?? [0, maxObservedPrice];
+  const priceRange = useMemo<[number, number]>(
+    () => customPriceRange ?? [0, maxObservedPrice],
+    [customPriceRange, maxObservedPrice]
+  );
   const setPriceRange = (val: [number, number]) => setCustomPriceRange(val);
 
   const [sortBy, setSortBy] = useState<SortOption>("name-asc");
