@@ -84,7 +84,7 @@ const DirectPaymentModal: React.FC<Props> = ({
         <DialogOverlay className="bg-black/60 backdrop-blur-sm" />
         <DialogPrimitive.Content
           className={cn(
-            "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-6 border-2 border-ushop-purple/20 bg-white p-8 shadow-2xl duration-300",
+            "fixed left-[50%] top-[50%] z-50 grid w-[calc(100vw-2rem)] max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 sm:gap-6 border-2 border-ushop-purple/20 bg-white p-4 sm:p-8 shadow-2xl duration-300 max-h-[90vh] overflow-y-auto",
             "data-[state=open]:animate-in data-[state=closed]:animate-out",
             "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
             "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
@@ -222,7 +222,7 @@ const DirectPaymentModal: React.FC<Props> = ({
           </div>
 
           {/* Close Button */}
-          <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-2 opacity-70 ring-offset-background transition-all hover:opacity-100 hover:bg-gray-100 focus:outline-hidden focus:ring-2 focus:ring-ushop-purple focus:ring-offset-2 disabled:pointer-events-none">
+          <DialogPrimitive.Close className="absolute right-3 top-3 sm:right-4 sm:top-4 rounded-full p-2 min-w-[40px] min-h-[40px] flex items-center justify-center opacity-70 ring-offset-background transition-all hover:opacity-100 hover:bg-gray-100 focus:outline-hidden focus:ring-2 focus:ring-ushop-purple focus:ring-offset-2 disabled:pointer-events-none">
             <X className="h-4 w-4 text-gray-600" />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>

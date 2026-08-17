@@ -158,22 +158,26 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
       });
 
       if (result.status === "complete") {
-        await setSignInActive({ session: result.createdSessionId });
         if (isModal) {
           closeAuthModal();
         }
-        window.location.href = "/";
+        await setSignInActive({
+          session: result.createdSessionId,
+          redirectUrl: "/",
+        });
       } else if (result.status === "needs_first_factor") {
         const passwordResult = await signIn.attemptFirstFactor({
           strategy: "password",
           password: signInPassword,
         });
         if (passwordResult.status === "complete") {
-          await setSignInActive({ session: passwordResult.createdSessionId });
           if (isModal) {
             closeAuthModal();
           }
-          window.location.href = "/";
+          await setSignInActive({
+            session: passwordResult.createdSessionId,
+            redirectUrl: "/",
+          });
         } else {
           setSignInError("Sign-in verification incomplete. Please try again.");
         }
@@ -225,13 +229,36 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
     setIsSignUpLoading(true);
 
     try {
-      await signUp.create({
+      // Build clean payload without passing undefined username
+      const signUpParams: {
+        firstName: string;
+        lastName: string;
+        emailAddress: string;
+        password: string;
+        username?: string;
+      } = {
         firstName: signUpFirstName.trim(),
         lastName: signUpLastName.trim(),
         emailAddress: signUpEmail.trim(),
-        username: signUpUsername.trim() ? signUpUsername.trim() : undefined,
         password: signUpPassword,
-      });
+      };
+
+      if (signUpUsername.trim()) {
+        signUpParams.username = signUpUsername.trim();
+      }
+
+      const signUpAttempt = await signUp.create(signUpParams);
+
+      if (signUpAttempt.status === "complete") {
+        if (isModal) {
+          closeAuthModal();
+        }
+        await setSignUpActive({
+          session: signUpAttempt.createdSessionId,
+          redirectUrl: "/",
+        });
+        return;
+      }
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setPendingVerification(true);
@@ -265,13 +292,23 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
       });
 
       if (completeSignUp.status === "complete") {
-        if (completeSignUp.createdSessionId) {
-          await setSignUpActive({ session: completeSignUp.createdSessionId });
+        if (isModal) {
+          closeAuthModal();
         }
-        window.location.href = "/";
+        if (completeSignUp.createdSessionId) {
+          await setSignUpActive({
+            session: completeSignUp.createdSessionId,
+            redirectUrl: "/",
+          });
+        }
       } else if (signUp.status === "complete" && signUp.createdSessionId) {
-        await setSignUpActive({ session: signUp.createdSessionId });
-        window.location.href = "/";
+        if (isModal) {
+          closeAuthModal();
+        }
+        await setSignUpActive({
+          session: signUp.createdSessionId,
+          redirectUrl: "/",
+        });
       } else {
         setSignUpError(`Verification status: ${completeSignUp.status}. Please check the code.`);
       }
@@ -287,8 +324,13 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
         signUp?.status === "complete"
       ) {
         if (signUp?.createdSessionId) {
-          await setSignUpActive({ session: signUp.createdSessionId });
-          window.location.href = "/";
+          if (isModal) {
+            closeAuthModal();
+          }
+          await setSignUpActive({
+            session: signUp.createdSessionId,
+            redirectUrl: "/",
+          });
           return;
         }
       }
@@ -299,6 +341,9 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
   };
 
   const handleSwitchToSignUp = () => {
+    setSignInError("");
+    setSignUpError("");
+    setTouchedSignIn({ identifier: false, password: false });
     setIsRightPanelActive(true);
     if (!isModal) {
       router.replace("/sign-up");
@@ -306,6 +351,16 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
   };
 
   const handleSwitchToSignIn = () => {
+    setSignInError("");
+    setSignUpError("");
+    setTouchedSignUp({
+      firstName: false,
+      lastName: false,
+      email: false,
+      username: false,
+      password: false,
+      confirmPassword: false,
+    });
     setIsRightPanelActive(false);
     if (!isModal) {
       router.replace("/sign-in");
@@ -374,7 +429,7 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
                 <span className="auth-divider-text">OR EMAIL</span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 w-full">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
                 <div className="auth-input-group">
                   <User className="auth-input-icon" />
                   <input
@@ -467,7 +522,7 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
               {/* Password Requirements Checklist */}
               {(signUpPassword.length > 0 || signUpConfirmPassword.length > 0) && (
                 <div className="w-full my-2.5 p-3 rounded-xl bg-white border border-purple-200/90 shadow-sm text-left text-xs space-y-1 animate-in fade-in duration-200">
-                  <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5">
                     <div className={`flex items-center gap-1.5 ${passwordCriteria.hasMinLength ? "text-emerald-700 font-bold" : "text-slate-600 font-medium"}`}>
                       <Check className={`w-3.5 h-3.5 shrink-0 ${passwordCriteria.hasMinLength ? "text-emerald-600 stroke-[3]" : "text-slate-400 stroke-[2]"}`} />
                       <span>At least 8 characters</span>

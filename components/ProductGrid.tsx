@@ -56,6 +56,7 @@ interface ViewModeButtonProps {
   onModeChange: (mode: ViewMode) => void;
   icon: React.ReactNode;
   label: string;
+  className?: string;
 }
 
 const ViewModeButton = ({
@@ -64,6 +65,7 @@ const ViewModeButton = ({
   onModeChange,
   icon,
   label,
+  className = "",
 }: ViewModeButtonProps) => (
   <Button
     variant={currentMode === mode ? "default" : "outline"}
@@ -73,7 +75,7 @@ const ViewModeButton = ({
       currentMode === mode
         ? "bg-ushop-purple hover:bg-ushop-purple-dark border-ushop-purple"
         : "hover:border-ushop-purple hover:text-ushop-purple"
-    }`}
+    } ${className}`}
     title={label}
   >
     {icon}
@@ -244,9 +246,9 @@ const ProductGrid = () => {
       case "grid-3":
         return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5";
       case "grid-4":
-        return "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4";
+        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4";
       case "grid-5":
-        return "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3";
+        return "grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3";
       case "list":
         return "grid-cols-1 gap-4";
       default:
@@ -305,6 +307,7 @@ const ProductGrid = () => {
                   onModeChange={setViewMode}
                   icon={<LayoutGrid size={16} />}
                   label="4 Columns"
+                  className="hidden sm:inline-flex"
                 />
                 <ViewModeButton
                   mode="grid-5"
@@ -312,6 +315,7 @@ const ProductGrid = () => {
                   onModeChange={setViewMode}
                   icon={<LayoutGrid size={16} />}
                   label="5 Columns"
+                  className="hidden md:inline-flex"
                 />
                 <ViewModeButton
                   mode="list"

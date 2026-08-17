@@ -25,7 +25,7 @@ export default function PremiumFloatingButton() {
         )}
       </AnimatePresence>
 
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom,0px))] right-6 z-50">
         <AnimatePresence>
           {isExpanded && (
             <motion.div
@@ -33,7 +33,7 @@ export default function PremiumFloatingButton() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.9 }}
               transition={{ type: "spring", damping: 20, stiffness: 300 }}
-              className="absolute bottom-20 right-0 w-96 bg-linear-to-br from-purple-600 via-indigo-600 to-purple-700 rounded-2xl shadow-2xl overflow-hidden max-h-[80vh] overflow-y-auto"
+              className="absolute bottom-20 right-0 w-[calc(100vw-2.5rem)] max-w-sm sm:w-96 bg-linear-to-br from-purple-600 via-indigo-600 to-purple-700 rounded-2xl shadow-2xl overflow-hidden max-h-[80vh] overflow-y-auto"
             >
               {/* Animated background particles */}
               <div className="absolute inset-0 overflow-hidden">

@@ -41,15 +41,20 @@ export default function AuthModal() {
       />
 
       {/* Modal Dialog Box */}
-      <div className="relative z-10 w-full max-w-[880px] my-auto flex flex-col items-center justify-center">
+      <div 
+        role="dialog"
+        aria-modal="true"
+        aria-label="Authentication modal"
+        className="relative z-10 w-full max-w-[880px] my-auto flex flex-col items-center justify-center pt-8 sm:pt-0"
+      >
         {/* Prominent High-Contrast Close Button */}
         <button
           onClick={closeAuthModal}
-          className="absolute -top-11 right-0 z-[200] inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 text-purple-950 font-extrabold text-xs shadow-xl border border-purple-100 hover:bg-white hover:text-ushop-pink hover:scale-105 transition-all cursor-pointer"
+          className="absolute top-2 right-2 sm:-top-11 sm:right-0 z-[200] inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 text-purple-950 font-extrabold text-xs shadow-xl border border-purple-100 hover:bg-white hover:text-ushop-pink hover:scale-105 transition-all cursor-pointer min-w-[40px] min-h-[40px] justify-center"
           aria-label="Close authentication modal"
         >
           <X className="w-4 h-4 text-ushop-pink stroke-[2.5]" />
-          <span>Close</span>
+          <span className="hidden sm:inline">Close</span>
         </button>
 
         {/* Sliding Auth Panel */}

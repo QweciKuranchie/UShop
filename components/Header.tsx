@@ -49,7 +49,7 @@ const Header = () => {
           </div>
 
           {/* cart, wishlist, profile */}
-          <div className="flex items-center justify-end gap-3.5 md:gap-5">
+          <div className="flex items-center justify-end gap-2 sm:gap-3.5 md:gap-5">
             <CartIcon />
             <WhishListIcon />
             <NotificationBell />

@@ -162,14 +162,14 @@ export function ServerCartContent({
   }
 
   return (
-    <div className="grid lg:grid-cols-3 gap-8">
+    <div className="grid lg:grid-cols-3 gap-8 pb-16 lg:pb-0">
       {/* Cart Items */}
       <div className="lg:col-span-2 space-y-4">
         {cart.map((item) => (
           <div key={item.product._id} className="border rounded-lg p-4">
-            <div className="flex gap-4">
+            <div className="flex gap-3 sm:gap-4">
               {/* Product Image */}
-              <div className="relative w-24 h-24 flex-shrink-0">
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0">
                 <Image
                   src={
                     item.product.images?.[0]
@@ -184,11 +184,11 @@ export function ServerCartContent({
               </div>
 
               {/* Product Details */}
-              <div className="flex-1">
-                <div className="flex justify-between">
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1">
                   <div>
                     <Link href={`/product/${item.product.slug?.current}`}>
-                      <h3 className="font-semibold hover:text-ushop-pink transition-colors">
+                      <h3 className="font-semibold text-sm sm:text-base hover:text-ushop-pink transition-colors line-clamp-2">
                         {item.product.name}
                       </h3>
                     </Link>
@@ -205,7 +205,7 @@ export function ServerCartContent({
                               <Badge
                                 key={idx}
                                 variant="outline"
-                                className="text-xs bg-ushop_light_pink text-ushop-purple-dark border-ushop-pink/20 font-medium"
+                                className="text-[10px] sm:text-xs bg-ushop_light_pink text-ushop-purple-dark border-ushop-pink/20 font-medium"
                               >
                                 {label}
                               </Badge>
@@ -214,11 +214,11 @@ export function ServerCartContent({
                       </div>
                     )}
                   </div>
-                  <div className="text-right">
-                    <div className="font-semibold">
+                  <div className="text-left sm:text-right">
+                    <div className="font-semibold text-sm sm:text-base">
                       <PriceFormatter amount={item.product.price} />
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-xs text-muted-foreground">
                       per item
                     </div>
                   </div>
@@ -235,16 +235,16 @@ export function ServerCartContent({
                   item.product.stock > 0 && (
                     <Badge
                       variant="outline"
-                      className="mt-2 text-orange-600 border-orange-600"
+                      className="mt-2 text-orange-600 border-orange-600 text-xs"
                     >
                       Only {item.product.stock} left
                     </Badge>
                   )}
 
                 {/* Controls */}
-                <div className="flex justify-between items-center mt-4">
+                <div className="flex flex-wrap justify-between items-center gap-2 mt-4 pt-2 border-t sm:border-t-0 border-gray-100">
                   <CartItemControls product={item.product} />
-                  <div className="font-bold">
+                  <div className="font-bold text-sm sm:text-base">
                     <PriceFormatter
                       amount={(item.product.price || 0) * item.quantity}
                     />
@@ -256,7 +256,7 @@ export function ServerCartContent({
         ))}
 
         {/* Continue Shopping */}
-        <div className="flex flex-col gap-2 w-48">
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <Link href="/shop">
             <Button variant="outline" className="w-full border-ushop-pink/40 text-ushop-purple hover:bg-ushop-pink hover:text-white font-semibold transition-colors">
               Continue Shopping
@@ -311,6 +311,19 @@ export function ServerCartContent({
           <div className="mt-6">
             <CheckoutButton cart={cart} selectedAddress={selectedAddress} />
           </div>
+        </div>
+      </div>
+
+      {/* Mobile Sticky Checkout Bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] shadow-xl lg:hidden flex items-center justify-between gap-3">
+        <div className="flex flex-col">
+          <span className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide">
+            Total ({cart.length} {cart.length === 1 ? "item" : "items"})
+          </span>
+          <PriceFormatter amount={finalTotal} className="text-base font-bold text-ushop-purple-dark" />
+        </div>
+        <div className="flex-1 max-w-[210px]">
+          <CheckoutButton cart={cart} selectedAddress={selectedAddress} />
         </div>
       </div>
 

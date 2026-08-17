@@ -66,7 +66,7 @@ const WishlistProducts = () => {
                       removeFromFavorite(product._id);
                       toast.success("Product removed from wishlist");
                     }}
-                    className="absolute top-3 right-3 z-10 p-1.5 rounded-full bg-white/80 hover:bg-red-50 hover:text-red-600 transition-all duration-200 shadow-sm"
+                    className="absolute top-2.5 right-2.5 z-10 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full bg-white/80 hover:bg-red-50 hover:text-red-600 transition-all duration-200 shadow-sm"
                     aria-label="Remove from wishlist"
                   >
                     <X size={16} />
