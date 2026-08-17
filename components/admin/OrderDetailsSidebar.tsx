@@ -874,15 +874,6 @@ const OrderDetailsSidebar: React.FC<OrderDetailsSidebarProps> = ({
                     const price = product?.price || 0;
                     const lineTotal = price * quantity;
 
-                    // Debug logging to help identify the issue
-                    console.log("Product debug info:", {
-                      name: product?.name,
-                      price: price,
-                      quantity: quantity,
-                      lineTotal,
-                      rawItem: item,
-                    });
-
                     return (
                       <div
                         key={item._key || index}

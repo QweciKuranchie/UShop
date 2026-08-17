@@ -11,10 +11,6 @@ export async function PATCH(request: NextRequest) {
 
     const body = await request.json();
 
-    // Here you would update the user settings in your database
-    // For now, we'll just return success
-    console.log(`Updating settings for user ${userId}:`, body);
-
     return NextResponse.json({
       success: true,
       message: "Settings updated successfully",

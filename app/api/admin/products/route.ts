@@ -35,10 +35,7 @@ export async function GET(req: NextRequest) {
     const offset = parseInt(searchParams.get("offset") || "0");
     const category = searchParams.get("category") || "";
     const search = searchParams.get("search") || "";
-    const sortBy = searchParams.get("sortBy") || "_createdAt";
     const sortOrder = searchParams.get("sortOrder") || "desc";
-
-    console.log("API Params - category:", category, "search:", search);
 
     // If requesting a specific product by ID, return full details
     if (productId) {

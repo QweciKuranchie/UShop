@@ -198,9 +198,7 @@ export function useOrderPlacement({ user }: UseOrderPlacementProps) {
           body: JSON.stringify({ orderData: emailData }),
         });
 
-        if (emailResponse.ok) {
-          console.log("Order confirmation email sent successfully");
-        } else {
+        if (!emailResponse.ok) {
           console.error("Failed to send email, but order was created");
         }
       } catch (emailError) {

@@ -34,7 +34,6 @@ const SuccessContent = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (!userId) {
-        console.log("User ID not found. Cannot fetch orders.");
         return;
       }
 

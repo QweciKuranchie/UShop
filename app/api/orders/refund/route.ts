@@ -117,12 +117,7 @@ export async function POST(req: NextRequest) {
           .patch(user._id)
           .set({ walletBalance: newBalance })
           .setIfMissing({ walletTransactions: [] })
-          .append("walletTransactions", [transaction])
           .commit();
-
-        console.log(
-          `Added $${refundAmount} to user wallet. New balance: $${newBalance}`
-        );
       }
     }
 

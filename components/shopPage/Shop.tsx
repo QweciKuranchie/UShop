@@ -203,7 +203,7 @@ const Shop = ({ categories, brands, classifications = [] }: Props) => {
 
         setProducts(filteredData);
       } catch (error) {
-        console.log("Shop product fetching Error", error);
+        console.error("Shop product fetching error:", error);
       }
     });
   }, [

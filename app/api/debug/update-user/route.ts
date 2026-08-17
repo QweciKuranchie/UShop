@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { backendClient } from "@/sanity/lib/backendClient";
+import { isUserAdmin } from "@/lib/adminUtils";
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,6 +11,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "User not authenticated" },
         { status: 401 }
+      );
+    }
+
+    const userEmail = user.emailAddresses[0]?.emailAddress;
+    const isAdminUser = isUserAdmin(userEmail);
+
+    if (process.env.NODE_ENV === "production" && !isAdminUser) {
+      return NextResponse.json(
+        { error: "Forbidden in production" },
+        { status: 403 }
       );
     }
 

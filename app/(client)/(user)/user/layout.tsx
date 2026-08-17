@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { useClerk } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import Container from "@/components/Container";
+import { useIsAdmin } from "@/lib/adminUtils";
 
 const sidebarItems = [
   {
@@ -94,6 +95,7 @@ export default function UserLayout({
   const { signOut } = useClerk();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isAdmin = useIsAdmin(user?.primaryEmailAddress?.emailAddress);
 
   return (
     <div className="min-h-screen py-5 bg-gradient-to-br from-ushop_light_bg via-white to-ushop_light_pink/30">
@@ -230,9 +232,8 @@ export default function UserLayout({
                     );
                   })}
 
-                  {/* Admin Section - Show for dev.reactbd@gmail.com */}
-                  {user?.emailAddresses?.[0]?.emailAddress ===
-                    "dev.reactbd@gmail.com" && (
+                  {/* Admin Section */}
+                  {isAdmin && (
                     <>
                       <div className="w-full border-t border-gray-200 my-3"></div>
                       <div className="w-full text-xs text-gray-500 mb-2 px-2">
@@ -372,8 +373,7 @@ export default function UserLayout({
                 })}
 
                 {/* Admin Section - Mobile */}
-                {user?.emailAddresses?.[0]?.emailAddress ===
-                  "dev.reactbd@gmail.com" && (
+                {isAdmin && (
                   <>
                     <div className="border-t border-gray-200 pt-4 mt-4">
                       <div className="text-xs text-gray-500 mb-3 px-4">

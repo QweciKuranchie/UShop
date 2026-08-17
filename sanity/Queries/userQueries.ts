@@ -237,7 +237,7 @@ export const getUserByClerkId = async (clerkUserId: string) => {
       query: USER_BY_CLERK_ID_QUERY,
       params: { clerkUserId },
     });
-    return data as any;
+    return data ?? null;
   } catch (error) {
     console.error("Error fetching user by Clerk ID:", error);
     return null;
@@ -263,7 +263,7 @@ export const getUserCart = async (clerkUserId: string) => {
       query: USER_CART_QUERY,
       params: { clerkUserId },
     });
-    return (data as { cart?: unknown[] })?.cart ?? [];
+    return (data as { cart?: Record<string, unknown>[] })?.cart ?? [];
   } catch (error) {
     console.error("Error fetching user cart:", error);
     return [];
@@ -276,7 +276,7 @@ export const getUserWishlist = async (clerkUserId: string) => {
       query: USER_WISHLIST_QUERY,
       params: { clerkUserId },
     });
-    return ((data as any)?.wishlist ?? []) as any[];
+    return (data as { wishlist?: Record<string, unknown>[] })?.wishlist ?? [];
   } catch (error) {
     console.error("Error fetching user wishlist:", error);
     return [];
@@ -289,7 +289,7 @@ export const getUserOrders = async (clerkUserId: string) => {
       query: USER_ORDERS_QUERY,
       params: { clerkUserId },
     });
-    return (data ?? []) as any[];
+    return (data as Record<string, unknown>[]) ?? [];
   } catch (error) {
     console.error("Error fetching user orders:", error);
     return [];
@@ -302,7 +302,7 @@ export const getOrderById = async (orderId: string) => {
       query: ORDER_BY_ID_QUERY,
       params: { orderId },
     });
-    return data as any;
+    return data ?? null;
   } catch (error) {
     console.error("Error fetching order by ID:", error);
     return null;
@@ -333,7 +333,7 @@ export const getUserNotifications = async (clerkUserId: string) => {
       query: USER_NOTIFICATIONS_QUERY,
       params: { clerkUserId },
     });
-    return ((data as any)?.notifications ?? []) as any[];
+    return (data as { notifications?: Record<string, unknown>[] })?.notifications ?? [];
   } catch (error) {
     console.error("Error fetching user notifications:", error);
     return [];
