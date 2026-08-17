@@ -31,7 +31,7 @@
   },
   "overrides": {
     "skills": "1.5.10",
-    "postcss": "8.5.18"
+    "postcss": "8.5.23"
   },
   "onlyBuiltDependencies": [
     "@clerk/shared",
@@ -103,7 +103,7 @@
     "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
-    "postcss": "8.5.18",
+    "postcss": "8.5.23",
     "tailwindcss": "^4",
     "tsx": "^4.23.0",
     "typescript": "^5"
