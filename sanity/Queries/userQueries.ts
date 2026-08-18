@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { sanityFetch } from "../lib/live";
 
 // User Queries
@@ -230,14 +230,32 @@ export const ORDER_BY_ID_QUERY = `
   }
 `;
 
+export interface SanityUser {
+  _id?: string;
+  clerkUserId?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  rewardPoints?: number;
+  walletBalance?: number;
+  isActive?: boolean;
+  premiumStatus?: string;
+  businessStatus?: string;
+  isBusiness?: boolean;
+  roles?: string[];
+  [key: string]: unknown;
+}
+
 // User Functions
-export const getUserByClerkId = async (clerkUserId: string) => {
+export const getUserByClerkId = async (
+  clerkUserId: string
+): Promise<SanityUser | null> => {
   try {
     const { data } = await sanityFetch({
       query: USER_BY_CLERK_ID_QUERY,
       params: { clerkUserId },
     });
-    return data ?? null;
+    return (data as SanityUser) ?? null;
   } catch (error) {
     console.error("Error fetching user by Clerk ID:", error);
     return null;
@@ -283,13 +301,15 @@ export const getUserWishlist = async (clerkUserId: string) => {
   }
 };
 
-export const getUserOrders = async (clerkUserId: string) => {
+export const getUserOrders = async (
+  clerkUserId: string
+): Promise<SanityOrder[]> => {
   try {
     const { data } = await sanityFetch({
       query: USER_ORDERS_QUERY,
       params: { clerkUserId },
     });
-    return (data as Record<string, unknown>[]) ?? [];
+    return (data as SanityOrder[]) ?? [];
   } catch (error) {
     console.error("Error fetching user orders:", error);
     return [];
