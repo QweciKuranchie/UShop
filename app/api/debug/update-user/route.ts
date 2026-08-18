@@ -25,7 +25,6 @@ export async function POST(request: NextRequest) {
     }
 
     const { action } = await request.json();
-    const userEmail = user.emailAddresses[0]?.emailAddress;
 
     if (!userEmail) {
       return NextResponse.json(
