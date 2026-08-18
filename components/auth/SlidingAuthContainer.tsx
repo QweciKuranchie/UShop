@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, Lock, User, Eye, EyeOff, Sparkles, ShieldCheck, Check, Truck } from "lucide-react";
 import { useAuthModal } from "@/hooks/useAuthModal";
+import Logo from "@/components/common/Logo";
 import "./SlidingAuthContainer.css";
 
 interface SlidingAuthProps {
@@ -426,6 +427,10 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
                 </button>
               </div>
 
+              <div className="mb-2 flex justify-center">
+                <Logo imageClassName="h-7 sm:h-8 md:h-9 w-auto" />
+              </div>
+
               <h1>Create Account</h1>
               <p className="auth-subtitle">Join UShop tech marketplace today</p>
               
@@ -631,6 +636,10 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
               >
                 Sign Up
               </button>
+            </div>
+
+            <div className="mb-2 flex justify-center">
+              <Logo imageClassName="h-7 sm:h-8 md:h-9 w-auto" />
             </div>
 
             <h1>Welcome Back</h1>
