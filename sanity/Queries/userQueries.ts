@@ -296,13 +296,32 @@ export const getUserOrders = async (clerkUserId: string) => {
   }
 };
 
-export const getOrderById = async (orderId: string) => {
+export interface SanityOrder {
+  _id: string;
+  orderNumber: string;
+  clerkUserId?: string;
+  customerName?: string;
+  email?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  products?: any[];
+  subtotal?: number;
+  tax?: number;
+  shipping?: number;
+  totalPrice?: number;
+  currency?: string;
+  status?: string;
+  paymentStatus?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+}
+
+export const getOrderById = async (orderId: string): Promise<SanityOrder | null> => {
   try {
     const { data } = await sanityFetch({
       query: ORDER_BY_ID_QUERY,
       params: { orderId },
     });
-    return data ?? null;
+    return (data as SanityOrder) ?? null;
   } catch (error) {
     console.error("Error fetching order by ID:", error);
     return null;
