@@ -409,6 +409,23 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
             </form>
           ) : (
             <form onSubmit={handleSignUpSubmit} className="auth-form">
+              {/* Mobile Navigation Tabs */}
+              <div className="auth-mobile-tabs md:hidden">
+                <button
+                  type="button"
+                  onClick={handleSwitchToSignIn}
+                  className="auth-mobile-tab"
+                >
+                  Login
+                </button>
+                <button
+                  type="button"
+                  className="auth-mobile-tab active"
+                >
+                  Sign Up
+                </button>
+              </div>
+
               <h1>Create Account</h1>
               <p className="auth-subtitle">Join UShop tech marketplace today</p>
               
@@ -599,6 +616,23 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
         {/* Sign In Form */}
         <div className="auth-form-container auth-sign-in-container">
           <form onSubmit={handleSignInSubmit} className="auth-form">
+            {/* Mobile Navigation Tabs */}
+            <div className="auth-mobile-tabs md:hidden">
+              <button
+                type="button"
+                className="auth-mobile-tab active"
+              >
+                Login
+              </button>
+              <button
+                type="button"
+                onClick={handleSwitchToSignUp}
+                className="auth-mobile-tab"
+              >
+                Sign Up
+              </button>
+            </div>
+
             <h1>Welcome Back</h1>
             <p className="auth-subtitle">Sign in to your UShop account</p>
 
