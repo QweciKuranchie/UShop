@@ -61,12 +61,11 @@ function HomeBanner() {
             className="relative flex flex-col-reverse md:flex-row items-center justify-between bg-ushop-purple-dark text-white py-10 px-8 md:px-16 min-w-full min-h-[480px]"
           >
             {/* Background decorative elements */}
-            <div className="absolute top-1/2 -translate-y-1/2 right-4 lg:right-16 w-[320px] h-[320px] md:w-[420px] md:h-[420px] rounded-full bg-gradient-to-br from-white/10 to-transparent blur-3xl pointer-events-none" />
-            <div className="absolute top-1/2 -translate-y-1/2 right-12 lg:right-32 w-[280px] h-[280px] md:w-[380px] md:h-[380px] rounded-full border border-white/5 pointer-events-none" />
+            <div className="absolute top-1/2 -translate-y-1/2 right-12 lg:right-32 w-[280px] h-[280px] md:w-[380px] md:h-[380px] rounded-full border border-white/10 pointer-events-none" />
 
             {/* Left content */}
             <div className="flex-1 space-y-5 z-10 max-w-lg mt-8 md:mt-0">
-              <div className="inline-flex items-center gap-2 bg-ushop-pink text-white text-[11px] font-semibold px-3.5 py-1.5 rounded-full uppercase tracking-widest w-max">
+              <div className="inline-flex items-center gap-2 bg-ushop-pink text-white text-xs font-semibold px-3.5 py-1.5 rounded-full uppercase tracking-widest w-max">
                 {slide.offer}
               </div>
 

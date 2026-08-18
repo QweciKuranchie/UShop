@@ -315,7 +315,7 @@ export default function UserDashboardPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <h3 className="font-bold text-amber-900 text-lg">
-                    🎉 Premium Application Submitted!
+                    Premium Application Submitted
                   </h3>
                   <div className="px-3 py-1 bg-amber-200 text-amber-800 text-xs font-medium rounded-full">
                     PENDING REVIEW
@@ -411,7 +411,7 @@ export default function UserDashboardPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <h3 className="font-bold text-green-900 text-lg">
-                      ✨ Premium Account Active!
+                      Premium Account Active
                     </h3>
                     <div className="px-3 py-1 bg-green-200 text-green-800 text-xs font-medium rounded-full">
                       APPROVED
@@ -504,7 +504,7 @@ export default function UserDashboardPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <h3 className="font-bold text-blue-900 text-lg">
-                    🚀 Business Application Submitted!
+                    Business Application Submitted
                   </h3>
                   <div className="px-3 py-1 bg-blue-200 text-blue-800 text-xs font-medium rounded-full">
                     PENDING REVIEW

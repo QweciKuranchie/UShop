@@ -97,12 +97,12 @@ const CategoryPage = async () => {
                   >
                     {/* Top Tag */}
                     <div className="flex items-center justify-between mb-4">
-                      <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200/60 px-2.5 py-0.5 rounded-full text-[11px] font-semibold">
+                      <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200/60 px-2.5 py-0.5 rounded-full text-xs font-semibold">
                         Featured
                       </span>
 
                       {category.range && (
-                        <span className="bg-ushop-pink/10 text-ushop-pink px-2.5 py-0.5 rounded-md text-[11px] font-medium">
+                        <span className="bg-ushop-pink/10 text-ushop-pink px-2.5 py-0.5 rounded-md text-xs font-medium">
                           {category.range}
                         </span>
                       )}
@@ -187,7 +187,7 @@ const CategoryPage = async () => {
                         )}
 
                         {category.featured && (
-                          <span className="absolute top-2 right-2 bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-2xs">
+                          <span className="absolute top-2 right-2 bg-amber-100 text-amber-800 text-xs font-semibold px-2 py-0.5 rounded-md shadow-2xs">
                             Featured
                           </span>
                         )}

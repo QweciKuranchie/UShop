@@ -165,9 +165,9 @@ export function OrderPlacementSkeleton({
         </div>
 
         {/* Order Summary Skeleton */}
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 border border-blue-100 mx-2 sm:mx-0">
+        <div className="bg-gradient-to-r from-purple-50/60 to-pink-50/60 rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4 border border-purple-100/60 mx-2 sm:mx-0">
           <div className="text-base font-semibold text-gray-800 mb-4 text-center">
-            📦 Order Summary
+            Order Summary
           </div>
           <div className="space-y-3">
             <div className="flex justify-between items-center">

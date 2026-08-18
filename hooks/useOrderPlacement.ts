@@ -209,7 +209,7 @@ export function useOrderPlacement({ user }: UseOrderPlacementProps) {
       // Step 3: Prepare for redirect (don't clear cart yet)
       setOrderPlacementState(true, "redirecting");
 
-      toast.success("Order Placed Successfully! 🎉", {
+      toast.success("Order Placed Successfully!", {
         description: "Confirmation email sent",
         duration: 4000,
       });

@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
     }
     return NextResponse.json({
       success: true,
-      message: `🎉 ${
+      message: `${
         type === "premium" ? "Premium" : "Business"
       } account approved successfully for ${user.firstName} ${user.lastName}!`,
     });

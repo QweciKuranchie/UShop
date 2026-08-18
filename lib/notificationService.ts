@@ -115,7 +115,7 @@ const getOrderStatusMessage = (
       };
     case "packed":
       return {
-        title: "Order Packed 📦",
+        title: "Order Packed",
         message: `Your order #${orderNumber} has been carefully packed and will be dispatched for delivery soon.`,
         priority: "high",
       };
@@ -133,25 +133,25 @@ const getOrderStatusMessage = (
       };
     case "paid":
       return {
-        title: "Payment Confirmed ✅",
+        title: "Payment Confirmed",
         message: `Payment for order #${orderNumber} has been successfully confirmed. Your order will be processed shortly.`,
         priority: "high",
       };
     case "shipped":
       return {
-        title: "Order Shipped! 🚚",
+        title: "Order Shipped",
         message: `Exciting news! Your order #${orderNumber} has been shipped and is on its way to you. You can track your package using the tracking information.`,
         priority: "high",
       };
     case "out_for_delivery":
       return {
-        title: "Out for Delivery �",
+        title: "Out for Delivery",
         message: `Your order #${orderNumber} is out for delivery! It should arrive at your doorstep today. Please be available to receive it.`,
         priority: "urgent",
       };
     case "delivered":
       return {
-        title: "Order Delivered! 🎉",
+        title: "Order Delivered",
         message: `Your order #${orderNumber} has been successfully delivered. We hope you enjoy your purchase! Please leave a review if you're satisfied.`,
         priority: "high",
       };

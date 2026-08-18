@@ -2,16 +2,11 @@
 
 import Logo from "@/components/common/Logo";
 import Link from "next/link";
-import { Home, RefreshCw, WifiOff } from "lucide-react";
+import { Home, RefreshCw, WifiOff, Lightbulb } from "lucide-react";
 
 const OfflinePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/10 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-ushop-purple/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-ushop-pink/5 rounded-full blur-3xl" />
-      <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-ushop-purple/3 rounded-full blur-2xl" />
-
       <div className="max-w-lg w-full space-y-8 relative z-10">
         {/* Logo */}
         <div className="flex justify-center">
@@ -55,8 +50,9 @@ const OfflinePage = () => {
 
         {/* Tip */}
         <div className="text-center pt-6 border-t border-ushop-purple/10">
-          <p className="text-sm text-light-color">
-            💡 Pages you&apos;ve visited before may still be available offline.
+          <p className="text-sm text-light-color flex items-center justify-center gap-1.5">
+            <Lightbulb className="w-4 h-4 text-amber-500 shrink-0" />
+            <span>Pages you&apos;ve visited before may still be available offline.</span>
           </p>
         </div>
       </div>

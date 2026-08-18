@@ -10,7 +10,7 @@ import Link from "next/link";
 import { Product } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 import Container from "./Container";
-import { Heart, X, Trash2, AlertTriangle } from "lucide-react";
+import { Heart, X, Trash2, AlertTriangle, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -219,7 +219,7 @@ const WishlistProducts = () => {
             </div>
             <div className="flex flex-col items-center space-y-2 p-4 rounded-lg bg-gray-50">
               <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
-                <span className="text-green-600 text-sm font-bold">🛍️</span>
+                <ShoppingBag className="w-4 h-4 text-green-600" />
               </div>
               <h3 className="font-semibold text-sm">Easy Shopping</h3>
               <p className="text-xs text-muted-foreground text-center">
