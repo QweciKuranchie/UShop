@@ -33,6 +33,7 @@ export async function GET(req: NextRequest) {
     const productId = searchParams.get("id");
     const limit = parseInt(searchParams.get("limit") || "10");
     const offset = parseInt(searchParams.get("offset") || "0");
+    const category = searchParams.get("category") || "";
     const search = searchParams.get("search") || "";
     const sortBy = searchParams.get("sortBy") || "_createdAt";
     const sortOrder = searchParams.get("sortOrder") || "desc";
