@@ -20,45 +20,21 @@ import { toast } from "sonner";
 import { PAYMENT_METHODS, PaymentMethod } from "@/lib/orderStatus";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { SanityOrder } from "@/sanity/Queries";
 
 interface OrderProduct {
   product: {
     _id: string;
     name: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    images?: any[];
+    images?: Array<{ asset?: { url?: string } }>;
     price: number;
     currency: string;
   };
   quantity: number;
 }
 
-interface Order {
-  _id: string;
-  orderNumber: string;
-  customerName: string;
-  email: string;
-  products: OrderProduct[];
-  subtotal: number;
-  tax: number;
-  shipping: number;
-  totalPrice: number;
-  currency: string;
-  address: {
-    name: string;
-    address: string;
-    city: string;
-    state: string;
-    zip: string;
-  };
-  status: string;
-  paymentStatus: string;
-  orderDate: string;
-}
-
 interface OrderCheckoutContentProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  order: any;
+  order: SanityOrder;
 }
 
 export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {

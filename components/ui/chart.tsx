@@ -202,17 +202,15 @@ const ChartTooltipContent = React.forwardRef<
         {!nestLabel ? tooltipLabel : null}
         <div className="grid gap-1.5">
           {payload
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .filter((item: any) => item.type !== "none")
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .map((item: any, index: number) => {
+            .filter((item: ChartItemPayload) => item.type !== "none")
+            .map((item: ChartItemPayload, index: number) => {
               const key = `${nameKey || item.name || item.dataKey || "value"}`;
               const itemConfig = getPayloadConfigFromPayload(config, item, key);
-              const indicatorColor = color || item.payload.fill || item.color;
+              const indicatorColor = color || item.payload?.fill || item.color;
 
               return (
                 <div
-                  key={item.dataKey}
+                  key={item.dataKey as React.Key || index}
                   className={cn(
                     "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
                     indicator === "dot" && "items-center"
@@ -258,9 +256,11 @@ const ChartTooltipContent = React.forwardRef<
                             {itemConfig?.label || item.name}
                           </span>
                         </div>
-                        {item.value && (
+                        {item.value !== undefined && (
                           <span className="font-mono font-medium tabular-nums text-foreground">
-                            {item.value.toLocaleString()}
+                            {typeof item.value === "number"
+                              ? item.value.toLocaleString()
+                              : String(item.value)}
                           </span>
                         )}
                       </div>
@@ -280,12 +280,11 @@ const ChartLegend = RechartsPrimitive.Legend;
 
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<"div"> & {
-    payload?: ChartPayloadItem[];
-    verticalAlign?: "top" | "bottom";
-    hideIcon?: boolean;
-    nameKey?: string;
-  }
+  React.ComponentProps<"div"> &
+    Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
+      hideIcon?: boolean;
+      nameKey?: string;
+    }
 >(
   (
     { className, hideIcon = false, payload, verticalAlign = "bottom", nameKey },
@@ -307,16 +306,14 @@ const ChartLegendContent = React.forwardRef<
         )}
       >
         {payload
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .filter((item: any) => item.type !== "none")
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .map((item: any) => {
+          .filter((item: ChartItemPayload) => item.type !== "none")
+          .map((item: ChartItemPayload) => {
             const key = `${nameKey || item.dataKey || "value"}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
             return (
               <div
-                key={item.value}
+                key={item.value as React.Key}
                 className={cn(
                   "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"
                 )}

@@ -296,14 +296,27 @@ export const getUserOrders = async (clerkUserId: string) => {
   }
 };
 
+export interface SanityOrderProductItem {
+  product?: {
+    _id?: string;
+    name?: string;
+    slug?: { current?: string };
+    image?: { asset?: { url?: string } };
+    images?: Array<{ asset?: { _id?: string; url?: string } }>;
+    price?: number;
+    currency?: string;
+  };
+  quantity?: number;
+  price?: number;
+}
+
 export interface SanityOrder {
   _id: string;
   orderNumber: string;
   clerkUserId?: string;
   customerName?: string;
   email?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  products?: any[];
+  products?: SanityOrderProductItem[];
   subtotal?: number;
   tax?: number;
   shipping?: number;
@@ -311,8 +324,7 @@ export interface SanityOrder {
   currency?: string;
   status?: string;
   paymentStatus?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const getOrderById = async (orderId: string): Promise<SanityOrder | null> => {
