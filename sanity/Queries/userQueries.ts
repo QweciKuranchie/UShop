@@ -344,6 +344,8 @@ export interface SanityOrder {
   currency?: string;
   status?: string;
   paymentStatus?: string;
+  orderDate?: string;
+  _createdAt?: string;
   [key: string]: unknown;
 }
 

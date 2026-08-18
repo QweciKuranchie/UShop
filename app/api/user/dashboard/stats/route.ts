@@ -6,15 +6,8 @@ import {
   getUserNotifications,
   getUserByClerkId,
   SanityNotificationItem,
+  SanityOrder,
 } from "@/sanity/Queries/userQueries";
-
-interface Order {
-  _id: string;
-  orderNumber: string;
-  orderDate: string;
-  status: string;
-  totalPrice?: number;
-}
 
 export async function GET() {
   try {
@@ -51,12 +44,13 @@ export async function GET() {
     if (userOrders && userOrders.length > 0) {
       const recentOrders = userOrders
         .sort(
-          (a: Order, b: Order) =>
-            new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
+          (a: SanityOrder, b: SanityOrder) =>
+            new Date(b.orderDate || b._createdAt || 0).getTime() -
+            new Date(a.orderDate || a._createdAt || 0).getTime()
         )
         .slice(0, 2);
 
-      recentOrders.forEach((order: Order) => {
+      recentOrders.forEach((order: SanityOrder) => {
         recentActivity.push({
           id: `order-${order._id}`,
           title: `Order ${
@@ -73,7 +67,7 @@ export async function GET() {
               ? "has been shipped"
               : "has been placed successfully"
           }`,
-          timestamp: order.orderDate,
+          timestamp: order.orderDate || order._createdAt || new Date().toISOString(),
           type: "order" as const,
         });
       });
