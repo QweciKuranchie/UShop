@@ -5,15 +5,8 @@ import {
   getUserWishlist,
   getUserNotifications,
   getUserByClerkId,
+  SanityNotificationItem,
 } from "@/sanity/Queries/userQueries";
-
-interface Notification {
-  read: boolean;
-  id: string;
-  title: string;
-  message: string;
-  sentAt: string;
-}
 
 interface Order {
   _id: string;
@@ -46,7 +39,7 @@ export async function GET() {
       wishlistCount: userWishlist?.length || 0,
       notificationsCount: userNotifications?.length || 0,
       unreadNotifications:
-        userNotifications?.filter((n: Notification) => !n.read)?.length || 0,
+        userNotifications?.filter((n: SanityNotificationItem) => !n.read)?.length || 0,
       rewardPoints: userData?.rewardPoints || 0,
       walletBalance: userData?.walletBalance || 0,
     };
@@ -104,20 +97,21 @@ export async function GET() {
     if (userNotifications && userNotifications.length > 0) {
       const recentNotifications = userNotifications
         .sort(
-          (a: Notification, b: Notification) =>
-            new Date(b.sentAt).getTime() - new Date(a.sentAt).getTime()
+          (a: SanityNotificationItem, b: SanityNotificationItem) =>
+            new Date(b.sentAt || b._createdAt || 0).getTime() - new Date(a.sentAt || a._createdAt || 0).getTime()
         )
         .slice(0, 1);
 
-      recentNotifications.forEach((notification: Notification) => {
+      recentNotifications.forEach((notification: SanityNotificationItem) => {
+        const msg = notification.message || "";
         recentActivity.push({
-          id: `notification-${notification.id}`,
-          title: notification.title,
+          id: `notification-${notification.id || notification._id}`,
+          title: notification.title || "Notification",
           description:
-            notification.message.length > 80
-              ? notification.message.substring(0, 80) + "..."
-              : notification.message,
-          timestamp: notification.sentAt,
+            msg.length > 80
+              ? msg.substring(0, 80) + "..."
+              : msg,
+          timestamp: notification.sentAt || notification._createdAt || new Date().toISOString(),
           type: "notification" as const,
         });
       });

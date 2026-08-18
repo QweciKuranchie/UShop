@@ -358,13 +358,27 @@ export const USER_NOTIFICATIONS_QUERY = `
   }
 `;
 
-export const getUserNotifications = async (clerkUserId: string) => {
+export interface SanityNotificationItem {
+  id?: string;
+  _id?: string;
+  title?: string;
+  message?: string;
+  read?: boolean;
+  readAt?: string;
+  sentAt?: string;
+  _createdAt?: string;
+  [key: string]: unknown;
+}
+
+export const getUserNotifications = async (
+  clerkUserId: string
+): Promise<SanityNotificationItem[]> => {
   try {
     const { data } = await sanityFetch({
       query: USER_NOTIFICATIONS_QUERY,
       params: { clerkUserId },
     });
-    return (data as { notifications?: Record<string, unknown>[] })?.notifications ?? [];
+    return (data as { notifications?: SanityNotificationItem[] })?.notifications ?? [];
   } catch (error) {
     console.error("Error fetching user notifications:", error);
     return [];
