@@ -33,8 +33,6 @@ export async function GET() {
       notificationsCount: userNotifications?.length || 0,
       unreadNotifications:
         userNotifications?.filter((n: SanityNotificationItem) => !n.read)?.length || 0,
-      rewardPoints: userData?.rewardPoints || 0,
-      walletBalance: userData?.walletBalance || 0,
     };
 
     // Create recent activity from real data
