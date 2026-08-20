@@ -414,13 +414,6 @@ export const MARK_NOTIFICATION_READ_QUERY = `
   }
 `;
 
-interface UserNotification {
-  id: string;
-  read?: boolean;
-  readAt?: string;
-  [key: string]: unknown;
-}
-
 export const markNotificationAsRead = async (
   clerkUserId: string,
   notificationId: string
@@ -435,10 +428,10 @@ export const markNotificationAsRead = async (
       throw new Error("User not found");
     }
 
-    const userData = user.data as { _id: string; notifications: UserNotification[] };
-    const updatedNotifications = userData.notifications.map(
-      (notification: UserNotification) => {
-        if (notification.id === notificationId) {
+    const userData = user.data as { _id: string; notifications: SanityNotificationItem[] };
+    const updatedNotifications = (userData.notifications || []).map(
+      (notification: SanityNotificationItem) => {
+        if (notification.id === notificationId || notification._id === notificationId) {
           return {
             ...notification,
             read: true,
@@ -477,9 +470,10 @@ export const deleteUserNotification = async (
       throw new Error("User not found");
     }
 
-    const userData = user.data as { _id: string; notifications: UserNotification[] };
-    const updatedNotifications = userData.notifications.filter(
-      (notification: UserNotification) => notification.id !== notificationId
+    const userData = user.data as { _id: string; notifications: SanityNotificationItem[] };
+    const updatedNotifications = (userData.notifications || []).filter(
+      (notification: SanityNotificationItem) =>
+        notification.id !== notificationId && notification._id !== notificationId
     );
 
     const { writeClient } = await import("../lib/client");
