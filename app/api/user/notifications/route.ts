@@ -4,12 +4,8 @@ import {
   getUserNotifications,
   markNotificationAsRead,
   deleteUserNotification,
+  SanityNotificationItem,
 } from "@/sanity/Queries/userQueries";
-
-interface UserNotification {
-  sentAt: string;
-  read: boolean;
-}
 
 export async function GET() {
   try {
@@ -23,15 +19,15 @@ export async function GET() {
 
     // Sort notifications by date (newest first)
     const sortedNotifications = notifications.sort(
-      (a: UserNotification, b: UserNotification) =>
-        new Date(b.sentAt).getTime() - new Date(a.sentAt).getTime()
+      (a: SanityNotificationItem, b: SanityNotificationItem) =>
+        new Date(b.sentAt || b._createdAt || 0).getTime() -
+        new Date(a.sentAt || a._createdAt || 0).getTime()
     );
 
     return NextResponse.json({
       success: true,
       notifications: sortedNotifications,
-      unreadCount: notifications.filter((n: UserNotification) => !n.read)
-        .length,
+      unreadCount: notifications.filter((n: SanityNotificationItem) => !n.read).length,
     });
   } catch (error) {
     console.error("Error fetching user notifications:", error);

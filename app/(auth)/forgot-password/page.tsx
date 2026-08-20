@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useSignIn } from "@clerk/nextjs";
 import Link from "next/link";
+import Logo from "@/components/common/Logo";
 import { Mail, Lock, KeyRound, ArrowLeft, CheckCircle2, ShieldCheck } from "lucide-react";
 
 export default function ForgotPasswordPage() {
@@ -101,8 +102,11 @@ export default function ForgotPasswordPage() {
     <div className="w-full max-w-md mx-auto my-auto p-6 sm:p-8 bg-white rounded-3xl shadow-2xl border border-purple-100 animate-in fade-in zoom-in-95 duration-200">
       {/* Header Badge & Title */}
       <div className="text-center mb-6">
-        <div className="mx-auto w-14 h-14 rounded-2xl bg-gradient-to-br from-ushop-purple to-ushop-pink flex items-center justify-center shadow-lg shadow-purple-900/20 mb-3">
-          <KeyRound className="w-7 h-7 text-white" />
+        <div className="mb-4 flex justify-center">
+          <Logo imageClassName="h-9 w-auto" />
+        </div>
+        <div className="mx-auto w-12 h-12 rounded-2xl bg-gradient-to-br from-ushop-purple to-ushop-pink flex items-center justify-center shadow-lg shadow-purple-900/20 mb-3">
+          <KeyRound className="w-6 h-6 text-white" />
         </div>
         <h1 className="text-2xl font-extrabold text-ushop-purple-dark">
           {step === "request" ? "Forgot Password?" : "Reset Password"}

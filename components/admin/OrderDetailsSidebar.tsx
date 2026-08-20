@@ -410,25 +410,25 @@ const OrderDetailsSidebar: React.FC<OrderDetailsSidebarProps> = ({
                         <SelectValue placeholder="Select status" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="pending">🔴 Pending</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
                         <SelectItem value="address_confirmed">
-                          🟡 Address Confirmed
+                          Address Confirmed
                         </SelectItem>
                         <SelectItem value="order_confirmed">
-                          🟢 Order Confirmed
+                          Order Confirmed
                         </SelectItem>
-                        <SelectItem value="packed">📦 Packed</SelectItem>
+                        <SelectItem value="packed">Packed</SelectItem>
                         <SelectItem value="ready_for_delivery">
-                          ✅ Ready for Delivery
+                          Ready for Delivery
                         </SelectItem>
                         <SelectItem value="out_for_delivery">
-                          🚚 Out for Delivery
+                          Out for Delivery
                         </SelectItem>
-                        <SelectItem value="delivered">📬 Delivered</SelectItem>
-                        <SelectItem value="completed">✔️ Completed</SelectItem>
-                        <SelectItem value="cancelled">❌ Cancelled</SelectItem>
+                        <SelectItem value="delivered">Delivered</SelectItem>
+                        <SelectItem value="completed">Completed</SelectItem>
+                        <SelectItem value="cancelled">Cancelled</SelectItem>
                         <SelectItem value="rescheduled">
-                          📅 Rescheduled
+                          Rescheduled
                         </SelectItem>
                         <SelectItem value="failed_delivery">
                           ⚠️ Failed Delivery
@@ -873,15 +873,6 @@ const OrderDetailsSidebar: React.FC<OrderDetailsSidebarProps> = ({
                     const quantity = item.quantity || 1;
                     const price = product?.price || 0;
                     const lineTotal = price * quantity;
-
-                    // Debug logging to help identify the issue
-                    console.log("Product debug info:", {
-                      name: product?.name,
-                      price: price,
-                      quantity: quantity,
-                      lineTotal,
-                      rawItem: item,
-                    });
 
                     return (
                       <div

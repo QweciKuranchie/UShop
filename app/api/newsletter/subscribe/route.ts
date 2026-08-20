@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     // Send welcome email
     const emailResult = await sendMail({
       email,
-      subject: "Welcome to U-Shop Newsletter! 🎉",
+      subject: "Welcome to U-Shop Newsletter!",
       text: `Thank you for subscribing to our newsletter! You're now part of our exclusive community.`,
       html: generateWelcomeEmailHTML(email),
     });
@@ -288,7 +288,7 @@ function generateWelcomeEmailHTML(email: string): string {
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>🎉 Welcome to U-Shop!</h1>
+            <h1>Welcome to U-Shop!</h1>
             <p>Thank you for joining our newsletter community</p>
         </div>
         
@@ -296,7 +296,7 @@ function generateWelcomeEmailHTML(email: string): string {
         <div class="content">
             <!-- Welcome Message -->
             <div class="welcome-message">
-                <h2>You're All Set! 🌟</h2>
+                <h2>You're All Set!</h2>
                 <p>
                     Thank you for subscribing to the U-Shop newsletter! We're thrilled to have you as part of our community. 
                     Get ready to receive exclusive deals, new product announcements, and helpful shopping tips directly to your inbox.
@@ -308,7 +308,7 @@ function generateWelcomeEmailHTML(email: string): string {
                 <h3>What You'll Get as a Subscriber</h3>
                 
                 <div class="benefit-item">
-                    <div class="benefit-icon">🎁</div>
+                    <div class="benefit-icon">✦</div>
                     <div class="benefit-text">
                         <h4>Exclusive Deals & Discounts</h4>
                         <p>Be the first to know about special promotions, flash sales, and subscriber-only discounts up to 50% off!</p>
@@ -316,7 +316,7 @@ function generateWelcomeEmailHTML(email: string): string {
                 </div>
                 
                 <div class="benefit-item">
-                    <div class="benefit-icon">🚀</div>
+                    <div class="benefit-icon">⚡</div>
                     <div class="benefit-text">
                         <h4>Early Access to New Products</h4>
                         <p>Get a sneak peek and early access to our latest product launches before anyone else.</p>
@@ -324,7 +324,7 @@ function generateWelcomeEmailHTML(email: string): string {
                 </div>
                 
                 <div class="benefit-item">
-                    <div class="benefit-icon">📦</div>
+                    <div class="benefit-icon">❖</div>
                     <div class="benefit-text">
                         <h4>Free Shipping Offers</h4>
                         <p>Enjoy exclusive free shipping promotions and special delivery deals reserved for our subscribers.</p>
@@ -332,7 +332,7 @@ function generateWelcomeEmailHTML(email: string): string {
                 </div>
                 
                 <div class="benefit-item">
-                    <div class="benefit-icon">💡</div>
+                    <div class="benefit-icon">✓</div>
                     <div class="benefit-text">
                         <h4>Shopping Tips & Trends</h4>
                         <p>Stay updated with the latest shopping trends, product guides, and helpful tips to make the most of your purchases.</p>

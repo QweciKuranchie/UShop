@@ -12,15 +12,13 @@ const Loading: React.FC<LoadingProps> = ({
 }) => {
   return (
     <div
-      className={`flex flex-col items-center justify-center bg-gradient-to-br from-purple-50/60 via-white to-pink-50/60 p-6 ${
+      className={`flex flex-col items-center justify-center bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/5 p-6 ${
         fullScreen
           ? "fixed inset-0 z-[200] w-screen h-screen"
           : "w-full min-h-[400px]"
       }`}
     >
       <div className="relative flex flex-col items-center justify-center">
-        {/* Ambient Glowing Background */}
-        <div className="absolute w-44 h-44 bg-gradient-to-r from-ushop-purple/30 to-ushop-pink/30 rounded-full blur-2xl animate-pulse pointer-events-none" />
 
         {/* Logo Container with Spinner Ring */}
         <div className="relative flex items-center justify-center p-3">

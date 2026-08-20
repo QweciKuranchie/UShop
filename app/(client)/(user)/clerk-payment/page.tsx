@@ -67,7 +67,7 @@ function ClerkPaymentContent() {
       await response.json();
 
       setPaymentStatus("success");
-      toast.success("Payment Successful! 🎉", {
+      toast.success("Payment Successful!", {
         description: "Your order has been paid successfully",
       });
 
@@ -100,7 +100,7 @@ function ClerkPaymentContent() {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-purple-50 via-white to-blue-50 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/5 py-12 px-4">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <motion.div

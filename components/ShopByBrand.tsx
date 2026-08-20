@@ -52,7 +52,7 @@ const ShopByBrands = async () => {
       </div>
 
       {/* Brands Grid */}
-      <div className="bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/5 p-8 lg:p-12 rounded-3xl shadow-xl border border-ushop-pink/10 mb-16">
+      <div className="bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/5 p-8 lg:p-12 rounded-2xl shadow-xl border border-ushop-pink/10 mb-16">
         <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-pink/40 scrollbar-track-transparent sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 sm:pb-0">
           {displayBrands?.map((brand, index) => (
             <Link

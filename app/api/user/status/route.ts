@@ -123,7 +123,7 @@ export async function POST() {
       return NextResponse.json({
         success: true,
         message:
-          "🎉 Premium application submitted successfully! Your application is now under review and you'll be notified within 24-48 hours once it's processed.",
+          "Premium application submitted successfully! Your application is now under review and you'll be notified within 24-48 hours once it's processed.",
         userProfile: updatedUser,
       });
     }
@@ -180,7 +180,7 @@ export async function POST() {
     return NextResponse.json({
       success: true,
       message:
-        "🎉 Premium application submitted successfully! Your application is now under review and you'll be notified within 24-48 hours once it's processed.",
+        "Premium application submitted successfully! Your application is now under review and you'll be notified within 24-48 hours once it's processed.",
       userProfile: newUser,
     });
   } catch (error) {

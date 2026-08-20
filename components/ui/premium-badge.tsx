@@ -23,7 +23,7 @@ const PremiumBadge: React.FC<PremiumBadgeProps> = ({
     <span
       className={cn(
         "inline-flex items-center gap-1 rounded-full font-semibold bg-gradient-to-r from-ushop-purple to-ushop-pink text-white shadow-sm",
-        size === "sm" ? "px-2 py-0.5 text-[10px]" : size === "lg" ? "px-3 py-1 text-sm" : "px-2.5 py-0.5 text-xs",
+        size === "sm" ? "px-2 py-0.5 text-xs" : size === "lg" ? "px-3 py-1 text-sm" : "px-2.5 py-0.5 text-xs",
         className
       )}
     >

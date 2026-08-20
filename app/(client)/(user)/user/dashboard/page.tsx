@@ -315,7 +315,7 @@ export default function UserDashboardPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <h3 className="font-bold text-amber-900 text-lg">
-                    🎉 Premium Application Submitted!
+                    Premium Application Submitted
                   </h3>
                   <div className="px-3 py-1 bg-amber-200 text-amber-800 text-xs font-medium rounded-full">
                     PENDING REVIEW
@@ -411,7 +411,7 @@ export default function UserDashboardPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <h3 className="font-bold text-green-900 text-lg">
-                      ✨ Premium Account Active!
+                      Premium Account Active
                     </h3>
                     <div className="px-3 py-1 bg-green-200 text-green-800 text-xs font-medium rounded-full">
                       APPROVED
@@ -504,7 +504,7 @@ export default function UserDashboardPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <h3 className="font-bold text-blue-900 text-lg">
-                    🚀 Business Application Submitted!
+                    Business Application Submitted
                   </h3>
                   <div className="px-3 py-1 bg-blue-200 text-blue-800 text-xs font-medium rounded-full">
                     PENDING REVIEW
@@ -636,19 +636,19 @@ export default function UserDashboardPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-        <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0 shadow-lg hover:shadow-xl transition-shadow">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <Card className="bg-gradient-to-br from-ushop-purple to-ushop-purple-dark text-white border-0 shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
             <Package className="h-5 w-5" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold mb-1">{stats.ordersCount}</div>
-            <p className="text-xs text-blue-100">Orders placed</p>
+            <p className="text-xs text-purple-100">Orders placed</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0 shadow-lg hover:shadow-xl transition-shadow">
+        <Card className="bg-gradient-to-br from-ushop-pink to-pink-600 text-white border-0 shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-sm font-medium">Notifications</CardTitle>
             <Bell className="h-5 w-5" />
@@ -657,50 +657,22 @@ export default function UserDashboardPage() {
             <div className="text-3xl font-bold mb-1">
               {stats.notificationsCount}
             </div>
-            <p className="text-xs text-purple-100">
+            <p className="text-xs text-pink-100">
               {stats.unreadNotifications} unread
             </p>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-red-500 to-red-600 text-white border-0 shadow-lg hover:shadow-xl transition-shadow">
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 text-white border-0 shadow-md hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-sm font-medium">Wishlist</CardTitle>
             <Heart className="h-5 w-5" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold mb-1">{stats.wishlistCount}</div>
-            <p className="text-xs text-red-100">Items saved</p>
+            <p className="text-xs text-gray-300">Items saved</p>
           </CardContent>
         </Card>
-
-        <Card className="bg-linear-to-br from-green-500 to-green-600 text-white border-0 shadow-lg hover:shadow-xl transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-sm font-medium">Reward Points</CardTitle>
-            <Star className="h-5 w-5" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold mb-1">{stats.rewardPoints}</div>
-            <p className="text-xs text-green-100">Available points</p>
-          </CardContent>
-        </Card>
-
-        {stats.walletBalance > 0 && (
-          <Card className="bg-linear-to-br from-emerald-500 to-teal-600 text-white border-0 shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-              <CardTitle className="text-sm font-medium">
-                Wallet Balance
-              </CardTitle>
-              <Wallet className="h-5 w-5" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold mb-1">
-                ${stats.walletBalance.toFixed(2)}
-              </div>
-              <p className="text-xs text-emerald-100">From refunds</p>
-            </CardContent>
-          </Card>
-        )}
       </div>
 
       {/* Content Section with Proper Spacing */}

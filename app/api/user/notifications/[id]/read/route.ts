@@ -14,12 +14,6 @@ export async function PATCH(
 
     const { id: notificationId } = await params;
 
-    // Here you would update the notification in your database
-    // For now, we'll just return success
-    console.log(
-      `Marking notification ${notificationId} as read for user ${userId}`
-    );
-
     return NextResponse.json({
       success: true,
       message: "Notification marked as read",

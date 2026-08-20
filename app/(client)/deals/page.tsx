@@ -93,7 +93,7 @@ const MainDealsPage = async () => {
                 <span className="text-xs font-black uppercase tracking-wider">
                   DEALS & OFFERS HUB
                 </span>
-                <span className="bg-white text-ushop-red text-[10px] font-extrabold px-2 py-0.5 rounded-full">
+                <span className="bg-white text-ushop-red text-xs font-bold px-2 py-0.5 rounded-full">
                   Up to {maxDiscount > 0 ? maxDiscount : 90}% OFF
                 </span>
               </div>
@@ -152,7 +152,7 @@ const MainDealsPage = async () => {
                       <div className={`w-10 h-10 rounded-xl bg-gradient-to-r ${cat.color} text-white flex items-center justify-center shadow-md`}>
                         <IconComp className="w-5 h-5" />
                       </div>
-                      <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-red-50 text-ushop-red border border-red-100">
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-red-50 text-ushop-red border border-red-100">
                         {cat.badge}
                       </span>
                     </div>

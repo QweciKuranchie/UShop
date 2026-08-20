@@ -66,7 +66,7 @@ const HomeCategories = ({ categories }: Props) => {
       </div>
 
       {/* Categories Grid */}
-      <div className="bg-gradient-to-br from-white via-ushop_light_bg to-ushop-pink/5 p-8 lg:p-12 rounded-3xl shadow-xl border border-ushop-pink/10">
+      <div className="bg-gradient-to-br from-white via-ushop_light_bg to-ushop-pink/5 p-8 lg:p-12 rounded-2xl shadow-xl border border-ushop-pink/10">
         <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-pink/40 scrollbar-track-transparent sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:pb-0">
           {displayCategories?.map((category, index) => (
             <Link

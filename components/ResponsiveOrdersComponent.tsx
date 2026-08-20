@@ -29,8 +29,16 @@ const ResponsiveOrdersComponent = ({
   >(null);
 
   // Helper function to render product images with stacked layout
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const renderProductImages = (products: any[], isCard = false) => {
+  const renderProductImages = (
+    products: Array<{
+      product?: {
+        name?: string;
+        image?: unknown;
+        images?: unknown[];
+      };
+    }>,
+    isCard = false
+  ) => {
     if (!products || products.length === 0) return null;
 
     const maxVisible = isCard ? 2 : 3;

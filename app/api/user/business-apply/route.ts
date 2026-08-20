@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message:
-        "🚀 Business account application submitted successfully! Your application is under review and you'll enjoy 2% additional discount once approved.",
+        "Business account application submitted successfully! Your application is under review and you'll enjoy 2% additional discount once approved.",
       user: result,
     });
   } catch (error) {
