@@ -20,7 +20,7 @@ import { toast } from "sonner";
 import { PAYMENT_METHODS, PaymentMethod } from "@/lib/orderStatus";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { SanityOrder } from "@/sanity/Queries";
+import { SanityOrder } from "@/sanity/Queries/userQueries";
 
 interface OrderProduct {
   product: {

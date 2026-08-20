@@ -3,6 +3,8 @@ import { Category, Brand, Product, Location } from "@/sanity.types";
 import { sanityFetch } from "../lib/live";
 import { getOrderById } from "./userQueries";
 
+export * from "./userQueries";
+
 import { ADDRESS_QUERY,
   ALL_PRODUCTS_QUERY,
   ADMIN_CATEGORIES_QUERY,
