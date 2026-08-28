@@ -107,9 +107,20 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
     { title: "About Us", href: "/about", icon: Info },
   ];
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   return (
     <div
-      className={`fixed inset-y-0 left-0 z-50 w-full bg-black/45 backdrop-blur-xs transform ${
+      className={`fixed inset-y-0 left-0 z-[60] w-full bg-black/45 backdrop-blur-xs transform ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       } transition-transform ease-in-out duration-300`}
     >
@@ -118,7 +129,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, delay: 0.3 }}
         ref={sidebarRef}
-        className="min-w-72 max-w-96 bg-ushop_light_bg z-50 h-screen text-zinc-800 p-6 border-r border-r-ushop-purple/15 flex flex-col gap-4 overflow-y-auto scrollbar-thin scrollbar-thumb-ushop-pink scrollbar-track-transparent shadow-2xl"
+        className="w-[85vw] max-w-sm bg-ushop_light_bg z-50 h-[100dvh] max-h-screen text-zinc-800 p-6 border-r border-r-ushop-purple/15 flex flex-col gap-4 overflow-y-auto scrollbar-thin scrollbar-thumb-ushop-pink scrollbar-track-transparent shadow-2xl"
       >
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-zinc-200/80">

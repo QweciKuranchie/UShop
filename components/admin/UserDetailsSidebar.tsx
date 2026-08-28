@@ -180,7 +180,7 @@ export const UserDetailsSidebar: React.FC<UserDetailsSidebarProps> = ({
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent
         side="right"
-        className="w-[400px] sm:w-[540px] overflow-y-auto p-0"
+        className="w-full sm:max-w-lg overflow-y-auto p-0"
       >
         <div className="flex h-full flex-col">
           <SheetHeader className="px-6 pt-6 pb-4 border-b">

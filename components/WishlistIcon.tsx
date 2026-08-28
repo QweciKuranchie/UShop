@@ -12,8 +12,8 @@ export default function WishlistIcon() {
   const displayCount = count > 9 ? "9+" : count;
 
   return (
-    <Link href={"/wishlist"} title="Wishlist" aria-label="Wishlist" className="group relative">
-      <HeartIcon className="w-6 h-6 group-hover:text-ushop-pink hoverEffect" />
+    <Link href={"/wishlist"} title="Wishlist" aria-label="Wishlist" className="group relative p-1.5 flex items-center justify-center">
+      <HeartIcon className="w-5 h-5 sm:w-6 sm:h-6 group-hover:text-ushop-pink hoverEffect" />
       {count > 0 ? (
         <span
           className={`absolute -top-1 -right-1 bg-ushop-red text-white rounded-full text-xs font-semibold flex items-center justify-center min-w-[14px] h-[14px] ${

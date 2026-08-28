@@ -403,7 +403,7 @@ export function CheckoutContent() {
 
               {/* Card Details Section */}
               {selectedPaymentMethod === PAYMENT_METHODS.STRIPE && (
-                <div className="ml-7 p-4 border border-dashed border-ushop-pink/40 rounded-lg bg-ushop_light_pink/10 space-y-4 animate-in slide-in-from-top-2 duration-300">
+                <div className="ml-0 mt-3 sm:ml-7 p-4 border border-dashed border-ushop-pink/40 rounded-lg bg-ushop_light_pink/10 space-y-4 animate-in slide-in-from-top-2 duration-300">
                   <p className="text-sm font-medium text-ushop-purple-dark">Enter Card Details</p>
                   <div className="space-y-3">
                     <div>
@@ -500,7 +500,7 @@ export function CheckoutContent() {
 
               {/* Mobile Money Network & Phone Section */}
               {selectedPaymentMethod === PAYMENT_METHODS.MOBILE_MONEY && (
-                <div className="ml-7 p-4 border border-dashed border-ushop-pink/40 rounded-lg bg-ushop_light_pink/10 space-y-4 animate-in slide-in-from-top-2 duration-300">
+                <div className="ml-0 mt-3 sm:ml-7 p-4 border border-dashed border-ushop-pink/40 rounded-lg bg-ushop_light_pink/10 space-y-4 animate-in slide-in-from-top-2 duration-300">
                   <p className="text-sm font-medium text-ushop-purple-dark">Choose Your Network</p>
                   <div className="grid grid-cols-3 gap-3">
                     {[
@@ -584,7 +584,7 @@ export function CheckoutContent() {
 
               {/* Pay on Delivery Info */}
               {selectedPaymentMethod === PAYMENT_METHODS.PAY_ON_DELIVERY && (
-                <div className="ml-7 p-4 border border-dashed border-amber-300 rounded-lg bg-amber-50 animate-in slide-in-from-top-2 duration-300">
+                <div className="ml-0 mt-3 sm:ml-7 p-4 border border-dashed border-amber-300 rounded-lg bg-amber-50 animate-in slide-in-from-top-2 duration-300">
                   <div className="flex items-start gap-2">
                     <Package className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
                     <div className="space-y-1">
