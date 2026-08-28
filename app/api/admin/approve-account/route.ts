@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
     // Try with both methods to see which one works
     try {
       await backendClient.patch(userId).set(updateData).commit();
-    } catch (backendError) {
+    } catch {
       // Import writeClient locally to avoid import issues
       const { writeClient } = await import("@/sanity/lib/client");
       await writeClient.patch(userId).set(updateData).commit();

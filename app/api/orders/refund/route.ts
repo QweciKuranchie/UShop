@@ -112,11 +112,12 @@ export async function POST(req: NextRequest) {
           processedBy: "system",
         };
 
-        // Update user wallet
+        // Update user wallet and append transaction
         await writeClient
           .patch(user._id)
           .set({ walletBalance: newBalance })
           .setIfMissing({ walletTransactions: [] })
+          .append("walletTransactions", [transaction])
           .commit();
       }
     }
