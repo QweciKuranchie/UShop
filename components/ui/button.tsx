@@ -54,8 +54,7 @@ function Button({
   ...props
 }: ButtonProps) {
   if (asChild && React.isValidElement(children)) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const child = React.Children.only(children) as React.ReactElement<any>;
+    const child = React.Children.only(children) as React.ReactElement<Record<string, unknown>>;
     return (
       <ButtonPrimitive
         data-slot="button"
@@ -68,7 +67,7 @@ function Button({
             className: cn(
               buttonVariants({ variant, size, className }),
               buttonProps.className,
-              child.props.className
+              typeof child.props.className === "string" ? child.props.className : undefined
             ),
           };
           return React.cloneElement(child, mergedProps);

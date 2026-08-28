@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useUser } from "@clerk/nextjs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,8 +10,10 @@ import { toast } from "sonner";
 import { User, Crown } from "lucide-react";
 
 export default function AdminUserManagement() {
+  const { user } = useUser();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const currentUserEmail = user?.primaryEmailAddress?.emailAddress || "";
 
   const handleSetPremium = async (setPremium: boolean) => {
     if (!email.trim()) {
@@ -113,24 +116,25 @@ export default function AdminUserManagement() {
         </Card>
       </div>
 
-      <div className="mt-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Access</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
+      {currentUserEmail && (
+        <div className="mt-8 max-w-md">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm font-medium">Quick Access</CardTitle>
+            </CardHeader>
+            <CardContent>
               <Button
-                onClick={() => setEmail("dev.reactbd@gmail.com")}
+                onClick={() => setEmail(currentUserEmail)}
                 variant="outline"
                 size="sm"
+                className="w-full justify-start text-xs truncate"
               >
-                Set Current User (dev.reactbd@gmail.com)
+                Use My Email ({currentUserEmail})
               </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }

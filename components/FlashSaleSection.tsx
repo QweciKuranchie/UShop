@@ -43,7 +43,7 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ products }) => {
   const dealProducts = products.slice(0, 4);
 
   return (
-    <section className="my-10 bg-gradient-to-r from-red-500/5 via-ushop-red/10 to-amber-50/80 rounded-3xl p-4 sm:p-8 border border-ushop-red/20 shadow-xs relative overflow-hidden">
+    <section className="my-10 bg-gradient-to-r from-ushop-red/5 via-ushop-pink/10 to-ushop_light_bg rounded-2xl p-4 sm:p-8 border border-ushop-red/20 shadow-xs relative overflow-hidden">
       {/* Top Banner Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8 pb-6 border-b border-ushop-red/15">
         <div className="flex items-center gap-3">
@@ -52,7 +52,7 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ products }) => {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 bg-ushop-red text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full">
+              <span className="px-2.5 py-0.5 bg-ushop-red text-white text-xs font-bold uppercase tracking-wider rounded-full">
                 Limited Time
               </span>
               <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight">

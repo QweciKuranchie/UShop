@@ -165,7 +165,7 @@ const ProductGrid = () => {
         }
         setProducts(response || []);
       } catch (error) {
-        console.log("Product fetching Error", error);
+        console.error("Product fetching error:", error);
       } finally {
         setLoading(false);
       }

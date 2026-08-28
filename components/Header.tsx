@@ -7,7 +7,7 @@ import HeaderTopBar from "./HeaderTopBar";
 import HeaderNavBar from "./HeaderNavBar";
 import SearchBar from "./common/SearchBar";
 import CartIcon from "./cart/CartIcon";
-import WhishListIcon from "./WhishListIcon";
+import WishlistIcon from "./WishlistIcon";
 import NotificationBell from "./NotificationBell";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
@@ -51,7 +51,7 @@ const Header = () => {
           {/* cart, wishlist, profile */}
           <div className="flex items-center justify-end gap-2 sm:gap-3.5 md:gap-5">
             <CartIcon />
-            <WhishListIcon />
+            <WishlistIcon />
             <NotificationBell />
 
             {/* Auth buttons — hidden on mobile, shown on md+ */}

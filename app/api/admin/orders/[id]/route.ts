@@ -151,10 +151,6 @@ export async function PATCH(
               filteredUpdateData.cancelledAt = new Date().toISOString();
               filteredUpdateData.cancelledBy = userEmail || "admin";
               filteredUpdateData.paymentStatus = "refunded";
-
-              console.log(
-                `✅ Refunded $${refundAmount} to user wallet for order ${currentOrder.orderNumber}`
-              );
             } else {
               console.error(
                 "Failed to add refund to wallet:",

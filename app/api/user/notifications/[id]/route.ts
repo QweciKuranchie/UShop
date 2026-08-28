@@ -14,10 +14,6 @@ export async function DELETE(
 
     const { id: notificationId } = await params;
 
-    // Here you would delete the notification from your database
-    // For now, we'll just return success
-    console.log(`Deleting notification ${notificationId} for user ${userId}`);
-
     return NextResponse.json({
       success: true,
       message: "Notification deleted successfully",

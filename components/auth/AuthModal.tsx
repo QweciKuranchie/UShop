@@ -32,7 +32,7 @@ export default function AuthModal() {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/80 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200">
       {/* Backdrop overlay click handler */}
       <div
         className="absolute inset-0"
@@ -45,12 +45,12 @@ export default function AuthModal() {
         role="dialog"
         aria-modal="true"
         aria-label="Authentication modal"
-        className="relative z-10 w-full max-w-[880px] my-auto flex flex-col items-center justify-center pt-8 sm:pt-0"
+        className="relative z-10 w-full max-w-[880px] my-auto flex flex-col items-center justify-center pt-10 sm:pt-0 max-h-[96dvh]"
       >
         {/* Prominent High-Contrast Close Button */}
         <button
           onClick={closeAuthModal}
-          className="absolute top-2 right-2 sm:-top-11 sm:right-0 z-[200] inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 text-purple-950 font-extrabold text-xs shadow-xl border border-purple-100 hover:bg-white hover:text-ushop-pink hover:scale-105 transition-all cursor-pointer min-w-[40px] min-h-[40px] justify-center"
+          className="absolute -top-3 right-0 sm:-top-11 sm:right-0 z-[200] inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 text-purple-950 font-extrabold text-xs shadow-xl border border-purple-100 hover:bg-white hover:text-ushop-pink hover:scale-105 transition-all cursor-pointer min-w-[36px] min-h-[36px] justify-center"
           aria-label="Close authentication modal"
         >
           <X className="w-4 h-4 text-ushop-pink stroke-[2.5]" />

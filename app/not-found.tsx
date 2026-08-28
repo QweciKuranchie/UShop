@@ -11,11 +11,6 @@ export const metadata: Metadata = {
 const NotFoundPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/10 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-ushop-purple/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-ushop-pink/5 rounded-full blur-3xl" />
-      <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-ushop-purple/3 rounded-full blur-2xl" />
-
       <div className="max-w-lg w-full space-y-8 relative z-10">
         {/* Logo */}
         <div className="flex justify-center">
@@ -25,7 +20,7 @@ const NotFoundPage = () => {
         {/* 404 Display */}
         <div className="text-center">
           <div className="relative inline-block">
-            <h1 className="text-[120px] sm:text-[150px] font-black leading-none bg-gradient-to-br from-ushop-purple via-ushop-pink to-ushop-purple bg-clip-text text-transparent select-none">
+            <h1 className="text-7xl sm:text-9xl font-black leading-none bg-gradient-to-br from-ushop-purple via-ushop-pink to-ushop-purple bg-clip-text text-transparent select-none">
               404
             </h1>
           </div>

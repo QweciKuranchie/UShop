@@ -17,6 +17,7 @@ import {
   X,
   ShieldCheck,
   Lock,
+  Zap,
 } from "lucide-react";
 import PriceFormatter from "./PriceFormatter";
 import { cn } from "@/lib/utils";
@@ -207,16 +208,16 @@ const DirectPaymentModal: React.FC<Props> = ({
 
           {/* Trust Indicators */}
           <div className="flex items-center justify-center gap-6 text-xs text-gray-400 border-t border-gray-100 pt-4 animate-fade-in">
-            <div className="flex items-center gap-1">
-              <span className="text-ushop-pink">🔒</span>
+            <div className="flex items-center gap-1.5">
+              <Lock className="w-3.5 h-3.5 text-ushop-pink" />
               <span>SSL Secured</span>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="text-ushop-pink">⚡</span>
+            <div className="flex items-center gap-1.5">
+              <Zap className="w-3.5 h-3.5 text-ushop-pink" />
               <span>Instant</span>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="text-ushop-purple">🛡️</span>
+            <div className="flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-ushop-purple" />
               <span>Protected</span>
             </div>
           </div>

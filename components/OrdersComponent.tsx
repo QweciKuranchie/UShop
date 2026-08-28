@@ -25,8 +25,15 @@ const OrdersComponent = ({ orders }: { orders: MY_ORDERS_QUERYResult }) => {
   );
 
   // Helper function to render product images with stacked layout
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const renderProductImages = (products: any[]) => {
+  const renderProductImages = (
+    products: Array<{
+      product?: {
+        name?: string;
+        image?: unknown;
+        images?: unknown[];
+      };
+    }>
+  ) => {
     if (!products || products.length === 0) return null;
 
     const maxVisible = 3;

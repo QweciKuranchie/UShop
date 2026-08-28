@@ -5,23 +5,9 @@ import {
   getUserWishlist,
   getUserNotifications,
   getUserByClerkId,
+  SanityNotificationItem,
+  SanityOrder,
 } from "@/sanity/Queries/userQueries";
-
-interface Notification {
-  read: boolean;
-  id: string;
-  title: string;
-  message: string;
-  sentAt: string;
-}
-
-interface Order {
-  _id: string;
-  orderNumber: string;
-  orderDate: string;
-  status: string;
-  totalPrice?: number;
-}
 
 export async function GET() {
   try {
@@ -46,9 +32,7 @@ export async function GET() {
       wishlistCount: userWishlist?.length || 0,
       notificationsCount: userNotifications?.length || 0,
       unreadNotifications:
-        userNotifications?.filter((n: Notification) => !n.read)?.length || 0,
-      rewardPoints: userData?.rewardPoints || 0,
-      walletBalance: userData?.walletBalance || 0,
+        userNotifications?.filter((n: SanityNotificationItem) => !n.read)?.length || 0,
     };
 
     // Create recent activity from real data
@@ -58,12 +42,13 @@ export async function GET() {
     if (userOrders && userOrders.length > 0) {
       const recentOrders = userOrders
         .sort(
-          (a: Order, b: Order) =>
-            new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
+          (a: SanityOrder, b: SanityOrder) =>
+            new Date(b.orderDate || b._createdAt || 0).getTime() -
+            new Date(a.orderDate || a._createdAt || 0).getTime()
         )
         .slice(0, 2);
 
-      recentOrders.forEach((order: Order) => {
+      recentOrders.forEach((order: SanityOrder) => {
         recentActivity.push({
           id: `order-${order._id}`,
           title: `Order ${
@@ -80,7 +65,7 @@ export async function GET() {
               ? "has been shipped"
               : "has been placed successfully"
           }`,
-          timestamp: order.orderDate,
+          timestamp: order.orderDate || order._createdAt || new Date().toISOString(),
           type: "order" as const,
         });
       });
@@ -104,20 +89,21 @@ export async function GET() {
     if (userNotifications && userNotifications.length > 0) {
       const recentNotifications = userNotifications
         .sort(
-          (a: Notification, b: Notification) =>
-            new Date(b.sentAt).getTime() - new Date(a.sentAt).getTime()
+          (a: SanityNotificationItem, b: SanityNotificationItem) =>
+            new Date(b.sentAt || b._createdAt || 0).getTime() - new Date(a.sentAt || a._createdAt || 0).getTime()
         )
         .slice(0, 1);
 
-      recentNotifications.forEach((notification: Notification) => {
+      recentNotifications.forEach((notification: SanityNotificationItem) => {
+        const msg = notification.message || "";
         recentActivity.push({
-          id: `notification-${notification.id}`,
-          title: notification.title,
+          id: `notification-${notification.id || notification._id}`,
+          title: notification.title || "Notification",
           description:
-            notification.message.length > 80
-              ? notification.message.substring(0, 80) + "..."
-              : notification.message,
-          timestamp: notification.sentAt,
+            msg.length > 80
+              ? msg.substring(0, 80) + "..."
+              : msg,
+          timestamp: notification.sentAt || notification._createdAt || new Date().toISOString(),
           type: "notification" as const,
         });
       });

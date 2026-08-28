@@ -3,6 +3,8 @@ import { Category, Brand, Product, Location } from "@/sanity.types";
 import { sanityFetch } from "../lib/live";
 import { getOrderById } from "./userQueries";
 
+export * from "./userQueries";
+
 import { ADDRESS_QUERY,
   ALL_PRODUCTS_QUERY,
   ADMIN_CATEGORIES_QUERY,
@@ -72,7 +74,7 @@ const getAllProducts = unstable_cache(
       };
       return data ?? [];
     } catch (error) {
-      console.log("Error fetching all products:", error);
+      console.error("Error fetching all products:", error);
       return [];
     }
   },
@@ -92,7 +94,7 @@ const getDealProducts = unstable_cache(
       };
       return data ?? [];
     } catch (error) {
-      console.log("Error fetching deal products:", error);
+      console.error("Error fetching deal products:", error);
       return [];
     }
   },
@@ -112,7 +114,7 @@ const getFeaturedProducts = unstable_cache(
       };
       return data ?? [];
     } catch (error) {
-      console.log("Error fetching featured products:", error);
+      console.error("Error fetching featured products:", error);
       return [];
     }
   },
@@ -132,7 +134,7 @@ const getAllBrands = unstable_cache(
       };
       return data ?? [];
     } catch (error) {
-      console.log("Error fetching all brands:", error);
+      console.error("Error fetching all brands:", error);
       return [];
     }
   },
@@ -152,7 +154,7 @@ const getAddresses = async () => {
     });
     return data ?? [];
   } catch (error) {
-    console.log("Error fetching address:", error);
+    console.error("Error fetching address:", error);
     return [];
   }
 };
@@ -209,7 +211,7 @@ const getCategories = unstable_cache(
 
       return data ?? [];
     } catch (error) {
-      console.log("Error fetching categories with product count:", error);
+      console.error("Error fetching categories with product count:", error);
       return [];
     }
   },

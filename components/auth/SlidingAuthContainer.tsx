@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, Lock, User, Eye, EyeOff, Sparkles, ShieldCheck, Check, Truck } from "lucide-react";
 import { useAuthModal } from "@/hooks/useAuthModal";
+import Logo from "@/components/common/Logo";
 import "./SlidingAuthContainer.css";
 
 interface SlidingAuthProps {
@@ -409,6 +410,27 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
             </form>
           ) : (
             <form onSubmit={handleSignUpSubmit} className="auth-form">
+              {/* Mobile Navigation Tabs */}
+              <div className="auth-mobile-tabs md:hidden">
+                <button
+                  type="button"
+                  onClick={handleSwitchToSignIn}
+                  className="auth-mobile-tab"
+                >
+                  Login
+                </button>
+                <button
+                  type="button"
+                  className="auth-mobile-tab active"
+                >
+                  Sign Up
+                </button>
+              </div>
+
+              <div className="mb-2 flex justify-center">
+                <Logo imageClassName="h-7 sm:h-8 md:h-9 w-auto" />
+              </div>
+
               <h1>Create Account</h1>
               <p className="auth-subtitle">Join UShop tech marketplace today</p>
               
@@ -599,6 +621,27 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
         {/* Sign In Form */}
         <div className="auth-form-container auth-sign-in-container">
           <form onSubmit={handleSignInSubmit} className="auth-form">
+            {/* Mobile Navigation Tabs */}
+            <div className="auth-mobile-tabs md:hidden">
+              <button
+                type="button"
+                className="auth-mobile-tab active"
+              >
+                Login
+              </button>
+              <button
+                type="button"
+                onClick={handleSwitchToSignUp}
+                className="auth-mobile-tab"
+              >
+                Sign Up
+              </button>
+            </div>
+
+            <div className="mb-2 flex justify-center">
+              <Logo imageClassName="h-7 sm:h-8 md:h-9 w-auto" />
+            </div>
+
             <h1>Welcome Back</h1>
             <p className="auth-subtitle">Sign in to your UShop account</p>
 

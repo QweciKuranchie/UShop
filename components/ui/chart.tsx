@@ -202,17 +202,15 @@ const ChartTooltipContent = React.forwardRef<
         {!nestLabel ? tooltipLabel : null}
         <div className="grid gap-1.5">
           {payload
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .filter((item: any) => item.type !== "none")
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .map((item: any, index: number) => {
+            .filter((item: ChartPayloadItem) => item.type !== "none")
+            .map((item: ChartPayloadItem, index: number) => {
               const key = `${nameKey || item.name || item.dataKey || "value"}`;
               const itemConfig = getPayloadConfigFromPayload(config, item, key);
-              const indicatorColor = color || item.payload.fill || item.color;
+              const indicatorColor = color || item.payload?.fill || item.color;
 
               return (
                 <div
-                  key={item.dataKey}
+                  key={item.dataKey as React.Key || index}
                   className={cn(
                     "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
                     indicator === "dot" && "items-center"
@@ -228,7 +226,7 @@ const ChartTooltipContent = React.forwardRef<
                         !hideIndicator && (
                           <div
                             className={cn(
-                              "shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg]",
+                              "shrink-0 rounded-[2px] border-(--color-border) bg-(--color-bg)",
                               {
                                 "h-2.5 w-2.5": indicator === "dot",
                                 "w-1": indicator === "line",
@@ -282,7 +280,7 @@ const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
     payload?: ChartPayloadItem[];
-    verticalAlign?: "top" | "bottom";
+    verticalAlign?: "top" | "middle" | "bottom";
     hideIcon?: boolean;
     nameKey?: string;
   }
@@ -307,16 +305,14 @@ const ChartLegendContent = React.forwardRef<
         )}
       >
         {payload
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .filter((item: any) => item.type !== "none")
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .map((item: any) => {
+          .filter((item: ChartPayloadItem) => item.type !== "none")
+          .map((item: ChartPayloadItem) => {
             const key = `${nameKey || item.dataKey || "value"}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
             return (
               <div
-                key={item.value}
+                key={item.value as React.Key}
                 className={cn(
                   "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"
                 )}

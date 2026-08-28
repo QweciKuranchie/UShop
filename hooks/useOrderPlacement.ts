@@ -198,9 +198,7 @@ export function useOrderPlacement({ user }: UseOrderPlacementProps) {
           body: JSON.stringify({ orderData: emailData }),
         });
 
-        if (emailResponse.ok) {
-          console.log("Order confirmation email sent successfully");
-        } else {
+        if (!emailResponse.ok) {
           console.error("Failed to send email, but order was created");
         }
       } catch (emailError) {
@@ -211,7 +209,7 @@ export function useOrderPlacement({ user }: UseOrderPlacementProps) {
       // Step 3: Prepare for redirect (don't clear cart yet)
       setOrderPlacementState(true, "redirecting");
 
-      toast.success("Order Placed Successfully! 🎉", {
+      toast.success("Order Placed Successfully!", {
         description: "Confirmation email sent",
         duration: 4000,
       });

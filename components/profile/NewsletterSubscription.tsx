@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
-import { Mail, Loader2, CheckCircle2, XCircle } from "lucide-react";
+import { Mail, Loader2, CheckCircle2, XCircle, Gift, Zap, Package, Lightbulb, Sparkles } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -182,24 +182,24 @@ export default function NewsletterSubscription() {
               Newsletter Benefits:
             </h4>
             <ul className="space-y-2 text-sm text-blue-800">
-              <li className="flex items-start">
-                <span className="mr-2">🎁</span>
+              <li className="flex items-center gap-2">
+                <Gift className="w-4 h-4 text-ushop-pink shrink-0" />
                 <span>Exclusive deals & discounts up to 50% off</span>
               </li>
-              <li className="flex items-start">
-                <span className="mr-2">🚀</span>
+              <li className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-ushop-pink shrink-0" />
                 <span>Early access to new products</span>
               </li>
-              <li className="flex items-start">
-                <span className="mr-2">📦</span>
+              <li className="flex items-center gap-2">
+                <Package className="w-4 h-4 text-ushop-pink shrink-0" />
                 <span>Free shipping offers</span>
               </li>
-              <li className="flex items-start">
-                <span className="mr-2">💡</span>
+              <li className="flex items-center gap-2">
+                <Lightbulb className="w-4 h-4 text-ushop-pink shrink-0" />
                 <span>Shopping tips & trends</span>
               </li>
-              <li className="flex items-start">
-                <span className="mr-2">🎂</span>
+              <li className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-ushop-pink shrink-0" />
                 <span>Birthday surprises</span>
               </li>
             </ul>

@@ -89,29 +89,15 @@ export async function POST(request: NextRequest) {
 
     // Try with both methods to see which one works
     try {
-      const result = await backendClient.patch(userId).set(updateData).commit();
-      console.log(
-        "Successfully updated user with backendClient:",
-        userId,
-        result
-      );
+      await backendClient.patch(userId).set(updateData).commit();
     } catch (backendError) {
-      console.log(
-        "backendClient failed, trying with writeClient...",
-        backendError
-      );
       // Import writeClient locally to avoid import issues
       const { writeClient } = await import("@/sanity/lib/client");
-      const result = await writeClient.patch(userId).set(updateData).commit();
-      console.log(
-        "Successfully updated user with writeClient:",
-        userId,
-        result
-      );
+      await writeClient.patch(userId).set(updateData).commit();
     }
     return NextResponse.json({
       success: true,
-      message: `🎉 ${
+      message: `${
         type === "premium" ? "Premium" : "Business"
       } account approved successfully for ${user.firstName} ${user.lastName}!`,
     });

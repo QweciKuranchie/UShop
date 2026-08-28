@@ -37,7 +37,7 @@ const DEAL_CATEGORIES: Record<
   flash: {
     title: "Flash Sales",
     subtitle: "Limited-time lightning deals with massive price drops up to 90% off. Grab yours before stock runs out!",
-    badgeText: "⚡ FLASH SALE — UP TO 90% OFF",
+    badgeText: "FLASH SALE — UP TO 90% OFF",
     maxDiscount: "Up to 90% OFF",
     bgGradient: "from-ushop-red via-red-600 to-amber-600",
     icon: Zap,
@@ -45,7 +45,7 @@ const DEAL_CATEGORIES: Record<
   students: {
     title: "Student Deals",
     subtitle: "Verified campus pricing on laptops, accessories, tech gadgets & student essentials up to 90% off.",
-    badgeText: "🎓 STUDENT EXCLUSIVE — UP TO 90% OFF",
+    badgeText: "STUDENT EXCLUSIVE — UP TO 90% OFF",
     maxDiscount: "Up to 90% OFF",
     bgGradient: "from-emerald-700 via-teal-600 to-ushop-pink",
     icon: GraduationCap,
@@ -53,7 +53,7 @@ const DEAL_CATEGORIES: Record<
   clearance: {
     title: "Clearance Sale",
     subtitle: "Final markdown on warehouse stock and last-chance items with discounts up to 50% off.",
-    badgeText: "🏷️ CLEARANCE — UP TO 50% OFF",
+    badgeText: "CLEARANCE — UP TO 50% OFF",
     maxDiscount: "Up to 50% OFF",
     bgGradient: "from-amber-600 via-orange-600 to-red-600",
     icon: Tag,
@@ -61,7 +61,7 @@ const DEAL_CATEGORIES: Record<
   "black-friday": {
     title: "Black Friday Mega Deals",
     subtitle: "The biggest shopping event of the year! Enjoy doorbuster discounts across all departments.",
-    badgeText: "🛍️ BLACK FRIDAY MEGA DEALS",
+    badgeText: "BLACK FRIDAY MEGA DEALS",
     maxDiscount: "Up to 90% OFF",
     bgGradient: "from-gray-950 via-gray-900 to-ushop-red",
     icon: ShoppingBag,
@@ -69,7 +69,7 @@ const DEAL_CATEGORIES: Record<
   "special-offers": {
     title: "Special Offers",
     subtitle: "Hand-picked seller promotions, bundle discounts, and seasonal price drops on UShop.",
-    badgeText: "✨ SPECIAL OFFERS",
+    badgeText: "SPECIAL OFFERS",
     maxDiscount: "Exclusive Savings",
     bgGradient: "from-ushop-purple via-ushop-pink to-red-500",
     icon: Sparkles,

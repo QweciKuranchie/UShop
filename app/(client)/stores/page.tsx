@@ -98,7 +98,7 @@ const StoresPage = async () => {
                             {store.name}
                           </h3>
                           {store.verifiedStudent && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 text-emerald-600 border border-emerald-200/80 rounded-md font-semibold text-[11px] shrink-0" title="Verified Student Seller">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 text-emerald-600 border border-emerald-200/80 rounded-md font-semibold text-xs shrink-0" title="Verified Student Seller">
                               <GraduationCap className="w-3 h-3 text-emerald-600" />
                               Verified Student
                             </span>
@@ -120,7 +120,7 @@ const StoresPage = async () => {
                         {/* Location Tag */}
                         {store.location?.name && (
                           <div className="flex flex-wrap gap-1.5 text-xs">
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md font-medium text-[11px]">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md font-medium text-xs">
                               <MapPin className="w-3 h-3 text-ushop-pink" />
                               {store.location.name}
                             </span>

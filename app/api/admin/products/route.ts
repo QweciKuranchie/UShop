@@ -38,8 +38,6 @@ export async function GET(req: NextRequest) {
     const sortBy = searchParams.get("sortBy") || "_createdAt";
     const sortOrder = searchParams.get("sortOrder") || "desc";
 
-    console.log("API Params - category:", category, "search:", search);
-
     // If requesting a specific product by ID, return full details
     if (productId) {
       const productQuery = `

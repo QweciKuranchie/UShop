@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { sanityFetch } from "../lib/live";
 
 // User Queries
@@ -230,14 +230,32 @@ export const ORDER_BY_ID_QUERY = `
   }
 `;
 
+export interface SanityUser {
+  _id?: string;
+  clerkUserId?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  rewardPoints?: number;
+  walletBalance?: number;
+  isActive?: boolean;
+  premiumStatus?: string;
+  businessStatus?: string;
+  isBusiness?: boolean;
+  roles?: string[];
+  [key: string]: unknown;
+}
+
 // User Functions
-export const getUserByClerkId = async (clerkUserId: string) => {
+export const getUserByClerkId = async (
+  clerkUserId: string
+): Promise<SanityUser | null> => {
   try {
     const { data } = await sanityFetch({
       query: USER_BY_CLERK_ID_QUERY,
       params: { clerkUserId },
     });
-    return data as any;
+    return (data as SanityUser) ?? null;
   } catch (error) {
     console.error("Error fetching user by Clerk ID:", error);
     return null;
@@ -263,7 +281,7 @@ export const getUserCart = async (clerkUserId: string) => {
       query: USER_CART_QUERY,
       params: { clerkUserId },
     });
-    return (data as { cart?: unknown[] })?.cart ?? [];
+    return (data as { cart?: Record<string, unknown>[] })?.cart ?? [];
   } catch (error) {
     console.error("Error fetching user cart:", error);
     return [];
@@ -276,33 +294,85 @@ export const getUserWishlist = async (clerkUserId: string) => {
       query: USER_WISHLIST_QUERY,
       params: { clerkUserId },
     });
-    return ((data as any)?.wishlist ?? []) as any[];
+    return (data as { wishlist?: Record<string, unknown>[] })?.wishlist ?? [];
   } catch (error) {
     console.error("Error fetching user wishlist:", error);
     return [];
   }
 };
 
-export const getUserOrders = async (clerkUserId: string) => {
+export const getUserOrders = async (
+  clerkUserId: string
+): Promise<SanityOrder[]> => {
   try {
     const { data } = await sanityFetch({
       query: USER_ORDERS_QUERY,
       params: { clerkUserId },
     });
-    return (data ?? []) as any[];
+    return (data as SanityOrder[]) ?? [];
   } catch (error) {
     console.error("Error fetching user orders:", error);
     return [];
   }
 };
 
-export const getOrderById = async (orderId: string) => {
+export interface SanityOrderProductItem {
+  product?: {
+    _id?: string;
+    name?: string;
+    slug?: { current?: string };
+    image?: { asset?: { url?: string } };
+    images?: Array<{ asset?: { _id?: string; url?: string } }>;
+    price?: number;
+    currency?: string;
+  };
+  quantity?: number;
+  price?: number;
+}
+
+export interface SanityOrderAddress {
+  name?: string;
+  address?: string;
+  streetAddress?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
+  phone?: string;
+  email?: string;
+  [key: string]: unknown;
+}
+
+export interface SanityOrder {
+  _id: string;
+  orderNumber: string;
+  clerkUserId?: string;
+  customerName?: string;
+  email?: string;
+  products?: SanityOrderProductItem[];
+  items?: SanityOrderProductItem[];
+  address?: SanityOrderAddress;
+  shippingAddress?: SanityOrderAddress;
+  subtotal?: number;
+  tax?: number;
+  shipping?: number;
+  totalPrice?: number;
+  currency?: string;
+  status?: string;
+  paymentStatus?: string;
+  paymentMethod?: string;
+  orderDate?: string;
+  _createdAt?: string;
+  [key: string]: unknown;
+}
+
+export const getOrderById = async (orderId: string): Promise<SanityOrder | null> => {
   try {
     const { data } = await sanityFetch({
       query: ORDER_BY_ID_QUERY,
       params: { orderId },
     });
-    return data as any;
+    return (data as SanityOrder) ?? null;
   } catch (error) {
     console.error("Error fetching order by ID:", error);
     return null;
@@ -327,13 +397,27 @@ export const USER_NOTIFICATIONS_QUERY = `
   }
 `;
 
-export const getUserNotifications = async (clerkUserId: string) => {
+export interface SanityNotificationItem {
+  id?: string;
+  _id?: string;
+  title?: string;
+  message?: string;
+  read?: boolean;
+  readAt?: string;
+  sentAt?: string;
+  _createdAt?: string;
+  [key: string]: unknown;
+}
+
+export const getUserNotifications = async (
+  clerkUserId: string
+): Promise<SanityNotificationItem[]> => {
   try {
     const { data } = await sanityFetch({
       query: USER_NOTIFICATIONS_QUERY,
       params: { clerkUserId },
     });
-    return ((data as any)?.notifications ?? []) as any[];
+    return (data as { notifications?: SanityNotificationItem[] })?.notifications ?? [];
   } catch (error) {
     console.error("Error fetching user notifications:", error);
     return [];
@@ -346,13 +430,6 @@ export const MARK_NOTIFICATION_READ_QUERY = `
     notifications
   }
 `;
-
-interface UserNotification {
-  id: string;
-  read?: boolean;
-  readAt?: string;
-  [key: string]: unknown;
-}
 
 export const markNotificationAsRead = async (
   clerkUserId: string,
@@ -368,10 +445,10 @@ export const markNotificationAsRead = async (
       throw new Error("User not found");
     }
 
-    const userData = user.data as { _id: string; notifications: UserNotification[] };
-    const updatedNotifications = userData.notifications.map(
-      (notification: UserNotification) => {
-        if (notification.id === notificationId) {
+    const userData = user.data as { _id: string; notifications: SanityNotificationItem[] };
+    const updatedNotifications = (userData.notifications || []).map(
+      (notification: SanityNotificationItem) => {
+        if (notification.id === notificationId || notification._id === notificationId) {
           return {
             ...notification,
             read: true,
@@ -410,9 +487,10 @@ export const deleteUserNotification = async (
       throw new Error("User not found");
     }
 
-    const userData = user.data as { _id: string; notifications: UserNotification[] };
-    const updatedNotifications = userData.notifications.filter(
-      (notification: UserNotification) => notification.id !== notificationId
+    const userData = user.data as { _id: string; notifications: SanityNotificationItem[] };
+    const updatedNotifications = (userData.notifications || []).filter(
+      (notification: SanityNotificationItem) =>
+        notification.id !== notificationId && notification._id !== notificationId
     );
 
     const { writeClient } = await import("../lib/client");

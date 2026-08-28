@@ -94,7 +94,7 @@ const HeaderNavBar = () => {
             >
               <Flame className="w-4 h-4 fill-ushop-red group-hover:fill-white text-ushop-red group-hover:text-white animate-pulse shrink-0" />
               <span>Deals & Offers</span>
-              <span className="px-1.5 py-0.2 bg-ushop-red group-hover:bg-white text-white group-hover:text-ushop-red text-[9px] font-black rounded-md ml-0.5">
+              <span className="px-1.5 py-0.2 bg-ushop-red group-hover:bg-white text-white group-hover:text-ushop-red text-xs font-bold rounded-md ml-0.5">
                 HOT
               </span>
               <ChevronDown className="w-3.5 h-3.5 ml-0.5 transition-transform group-hover:rotate-180" />
@@ -109,7 +109,7 @@ const HeaderNavBar = () => {
               }`}
             >
               <div className="px-3 py-2 border-b border-gray-100 mb-1">
-                <p className="text-[11px] font-extrabold uppercase tracking-wider text-gray-400">
+                <p className="text-xs font-bold uppercase tracking-wider text-gray-400">
                   Featured Sales & Offers
                 </p>
               </div>
