@@ -115,7 +115,7 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
               <div>
                 <p className="text-muted-foreground">Order Date</p>
                 <p className="font-medium">
-                  {new Date(order.orderDate).toLocaleDateString()}
+                  {new Date(order.orderDate || order._createdAt || Date.now()).toLocaleDateString()}
                 </p>
               </div>
             </div>
