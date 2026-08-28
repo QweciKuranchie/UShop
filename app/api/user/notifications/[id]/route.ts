@@ -14,6 +14,9 @@ export async function DELETE(
 
     const { id: notificationId } = await params;
 
+    const { deleteUserNotification } = await import("@/sanity/Queries/userQueries");
+    await deleteUserNotification(userId, notificationId);
+
     return NextResponse.json({
       success: true,
       message: "Notification deleted successfully",

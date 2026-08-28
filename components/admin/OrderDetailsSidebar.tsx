@@ -234,7 +234,7 @@ const OrderDetailsSidebar: React.FC<OrderDetailsSidebarProps> = ({
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent
-        className="w-[60vw] max-w-3xl md:max-w-4xl xl:max-w-5xl overflow-y-auto px-6 py-8"
+        className="w-full sm:w-[60vw] sm:max-w-3xl md:max-w-4xl xl:max-w-5xl overflow-y-auto px-4 sm:px-6 py-6 sm:py-8"
         onInteractOutside={handleInteractOutside}
       >
         <SheetHeader>

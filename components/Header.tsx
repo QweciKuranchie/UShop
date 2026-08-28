@@ -36,7 +36,7 @@ const Header = () => {
 
       {/* ── Sticky Row 2: Menu bar & Mobile search bar ── */}
       <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 hoverEffect">
-        <Container className="flex items-center justify-between py-5 text-lightColor">
+        <Container className="flex items-center justify-between py-2.5 sm:py-3.5 md:py-5 text-lightColor">
           {/* logo, Mobile Menu Icon */}
           <div className="w-auto flex items-center gap-2.5 justify-start">
             <MobileMenu />
@@ -72,7 +72,7 @@ const Header = () => {
         </Container>
 
         {/* Mobile search bar — visible only on mobile */}
-        <div className="px-4 pb-4 md:hidden">
+        <div className="px-4 pb-2.5 md:hidden">
           <SearchBar />
         </div>
       </div>

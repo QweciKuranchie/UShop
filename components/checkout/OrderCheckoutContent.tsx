@@ -22,17 +22,6 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { SanityOrder } from "@/sanity/Queries/userQueries";
 
-interface OrderProduct {
-  product: {
-    _id: string;
-    name: string;
-    images?: Array<{ asset?: { url?: string } }>;
-    price: number;
-    currency: string;
-  };
-  quantity: number;
-}
-
 interface OrderCheckoutContentProps {
   order: SanityOrder;
 }
@@ -69,25 +58,6 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
     }
   };
 
-  const handleCODPayment = async () => {
-    setIsProcessing(true);
-
-    try {
-      // Here you could implement COD logic if needed
-      // For now, just show a message
-      toast.success("Order confirmed with Cash on Delivery payment method");
-
-      setTimeout(() => {
-        window.location.href = `/user/orders/${order._id}`;
-      }, 1500);
-    } catch (error) {
-      console.error("COD payment error:", error);
-      toast.error("Failed to process COD payment");
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
   return (
     <div className="grid lg:grid-cols-3 gap-8">
       {/* Order Details */}
@@ -115,7 +85,11 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
               <div>
                 <p className="text-muted-foreground">Order Date</p>
                 <p className="font-medium">
-                  {new Date(order.orderDate || order._createdAt || Date.now()).toLocaleDateString()}
+                  {order.orderDate
+                    ? new Date(order.orderDate).toLocaleDateString()
+                    : order._createdAt
+                    ? new Date(order._createdAt).toLocaleDateString()
+                    : "N/A"}
                 </p>
               </div>
             </div>

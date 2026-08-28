@@ -629,7 +629,7 @@ const AdminNotifications: React.FC<AdminNotificationsProps> = ({
               Send Notification
             </Button>
           </SheetTrigger>
-          <SheetContent className="w-[600px] sm:w-[600px] p-6" side="right">
+          <SheetContent className="w-full sm:max-w-xl p-4 sm:p-6 overflow-y-auto" side="right">
             <SheetHeader className="px-0">
               <SheetTitle>Send New Notification</SheetTitle>
             </SheetHeader>
@@ -1227,7 +1227,7 @@ const AdminNotifications: React.FC<AdminNotificationsProps> = ({
       {/* Notification Details Sidebar */}
       <Sheet open={isViewSidebarOpen} onOpenChange={setIsViewSidebarOpen}>
         <SheetContent
-          className="w-[700px] sm:w-[700px] p-6 overflow-y-auto"
+          className="w-full sm:max-w-2xl p-4 sm:p-6 overflow-y-auto"
           side="right"
         >
           <SheetHeader className="px-0">

@@ -11,6 +11,14 @@ export async function PATCH(request: NextRequest) {
 
     const body = await request.json();
 
+    const { writeClient } = await import("@/sanity/lib/client");
+    const { getUserByClerkId } = await import("@/sanity/Queries/userQueries");
+    const user = await getUserByClerkId(userId);
+
+    if (user?._id) {
+      await writeClient.patch(user._id).set({ preferences: body }).commit();
+    }
+
     return NextResponse.json({
       success: true,
       message: "Settings updated successfully",

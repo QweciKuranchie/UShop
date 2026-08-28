@@ -43,7 +43,7 @@ const Footer = () => {
     <footer className="bg-[#0f172a] text-gray-300 border-t">
       <Container>
         <FooterTop />
-        <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           <div className="space-y-4">
             <Logo />
             <SubText>
@@ -116,7 +116,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-800">
-          <div className="max-w-7xl mx-auto px-4 py-6">
+          <div className="py-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-ushop-purple/20 flex items-center justify-center">
@@ -138,7 +138,7 @@ const Footer = () => {
                   </div>
                 ) : (
                   <form
-                    className="flex flex-col sm:flex-row w-full md:w-[350px] gap-2 sm:gap-0"
+                    className="relative flex flex-col sm:flex-row w-full md:w-[350px] gap-2 sm:gap-0"
                     onSubmit={handleSubscribe}
                   >
                     <div className="flex w-full">
@@ -181,11 +181,11 @@ const Footer = () => {
 
         {/* Bottom bar — legal + payment logos */}
         <div className="border-t border-gray-800">
-          <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="py-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-400">
               <p>© 2026 U-Shop. All rights reserved.</p>
 
-              <div className="flex items-center gap-4">
+              <div className="flex flex-wrap items-center justify-center gap-4">
                 <Link
                   href="/privacy"
                   className="hover:text-ushop-pink transition-colors hoverEffect"
@@ -207,11 +207,11 @@ const Footer = () => {
               </div>
 
               {/* Payment logos from /assets/icons/footer/ */}
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                 <span className="text-xs text-gray-400 font-medium mr-1">
                   Accepted payments:
                 </span>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <div className="bg-slate-800/90 border border-slate-700/80 rounded-md p-1 h-7.5 px-1.5 flex items-center justify-center shadow-xs hover:border-slate-600 transition-colors">
                     <Image
                       src="/assets/icons/footer/Momo.png"

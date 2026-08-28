@@ -305,9 +305,9 @@ const AdminOrders: React.FC = () => {
     <>
       <div className="space-y-4 p-4">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h3 className="text-lg font-semibold">Orders Management</h3>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Select
               value={perPage.toString()}
               onValueChange={handlePerPageChange}

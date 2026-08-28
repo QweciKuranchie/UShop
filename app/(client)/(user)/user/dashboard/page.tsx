@@ -7,13 +7,11 @@ import {
   Package,
   Heart,
   Bell,
-  Star,
   TrendingUp,
   Clock,
   ArrowRight,
   User,
   CheckCircle,
-  Wallet,
 } from "lucide-react";
 import {
   Card,

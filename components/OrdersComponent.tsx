@@ -3,20 +3,12 @@ import React, { useState } from "react";
 import { TableBody, TableCell, TableRow } from "./ui/table";
 import PriceFormatter from "./PriceFormatter";
 import { MY_ORDERS_QUERYResult } from "@/sanity.types";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./ui/tooltip";
 import { format } from "date-fns";
 import { CreditCard, Eye, Download } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { ORDER_STATUSES, PAYMENT_STATUSES } from "@/lib/orderStatus";
 import Link from "next/link";
-import Image from "next/image";
-import { urlFor } from "@/sanity/lib/image";
 
 const OrdersComponent = ({ orders }: { orders: MY_ORDERS_QUERYResult }) => {
   const [payingOrderId] = useState<string | null>(null);
@@ -24,67 +16,35 @@ const OrdersComponent = ({ orders }: { orders: MY_ORDERS_QUERYResult }) => {
     null
   );
 
-  // Helper function to render product images with stacked layout
-  const renderProductImages = (
-    products: Array<{
-      product?: {
-        name?: string;
-        image?: unknown;
-        images?: unknown[];
-      };
-    }>
-  ) => {
-    if (!products || products.length === 0) return null;
-
-    const maxVisible = 3;
-    const displayProducts = products.slice(0, maxVisible);
-    const remainingCount = products.length - maxVisible;
-
-    return (
-      <div className="flex items-center">
-        <div className="flex items-center">
-          {displayProducts.map((item, index) => {
-            const imageUrl = item.product?.images?.[0] || item.product?.image;
-            return (
-              <div
-                key={index}
-                className={`relative w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-sm bg-gray-100 ${
-                  index > 0 ? "-ml-2" : ""
-                } z-${30 - index * 10}`}
-                style={{ zIndex: 30 - index * 10 }}
-              >
-                {imageUrl ? (
-                  <Image
-                    src={urlFor(imageUrl).url()}
-                    alt={item.product?.name || "Product"}
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                    <span className="text-xs text-gray-500">?</span>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-          {remainingCount > 0 && (
-            <div className="-ml-2 w-8 h-8 rounded-full bg-gray-600 border-2 border-white shadow-sm flex items-center justify-center z-10">
-              <span className="text-xs font-semibold text-white">
-                +{remainingCount}
-              </span>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  };
-
   const handlePayNow = async (orderId: string) => {
     if (!orderId) return;
 
     // Redirect to checkout page with order ID
     window.location.href = `/checkout?orderId=${orderId}`;
+  };
+
+  const handleViewInvoice = (url?: string) => {
+    if (url) {
+      window.open(url, "_blank");
+    }
+  };
+
+  const handleDownloadInvoice = async (url?: string, invoiceNumber?: string) => {
+    if (!url) return;
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = `Invoice-${invoiceNumber || "order"}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch {
+      window.open(url, "_blank");
+    }
   };
 
   const handleGenerateInvoice = async (orderId: string) => {
@@ -126,156 +86,140 @@ const OrdersComponent = ({ orders }: { orders: MY_ORDERS_QUERYResult }) => {
   return (
     <>
       <TableBody>
-        <TooltipProvider>
-          {orders.map((order) => (
-            <Tooltip key={order?.orderNumber}>
-              <TooltipTrigger>
-                <TableRow className="hover:bg-gray-50 h-16">
-                  <TableCell className="font-medium text-sm">
-                    <div className="flex flex-col">
-                      <span className="truncate max-w-20 sm:max-w-none">
-                        {order.orderNumber?.slice(-10) ?? "N/A"}...
-                      </span>
-                      <span className="text-xs text-gray-500 md:hidden">
-                        {order?.orderDate &&
-                          format(new Date(order.orderDate), "dd/MM")}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell text-sm">
-                    {order?.orderDate &&
-                      format(new Date(order.orderDate), "dd/MM/yyyy")}
-                  </TableCell>
-                  <TableCell className="text-sm">
-                    <div className="flex flex-col">
-                      <span className="font-medium truncate max-w-[100px] sm:max-w-none">
-                        {order.customerName}
-                      </span>
-                      <span className="text-xs text-gray-500 sm:hidden truncate max-w-[120px]">
-                        {order.email}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell text-sm text-gray-600">
-                    <span className="truncate max-w-[150px] inline-block">
-                      {order.email}
-                    </span>
-                  </TableCell>
-                  <TableCell className="py-2">
-                    {renderProductImages(order.products || [])}
-                  </TableCell>
-                  <TableCell className="font-medium text-sm">
-                    <PriceFormatter
-                      amount={order?.totalPrice}
-                      className="text-black font-medium"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    {order?.status && (
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${
-                          order.paymentStatus === "paid" ||
-                          order.status === "completed" ||
-                          order.status === "delivered"
-                            ? "bg-green-100 text-green-800"
-                            : order.status === "cancelled"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-yellow-100 text-yellow-800"
-                        }`}
-                      >
-                        {order?.status.charAt(0).toUpperCase() +
-                          order?.status.slice(1)}
-                      </span>
-                    )}
-                  </TableCell>
-
-                  <TableCell className="hidden sm:table-cell">
-                    {order?.invoice?.hosted_invoice_url ? (
-                      <div className="flex items-center gap-1">
-                        <span className="text-xs text-gray-600 truncate max-w-16 lg:max-w-20">
-                          {order?.invoice?.number ||
-                            "INV-" + order.orderNumber?.slice(-6)}
+        {orders.map((order) => (
+          <TableRow key={order?.orderNumber} className="hover:bg-gray-50 h-16">
+            <TableCell className="font-medium text-sm">
+              <div className="flex flex-col">
+                <span className="truncate max-w-20 sm:max-w-none">
+                  {order.orderNumber?.slice(-10) ?? "N/A"}...
+                </span>
+                <span className="text-xs text-gray-500 md:hidden">
+                  {order?.orderDate &&
+                    format(new Date(order.orderDate), "dd/MM")}
+                </span>
+              </div>
+            </TableCell>
+            <TableCell className="hidden md:table-cell text-sm">
+              {order?.orderDate &&
+                format(new Date(order.orderDate), "dd/MM/yyyy")}
+            </TableCell>
+            <TableCell className="text-sm">
+              <span className="hidden sm:inline">{order?.customerName}</span>
+              <span className="sm:hidden">
+                {order?.customerName?.split(" ")[0]}
+              </span>
+            </TableCell>
+            <TableCell className="hidden sm:table-cell text-sm truncate max-w-32">
+              {order?.email}
+            </TableCell>
+            <TableCell className="text-sm">
+              <PriceFormatter
+                amount={order?.totalPrice}
+                className="text-black font-medium text-xs sm:text-sm"
+              />
+            </TableCell>
+            <TableCell>
+              {order?.status && (
+                <span
+                  className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-xs font-semibold whitespace-nowrap ${
+                    order.status === "paid"
+                      ? "bg-green-100 text-green-800"
+                      : order.status === "pending"
+                      ? "bg-yellow-100 text-yellow-800"
+                      : "bg-gray-100 text-gray-800"
+                  }`}
+                >
+                  {order.status}
+                </span>
+              )}
+            </TableCell>
+            <TableCell className="hidden lg:table-cell">
+              {order?.invoice?.hosted_invoice_url ? (
+                <div className="flex items-center gap-1">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-6 px-2 text-xs"
+                    onClick={() =>
+                      handleViewInvoice(order.invoice.hosted_invoice_url)
+                    }
+                  >
+                    View
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-6 px-2 text-xs"
+                    onClick={() =>
+                      handleDownloadInvoice(
+                        order.invoice.hosted_invoice_url,
+                        order.invoice.number || order.orderNumber
+                      )
+                    }
+                  >
+                    <Download className="w-3 h-3" />
+                  </Button>
+                </div>
+              ) : order?.paymentStatus === "paid" ? (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-6 px-2 text-xs"
+                  disabled={generatingInvoiceId === order._id}
+                  onClick={() => handleGenerateInvoice(order._id)}
+                >
+                  {generatingInvoiceId === order._id ? (
+                    <>
+                      <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-600 mr-1"></div>
+                      Gen...
+                    </>
+                  ) : (
+                    "Generate"
+                  )}
+                </Button>
+              ) : (
+                <span className="text-xs text-gray-400">----</span>
+              )}
+            </TableCell>
+            <TableCell>
+              <div className="flex items-center justify-center gap-1 flex-wrap">
+                <Button
+                  asChild
+                  size="sm"
+                  variant="outline"
+                  className="h-8 px-2 text-xs"
+                >
+                  <Link href={`/user/orders/${order._id}`}>
+                    <Eye className="w-3 h-3 sm:mr-1" />
+                    <span className="hidden sm:inline">View</span>
+                  </Link>
+                </Button>
+                {isOrderPayable(order) && (
+                  <Button
+                    onClick={() => handlePayNow(order._id)}
+                    disabled={payingOrderId === order._id}
+                    size="sm"
+                    className="bg-blue-600 hover:bg-blue-700 text-white h-8 px-2 text-xs"
+                  >
+                    {payingOrderId === order._id ? (
+                      <>
+                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white sm:mr-1"></div>
+                        <span className="hidden sm:inline">
+                          Paying...
                         </span>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="h-6 w-6 p-0 shrink-0"
-                          onClick={() => {
-                            window.open(
-                              order.invoice?.hosted_invoice_url,
-                              "_blank"
-                            );
-                          }}
-                        >
-                          <Download className="w-3 h-3" />
-                        </Button>
-                      </div>
-                    ) : order?.paymentStatus === "paid" ? (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-6 px-2 text-xs"
-                        disabled={generatingInvoiceId === order._id}
-                        onClick={() => handleGenerateInvoice(order._id)}
-                      >
-                        {generatingInvoiceId === order._id ? (
-                          <>
-                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-600 mr-1"></div>
-                            Gen...
-                          </>
-                        ) : (
-                          "Generate"
-                        )}
-                      </Button>
+                      </>
                     ) : (
-                      <span className="text-xs text-gray-400">----</span>
+                      <>
+                        <CreditCard className="w-3 h-3 sm:mr-1" />
+                        <span className="hidden sm:inline">Pay Now</span>
+                      </>
                     )}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center justify-center gap-1 flex-wrap">
-                      <Button
-                        asChild
-                        size="sm"
-                        variant="outline"
-                        className="h-8 px-2 text-xs"
-                      >
-                        <Link href={`/user/orders/${order._id}`}>
-                          <Eye className="w-3 h-3 sm:mr-1" />
-                          <span className="hidden sm:inline">View</span>
-                        </Link>
-                      </Button>
-                      {isOrderPayable(order) && (
-                        <Button
-                          onClick={() => handlePayNow(order._id)}
-                          disabled={payingOrderId === order._id}
-                          size="sm"
-                          className="bg-blue-600 hover:bg-blue-700 text-white h-8 px-2 text-xs"
-                        >
-                          {payingOrderId === order._id ? (
-                            <>
-                              <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white sm:mr-1"></div>
-                              <span className="hidden sm:inline">
-                                Paying...
-                              </span>
-                            </>
-                          ) : (
-                            <>
-                              <CreditCard className="w-3 h-3 sm:mr-1" />
-                              <span className="hidden sm:inline">Pay Now</span>
-                            </>
-                          )}
-                        </Button>
-                      )}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>View order details or make payment</p>
-              </TooltipContent>
-            </Tooltip>
-          ))}
-        </TooltipProvider>
+                  </Button>
+                )}
+              </div>
+            </TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </>
   );

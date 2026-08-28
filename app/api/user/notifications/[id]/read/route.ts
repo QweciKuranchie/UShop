@@ -14,6 +14,9 @@ export async function PATCH(
 
     const { id: notificationId } = await params;
 
+    const { markNotificationAsRead } = await import("@/sanity/Queries/userQueries");
+    await markNotificationAsRead(userId, notificationId);
+
     return NextResponse.json({
       success: true,
       message: "Notification marked as read",

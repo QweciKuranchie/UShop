@@ -4,7 +4,6 @@ import {
   getUserOrders,
   getUserWishlist,
   getUserNotifications,
-  getUserByClerkId,
   SanityNotificationItem,
   SanityOrder,
 } from "@/sanity/Queries/userQueries";
@@ -18,12 +17,11 @@ export async function GET() {
     }
 
     // Fetch real data from Sanity
-    const [userOrders, userWishlist, userNotifications, userData] =
+    const [userOrders, userWishlist, userNotifications] =
       await Promise.all([
         getUserOrders(user.id),
         getUserWishlist(user.id),
         getUserNotifications(user.id),
-        getUserByClerkId(user.id),
       ]);
 
     // Calculate stats from real data
