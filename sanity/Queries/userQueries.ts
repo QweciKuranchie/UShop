@@ -330,6 +330,19 @@ export interface SanityOrderProductItem {
   price?: number;
 }
 
+export interface SanityOrderAddress {
+  name?: string;
+  address?: string;
+  streetAddress?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
+  phone?: string;
+  email?: string;
+  [key: string]: unknown;
+}
+
 export interface SanityOrder {
   _id: string;
   orderNumber: string;
@@ -337,6 +350,9 @@ export interface SanityOrder {
   customerName?: string;
   email?: string;
   products?: SanityOrderProductItem[];
+  items?: SanityOrderProductItem[];
+  address?: SanityOrderAddress;
+  shippingAddress?: SanityOrderAddress;
   subtotal?: number;
   tax?: number;
   shipping?: number;
@@ -344,6 +360,7 @@ export interface SanityOrder {
   currency?: string;
   status?: string;
   paymentStatus?: string;
+  paymentMethod?: string;
   orderDate?: string;
   _createdAt?: string;
   [key: string]: unknown;

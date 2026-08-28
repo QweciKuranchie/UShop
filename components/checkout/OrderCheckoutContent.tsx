@@ -132,10 +132,10 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-1">
-              <p className="font-medium">{order.address.name}</p>
-              <p className="text-muted-foreground">{order.address.address}</p>
+              <p className="font-medium">{order.address?.name}</p>
+              <p className="text-muted-foreground">{order.address?.address}</p>
               <p className="text-muted-foreground">
-                {order.address.city}, {order.address.state} {order.address.zip}
+                {order.address?.city}, {order.address?.state} {order.address?.zip}
               </p>
             </div>
           </CardContent>
@@ -182,26 +182,26 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
         {/* Order Items */}
         <Card>
           <CardHeader>
-            <CardTitle>Order Items ({order.products.length})</CardTitle>
+            <CardTitle>Order Items ({order.products?.length ?? 0})</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {order.products.map((item, index) => (
+            {(order.products ?? []).map((item, index) => (
               <div key={index} className="flex gap-3 p-3 border rounded-lg">
                 <div className="w-16 h-16 flex-shrink-0">
                   <Image
                     src={
-                      item.product.images?.[0]
+                      item.product?.images?.[0]
                         ? urlFor(item.product.images[0]).url()
                         : "/placeholder.jpg"
                     }
-                    alt={item.product.name || "Product"}
+                    alt={item.product?.name || "Product"}
                     width={64}
                     height={64}
                     className="w-full h-full object-cover rounded"
                   />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-medium">{item.product.name}</h4>
+                  <h4 className="font-medium">{item.product?.name}</h4>
                   <p className="text-sm text-muted-foreground">
                     Qty: {item.quantity}
                   </p>
@@ -209,11 +209,11 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
                 <div className="text-right">
                   <p className="font-medium">
                     <PriceFormatter
-                      amount={item.product.price * item.quantity}
+                      amount={(item.product?.price ?? 0) * (item.quantity ?? 0)}
                     />
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    <PriceFormatter amount={item.product.price} /> each
+                    <PriceFormatter amount={item.product?.price} /> each
                   </p>
                 </div>
               </div>
@@ -230,7 +230,7 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between">
-              <span>Subtotal ({order.products.length} items)</span>
+              <span>Subtotal ({order.products?.length ?? 0} items)</span>
               <PriceFormatter amount={order.subtotal} />
             </div>
             <div className="flex justify-between">

@@ -67,7 +67,7 @@ function Button({
             className: cn(
               buttonVariants({ variant, size, className }),
               buttonProps.className,
-              child.props.className
+              typeof child.props.className === "string" ? child.props.className : undefined
             ),
           };
           return React.cloneElement(child, mergedProps);
