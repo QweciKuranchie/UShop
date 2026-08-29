@@ -8,8 +8,8 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
-  title: "U-Shop | Trusted C2C E-Commerce & Tech Equipment",
-  description: "U-Shop, Your trusted C2C e-commerce for tech equipment and campus marketplaces",
+  title: "U-Shop | Ghana's Tech E-Commerce Platform",
+  description: "UShop — Ghana's trusted tech e-commerce platform. Buy and sell phones, laptops, and gadgets.",
   applicationName: "U-Shop",
   appleWebApp: {
     capable: true,

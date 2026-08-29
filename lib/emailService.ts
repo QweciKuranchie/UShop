@@ -469,7 +469,7 @@ const generateOrderConfirmationHTML = (data: OrderConfirmationData): string => {
         <!-- Header -->
         <div class="header">
             <h1>Order Confirmed!</h1>
-            <p>Thank you for shopping with ShopCart</p>
+            <p>Thank you for shopping with UShop</p>
         </div>
         
         <!-- Main Content -->
@@ -592,7 +592,7 @@ const generateOrderConfirmationHTML = (data: OrderConfirmationData): string => {
                 <div class="contact-info">
                     <div class="contact-item">
                         <strong>Email</strong>
-                        <span>support@shopcart.com</span>
+                        <span>support@ushopgh.com</span>
                     </div>
                     <div class="contact-item">
                         <strong>Phone</strong>
@@ -608,10 +608,10 @@ const generateOrderConfirmationHTML = (data: OrderConfirmationData): string => {
         
         <!-- Footer -->
         <div class="footer">
-            <p><strong>ShopCart</strong></p>
+            <p><strong>UShop</strong></p>
             <p>123 Shopping Street, Commerce District<br>
                New York, NY 10001, USA</p>
-            <p>Thank you for choosing ShopCart!</p>
+            <p>Thank you for choosing UShop!</p>
             
             <div class="social-links">
                 <a href="https://www.youtube.com/@reactjsBD">Facebook</a> |
@@ -632,7 +632,7 @@ const sendOrderConfirmationEmail = async (
     const htmlContent = generateOrderConfirmationHTML(data);
 
     const mailOptions = {
-      from: `"ShopCart Ecommerce" <${
+      from: `"UShop Ecommerce" <${
         process.env.SENDER_EMAIL_ADDRESS || "reactjsbd@gmail.com"
       }>`,
       to: data.customerEmail,
@@ -670,9 +670,9 @@ ${data.estimatedDelivery ? `Estimated Delivery: ${data.estimatedDelivery}` : ""}
 
 We'll send you another email with tracking information once your order ships.
 
-If you have any questions, please contact us at support@shopcart.com or +1 (555) 123-4567.
+If you have any questions, please contact us at support@ushopgh.com or +1 (555) 123-4567.
 
-Thank you for choosing ShopCart!
+Thank you for choosing UShop!
       `,
     };
 
@@ -697,7 +697,7 @@ const sendMail = async ({
 }: SendMailParams): Promise<EmailResponse> => {
   try {
     const mailOptions = {
-      from: `"ShopCart Ecommerce" <${
+      from: `"UShop Ecommerce" <${
         process.env.SENDER_EMAIL_ADDRESS || "reactjsbd@gmail.com"
       }>`,
       to: email,
