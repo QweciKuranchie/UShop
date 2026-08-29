@@ -9,8 +9,8 @@ import { GraduationCap, MapPin, Building2, ArrowRight } from "lucide-react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Campus Marketplaces & Universities | UShop",
-  description: "Shop products from verified student sellers and vendors across Ghana university campuses.",
+  title: "Campus Hubs & Student Sellers | UShop",
+  description: "Explore student seller hubs and campus storefronts across Ghana universities.",
 };
 
 const DEFAULT_UNIVERSITIES = [
@@ -114,13 +114,13 @@ const UniversitiesPage = async () => {
         <div className="bg-white rounded-2xl p-6 sm:p-10 shadow-xs border border-gray-100 mb-8 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center sm:text-left">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-ushop-pink/10 text-ushop-pink text-xs font-semibold rounded-full mb-3">
-              <GraduationCap className="w-4 h-4" /> Verified Student Marketplaces
+              <GraduationCap className="w-4 h-4" /> Student Seller Hubs
             </span>
             <Title className="text-2xl sm:text-4xl font-bold text-gray-900 mb-2">
-              Campus Marketplaces
+              University Campus Hubs
             </Title>
             <p className="text-gray-600 text-sm sm:text-base max-w-xl">
-              Buy and sell directly on your campus. Connect with verified student entrepreneurs and campus vendors across Ghana.
+              Connect with verified student sellers and discover campus-specific tech deals and peer meetups across Ghana.
             </p>
           </div>
 

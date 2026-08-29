@@ -98,8 +98,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${university.name} Campus Marketplace | UShop`,
-    description: `Shop products from verified student sellers and vendors at ${university.name}.`,
+    title: `${university.name} Campus Hub | UShop`,
+    description: `Shop tech products from verified student sellers at ${university.name}.`,
   };
 }
 
