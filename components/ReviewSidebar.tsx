@@ -132,17 +132,17 @@ const ReviewSidebar = React.memo(
           className="w-full sm:max-w-lg overflow-y-auto"
         >
           <SheetHeader>
-            <SheetTitle className="flex items-center gap-2 text-shop_dark_green">
-              <Star className="w-5 h-5" />
+            <SheetTitle className="flex items-center gap-2 text-ushop-purple-dark">
+              <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
               Write a Review
             </SheetTitle>
             <SheetDescription className="text-left">
               Share your experience with{" "}
-              <span className="font-semibold">{productName}</span>
+              <span className="font-semibold text-gray-900">{productName}</span>
             </SheetDescription>
             {isVerifiedPurchase && (
-              <div className="bg-green-50 border border-green-200 rounded-md p-3 mt-2">
-                <p className="text-sm text-green-700 font-medium">
+              <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 mt-2">
+                <p className="text-xs text-emerald-700 font-medium">
                   ✓ This will be marked as a verified purchase
                 </p>
               </div>
@@ -158,7 +158,7 @@ const ReviewSidebar = React.memo(
               <div className="space-y-3">
                 <Label
                   htmlFor="rating"
-                  className="text-base font-semibold text-shop_dark_green"
+                  className="text-base font-semibold text-ushop-purple-dark"
                 >
                   Your Rating <span className="text-red-500">*</span>
                 </Label>
@@ -171,15 +171,15 @@ const ReviewSidebar = React.memo(
                         onClick={() => handleRatingClick(value)}
                         onMouseEnter={() => handleRatingHover(value)}
                         onMouseLeave={handleRatingLeave}
-                        className="transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-shop_light_green focus:ring-offset-2 rounded"
+                        className="transition-transform hover:scale-110 focus:outline-hidden focus:ring-2 focus:ring-ushop-pink focus:ring-offset-2 rounded"
                         aria-label={`Rate ${value} stars`}
                         disabled={isSubmitting}
                       >
                         <StarIcon
-                          size={40}
+                          size={36}
                           className={`${
                             value <= (hoverRating || rating)
-                              ? "text-shop_light_green fill-shop_light_green"
+                              ? "text-yellow-400 fill-yellow-400"
                               : "text-gray-300"
                           } transition-colors`}
                         />
@@ -188,13 +188,13 @@ const ReviewSidebar = React.memo(
                   </div>
                   {rating > 0 && (
                     <div className="flex items-center gap-2">
-                      <div className="h-1 flex-1 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="h-1.5 flex-1 bg-gray-200 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-shop_light_green transition-all duration-300"
+                          className="h-full bg-yellow-400 transition-all duration-300"
                           style={{ width: `${(rating / 5) * 100}%` }}
                         />
                       </div>
-                      <span className="text-sm font-medium text-shop_dark_green min-w-[80px]">
+                      <span className="text-sm font-medium text-ushop-purple-dark min-w-[80px]">
                         {rating} {rating === 1 ? "star" : "stars"}
                       </span>
                     </div>
@@ -211,7 +211,7 @@ const ReviewSidebar = React.memo(
               <div className="space-y-2">
                 <Label
                   htmlFor="title"
-                  className="text-base font-semibold text-shop_dark_green"
+                  className="text-base font-semibold text-ushop-purple-dark"
                 >
                   Review Title <span className="text-red-500">*</span>
                 </Label>
@@ -223,7 +223,7 @@ const ReviewSidebar = React.memo(
                   maxLength={100}
                   required
                   disabled={isSubmitting}
-                  className={`border-gray-300 focus:border-shop_light_green ${
+                  className={`border-gray-300 focus:border-ushop-pink rounded-xl ${
                     titleLength > 0 && !isTitleValid ? "border-red-300" : ""
                   }`}
                 />
@@ -233,7 +233,7 @@ const ReviewSidebar = React.memo(
                       titleLength > 0 && !isTitleValid
                         ? "text-red-500"
                         : titleLength >= 5
-                        ? "text-green-600"
+                        ? "text-emerald-600 font-medium"
                         : "text-gray-500"
                     }`}
                   >
@@ -249,7 +249,7 @@ const ReviewSidebar = React.memo(
               <div className="space-y-2">
                 <Label
                   htmlFor="content"
-                  className="text-base font-semibold text-shop_dark_green"
+                  className="text-base font-semibold text-ushop-purple-dark"
                 >
                   Your Review <span className="text-red-500">*</span>
                 </Label>
@@ -262,7 +262,7 @@ const ReviewSidebar = React.memo(
                   rows={8}
                   required
                   disabled={isSubmitting}
-                  className={`border-gray-300 focus:border-shop_light_green resize-none ${
+                  className={`border-gray-300 focus:border-ushop-pink rounded-xl resize-none ${
                     contentLength > 0 && !isContentValid ? "border-red-300" : ""
                   }`}
                 />
@@ -272,7 +272,7 @@ const ReviewSidebar = React.memo(
                       contentLength > 0 && !isContentValid
                         ? "text-red-500"
                         : contentLength >= 20
-                        ? "text-green-600"
+                        ? "text-emerald-600 font-medium"
                         : "text-gray-500"
                     }`}
                   >
@@ -285,11 +285,11 @@ const ReviewSidebar = React.memo(
               </div>
 
               {/* Guidelines */}
-              <div className="bg-blue-50 border border-blue-200 rounded-md p-4 space-y-2">
-                <h4 className="text-sm font-semibold text-blue-900">
+              <div className="bg-purple-50/50 border border-purple-100 rounded-xl p-4 space-y-2">
+                <h4 className="text-sm font-semibold text-ushop-purple-dark">
                   Review Guidelines
                 </h4>
-                <ul className="text-xs text-blue-700 space-y-1 list-disc list-inside">
+                <ul className="text-xs text-ushop-purple-dark/80 space-y-1 list-disc list-inside">
                   <li>Be honest and constructive in your feedback</li>
                   <li>Focus on your experience with the product</li>
                   <li>Your review will be published after admin approval</li>
@@ -306,7 +306,7 @@ const ReviewSidebar = React.memo(
                   variant="outline"
                   onClick={() => handleOpenChange(false)}
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto"
+                  className="w-full sm:w-auto rounded-xl"
                 >
                   Cancel
                 </Button>
@@ -318,7 +318,7 @@ const ReviewSidebar = React.memo(
                     !isTitleValid ||
                     !isContentValid
                   }
-                  className="w-full sm:flex-1 bg-shop_dark_green hover:bg-shop_light_green text-white disabled:opacity-50"
+                  className="w-full sm:flex-1 bg-ushop-purple hover:bg-ushop-purple-dark text-white rounded-xl disabled:opacity-50 font-bold hoverEffect"
                 >
                   {isSubmitting ? (
                     <>

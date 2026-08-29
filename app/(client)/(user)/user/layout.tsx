@@ -19,6 +19,7 @@ import {
   Shield,
   Users,
   Building2,
+  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useClerk } from "@clerk/nextjs";
@@ -83,6 +84,12 @@ const adminItems = [
     href: "/user/admin/business-accounts",
     icon: Building2,
     description: "Business approvals",
+  },
+  {
+    title: "Reviews Moderation",
+    href: "/user/admin/reviews",
+    icon: Star,
+    description: "Approve customer reviews",
   },
 ];
 
