@@ -1,8 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
-import { StarIcon, ThumbsUp, MessageSquare, ShieldAlert } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  StarIcon,
+  ThumbsUp,
+  MessageSquare,
+  ShieldCheck,
+  Plus,
+  Loader2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ReviewSidebar from "@/components/ReviewSidebar";
+import {
+  getProductReviewsAPI,
+  markReviewHelpfulAPI,
+  ProductReviewsData,
+} from "@/lib/reviewAPI";
+import { toast } from "sonner";
+import { useUser } from "@clerk/nextjs";
 
 interface Review {
   _id: string;
@@ -15,6 +30,11 @@ interface Review {
   user: {
     firstName: string;
     lastName: string;
+    profileImage?: {
+      asset: {
+        url: string;
+      };
+    };
   };
 }
 
@@ -24,244 +44,333 @@ interface ProductReviewsProps {
   initialReviews?: Review[];
 }
 
-const ProductReviews = ({ productName, initialReviews }: ProductReviewsProps) => {
-  const [reviews, setReviews] = useState<Review[]>(
-    initialReviews && initialReviews.length > 0 ? initialReviews : []
-  );
-
-  const [helpfulRatings, setHelpfulRatings] = useState<Record<string, number>>({});
-  const [showForm, setShowForm] = useState(false);
-  const [newRating, setNewRating] = useState(5);
-  const [newTitle, setNewTitle] = useState("");
-  const [newContent, setNewContent] = useState("");
-  const [newName, setNewName] = useState("");
-
-  const handleMarkHelpful = (reviewId: string) => {
-    if (helpfulRatings[reviewId]) return;
-    setHelpfulRatings((prev) => ({ ...prev, [reviewId]: 1 }));
-    setReviews((prev) =>
-      prev.map((r) => (r._id === reviewId ? { ...r, helpful: r.helpful + 1 } : r))
+const ProductReviews = React.memo(
+  ({ productId, productName, initialReviews }: ProductReviewsProps) => {
+    const { isSignedIn } = useUser();
+    const [reviews, setReviews] = useState<Review[]>(
+      initialReviews && initialReviews.length > 0 ? initialReviews : []
     );
-  };
+    const [stats, setStats] = useState<ProductReviewsData | null>(null);
+    const [helpfulRatings, setHelpfulRatings] = useState<Record<string, number>>({});
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [visibleCount, setVisibleCount] = useState(5);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newTitle || !newContent || !newName) return;
+    const loadReviews = useCallback(async () => {
+      if (!productId) return;
+      setIsLoading(true);
+      try {
+        const data = await getProductReviewsAPI(productId);
+        if (data) {
+          setStats(data);
+          setReviews(data.reviews || []);
+        }
+      } catch (error) {
+        console.error("Error loading reviews:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }, [productId]);
 
-    const names = newName.split(" ");
-    const firstName = names[0] || "Anonymous";
-    const lastName = names.slice(1).join(" ") || "";
+    useEffect(() => {
+      loadReviews();
+    }, [loadReviews]);
 
-    const newReview: Review = {
-      _id: Date.now().toString(),
-      rating: newRating,
-      title: newTitle,
-      content: newContent,
-      helpful: 0,
-      isVerifiedPurchase: false,
-      createdAt: new Date().toISOString(),
-      user: { firstName, lastName },
+    const handleMarkHelpful = useCallback(
+      async (reviewId: string) => {
+        if (!isSignedIn) {
+          toast.error("Please sign in to mark reviews as helpful");
+          return;
+        }
+
+        const isCurrentlyMarked = helpfulRatings[reviewId];
+
+        // Optimistic UI update
+        setHelpfulRatings((prev) => ({
+          ...prev,
+          [reviewId]: isCurrentlyMarked ? 0 : 1,
+        }));
+        setReviews((prev) =>
+          prev.map((r) =>
+            r._id === reviewId
+              ? {
+                  ...r,
+                  helpful: isCurrentlyMarked
+                    ? Math.max(0, r.helpful - 1)
+                    : r.helpful + 1,
+                }
+              : r
+          )
+        );
+
+        try {
+          const res = await markReviewHelpfulAPI(reviewId);
+          if (res.success) {
+            toast.success(res.message);
+          } else {
+            toast.error(res.message);
+            // Revert optimistic update
+            setHelpfulRatings((prev) => ({
+              ...prev,
+              [reviewId]: isCurrentlyMarked ? 1 : 0,
+            }));
+            setReviews((prev) =>
+              prev.map((r) =>
+                r._id === reviewId
+                  ? {
+                      ...r,
+                      helpful: isCurrentlyMarked
+                        ? r.helpful + 1
+                        : Math.max(0, r.helpful - 1),
+                    }
+                  : r
+              )
+            );
+          }
+        } catch (error) {
+          console.error("Error marking helpful:", error);
+          toast.error("Failed to update review helpful status");
+        }
+      },
+      [isSignedIn, helpfulRatings]
+    );
+
+    const averageRating =
+      stats?.averageRating ??
+      (reviews.length > 0
+        ? parseFloat(
+            (
+              reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
+            ).toFixed(1)
+          )
+        : 0);
+
+    const totalReviews = stats?.totalReviews ?? reviews.length;
+
+    const distribution = stats?.ratingDistribution ?? {
+      fiveStars: reviews.filter((r) => r.rating === 5).length,
+      fourStars: reviews.filter((r) => r.rating === 4).length,
+      threeStars: reviews.filter((r) => r.rating === 3).length,
+      twoStars: reviews.filter((r) => r.rating === 2).length,
+      oneStar: reviews.filter((r) => r.rating === 1).length,
     };
 
-    setReviews((prev) => [newReview, ...prev]);
-    setShowForm(false);
-    setNewTitle("");
-    setNewContent("");
-    setNewName("");
-  };
-
-  return (
-    <div className="space-y-8 mt-12 pt-12 border-t border-gray-100">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-zinc-900">
-            Customer Reviews
-          </h2>
-          <p className="text-sm text-zinc-500 mt-1">
-            Read what our customers are saying about {productName}
-          </p>
-        </div>
-
-        {!showForm && (
-          <Button
-            onClick={() => setShowForm(true)}
-            className="bg-ushop-pink hover:bg-ushop-pink/90 text-white font-semibold rounded-xl hoverEffect self-start"
-          >
-            Write a Review
-          </Button>
-        )}
-      </div>
-
-      {showForm && (
-        <form
-          onSubmit={handleSubmit}
-          className="bg-zinc-50/50 border border-zinc-100 rounded-2xl p-6 space-y-4 max-w-xl"
-        >
-          <h3 className="font-bold text-zinc-800 text-lg">Write your review</h3>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-zinc-500">Rating</label>
-            <div className="flex gap-1.5">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  type="button"
-                  onClick={() => setNewRating(star)}
-                  className="focus:outline-hidden hoverEffect"
-                >
-                  <StarIcon
-                    size={20}
-                    className={
-                      star <= newRating
-                        ? "fill-yellow-400 text-yellow-400"
-                        : "text-zinc-300"
-                    }
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-zinc-500">Your Name</label>
-            <input
-              type="text"
-              required
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              className="w-full text-sm border border-zinc-200 focus:border-ushop-pink focus:ring-1 focus:ring-ushop-pink rounded-xl px-3 py-2 outline-hidden bg-white hoverEffect"
-              placeholder="e.g. Kofi Mensah"
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-zinc-500">Review Title</label>
-            <input
-              type="text"
-              required
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              className="w-full text-sm border border-zinc-200 focus:border-ushop-pink focus:ring-1 focus:ring-ushop-pink rounded-xl px-3 py-2 outline-hidden bg-white hoverEffect"
-              placeholder="e.g. Excellent purchase"
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-zinc-500">Review Content</label>
-            <textarea
-              required
-              rows={4}
-              value={newContent}
-              onChange={(e) => setNewContent(e.target.value)}
-              className="w-full text-sm border border-zinc-200 focus:border-ushop-pink focus:ring-1 focus:ring-ushop-pink rounded-xl px-3 py-2 outline-hidden bg-white hoverEffect resize-y"
-              placeholder="What did you like or dislike?"
-            />
-          </div>
-
-          <div className="flex gap-3 pt-2">
-            <button
-              type="submit"
-              className="bg-ushop-pink text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-ushop-pink/90 hoverEffect"
-            >
-              Submit Review
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowForm(false)}
-              className="text-zinc-600 text-sm font-semibold px-4 py-2 border border-zinc-200 rounded-xl hover:bg-zinc-50 hoverEffect"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      )}
-
-      {/* Review List */}
-      <div className="space-y-6">
-        {reviews.length === 0 ? (
-          <div className="text-center py-10 bg-zinc-50/50 rounded-2xl border border-zinc-100/50">
-            <MessageSquare className="mx-auto text-zinc-400 mb-3" size={32} />
-            <h3 className="font-semibold text-zinc-800">No reviews yet</h3>
+    return (
+      <div className="space-y-8 mt-12 pt-12 border-t border-gray-100">
+        {/* Header with Title & Action Button */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold text-zinc-900">
+              Customer Reviews
+            </h2>
             <p className="text-sm text-zinc-500 mt-1">
-              Be the first to review this product!
+              Read what verified buyers are saying about {productName}
             </p>
           </div>
-        ) : (
-          reviews.map((review) => (
-            <div
-              key={review._id}
-              className="bg-white border border-zinc-100 rounded-2xl p-5 sm:p-6 shadow-xs hover:border-ushop-purple/10 hoverEffect"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ushop-purple/10 to-ushop-pink/10 flex items-center justify-center font-bold text-ushop-purple">
-                    {review.user.firstName[0]}
-                    {review.user.lastName[0] || ""}
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-zinc-800 text-sm">
-                      {review.user.firstName} {review.user.lastName}
-                    </h4>
-                    <p className="text-[10px] text-zinc-400">
-                      {new Date(review.createdAt).toLocaleDateString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </p>
-                  </div>
-                </div>
 
-                <div className="flex items-center gap-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <StarIcon
-                      key={star}
-                      size={14}
-                      className={
-                        star <= review.rating
-                          ? "fill-yellow-400 text-yellow-400"
-                          : "text-zinc-200"
-                      }
-                    />
-                  ))}
-                </div>
+          <Button
+            onClick={() => {
+              if (!isSignedIn) {
+                toast.error("Please sign in to write a review");
+                return;
+              }
+              setIsSidebarOpen(true);
+            }}
+            className="bg-ushop-purple hover:bg-ushop-purple-dark text-white font-bold rounded-xl shadow-xs hoverEffect self-start flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Write a Review</span>
+          </Button>
+        </div>
+
+        {/* Rating Breakdown / Summary Card */}
+        {totalReviews > 0 && (
+          <div className="bg-gradient-to-br from-gray-50 to-purple-50/20 border border-gray-100 rounded-2xl p-6 sm:p-8 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+            {/* Overall Rating */}
+            <div className="text-center md:text-left flex flex-col items-center md:items-start justify-center">
+              <div className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">
+                {averageRating.toFixed(1)}
               </div>
-
-              <div className="space-y-2">
-                <h5 className="font-bold text-zinc-800 text-sm">{review.title}</h5>
-                <p className="text-sm text-zinc-600 leading-relaxed">
-                  {review.content}
-                </p>
+              <div className="flex items-center gap-1 my-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <StarIcon
+                    key={star}
+                    size={18}
+                    className={
+                      star <= Math.round(averageRating)
+                        ? "fill-yellow-400 text-yellow-400"
+                        : "text-gray-300"
+                    }
+                  />
+                ))}
               </div>
-
-              <div className="flex items-center justify-between gap-4 mt-5 pt-4 border-t border-zinc-50">
-                <div className="flex items-center gap-1.5 text-emerald-600 text-xs font-medium">
-                  {review.isVerifiedPurchase && (
-                    <>
-                      <ShieldAlert size={14} className="fill-emerald-50 text-emerald-600" />
-                      <span>Verified Purchase</span>
-                    </>
-                  )}
-                </div>
-
-                <button
-                  onClick={() => handleMarkHelpful(review._id)}
-                  className={`flex items-center gap-1.5 text-xs font-semibold py-1.5 px-3 rounded-full border transition-all duration-300 ${
-                    helpfulRatings[review._id]
-                      ? "bg-emerald-50 border-emerald-100 text-emerald-600 cursor-default"
-                      : "bg-white border-zinc-200 hover:border-ushop-pink hover:text-ushop-pink text-zinc-600 hoverEffect"
-                  }`}
-                >
-                  <ThumbsUp size={12} />
-                  <span>Helpful ({review.helpful})</span>
-                </button>
+              <div className="text-xs font-semibold text-gray-500">
+                Based on {totalReviews} verified {totalReviews === 1 ? "review" : "reviews"}
               </div>
             </div>
-          ))
+
+            {/* Distribution Bar Chart */}
+            <div className="md:col-span-2 space-y-2">
+              {[
+                { stars: 5, count: distribution.fiveStars },
+                { stars: 4, count: distribution.fourStars },
+                { stars: 3, count: distribution.threeStars },
+                { stars: 2, count: distribution.twoStars },
+                { stars: 1, count: distribution.oneStar },
+              ].map(({ stars, count }) => {
+                const percent = totalReviews > 0 ? Math.round((count / totalReviews) * 100) : 0;
+                return (
+                  <div key={stars} className="flex items-center gap-3 text-xs">
+                    <span className="w-12 text-gray-600 font-medium flex items-center gap-1">
+                      {stars} <StarIcon size={12} className="fill-yellow-400 text-yellow-400" />
+                    </span>
+                    <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-yellow-400 transition-all duration-500 rounded-full"
+                        style={{ width: `${percent}%` }}
+                      />
+                    </div>
+                    <span className="w-12 text-right text-gray-500 font-semibold">{count}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         )}
+
+        {/* Review List */}
+        <div className="space-y-4">
+          {isLoading && reviews.length === 0 ? (
+            <div className="flex items-center justify-center py-12 text-gray-400">
+              <Loader2 className="w-6 h-6 animate-spin text-ushop-purple" />
+            </div>
+          ) : reviews.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-gray-200">
+              <MessageSquare className="mx-auto text-gray-300 mb-3" size={36} />
+              <h3 className="font-bold text-gray-800 text-base">No reviews yet</h3>
+              <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
+                Have you purchased this product? Be the first to share your experience with other shoppers!
+              </p>
+              <Button
+                onClick={() => {
+                  if (!isSignedIn) {
+                    toast.error("Please sign in to write a review");
+                    return;
+                  }
+                  setIsSidebarOpen(true);
+                }}
+                className="mt-4 bg-ushop-purple hover:bg-ushop-purple-dark text-white text-xs font-bold px-4 py-2 rounded-xl"
+              >
+                Write First Review
+              </Button>
+            </div>
+          ) : (
+            <>
+              {reviews.slice(0, visibleCount).map((review) => (
+                <div
+                  key={review._id}
+                  className="bg-white border border-gray-100 rounded-2xl p-5 sm:p-6 shadow-2xs hover:border-ushop-purple/20 transition-all"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ushop-purple/10 to-ushop-pink/10 flex items-center justify-center font-bold text-ushop-purple-dark uppercase text-sm border border-ushop-purple/10">
+                        {review.user?.firstName ? review.user.firstName[0] : "U"}
+                        {review.user?.lastName ? review.user.lastName[0] : ""}
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 text-sm">
+                          {review.user?.firstName || "Anonymous"}{" "}
+                          {review.user?.lastName || ""}
+                        </h4>
+                        <p className="text-[11px] text-gray-400">
+                          {new Date(review.createdAt).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <StarIcon
+                          key={star}
+                          size={14}
+                          className={
+                            star <= review.rating
+                              ? "fill-yellow-400 text-yellow-400"
+                              : "text-gray-200"
+                          }
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <h5 className="font-bold text-gray-900 text-sm">
+                      {review.title}
+                    </h5>
+                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                      {review.content}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-4 mt-4 pt-3 border-t border-gray-50">
+                    <div className="flex items-center gap-1.5 text-emerald-600 text-xs font-semibold">
+                      {review.isVerifiedPurchase && (
+                        <>
+                          <ShieldCheck size={15} className="text-emerald-600" />
+                          <span>Verified Purchase</span>
+                        </>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={() => handleMarkHelpful(review._id)}
+                      className={`flex items-center gap-1.5 text-xs font-semibold py-1 px-3 rounded-full border transition-all ${
+                        helpfulRatings[review._id]
+                          ? "bg-emerald-50 border-emerald-200 text-emerald-700 font-bold"
+                          : "bg-white border-gray-200 hover:border-ushop-pink hover:text-ushop-pink text-gray-600 hoverEffect"
+                      }`}
+                    >
+                      <ThumbsUp size={12} />
+                      <span>Helpful ({review.helpful || 0})</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+
+              {reviews.length > visibleCount && (
+                <div className="text-center pt-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setVisibleCount((prev) => prev + 5)}
+                    className="text-xs font-bold rounded-xl border-gray-200 hover:border-ushop-purple text-gray-700"
+                  >
+                    Load More Reviews ({reviews.length - visibleCount} remaining)
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+
+        {/* Review Submission Sidebar */}
+        <ReviewSidebar
+          productId={productId}
+          productName={productName}
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+          onReviewSubmitted={() => {
+            loadReviews();
+          }}
+        />
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
+
+ProductReviews.displayName = "ProductReviews";
 
 export default ProductReviews;

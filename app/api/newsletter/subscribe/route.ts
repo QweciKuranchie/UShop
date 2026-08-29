@@ -352,7 +352,7 @@ function generateWelcomeEmailHTML(email: string): string {
             <div class="cta-section">
                 <p style="margin-bottom: 20px; color: #495057;">Start exploring amazing deals today!</p>
                 <a href="${
-                  process.env.NEXT_PUBLIC_BASE_URL || "https://ushop.com"
+                  process.env.NEXT_PUBLIC_BASE_URL || "https://ushopgh.com"
                 }" class="cta-button">
                     Shop Now →
                 </a>
@@ -369,10 +369,10 @@ function generateWelcomeEmailHTML(email: string): string {
         <div class="footer">
             <p><strong>U-Shop</strong></p>
             <p>123 Shopping Street, Commerce District<br>
-               New York, NY 10001, USA</p>
+               Accra, Ghana</p>
             <p>
                 Questions? Contact us at 
-                <a href="mailto:support@ushop.com">support@ushop.com</a> or 
+                <a href="mailto:support@ushopgh.com">support@ushopgh.com</a> or 
                 call <a href="tel:+15551234567">+1 (555) 123-4567</a>
             </p>
             
@@ -388,7 +388,7 @@ function generateWelcomeEmailHTML(email: string): string {
                     You received this email because you subscribed to U-Shop Newsletter with ${email}.<br>
                     <a href="${
                       process.env.NEXT_PUBLIC_BASE_URL ||
-                      "https://ushop.com"
+                      "https://ushopgh.com"
                     }/unsubscribe?email=${encodeURIComponent(
     email
   )}">Unsubscribe</a>
