@@ -4,7 +4,7 @@ import ProductCard from "./ProductCard";
 import Container from "./Container";
 import Title from "./Title";
 import Link from "next/link";
-import { TrendingUp, ArrowRight, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
+import { TrendingUp, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface PopularProductSectionProps {
   products: Product[];
@@ -44,16 +44,25 @@ const PopularProductSection: React.FC<PopularProductSectionProps> = ({
           Customer favorites and top trending picks loved by students and shoppers
         </p>
 
-        <div className="flex items-center justify-center gap-3 mt-6">
-          <Link
-            href="/deals"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-ushop-purple/10 to-ushop-pink/10 text-ushop-purple font-semibold rounded-full hover:from-ushop-purple hover:to-ushop-pink hover:text-white border-2 border-ushop-purple/20 hover:border-transparent hoverEffect shadow-xs"
+        <Link
+          href={"/deals"}
+          className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-ushop-pink/10 text-ushop-pink font-semibold rounded-full hover:bg-ushop-pink hover:text-white border-2 border-ushop-pink/20 hover:border-ushop-pink hoverEffect"
+        >
+          Explore All Trending
+          <svg
+            className="w-4 h-4 hoverEffect group-hover:translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            <Sparkles className="w-4 h-4 text-ushop-pink group-hover:text-white" />
-            <span>Explore All Trending</span>
-            <ArrowRight className="w-4 h-4 hoverEffect group-hover:translate-x-1" />
-          </Link>
-        </div>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            />
+          </svg>
+        </Link>
       </div>
 
       {/* Popular Products Wrapper with subtle gradient frame */}
