@@ -50,14 +50,15 @@ const ProductCard = ({ product, priority = false, isFlashSale = false }: Product
   const isHotOrFlash = isFlashSale || Boolean(product?.isFlashSale) || product?.status === "hot";
 
   return (
-    <div className="text-xs sm:text-sm border border-gray-200/80 rounded-xl bg-white group hover:shadow-lg hover:border-ushop-pink/30 hoverEffect flex flex-col h-full overflow-hidden">
-      <div className="relative group overflow-hidden bg-ushop_light_bg aspect-square w-full">
+    <div className="text-xs sm:text-sm border border-gray-200/80 rounded-2xl bg-white group hover:shadow-xl hover:border-ushop-pink/30 hoverEffect flex flex-col h-full overflow-hidden bg-white">
+      {/* Product Image Area */}
+      <div className="relative group overflow-hidden bg-[#fbfbfb] p-3 sm:p-4 aspect-square w-full flex items-center justify-center">
         {product?.images && product.images[0] && (
           <Link
             href={`/product/${product?.slug?.current}`}
             aria-label={product.name || "View product"}
             title={product.name || "View product"}
-            className="block w-full h-full"
+            className="relative w-full h-full flex items-center justify-center"
           >
             <Image
               src={urlFor(product.images[0]).url()}
@@ -65,14 +66,14 @@ const ProductCard = ({ product, priority = false, isFlashSale = false }: Product
               priority={priority}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-              className={`w-full h-full object-cover transition-transform duration-300
-                 bg-ushop_light_bg hoverEffect
+              className={`w-full h-full object-contain p-1 transition-transform duration-300
                   ${product?.stock !== 0 ? "group-hover:scale-105" : "opacity-50"}`}
             />
           </Link>
         )}
+
         {/* Top-right action icons container (Wishlist + Flame icon if Flash Sale) */}
-        <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 z-10 flex flex-col items-center gap-1">
+        <div className="absolute top-2 right-2 z-10 flex flex-col items-center gap-1.5">
           <AddToWishlistBtn product={product} />
           {isHotOrFlash && (
             <Link
@@ -89,30 +90,27 @@ const ProductCard = ({ product, priority = false, isFlashSale = false }: Product
           )}
         </div>
 
-        {/* Top-left status badge (if not flash sale or if normal status exists) */}
-        {!product?.isFlashSale && product?.status && STATUS_CONFIG[product.status] && (
-          <span
-            className={`absolute top-1.5 left-1.5 sm:top-2 sm:left-2 z-10 text-[9px] sm:text-[10px] uppercase font-bold border px-1.5 py-0.5 rounded-full tracking-wider hoverEffect ${STATUS_CONFIG[product.status].className}`}
-          >
-            {STATUS_CONFIG[product.status].label}
-          </span>
-        )}
+        {/* Top-left badges: Status & Discount stacked cleanly */}
+        <div className="absolute top-2 left-2 z-10 flex flex-col items-start gap-1">
+          {!product?.isFlashSale && product?.status && STATUS_CONFIG[product.status] && (
+            <span
+              className={`text-[9px] sm:text-[10px] uppercase font-bold border px-2 py-0.5 rounded-full tracking-wider shadow-2xs ${STATUS_CONFIG[product.status].className}`}
+            >
+              {STATUS_CONFIG[product.status].label}
+            </span>
+          )}
 
-        {/* Discount Tag */}
-        {typeof product?.discount === "number" && product.discount > 0 ? (
-          <div
-            className={`absolute left-1.5 sm:left-2 z-10 bg-ushop-pink text-white text-[9px] sm:text-[11px] font-extrabold px-1.5 py-0.5 rounded-md shadow-xs ${
-              !product?.isFlashSale && product?.status ? "top-7 sm:top-8" : "top-1.5 sm:top-2"
-            }`}
-          >
-            -{product.discount}%
-          </div>
-        ) : null}
+          {typeof product?.discount === "number" && product.discount > 0 ? (
+            <span className="bg-[#FF4F5A] text-white text-[9px] sm:text-[10px] font-extrabold px-1.5 py-0.5 rounded-md shadow-xs">
+              -{product.discount}%
+            </span>
+          ) : null}
+        </div>
       </div>
 
       {/* Content Area */}
-      <div className="p-2.5 sm:p-3.5 flex flex-col flex-1 justify-between gap-1.5">
-        <div className="space-y-1">
+      <div className="p-3 sm:p-4 flex flex-col flex-1 justify-between gap-2.5">
+        <div className="space-y-1.5">
           {(() => {
             const prod = product as { category?: { title?: string; name?: string } | string; categories?: unknown[] };
             const hasCategory = prod?.category || (prod?.categories && prod.categories.length > 0);
@@ -140,16 +138,16 @@ const ProductCard = ({ product, priority = false, isFlashSale = false }: Product
             if (!categoryLabel) return null;
 
             return (
-              <p className="uppercase line-clamp-1 text-[10px] sm:text-xs text-ushop-light-text font-medium">
+              <p className="uppercase line-clamp-1 text-[10px] text-ushop-light-text font-semibold tracking-wider">
                 {categoryLabel}
               </p>
             );
           })()}
 
           <Link href={`/product/${product?.slug?.current}`} className="block">
-            <Title className="text-xs sm:text-sm font-bold line-clamp-1 text-gray-900 group-hover:text-ushop-purple hoverEffect leading-tight">
+            <h3 className="text-xs sm:text-sm font-bold text-gray-900 line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem] group-hover:text-ushop-purple hoverEffect leading-snug">
               {product?.name}
-            </Title>
+            </h3>
           </Link>
 
           <div className="flex items-center gap-1.5 pt-0.5">
@@ -157,30 +155,30 @@ const ProductCard = ({ product, priority = false, isFlashSale = false }: Product
               {[...Array(5)].map((_, index) => (
                 <StarIcon 
                   key={index} 
-                  size={10}
+                  size={11}
                   className={index < 4 ? "text-amber-400 fill-amber-400" : "text-gray-200 fill-gray-200"}
                 />
               ))}
             </div>
-            <span className="text-[10px] text-gray-400">
+            <span className="text-[10px] text-gray-400 font-medium">
               ({(product as Record<string, unknown>)?.totalReviews as number || 5})
             </span>
           </div>
         </div>
 
-        <div className="space-y-2 pt-1">
-          <div className="flex items-baseline justify-between gap-1">
+        <div className="space-y-2.5 pt-1 border-t border-gray-100">
+          <div className="flex flex-wrap items-baseline justify-between gap-1">
             <PriceView 
               price={product?.price} 
               discount={product?.discount}
               className="text-xs sm:text-sm font-extrabold"
             />
-            <span className={`text-[10px] font-semibold ${product?.stock === 0 ? "text-ushop-red" : "text-emerald-600"}`}>
+            <span className={`text-[10px] font-bold ${product?.stock === 0 ? "text-ushop-red" : "text-emerald-600"}`}>
               {(product?.stock as number) > 0 ? "In Stock" : "Out of Stock"}
             </span>
           </div>
 
-          <AddToCartBtn product={product} className="w-full text-xs py-1.5 sm:py-2 rounded-xl" />
+          <AddToCartBtn product={product} className="w-full text-xs py-2 sm:py-2.5 rounded-xl font-bold" />
         </div>
       </div>
     </div>
