@@ -7,6 +7,7 @@ import FlashSaleSection from "@/components/FlashSaleSection";
 import PopularProductSection from "@/components/PopularProductSection";
 import PromoBannerSection from "@/components/PromoBannerSection";
 import NewArrivalsSection from "@/components/NewArrivalsSection";
+import ActionMiniBanners from "@/components/ActionMiniBanners";
 import {
   getCategories,
   getDealProducts,
@@ -59,6 +60,7 @@ const Home = async () => {
         {newArrivals && newArrivals.length > 0 && (
           <NewArrivalsSection products={newArrivals} />
         )}
+        <ActionMiniBanners />
         <div className="py-10">
           <ProductGrid />
         </div>
