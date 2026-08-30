@@ -85,10 +85,6 @@ const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold text-ushop-pink bg-ushop-pink/10 px-3 py-1 rounded-full">
-              {products.length} New Items
-            </span>
-
             {/* Scroll Navigation Buttons */}
             <div className="hidden sm:flex items-center gap-1.5">
               <button
