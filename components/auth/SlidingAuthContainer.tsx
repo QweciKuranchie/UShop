@@ -851,7 +851,7 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
 
                 {/* Description */}
                 <p className="text-[11px] lg:text-xs text-white/90 leading-relaxed max-w-[240px] drop-shadow-sm font-medium">
-                  Join thousands getting the best deals on laptops, smartphones, and campus essentials.
+                  Join thousands getting the best deals on laptops, smartphones, and tech from trusted sellers across Ghana.
                 </p>
 
                 {/* Feature Cards */}

@@ -44,14 +44,14 @@ const helpCategories: HelpCategory[] = [
   },
   {
     id: "delivery-shipping",
-    title: "Campus Delivery & Shipping",
-    description: "Information about shipping times, campus pickup, and tracking.",
+    title: "Delivery & Shipping",
+    description: "Information about shipping times, pickup, and tracking.",
     icon: <Truck className="w-6 h-6 text-ushop-purple" />,
     articles: [
-      { title: "Campus hub delivery timelines (24-48 hrs)", href: "/faqs" },
+      { title: "Delivery timelines in Accra & Kumasi (24-48 hrs)", href: "/faqs" },
       { title: "How to track your active order status", href: "/user/orders" },
       { title: "Delivery fees across regions in Ghana", href: "/faqs" },
-      { title: "Hostel & residential drop-off guidelines", href: "/contact" },
+      { title: "Residential & campus drop-off guidelines", href: "/contact" },
     ],
   },
   {
@@ -80,12 +80,12 @@ const helpCategories: HelpCategory[] = [
   },
   {
     id: "seller-merchant",
-    title: "Selling & Campus Merchant Hub",
-    description: "Open a store, list tech products, and reach campus buyers.",
+    title: "Selling on UShop",
+    description: "Open a store, list tech products, and reach buyers nationwide.",
     icon: <Store className="w-6 h-6 text-indigo-600" />,
     articles: [
       { title: "Registering on seller.ushopgh.com", href: "https://seller.ushopgh.com" },
-      { title: "Student seller verification requirements", href: "https://seller.ushopgh.com" },
+      { title: "Personal, Business & Student seller requirements", href: "https://seller.ushopgh.com" },
       { title: "Listing gadgets, setting prices & payouts", href: "https://seller.ushopgh.com" },
       { title: "Merchant guidelines and code of conduct", href: "/terms" },
     ],

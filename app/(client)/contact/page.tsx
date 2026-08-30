@@ -121,7 +121,7 @@ const ContactPage = () => {
                 Contact Information
               </h2>
               <p className="text-xs sm:text-sm text-white/80 mb-8 leading-relaxed">
-                Reach out directly via phone, email, or visit our campus hubs across Ghana.
+                Reach out directly via phone or email — we&apos;re based in Accra and serve buyers and sellers nationwide.
               </p>
 
               <div className="space-y-6">

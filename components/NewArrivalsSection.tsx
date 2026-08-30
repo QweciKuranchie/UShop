@@ -79,7 +79,7 @@ const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({
                 Fresh Off The Shelf
               </h3>
               <p className="text-[11px] sm:text-xs text-light-color">
-                Just listed by verified sellers and campus merchants
+                Just listed by verified sellers across Ghana
               </p>
             </div>
           </div>
