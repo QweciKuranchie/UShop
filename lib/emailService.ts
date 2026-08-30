@@ -1,31 +1,24 @@
-import nodemailer, { Transporter } from "nodemailer";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
+import { Resend } from "resend";
 
-let transporterInstance: Transporter<SMTPTransport.SentMessageInfo> | null = null;
+let resendInstance: Resend | null = null;
 
 function getSenderEmail(): string {
-  const sender = process.env.SENDER_EMAIL_ADDRESS;
+  const sender = process.env.SENDER_EMAIL_ADDRESS || process.env.RESEND_FROM_EMAIL;
   if (!sender) {
-    throw new Error("SENDER_EMAIL_ADDRESS env var is required");
+    throw new Error("SENDER_EMAIL_ADDRESS or RESEND_FROM_EMAIL env var is required");
   }
   return sender;
 }
 
-function getTransporter(): Transporter<SMTPTransport.SentMessageInfo> {
-  if (!transporterInstance) {
-    const sender = getSenderEmail();
-    transporterInstance = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        type: "OAuth2",
-        user: sender,
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-      },
-    });
+function getResendClient(): Resend {
+  if (!resendInstance) {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      throw new Error("RESEND_API_KEY env var is required");
+    }
+    resendInstance = new Resend(apiKey);
   }
-  return transporterInstance;
+  return resendInstance;
 }
 
 // Type definitions
@@ -625,14 +618,13 @@ const generateOrderConfirmationHTML = (data: OrderConfirmationData): string => {
         <div class="footer">
             <p><strong>UShop</strong></p>
             <p>123 Shopping Street, Commerce District<br>
-               New York, NY 10001, USA</p>
+               Accra, Ghana</p>
             <p>Thank you for choosing UShop!</p>
             
             <div class="social-links">
-                <a href="https://www.youtube.com/@reactjsBD">Facebook</a> |
-                <a href="https://www.youtube.com/@reactjsBD">Twitter</a> |
-                <a href="https://www.youtube.com/@reactjsBD">Instagram</a> |
-                <a href="https://www.youtube.com/@reactjsBD">Support</a>
+                <a href="https://ushopgh.com">Website</a> |
+                <a href="https://ushopgh.com/contact">Support</a> |
+                <a href="https://ushopgh.com/terms">Terms</a>
             </div>
         </div>
     </div>
@@ -646,14 +638,17 @@ const sendOrderConfirmationEmail = async (
   try {
     const htmlContent = generateOrderConfirmationHTML(data);
     const senderEmail = getSenderEmail();
-    const mailer = getTransporter();
+    const resend = getResendClient();
 
-    const mailOptions = {
-      from: `"UShop Ecommerce" <${senderEmail}>`,
-      to: data.customerEmail,
+    const fromAddress = senderEmail.includes("<")
+      ? senderEmail
+      : `UShop Ecommerce <${senderEmail}>`;
+
+    const { data: resData, error } = await resend.emails.send({
+      from: fromAddress,
+      to: [data.customerEmail],
       subject: `Order Confirmation - ${data.orderId} | Thank you for your purchase!`,
       html: htmlContent,
-      // Fallback text version
       text: `
 Hi ${data.customerName}!
 
@@ -685,15 +680,18 @@ ${data.estimatedDelivery ? `Estimated Delivery: ${data.estimatedDelivery}` : ""}
 
 We'll send you another email with tracking information once your order ships.
 
-If you have any questions, please contact us at support@ushopgh.com or +1 (555) 123-4567.
+If you have any questions, please contact us at support@ushopgh.com.
 
 Thank you for choosing UShop!
       `,
-    };
+    });
 
-    const result = await mailer.sendMail(mailOptions);
+    if (error) {
+      console.error("Resend error sending order confirmation email:", error);
+      return { success: false, error: error.message };
+    }
 
-    return { success: true, messageId: result.messageId };
+    return { success: true, messageId: resData?.id };
   } catch (error) {
     console.error("Failed to send order confirmation email:", error);
     return {
@@ -712,18 +710,26 @@ const sendMail = async ({
 }: SendMailParams): Promise<EmailResponse> => {
   try {
     const senderEmail = getSenderEmail();
-    const mailer = getTransporter();
+    const resend = getResendClient();
 
-    const mailOptions = {
-      from: `"UShop Ecommerce" <${senderEmail}>`,
-      to: email,
+    const fromAddress = senderEmail.includes("<")
+      ? senderEmail
+      : `UShop Ecommerce <${senderEmail}>`;
+
+    const { data: resData, error } = await resend.emails.send({
+      from: fromAddress,
+      to: [email],
       subject,
       text,
       ...(html && { html }),
-    };
+    });
 
-    const result = await mailer.sendMail(mailOptions);
-    return { success: true, messageId: result.messageId };
+    if (error) {
+      console.error("Resend error sending email:", error);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, messageId: resData?.id };
   } catch (error) {
     console.error("Failed to send email:", error);
     return {

@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useRef } from "react";
 import Link from "next/link";
 import { Store, ShieldCheck, Flame, PhoneCall, ArrowRight, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import Container from "./Container";
