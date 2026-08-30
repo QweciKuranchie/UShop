@@ -8,3 +8,9 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
   utf-8-validate: true
+
+overrides:
+  sharp: '>=0.35.0'
+  postcss: '8.5.23'
+  js-cookie: '>=3.0.7'
+

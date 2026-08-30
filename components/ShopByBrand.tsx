@@ -52,10 +52,10 @@ const ShopByBrands = async () => {
       </div>
 
       {/* Brands Marquee Carousel */}
-      <div className="bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/5 p-6 lg:p-8 rounded-2xl shadow-xl border border-ushop-pink/10 mb-16 overflow-hidden relative">
+      <div className="mt-8 mb-12 overflow-hidden relative">
         <div className="overflow-hidden w-full relative select-none">
           {/* Left Gradient Mask */}
-          <div className="absolute left-0 top-0 h-full w-16 md:w-28 z-10 pointer-events-none bg-gradient-to-r from-white via-white/80 to-transparent" />
+          <div className="absolute left-0 top-0 h-full w-12 sm:w-20 md:w-28 z-10 pointer-events-none bg-gradient-to-r from-white via-white/80 to-transparent" />
 
           {/* Marquee Inner Track */}
           <div className="flex will-change-transform min-w-max animate-marquee py-2">
@@ -68,7 +68,7 @@ const ShopByBrands = async () => {
                 <Link
                   key={`${brand?._id}-${index}`}
                   href={`/brands/${brand?.slug?.current}`}
-                  className="group bg-white rounded-2xl p-4 md:p-5 flex items-center justify-center aspect-square hover:shadow-2xl shadow-md border border-gray-100 hover:border-ushop-pink/40 hoverEffect transform hover:-translate-y-1 w-28 h-28 md:w-36 md:h-36 mx-3 flex-shrink-0"
+                  className="group bg-white rounded-2xl p-4 md:p-5 flex items-center justify-center aspect-square hover:shadow-lg shadow-2xs border border-gray-200/80 hover:border-ushop-pink/40 hoverEffect transform hover:-translate-y-1 w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-2.5 sm:mx-3 flex-shrink-0"
                 >
                   {brandImg ? (
                     <div className="relative w-full h-full flex items-center justify-center p-1">
@@ -82,10 +82,10 @@ const ShopByBrands = async () => {
                     </div>
                   ) : (
                     <div className="flex flex-col items-center justify-center text-center p-1">
-                      <div className="w-9 h-9 rounded-full bg-ushop-pink/10 text-ushop-pink font-extrabold flex items-center justify-center text-sm mb-1.5 group-hover:bg-ushop-pink group-hover:text-white transition-colors shadow-2xs">
+                      <div className="w-8 h-8 rounded-full bg-ushop-pink/10 text-ushop-pink font-extrabold flex items-center justify-center text-xs mb-1 group-hover:bg-ushop-pink group-hover:text-white transition-colors shadow-2xs">
                         {brand?.name?.charAt(0) || "B"}
                       </div>
-                      <span className="text-xs font-bold text-gray-800 group-hover:text-ushop-pink transition-colors line-clamp-2 leading-tight">
+                      <span className="text-[11px] font-bold text-gray-800 group-hover:text-ushop-pink transition-colors line-clamp-2 leading-tight">
                         {brand?.name}
                       </span>
                     </div>
@@ -96,12 +96,12 @@ const ShopByBrands = async () => {
           </div>
 
           {/* Right Gradient Mask */}
-          <div className="absolute right-0 top-0 h-full w-16 md:w-28 z-10 pointer-events-none bg-gradient-to-l from-white via-white/80 to-transparent" />
+          <div className="absolute right-0 top-0 h-full w-12 sm:w-20 md:w-28 z-10 pointer-events-none bg-gradient-to-l from-white via-white/80 to-transparent" />
         </div>
 
         {/* Brand Grid Footer */}
-        <div className="text-center mt-6 pt-5 border-t border-ushop-purple/10">
-          <p className="text-dark-text text-sm">
+        <div className="text-center mt-6 pt-4 border-t border-gray-100">
+          <p className="text-dark-text text-xs sm:text-sm">
             <span className="font-semibold text-ushop-pink">
               {displayBrands?.length}+
             </span>{" "}

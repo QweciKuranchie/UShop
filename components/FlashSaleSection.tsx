@@ -51,12 +51,12 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ products }) => {
   }
 
   return (
-    <section className="my-10 bg-gradient-to-r from-ushop-red/5 via-ushop-pink/10 to-ushop_light_bg rounded-2xl p-4 sm:p-8 border border-ushop-red/20 shadow-xs relative overflow-hidden">
+    <section className="my-10 pt-4">
       {/* Top Banner Header */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-6 border-b border-ushop-red/15">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-100">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-ushop-red text-white flex items-center justify-center shadow-md shrink-0 animate-pulse">
-            <Flame className="w-7 h-7 fill-white" />
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-ushop-red text-white flex items-center justify-center shadow-sm shrink-0 animate-pulse">
+            <Flame className="w-6 h-6 sm:w-7 sm:h-7 fill-white" />
           </div>
           <div>
             <div className="flex items-center gap-2">

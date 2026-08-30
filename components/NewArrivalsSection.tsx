@@ -68,17 +68,17 @@ const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({
       </div>
 
       {/* New Arrivals One-Line Scrollable Container */}
-      <div className="bg-gradient-to-br from-white via-ushop_light_bg to-ushop-pink/5 p-6 sm:p-8 lg:p-10 rounded-2xl shadow-xl border border-ushop-pink/10">
-        <div className="flex items-center justify-between mb-6 pb-4 border-b border-ushop-pink/10">
+      <div className="mt-8">
+        <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-100">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-ushop-pink/10 text-ushop-pink flex items-center justify-center">
               <Package className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-gray-900">
+              <h3 className="text-sm sm:text-base font-bold text-gray-900">
                 Fresh Off The Shelf
               </h3>
-              <p className="text-xs text-light-color">
+              <p className="text-[11px] sm:text-xs text-light-color">
                 Just listed by verified sellers and campus merchants
               </p>
             </div>
@@ -94,14 +94,14 @@ const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({
               <button
                 onClick={() => handleScroll("left")}
                 aria-label="Previous new arrivals"
-                className="p-2 rounded-xl bg-white border border-ushop-pink/20 text-gray-700 hover:text-ushop-pink hover:border-ushop-pink hoverEffect shadow-xs"
+                className="p-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-ushop-pink hover:border-ushop-pink hoverEffect shadow-2xs"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={() => handleScroll("right")}
                 aria-label="Next new arrivals"
-                className="p-2 rounded-xl bg-white border border-ushop-pink/20 text-gray-700 hover:text-ushop-pink hover:border-ushop-pink hoverEffect shadow-xs"
+                className="p-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-ushop-pink hover:border-ushop-pink hoverEffect shadow-2xs"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -112,7 +112,7 @@ const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({
         {/* One-Line Scrollable Product Track */}
         <div
           ref={scrollRef}
-          className="flex overflow-x-auto gap-3 sm:gap-5 pb-2 pt-1 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-pink/30 scrollbar-track-transparent scroll-smooth"
+          className="flex overflow-x-auto gap-3 sm:gap-5 pb-4 pt-1 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-pink/30 scrollbar-track-transparent scroll-smooth"
         >
           {products.map((product, index) => (
             <div
