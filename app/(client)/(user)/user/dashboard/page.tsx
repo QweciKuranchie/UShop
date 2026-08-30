@@ -11,7 +11,6 @@ import {
   Clock,
   ArrowRight,
   User,
-  CheckCircle,
 } from "lucide-react";
 import {
   Card,
@@ -23,10 +22,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import PremiumBanner from "@/components/ui/premium-banner";
-import PremiumBadge from "@/components/ui/premium-badge";
-import ApplicationSuccessNotification from "@/components/ui/application-success-notification";
-import { toast } from "sonner";
 
 interface UserStats {
   ordersCount: number;
@@ -45,24 +40,6 @@ interface RecentActivity {
   type: "order" | "notification" | "wishlist";
 }
 
-interface UserProfile {
-  _id: string;
-  isActive: boolean; // Premium account status
-  isBusiness: boolean; // Business account status
-  premiumStatus: "none" | "pending" | "active" | "rejected" | "cancelled";
-  businessStatus: "none" | "pending" | "active" | "rejected" | "cancelled";
-  membershipType: string;
-  firstName?: string;
-  lastName?: string;
-  businessApprovedBy?: string;
-  businessApprovedAt?: string;
-  premiumAppliedAt?: string;
-  premiumApprovedBy?: string;
-  premiumApprovedAt?: string;
-  businessAppliedAt?: string;
-  rejectionReason?: string;
-}
-
 export default function UserDashboardPage() {
   const { user } = useUser();
   const [stats, setStats] = useState<UserStats>({
@@ -75,24 +52,11 @@ export default function UserDashboardPage() {
   });
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
   const [loading, setLoading] = useState(true);
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [isApplyingBusiness, setIsApplyingBusiness] = useState<boolean>(false);
-  const [showNotification, setShowNotification] = useState(false);
-  const [notificationType, setNotificationType] = useState<
-    "premium" | "business"
-  >("premium");
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
-
-        // Fetch user status first
-        const statusResponse = await fetch("/api/user/status");
-        if (statusResponse.ok) {
-          const statusData = await statusResponse.json();
-          setUserProfile(statusData.userProfile);
-        }
 
         // Fetch user dashboard stats
         const response = await fetch("/api/user/dashboard/stats");
@@ -114,92 +78,6 @@ export default function UserDashboardPage() {
       fetchDashboardData();
     }
   }, [user]);
-
-  const handlePremiumRegister = () => {
-    // Show success notification instead of immediate reload
-    setNotificationType("premium");
-    setShowNotification(true);
-  };
-
-  const handleBusinessAccountApply = async () => {
-    if (!user?.emailAddresses?.[0]?.emailAddress) {
-      toast.error("Unable to get user email");
-      return;
-    }
-
-    setIsApplyingBusiness(true);
-    try {
-      const response = await fetch("/api/user/business-apply", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: user.emailAddresses[0].emailAddress,
-          name: user.fullName || user.firstName || "User",
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Show success notification instead of toast and reload
-        setNotificationType("business");
-        setShowNotification(true);
-        // Also update the user profile to reflect pending status
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      } else {
-        toast.error(
-          data.error || "Failed to submit business account application"
-        );
-      }
-    } catch (error) {
-      console.error("Error applying for business account:", error);
-      toast.error("Error submitting application");
-    } finally {
-      setIsApplyingBusiness(false);
-    }
-  };
-
-  const handleCancelApplication = async (
-    applicationType: "premium" | "business"
-  ) => {
-    if (!user?.emailAddresses?.[0]?.emailAddress) {
-      toast.error("Unable to get user email");
-      return;
-    }
-
-    setIsApplyingBusiness(true);
-    try {
-      const response = await fetch("/api/user/cancel-application", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: user.emailAddresses[0].emailAddress,
-          applicationType,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        toast.success(data.message);
-        // Refresh user profile
-        window.location.reload();
-      } else {
-        toast.error(data.error || "Failed to cancel application");
-      }
-    } catch (error) {
-      console.error("Error cancelling application:", error);
-      toast.error("Error cancelling application");
-    } finally {
-      setIsApplyingBusiness(false);
-    }
-  };
 
   const getActivityIcon = (type: string) => {
     switch (type) {
@@ -270,17 +148,6 @@ export default function UserDashboardPage() {
                     "User"}
                   !
                 </h1>
-                {userProfile?.isActive && (
-                  <PremiumBadge
-                    membershipType={userProfile.membershipType}
-                    size="md"
-                  />
-                )}
-                {userProfile?.isBusiness && (
-                  <div className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
-                    Business Account
-                  </div>
-                )}
               </div>
               <p className="text-gray-600 mt-1">
                 Here&apos;s what&apos;s happening with your account today
@@ -289,348 +156,6 @@ export default function UserDashboardPage() {
           </div>
         </div>
         <Separator className="my-6" />
-
-        {/* Premium Banner for non-premium users (not in Sanity or isActive: false) */}
-        {(!userProfile ||
-          (!userProfile.isActive &&
-            userProfile.premiumStatus !== "pending" &&
-            userProfile.premiumStatus !== "rejected")) && (
-          <PremiumBanner
-            onRegister={handlePremiumRegister}
-            onDismiss={() => {}}
-          />
-        )}
-
-        {/* Premium Application Status */}
-        {userProfile && userProfile.premiumStatus === "pending" && (
-          <div className="mb-6 p-6 bg-gradient-to-r from-amber-50 to-yellow-50 border-l-4 border-amber-400 rounded-lg shadow-sm">
-            <div className="flex items-start gap-4">
-              <div className="shrink-0">
-                <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-                  <Clock className="h-5 w-5 text-amber-600 animate-pulse" />
-                </div>
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <h3 className="font-bold text-amber-900 text-lg">
-                    Premium Application Submitted
-                  </h3>
-                  <div className="px-3 py-1 bg-amber-200 text-amber-800 text-xs font-medium rounded-full">
-                    PENDING REVIEW
-                  </div>
-                </div>
-                <p className="text-amber-800 text-sm mb-3">
-                  Great news! Your premium account application has been
-                  successfully submitted and is currently under administrative
-                  review.
-                </p>
-                <div className="bg-white/60 p-3 rounded-md border border-amber-200">
-                  <h4 className="font-semibold text-amber-900 text-sm mb-2">
-                    What happens next?
-                  </h4>
-                  <ul className="text-amber-700 text-xs space-y-1">
-                    <li>
-                      • Our admin team will review your application within 24-48
-                      hours
-                    </li>
-                    <li>
-                      • You&apos;ll receive an email notification once your
-                      status changes
-                    </li>
-                    <li>
-                      • Upon approval, you&apos;ll unlock premium features
-                      immediately
-                    </li>
-                  </ul>
-                </div>
-                {userProfile.premiumAppliedAt && (
-                  <p className="text-amber-600 text-xs mt-3">
-                    Applied on:{" "}
-                    {new Date(userProfile.premiumAppliedAt).toLocaleDateString(
-                      "en-US",
-                      {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      }
-                    )}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {userProfile && userProfile.premiumStatus === "rejected" && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-semibold text-red-900">
-                  Premium Application Rejected
-                </h3>
-                <p className="text-red-700 text-sm">
-                  Your premium account application was not approved. You can
-                  cancel to apply again.
-                </p>
-                {userProfile.rejectionReason && (
-                  <p className="text-red-600 text-xs mt-1">
-                    Reason: {userProfile.rejectionReason}
-                  </p>
-                )}
-              </div>
-              <Button
-                onClick={() => handleCancelApplication("premium")}
-                disabled={isApplyingBusiness}
-                variant="outline"
-                size="sm"
-                className="text-blue-600 border-blue-200 hover:bg-blue-50"
-              >
-                Cancel & Reapply
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Premium Account Active Status */}
-        {userProfile &&
-          userProfile.isActive &&
-          userProfile.premiumStatus === "active" &&
-          !userProfile.isBusiness && (
-            <div className="mb-6 p-6 bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-400 rounded-lg shadow-sm">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <CheckCircle className="h-5 w-5 text-green-600" />
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="font-bold text-green-900 text-lg">
-                      Premium Account Active
-                    </h3>
-                    <div className="px-3 py-1 bg-green-200 text-green-800 text-xs font-medium rounded-full">
-                      APPROVED
-                    </div>
-                  </div>
-                  <p className="text-green-800 text-sm mb-3">
-                    Congratulations! Your premium account is now active and you
-                    have access to all premium features.
-                  </p>
-                  <div className="bg-white/60 p-3 rounded-md border border-green-200">
-                    <h4 className="font-semibold text-green-900 text-sm mb-2">
-                      Premium Benefits:
-                    </h4>
-                    <ul className="text-green-700 text-xs space-y-1">
-                      <li>• Exclusive access to premium features</li>
-                      <li>• Priority customer support</li>
-                      <li>• Enhanced rewards and loyalty points</li>
-                      <li>• Eligible for Business Account upgrade</li>
-                    </ul>
-                  </div>
-                  {userProfile.premiumApprovedAt &&
-                    userProfile.premiumApprovedBy && (
-                      <p className="text-green-600 text-xs mt-3">
-                        Approved by {userProfile.premiumApprovedBy} on{" "}
-                        {new Date(
-                          userProfile.premiumApprovedAt
-                        ).toLocaleDateString("en-US", {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </p>
-                    )}
-                </div>
-              </div>
-            </div>
-          )}
-
-        {/* Business Account Application - Only for active premium users who are not business users */}
-        {userProfile &&
-          userProfile.isActive &&
-          !userProfile.isBusiness &&
-          userProfile.businessStatus !== "pending" &&
-          userProfile.businessStatus !== "rejected" && (
-            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="font-semibold text-blue-900 mb-2">
-                    Upgrade to Business Account
-                  </h3>
-                  <p className="text-blue-700 text-sm mb-3">
-                    Get 2% additional discount on all orders with our Business
-                    Account plan. Perfect for companies and bulk purchases.
-                  </p>
-                  <ul className="text-blue-600 text-sm space-y-1 mb-4">
-                    <li>• 2% additional discount on all orders</li>
-                    <li>• Priority customer support</li>
-                    <li>• Bulk order management</li>
-                    <li>• Business invoicing</li>
-                  </ul>
-                </div>
-                <Button
-                  onClick={handleBusinessAccountApply}
-                  disabled={isApplyingBusiness}
-                  className="bg-blue-600 hover:bg-blue-700"
-                >
-                  {isApplyingBusiness ? (
-                    <div className="flex items-center">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Applying...
-                    </div>
-                  ) : (
-                    "Apply for Business Account"
-                  )}
-                </Button>
-              </div>
-            </div>
-          )}
-
-        {/* Business Application Status */}
-        {userProfile && userProfile.businessStatus === "pending" && (
-          <div className="mb-6 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-400 rounded-lg shadow-sm">
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Clock className="h-5 w-5 text-blue-600 animate-pulse" />
-                </div>
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <h3 className="font-bold text-blue-900 text-lg">
-                    Business Application Submitted
-                  </h3>
-                  <div className="px-3 py-1 bg-blue-200 text-blue-800 text-xs font-medium rounded-full">
-                    PENDING REVIEW
-                  </div>
-                </div>
-                <p className="text-blue-800 text-sm mb-3">
-                  Excellent! Your business account application has been
-                  submitted successfully and is currently under administrative
-                  review.
-                </p>
-                <div className="bg-white/60 p-3 rounded-md border border-blue-200">
-                  <h4 className="font-semibold text-blue-900 text-sm mb-2">
-                    Business Account Benefits (Upon Approval):
-                  </h4>
-                  <ul className="text-blue-700 text-xs space-y-1">
-                    <li>• 2% additional discount on all orders</li>
-                    <li>• Priority customer support</li>
-                    <li>• Bulk order management</li>
-                    <li>• Business invoicing capabilities</li>
-                  </ul>
-                </div>
-                {userProfile.businessAppliedAt && (
-                  <p className="text-blue-600 text-xs mt-3">
-                    Applied on:{" "}
-                    {new Date(userProfile.businessAppliedAt).toLocaleDateString(
-                      "en-US",
-                      {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      }
-                    )}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Business Account Active Status */}
-        {userProfile &&
-          userProfile.isBusiness &&
-          userProfile.businessStatus === "active" && (
-            <div className="mb-6 p-6 bg-gradient-to-r from-emerald-50 to-green-50 border-l-4 border-emerald-400 rounded-lg shadow-sm">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
-                    <CheckCircle className="h-5 w-5 text-emerald-600" />
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="font-bold text-emerald-900 text-lg">
-                      💼 Business Account Active!
-                    </h3>
-                    <div className="px-3 py-1 bg-emerald-200 text-emerald-800 text-xs font-medium rounded-full">
-                      APPROVED
-                    </div>
-                  </div>
-                  <p className="text-emerald-800 text-sm mb-3">
-                    Fantastic! Your business account is now active and
-                    you&apos;re enjoying exclusive business benefits.
-                  </p>
-                  <div className="bg-white/60 p-3 rounded-md border border-emerald-200">
-                    <h4 className="font-semibold text-emerald-900 text-sm mb-2">
-                      Active Business Benefits:
-                    </h4>
-                    <ul className="text-emerald-700 text-xs space-y-1">
-                      <li>
-                        • 2% additional discount automatically applied at
-                        checkout
-                      </li>
-                      <li>• Priority customer support</li>
-                      <li>• Advanced bulk order management</li>
-                      <li>• Professional business invoicing</li>
-                    </ul>
-                  </div>
-                  {userProfile.businessApprovedAt &&
-                    userProfile.businessApprovedBy && (
-                      <p className="text-emerald-600 text-xs mt-3">
-                        Approved by {userProfile.businessApprovedBy} on{" "}
-                        {new Date(
-                          userProfile.businessApprovedAt
-                        ).toLocaleDateString("en-US", {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </p>
-                    )}
-                </div>
-              </div>
-            </div>
-          )}
-
-        {userProfile && userProfile.businessStatus === "rejected" && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-semibold text-red-900">
-                  Business Application Rejected
-                </h3>
-                <p className="text-red-700 text-sm">
-                  Your business account application was not approved. You can
-                  cancel to apply again.
-                </p>
-                {userProfile.rejectionReason && (
-                  <p className="text-red-600 text-xs mt-1">
-                    Reason: {userProfile.rejectionReason}
-                  </p>
-                )}
-              </div>
-              <Button
-                onClick={() => handleCancelApplication("business")}
-                disabled={isApplyingBusiness}
-                variant="outline"
-                size="sm"
-                className="text-blue-600 border-blue-200 hover:bg-blue-50"
-              >
-                Cancel & Reapply
-              </Button>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Stats Cards */}
@@ -793,13 +318,6 @@ export default function UserDashboardPage() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Application Success Notification */}
-      <ApplicationSuccessNotification
-        isVisible={showNotification}
-        onClose={() => setShowNotification(false)}
-        type={notificationType}
-      />
     </div>
   );
 }

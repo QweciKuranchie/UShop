@@ -5,7 +5,15 @@ import { backendClient } from "@/sanity/lib/backendClient";
 import { addWalletCredit } from "./walletActions";
 import { sendOrderStatusNotification } from "@/lib/notificationService";
 import { revalidatePath } from "next/cache";
-import { isAdmin } from "@/lib/adminUtils";
+
+const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || "support@ushopgh.com";
+
+function checkIsAdmin(user: { email?: string; isAdmin?: boolean } | null | undefined): boolean {
+  if (!user) return false;
+  if (user.isAdmin) return true;
+  if (user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) return true;
+  return false;
+}
 
 /**
  * Admin: Approve cancellation request and cancel order with refund
@@ -26,7 +34,7 @@ export async function approveCancellationRequest(
       { clerkUserId }
     );
 
-    if (!isAdmin(adminUser)) {
+    if (!checkIsAdmin(adminUser)) {
       return {
         success: false,
         message: "Admin access required to approve cancellation requests",
@@ -160,7 +168,7 @@ export async function rejectCancellationRequest(
       { clerkUserId }
     );
 
-    if (!isAdmin(adminUser)) {
+    if (!checkIsAdmin(adminUser)) {
       return {
         success: false,
         message: "Admin access required to reject cancellation requests",
@@ -254,7 +262,7 @@ export async function cancelOrder(
       { clerkUserId }
     );
 
-    if (!isAdmin(adminUser)) {
+    if (!checkIsAdmin(adminUser)) {
       return {
         success: false,
         message: "Admin access required to cancel orders",
