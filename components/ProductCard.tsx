@@ -150,11 +150,10 @@ const ProductCard = ({ product, priority = false, isFlashSale = false }: Product
             </h3>
           </Link>
 
-          {/* Real Ratings Display */}
+          {/* Real Ratings Display from Sanity */}
           {(() => {
-            const prodObj = product as unknown as Record<string, unknown>;
-            const avgRating = typeof prodObj?.averageRating === "number" ? prodObj.averageRating : 0;
-            const reviewCount = typeof prodObj?.totalReviews === "number" ? prodObj.totalReviews : 0;
+            const avgRating = typeof product?.averageRating === "number" ? product.averageRating : 0;
+            const reviewCount = typeof product?.totalReviews === "number" ? product.totalReviews : 0;
 
             return (
               <div className="flex items-center gap-1.5 pt-0.5">

@@ -124,6 +124,8 @@ export type Product = {
   featured?: boolean;
   isFeatured?: boolean;
   isFlashSale?: boolean;
+  averageRating?: number;
+  totalReviews?: number;
 };
 
 export type LocationReference = {
