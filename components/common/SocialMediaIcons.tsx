@@ -2,6 +2,7 @@ import React from "react";
 import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "../ui/tooltip";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { contactConfig } from "@/config/contact";
 
 // Custom inline SVG icons because brand logos are not available in the installed version of lucide-react
 const Facebook = ({ className }: { className?: string }) => (
@@ -86,35 +87,35 @@ interface Props {
   tooltipClassName?: string;
 }
 
-const socialLink = [
-  {
-    title: "facebook",
-    href: "https://facebook.com",
-    icon: <Facebook className="w-5 h-5" />,
-  },
-  {
-    title: "instagram",
-    href: "https://instagram.com",
-    icon: <Instagram className="w-5 h-5" />,
-  },
-  {
-    title: "whatsapp",
-    href: "https://wa.me/233000000000",
-    icon: <WhatsApp className="w-5 h-5" />,
-  },
-  {
-    title: "X",
-    href: "https://x.com",
-    icon: <XLogo className="w-5 h-5" />,
-  },
-  {
-    title: "linkedin",
-    href: "https://linkedin.com",
-    icon: <Linkedin className="w-5 h-5" />,
-  },
-];
-
 const SocialMediaIcons = ({ className, iconClassName, tooltipClassName }: Props) => {
+  const socialLink = [
+    {
+      title: "facebook",
+      href: contactConfig.socials.facebook,
+      icon: <Facebook className="w-5 h-5" />,
+    },
+    {
+      title: "instagram",
+      href: contactConfig.socials.instagram,
+      icon: <Instagram className="w-5 h-5" />,
+    },
+    {
+      title: "whatsapp",
+      href: contactConfig.socials.whatsappUrl,
+      icon: <WhatsApp className="w-5 h-5" />,
+    },
+    {
+      title: "X",
+      href: contactConfig.socials.x,
+      icon: <XLogo className="w-5 h-5" />,
+    },
+    {
+      title: "linkedin",
+      href: contactConfig.socials.linkedin,
+      icon: <Linkedin className="w-5 h-5" />,
+    },
+  ];
+
   return (
     <TooltipProvider>
       <div className={cn("flex items-center gap-3.5 justify-start", className)}>

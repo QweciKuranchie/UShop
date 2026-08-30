@@ -14,34 +14,28 @@ const TimeUnit = ({ value, label }: { value: number; label: string }) => (
   </div>
 );
 
+const getSecondsUntilMidnight = () => {
+  const now = new Date();
+  const midnight = new Date(now);
+  midnight.setHours(24, 0, 0, 0);
+  const diffMs = midnight.getTime() - now.getTime();
+  const totalSeconds = Math.max(0, Math.floor(diffMs / 1000));
+
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return { hours, minutes, seconds };
+};
+
 const DealCountdown = () => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 2,
-    hours: 14,
-    minutes: 35,
-    seconds: 42,
-  });
+  const [timeLeft, setTimeLeft] = useState(getSecondsUntilMidnight);
 
   useEffect(() => {
+    setTimeLeft(getSecondsUntilMidnight());
+
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-        } else if (prev.hours > 0) {
-          return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        } else if (prev.days > 0) {
-          return {
-            ...prev,
-            days: prev.days - 1,
-            hours: 23,
-            minutes: 59,
-            seconds: 59,
-          };
-        }
-        return prev;
-      });
+      setTimeLeft(getSecondsUntilMidnight());
     }, 1000);
 
     return () => clearInterval(timer);
@@ -55,8 +49,7 @@ const DealCountdown = () => {
           Deal Ends In:
         </span>
       </div>
-      <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
-        <TimeUnit value={timeLeft.days} label="Days" />
+      <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
         <TimeUnit value={timeLeft.hours} label="Hours" />
         <TimeUnit value={timeLeft.minutes} label="Mins" />
         <TimeUnit value={timeLeft.seconds} label="Secs" />

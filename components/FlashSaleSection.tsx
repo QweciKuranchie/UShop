@@ -10,27 +10,31 @@ interface FlashSaleSectionProps {
   products: Product[];
 }
 
+const getSecondsUntilMidnight = () => {
+  const now = new Date();
+  const midnight = new Date(now);
+  midnight.setHours(24, 0, 0, 0);
+  const diffMs = midnight.getTime() - now.getTime();
+  const totalSeconds = Math.max(0, Math.floor(diffMs / 1000));
+
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return { hours, minutes, seconds };
+};
+
 const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ products }) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
-  // Timer state: 12 hours countdown
-  const [timeLeft, setTimeLeft] = useState({
-    hours: 11,
-    minutes: 45,
-    seconds: 30,
-  });
+  // Realtime 24 hours per day countdown (resets every midnight)
+  const [timeLeft, setTimeLeft] = useState(getSecondsUntilMidnight);
 
   useEffect(() => {
+    // Initial sync
+    setTimeLeft(getSecondsUntilMidnight());
+
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: 59, seconds: 59 };
-        } else if (prev.hours > 0) {
-          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        }
-        return { hours: 12, minutes: 0, seconds: 0 };
-      });
+      setTimeLeft(getSecondsUntilMidnight());
     }, 1000);
 
     return () => clearInterval(timer);

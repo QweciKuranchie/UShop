@@ -8,6 +8,7 @@ import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import ProductSpecs from "@/components/ProductSpecs";
 import ProductReviews from "@/components/ProductReviews";
 import AddToCartBtn from "@/components/AddToCartBtn";
+import BuyNowBtn from "@/components/BuyNowBtn";
 import AddToWishlistBtn from "@/components/AddToWishlistBtn";
 
 import { Product } from "@/sanity.types";
@@ -164,10 +165,10 @@ const ProductContent = ({
                   </span>
                 </Badge>
               )}
-              <h1 className="text-3xl lg:text-4xl font-bold text-zinc-900 leading-tight">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-zinc-900 leading-tight">
                 {product?.name}
               </h1>
-              <p className="text-base text-zinc-600 leading-relaxed">
+              <p className="text-sm sm:text-base text-zinc-600 leading-relaxed">
                 {product?.description}
               </p>
 
@@ -187,7 +188,7 @@ const ProductContent = ({
                       />
                     ))}
                   </div>
-                  <span className="text-sm font-semibold text-zinc-800">
+                  <span className="text-xs sm:text-sm font-semibold text-zinc-800">
                     {averageRating.toFixed(1)} ({totalReviews}{" "}
                     {totalReviews === 1 ? "review" : "reviews"})
                   </span>
@@ -203,17 +204,17 @@ const ProductContent = ({
                       />
                     ))}
                   </div>
-                  <span className="text-sm text-zinc-500">No reviews yet</span>
+                  <span className="text-xs sm:text-sm text-zinc-500">No reviews yet</span>
                 </div>
               )}
             </div>
 
             {/* Pricing Section */}
-            <div className="space-y-4 border-t border-b border-zinc-100 py-6">
+            <div className="space-y-4 border-t border-b border-zinc-100 py-4 sm:py-6">
               <PriceView
                 price={product?.price}
                 discount={product?.discount}
-                className="text-3xl font-bold text-zinc-900"
+                className="text-2xl sm:text-3xl font-bold text-zinc-900"
               />
 
               {/* Enhanced Stock Status */}
@@ -301,11 +302,27 @@ const ProductContent = ({
               </div>
             </ProductActionWrapper>
 
-            {/* Action Buttons */}
+            {/* Action Buttons: Add to Cart, Buy Now & Wishlist on same line */}
             <ProductActionWrapper delay={0.3}>
-              <div className="flex items-center gap-4">
-                <AddToCartBtn product={product} className="flex-grow max-w-md py-3 text-base rounded-xl" />
-                <AddToWishlistBtn product={product} className="!relative !top-0 !right-0 !z-0" />
+              <div className="flex items-center gap-2 sm:gap-3 w-full">
+                <div className="flex-1 min-w-0">
+                  <AddToCartBtn
+                    product={product}
+                    className="w-full py-2.5 sm:py-3 text-xs sm:text-sm font-bold rounded-xl h-11 sm:h-12"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <BuyNowBtn
+                    product={product}
+                    className="w-full py-2.5 sm:py-3 text-xs sm:text-sm font-bold rounded-xl h-11 sm:h-12"
+                  />
+                </div>
+                <div className="shrink-0">
+                  <AddToWishlistBtn
+                    product={product}
+                    className="!relative !top-0 !right-0 !z-0 w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center border border-zinc-200 hover:border-ushop-pink"
+                  />
+                </div>
               </div>
             </ProductActionWrapper>
 
@@ -315,18 +332,18 @@ const ProductContent = ({
             </ProductActionWrapper>
 
             {/* Action Links */}
-            <div className="grid grid-cols-3 gap-3 sm:flex sm:flex-wrap sm:items-center sm:justify-between border-b border-zinc-100 py-5">
-              <button className="flex items-center gap-2 text-sm text-zinc-700 hover:text-ushop-pink hoverEffect transition-colors">
-                <HelpCircle size={16} />
-                <span>Ask a question</span>
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 border-b border-zinc-100 py-4 sm:py-5">
+              <button className="flex items-center justify-center sm:justify-start gap-1.5 text-xs sm:text-sm text-zinc-700 hover:text-ushop-pink hoverEffect transition-colors py-1">
+                <HelpCircle size={15} className="shrink-0" />
+                <span className="truncate">Ask question</span>
               </button>
-              <button className="flex items-center gap-2 text-sm text-zinc-700 hover:text-ushop-pink hoverEffect transition-colors">
-                <Truck size={16} />
-                <span>Delivery & Return</span>
+              <button className="flex items-center justify-center sm:justify-start gap-1.5 text-xs sm:text-sm text-zinc-700 hover:text-ushop-pink hoverEffect transition-colors py-1">
+                <Truck size={15} className="shrink-0" />
+                <span className="truncate">Delivery & Return</span>
               </button>
-              <button className="flex items-center gap-2 text-sm text-zinc-700 hover:text-ushop-pink hoverEffect transition-colors">
-                <Share2 size={16} />
-                <span>Share</span>
+              <button className="flex items-center justify-center sm:justify-start gap-1.5 text-xs sm:text-sm text-zinc-700 hover:text-ushop-pink hoverEffect transition-colors py-1">
+                <Share2 size={15} className="shrink-0" />
+                <span className="truncate">Share</span>
               </button>
             </div>
 
