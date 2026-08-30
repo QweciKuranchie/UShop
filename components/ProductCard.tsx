@@ -150,20 +150,39 @@ const ProductCard = ({ product, priority = false, isFlashSale = false }: Product
             </h3>
           </Link>
 
-          <div className="flex items-center gap-1.5 pt-0.5">
-            <div className="flex items-center gap-0.5">
-              {[...Array(5)].map((_, index) => (
-                <StarIcon 
-                  key={index} 
-                  size={11}
-                  className={index < 4 ? "text-amber-400 fill-amber-400" : "text-gray-200 fill-gray-200"}
-                />
-              ))}
-            </div>
-            <span className="text-[10px] text-gray-400 font-medium">
-              ({(product as Record<string, unknown>)?.totalReviews as number || 5})
-            </span>
-          </div>
+          {/* Real Ratings Display */}
+          {(() => {
+            const prodObj = product as unknown as Record<string, unknown>;
+            const avgRating = typeof prodObj?.averageRating === "number" ? prodObj.averageRating : 0;
+            const reviewCount = typeof prodObj?.totalReviews === "number" ? prodObj.totalReviews : 0;
+
+            return (
+              <div className="flex items-center gap-1.5 pt-0.5">
+                <div className="flex items-center gap-0.5">
+                  {[...Array(5)].map((_, index) => (
+                    <StarIcon
+                      key={index}
+                      size={11}
+                      className={
+                        index < Math.round(avgRating)
+                          ? "text-amber-400 fill-amber-400"
+                          : "text-gray-200 fill-gray-200"
+                      }
+                    />
+                  ))}
+                </div>
+                <span className="text-[10px] text-gray-400 font-medium">
+                  {reviewCount > 0 ? (
+                    <>
+                      {avgRating > 0 ? avgRating.toFixed(1) : null} ({reviewCount})
+                    </>
+                  ) : (
+                    "(0)"
+                  )}
+                </span>
+              </div>
+            );
+          })()}
         </div>
 
         <div className="space-y-2.5 pt-1 border-t border-gray-100">
