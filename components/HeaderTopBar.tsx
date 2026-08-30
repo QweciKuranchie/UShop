@@ -28,13 +28,15 @@ const HeaderTopBar = () => {
           </a>
         </div>
         <div className="flex items-center gap-4">
-          <Link
-            href="/dashboard/store/create"
+          <a
+            href="https://seller.ushopgh.com"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-1.5 hover:text-gray-300 transition-colors"
           >
             <Tag className="w-3.5 h-3.5 text-ushop-pink" />
             <span>Sell on U-Shop</span>
-          </Link>
+          </a>
           <span className="text-gray-600 hidden sm:inline">|</span>
           {/* "My Orders" navigates to the orders sub-page that exists,
                 not /dashboard which is the generic overview. */}

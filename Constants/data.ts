@@ -9,58 +9,56 @@ export const headerData = [
   { title: "Stores", href: "/stores", icon: Store},
 ];
 export const customerCareData = {
-  title:"Customer Care",
+  title: "Customer Care",
   links: [
     { title: "About Us", href: "/about" },
     { title: "Contact Us", href: "/contact" },
     { title: "Terms & Conditions", href: "/terms" },
     { title: "Privacy Policy", href: "/privacy" },
     { title: "FAQs", href: "/faqs" },
-    { title: "Help", href: "/help" },
+    { title: "Help Center", href: "/help" },
   ],
-}
+};
 export const supportData = {
   title: "Need Help?",
   links: [
-  { title: "Help Center", href: "/help" },
-  { title: "Customer Service", href: "/support" },
-  { title: "Track Your Order", href: "/track-order" },
-  { title: "Return Policy", href: "/returns" },
-  { title: "Shipping Info", href: "/shipping" },
-  { title: "Sitemap", href: "/sitemap" },
-]
-  
+    { title: "Help Center", href: "/help" },
+    { title: "Customer Support", href: "/contact" },
+    { title: "Track Your Order", href: "/user/orders" },
+    { title: "Return Policy & FAQs", href: "/faqs" },
+    { title: "Verified Stores", href: "/stores" },
+    { title: "Sitemap", href: "/sitemap.xml" },
+  ],
 };
 export const quickLinksData = {
   title: "Quick Links",
   links: [
     { title: "All Products", href: "/shop" },
-    { title: "Deals", href: "/deals" },
+    { title: "Hot Deals & Offers", href: "/deals" },
     { title: "Universities", href: "/universities" },
-    { title: "Stores", href: "/stores" },
-    {title:"Flash Sales", href:"/deal"},
-    {title:"New Arrivals", href:"/new-arrivals"},
+    { title: "Campus Stores", href: "/stores" },
+    { title: "Flash Sales", href: "/deals/flash" },
+    { title: "Student Deals", href: "/deals/students" },
   ],
-}
+};
 export const categoriesData = {
   title: "Categories",
   links: [
     { title: "All Categories", href: "/category" },
-    { title: "Phones", href: "/phones" },
-    { title: "Laptops", href: "/laptops" },
-    { title: "Accessories", href: "/accessories" },
-    { title: "Appliances", href: "/appliances" },
-    { title: "Gaming", href: "/gaming" },
-  ]
-}
+    { title: "Phones", href: "/category/smartphones" },
+    { title: "Laptops", href: "/category/laptops" },
+    { title: "Accessories", href: "/category/accessories" },
+    { title: "Appliances", href: "/category/appliances" },
+    { title: "Gaming", href: "/category/gaming" },
+  ],
+};
 export const userAccountData = [
-  { title: "My Profile", href: "/account/profile" },
+  { title: "My Profile", href: "/user/profile" },
   { title: "My Orders", href: "/user/orders" },
   { title: "My Wishlist", href: "/wishlist" },
   { title: "Shopping Cart", href: "/cart" },
-  { title: "Address Book", href: "/account/addresses" },
-  { title: "Payment Methods", href: "/account/payments" },
-  { title: "Order History", href: "/user/orders" },
+  { title: "Dashboard", href: "/user/dashboard" },
+  { title: "Settings", href: "/user/settings" },
 ];
 export const productType = [
   { title: "All", value: "all" },

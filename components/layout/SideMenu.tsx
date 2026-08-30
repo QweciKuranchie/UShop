@@ -95,15 +95,15 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   // Enhanced menu sections with icons
   const userMenuItems = [
-    { title: "My Account", href: "/account", icon: User },
-    { title: "My Orders", href: "/orders", icon: Package },
+    { title: "My Profile", href: "/user/profile", icon: User },
+    { title: "My Orders", href: "/user/orders", icon: Package },
     { title: "Wishlist", href: "/wishlist", icon: Heart },
     { title: "Shopping Cart", href: "/cart", icon: ShoppingCart },
   ];
 
   const supportMenuItems = [
     { title: "Help Center", href: "/help", icon: HelpCircle },
-    { title: "Customer Service", href: "/support", icon: Phone },
+    { title: "Contact Us", href: "/contact", icon: Phone },
     { title: "About Us", href: "/about", icon: Info },
   ];
 
