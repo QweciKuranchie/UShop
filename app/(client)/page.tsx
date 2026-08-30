@@ -39,11 +39,11 @@ const Home = async () => {
         {dealProducts && dealProducts.length > 0 && (
           <FlashSaleSection products={dealProducts} />
         )}
+        <HomeCategories categories={categories} />
+        <ShopByBrand />
         <div className="py-10">
           <ProductGrid />
         </div>
-        <HomeCategories categories={categories} />
-        <ShopByBrand />
         <ScrollToTop />
       </Container>
     </>

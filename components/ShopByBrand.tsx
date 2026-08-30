@@ -51,45 +51,56 @@ const ShopByBrands = async () => {
         </Link>
       </div>
 
-      {/* Brands Grid */}
-      <div className="bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/5 p-8 lg:p-12 rounded-2xl shadow-xl border border-ushop-pink/10 mb-16">
-        <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-pink/40 scrollbar-track-transparent sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 sm:pb-0">
-          {displayBrands?.map((brand, index) => (
-            <Link
-              key={brand?._id}
-              href={`/brands/${brand?.slug?.current}`}
-              className="group bg-white rounded-2xl p-6 flex items-center justify-center aspect-square hover:shadow-2xl shadow-lg border border-gray-100 hover:border-ushop-pink/40 hoverEffect transform hover:-translate-y-2 min-w-[120px] sm:min-w-0 flex-shrink-0 snap-start"
-              style={{ animationDelay: `${index * 0.05}s` }}
-            >
-              {(() => {
-                const brandImg = (brand as Record<string, unknown>).image || (brand as Record<string, unknown>).logo;
-                return brandImg ? (
-                  <div className="relative w-full h-full flex items-center justify-center p-1">
-                    <Image
-                      src={urlFor(brandImg).url()}
-                      alt={`${brand?.name || "Brand"} logo`}
-                      fill
-                      sizes="(max-width: 768px) 33vw, 15vw"
-                      className="object-contain p-1 group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center text-center p-1">
-                    <div className="w-10 h-10 rounded-full bg-ushop-pink/10 text-ushop-pink font-extrabold flex items-center justify-center text-sm mb-1.5 group-hover:bg-ushop-pink group-hover:text-white transition-colors shadow-2xs">
-                      {brand?.name?.charAt(0) || "B"}
+      {/* Brands Marquee Carousel */}
+      <div className="bg-gradient-to-br from-ushop_light_bg via-white to-ushop-pink/5 p-6 lg:p-8 rounded-2xl shadow-xl border border-ushop-pink/10 mb-16 overflow-hidden relative">
+        <div className="overflow-hidden w-full relative select-none">
+          {/* Left Gradient Mask */}
+          <div className="absolute left-0 top-0 h-full w-16 md:w-28 z-10 pointer-events-none bg-gradient-to-r from-white via-white/80 to-transparent" />
+
+          {/* Marquee Inner Track */}
+          <div className="flex will-change-transform min-w-max animate-marquee py-2">
+            {[...displayBrands, ...displayBrands].map((brand, index) => {
+              const brandImg =
+                (brand as Record<string, unknown>).image ||
+                (brand as Record<string, unknown>).logo;
+
+              return (
+                <Link
+                  key={`${brand?._id}-${index}`}
+                  href={`/brands/${brand?.slug?.current}`}
+                  className="group bg-white rounded-2xl p-4 md:p-5 flex items-center justify-center aspect-square hover:shadow-2xl shadow-md border border-gray-100 hover:border-ushop-pink/40 hoverEffect transform hover:-translate-y-1 w-28 h-28 md:w-36 md:h-36 mx-3 flex-shrink-0"
+                >
+                  {brandImg ? (
+                    <div className="relative w-full h-full flex items-center justify-center p-1">
+                      <Image
+                        src={urlFor(brandImg).url()}
+                        alt={`${brand?.name || "Brand"} logo`}
+                        fill
+                        sizes="(max-width: 768px) 120px, 160px"
+                        className="object-contain p-1 group-hover:scale-105 transition-transform duration-300"
+                      />
                     </div>
-                    <span className="text-xs font-bold text-gray-800 group-hover:text-ushop-pink transition-colors line-clamp-2 leading-tight">
-                      {brand?.name}
-                    </span>
-                  </div>
-                );
-              })()}
-            </Link>
-          ))}
+                  ) : (
+                    <div className="flex flex-col items-center justify-center text-center p-1">
+                      <div className="w-9 h-9 rounded-full bg-ushop-pink/10 text-ushop-pink font-extrabold flex items-center justify-center text-sm mb-1.5 group-hover:bg-ushop-pink group-hover:text-white transition-colors shadow-2xs">
+                        {brand?.name?.charAt(0) || "B"}
+                      </div>
+                      <span className="text-xs font-bold text-gray-800 group-hover:text-ushop-pink transition-colors line-clamp-2 leading-tight">
+                        {brand?.name}
+                      </span>
+                    </div>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Right Gradient Mask */}
+          <div className="absolute right-0 top-0 h-full w-16 md:w-28 z-10 pointer-events-none bg-gradient-to-l from-white via-white/80 to-transparent" />
         </div>
 
         {/* Brand Grid Footer */}
-        <div className="text-center mt-8 pt-6 border-t border-ushop-purple/10">
+        <div className="text-center mt-6 pt-5 border-t border-ushop-purple/10">
           <p className="text-dark-text text-sm">
             <span className="font-semibold text-ushop-pink">
               {displayBrands?.length}+
