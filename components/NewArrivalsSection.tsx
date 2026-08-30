@@ -6,7 +6,7 @@ import ProductCard from "./ProductCard";
 import Container from "./Container";
 import Title from "./Title";
 import Link from "next/link";
-import { Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
+import { Package, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface NewArrivalsSectionProps {
   products: Product[];
@@ -72,7 +72,7 @@ const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({
         <div className="flex items-center justify-between mb-6 pb-4 border-b border-ushop-pink/10">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-ushop-pink/10 text-ushop-pink flex items-center justify-center">
-              <Sparkles className="w-4 h-4" />
+              <Package className="w-4 h-4" />
             </div>
             <div>
               <h3 className="text-base font-bold text-gray-900">
