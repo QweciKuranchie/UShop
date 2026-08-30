@@ -49,6 +49,7 @@ const Home = async () => {
       <div className="bg-white min-h-screen">
         <Container className="pt-4 sm:pt-6">
           <HomeBanner />
+          <ActionMiniBanners />
           {dealProducts && dealProducts.length > 0 && (
             <FlashSaleSection products={dealProducts} />
           )}
@@ -63,7 +64,6 @@ const Home = async () => {
         {newArrivals && newArrivals.length > 0 && (
           <NewArrivalsSection products={newArrivals} />
         )}
-        <ActionMiniBanners />
         <div className="pb-16 pt-4">
           <ProductGrid />
         </div>

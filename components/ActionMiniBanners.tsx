@@ -90,13 +90,13 @@ const ActionMiniBanners: React.FC = () => {
   };
 
   return (
-    <Container className="mt-8 lg:mt-12">
+    <div className="w-full mt-4 sm:mt-6">
       <div className="relative group/carousel">
         {/* Navigation Buttons (Desktop) */}
         <button
           onClick={() => handleScroll("left")}
           aria-label="Scroll banners left"
-          className="hidden sm:flex absolute -left-3.5 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-white/95 text-gray-800 shadow-md border border-gray-100 hover:text-ushop-pink hover:bg-white hover:scale-105 transition-all opacity-0 group-hover/carousel:opacity-100 disabled:opacity-0"
+          className="hidden md:flex absolute -left-3 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-white/95 text-gray-800 shadow-md border border-gray-100 hover:text-ushop-pink hover:bg-white hover:scale-105 transition-all opacity-0 group-hover/carousel:opacity-100 disabled:opacity-0 cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -104,28 +104,28 @@ const ActionMiniBanners: React.FC = () => {
         <button
           onClick={() => handleScroll("right")}
           aria-label="Scroll banners right"
-          className="hidden sm:flex absolute -right-3.5 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-white/95 text-gray-800 shadow-md border border-gray-100 hover:text-ushop-pink hover:bg-white hover:scale-105 transition-all opacity-0 group-hover/carousel:opacity-100 disabled:opacity-0"
+          className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-white/95 text-gray-800 shadow-md border border-gray-100 hover:text-ushop-pink hover:bg-white hover:scale-105 transition-all opacity-0 group-hover/carousel:opacity-100 disabled:opacity-0 cursor-pointer"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
 
-        {/* Scrollable Track */}
+        {/* One-Line Carousel Track */}
         <div
           ref={scrollRef}
-          className="flex overflow-x-auto gap-4 pb-2 pt-1 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-zinc-300 scrollbar-track-transparent scroll-smooth -mx-4 px-4 sm:mx-0 sm:px-0"
+          className="flex overflow-x-auto gap-3.5 sm:gap-4 pb-2 pt-1 snap-x snap-mandatory scrollbar-none scroll-smooth"
         >
           {miniBanners.map((banner) => {
             const content = (
               <div
-                className={`h-full rounded-2xl p-5 bg-gradient-to-br ${banner.gradientClass} border ${banner.borderClass} shadow-md hover:shadow-xl hoverEffect transform hover:-translate-y-0.5 flex flex-col justify-between relative overflow-hidden group cursor-pointer`}
+                className={`h-full rounded-2xl p-4 sm:p-5 bg-gradient-to-br ${banner.gradientClass} border ${banner.borderClass} shadow-md hover:shadow-xl hoverEffect transform hover:-translate-y-0.5 flex flex-col justify-between relative overflow-hidden group cursor-pointer`}
               >
                 {/* Background ambient glow circle */}
                 <div className="absolute -right-8 -bottom-8 w-28 h-28 rounded-full bg-white/10 blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
 
                 {/* Top Row: Icon + Badge */}
-                <div className="flex items-center justify-between gap-3 mb-4">
+                <div className="flex items-center justify-between gap-2.5 mb-3.5">
                   <div
-                    className={`w-10 h-10 rounded-xl ${banner.iconBgClass} flex items-center justify-center shadow-xs backdrop-blur-xs group-hover:scale-105 transition-transform`}
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl ${banner.iconBgClass} flex items-center justify-center shadow-xs backdrop-blur-xs group-hover:scale-105 transition-transform`}
                   >
                     {banner.icon}
                   </div>
@@ -136,7 +136,7 @@ const ActionMiniBanners: React.FC = () => {
                 </div>
 
                 {/* Middle: Title & Subtitle */}
-                <div className="space-y-1.5 z-10 mb-5">
+                <div className="space-y-1 z-10 mb-4">
                   <h3 className="text-base sm:text-lg font-extrabold tracking-tight">
                     {banner.title}
                   </h3>
@@ -146,16 +146,16 @@ const ActionMiniBanners: React.FC = () => {
                 </div>
 
                 {/* Bottom: Action link button */}
-                <div className="pt-3 border-t border-white/15 flex items-center justify-between text-xs font-bold tracking-wide">
+                <div className="pt-2.5 border-t border-white/15 flex items-center justify-between text-xs font-bold tracking-wide">
                   <span className="group-hover:translate-x-0.5 transition-transform truncate mr-2">
                     {banner.actionText}
                   </span>
 
-                  <div className="w-7 h-7 rounded-full bg-white/15 shrink-0 flex items-center justify-center group-hover:bg-white group-hover:text-gray-900 transition-all duration-300">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/15 shrink-0 flex items-center justify-center group-hover:bg-white group-hover:text-gray-900 transition-all duration-300">
                     {banner.isExternal ? (
-                      <ExternalLink className="w-3.5 h-3.5" />
+                      <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     ) : (
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                      <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-0.5 transition-transform" />
                     )}
                   </div>
                 </div>
@@ -170,7 +170,7 @@ const ActionMiniBanners: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={banner.title}
-                  className="shrink-0 w-[260px] sm:w-[280px] lg:w-[calc(25%-12px)] snap-start block h-full"
+                  className="shrink-0 w-[78vw] max-w-[270px] sm:w-[270px] lg:w-[280px] snap-start block h-full"
                 >
                   {content}
                 </a>
@@ -183,7 +183,7 @@ const ActionMiniBanners: React.FC = () => {
                   key={banner.id}
                   href={banner.href}
                   aria-label={`Call ${banner.title}`}
-                  className="shrink-0 w-[260px] sm:w-[280px] lg:w-[calc(25%-12px)] snap-start block h-full"
+                  className="shrink-0 w-[78vw] max-w-[270px] sm:w-[270px] lg:w-[280px] snap-start block h-full"
                 >
                   {content}
                 </a>
@@ -195,7 +195,7 @@ const ActionMiniBanners: React.FC = () => {
                 key={banner.id}
                 href={banner.href}
                 aria-label={banner.title}
-                className="shrink-0 w-[260px] sm:w-[280px] lg:w-[calc(25%-12px)] snap-start block h-full"
+                className="shrink-0 w-[78vw] max-w-[270px] sm:w-[270px] lg:w-[280px] snap-start block h-full"
               >
                 {content}
               </Link>
@@ -203,7 +203,7 @@ const ActionMiniBanners: React.FC = () => {
           })}
         </div>
       </div>
-    </Container>
+    </div>
   );
 };
 
