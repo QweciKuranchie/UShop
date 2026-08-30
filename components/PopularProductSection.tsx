@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useRef } from "react";
 import { Product } from "@/sanity.types";
 import ProductCard from "./ProductCard";
 import Container from "./Container";
@@ -13,7 +15,7 @@ interface PopularProductSectionProps {
 const PopularProductSection: React.FC<PopularProductSectionProps> = ({
   products,
 }) => {
-  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
