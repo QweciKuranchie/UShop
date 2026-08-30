@@ -1,4 +1,5 @@
 import React from "react";
+import { Metadata } from "next";
 import Container from "@/components/Container";
 import Link from "next/link";
 import { contactConfig } from "@/config/contact";
