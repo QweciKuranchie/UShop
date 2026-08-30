@@ -50,34 +50,39 @@ const ProductCard = ({ product, priority = false, isFlashSale = false }: Product
   const isHotOrFlash = isFlashSale || Boolean(product?.isFlashSale) || product?.status === "hot";
 
   return (
-    <div className="text-sm border-[1px] border-dark-blue/20 rounded-md bg-white group">
-      <div className="relative group overflow-hidden bg-ushop_light_bg">
+    <div className="text-xs sm:text-sm border border-gray-200/80 rounded-xl bg-white group hover:shadow-lg hover:border-ushop-pink/30 hoverEffect flex flex-col h-full overflow-hidden">
+      <div className="relative group overflow-hidden bg-ushop_light_bg aspect-square w-full">
         {product?.images && product.images[0] && (
-          <Link href={`/product/${product?.slug?.current}`} aria-label={product.name || "View product"} title={product.name || "View product"}>
-          <Image
-            src={urlFor(product.images[0]).url()}
-            alt={product.name || "Product Image"}
-            priority={priority}
-            width={700}
-            height={700}
-            className={`w-full h-44 sm:h-52 md:h-64 object-cover overflow-hidden transition-transform
-               bg-ushop_light_bg hoverEffect
-                ${product?.stock !== 0 ? "group-hover:scale-105" : "opacity-50"}`}
-          />
+          <Link
+            href={`/product/${product?.slug?.current}`}
+            aria-label={product.name || "View product"}
+            title={product.name || "View product"}
+            className="block w-full h-full"
+          >
+            <Image
+              src={urlFor(product.images[0]).url()}
+              alt={product.name || "Product Image"}
+              priority={priority}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+              className={`w-full h-full object-cover transition-transform duration-300
+                 bg-ushop_light_bg hoverEffect
+                  ${product?.stock !== 0 ? "group-hover:scale-105" : "opacity-50"}`}
+            />
           </Link>
         )}
         {/* Top-right action icons container (Wishlist + Flame icon if Flash Sale) */}
-        <div className="absolute top-2 right-2 z-10 flex flex-col items-center gap-1.5">
+        <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 z-10 flex flex-col items-center gap-1">
           <AddToWishlistBtn product={product} />
           {isHotOrFlash && (
             <Link
               href="/deals"
               aria-label="Flash Deal"
               title="Flash Deal"
-              className="p-1.5 rounded-full bg-white/95 shadow-md border border-red-100 hover:scale-110 transition-transform duration-200"
+              className="p-1 sm:p-1.5 rounded-full bg-white/95 shadow-md border border-red-100 hover:scale-110 transition-transform duration-200"
             >
               <Flame
-                size={16}
+                size={14}
                 className="text-ushop-red fill-ushop-red animate-pulse"
               />
             </Link>
@@ -87,7 +92,7 @@ const ProductCard = ({ product, priority = false, isFlashSale = false }: Product
         {/* Top-left status badge (if not flash sale or if normal status exists) */}
         {!product?.isFlashSale && product?.status && STATUS_CONFIG[product.status] && (
           <span
-            className={`absolute top-2 left-2 z-10 text-xs border px-2 py-0.5 rounded-full font-medium tracking-wider hoverEffect ${STATUS_CONFIG[product.status].className}`}
+            className={`absolute top-1.5 left-1.5 sm:top-2 sm:left-2 z-10 text-[9px] sm:text-[10px] uppercase font-bold border px-1.5 py-0.5 rounded-full tracking-wider hoverEffect ${STATUS_CONFIG[product.status].className}`}
           >
             {STATUS_CONFIG[product.status].label}
           </span>
@@ -96,76 +101,87 @@ const ProductCard = ({ product, priority = false, isFlashSale = false }: Product
         {/* Discount Tag */}
         {typeof product?.discount === "number" && product.discount > 0 ? (
           <div
-            className={`absolute left-2 z-10 bg-ushop-pink/10 text-ushop-pink border border-ushop-pink/20 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg hoverEffect ${
-              !product?.isFlashSale && product?.status ? "top-8" : "top-2"
+            className={`absolute left-1.5 sm:left-2 z-10 bg-ushop-pink text-white text-[9px] sm:text-[11px] font-extrabold px-1.5 py-0.5 rounded-md shadow-xs ${
+              !product?.isFlashSale && product?.status ? "top-7 sm:top-8" : "top-1.5 sm:top-2"
             }`}
           >
             -{product.discount}%
           </div>
         ) : null}
       </div>
-      <div className="p-3 flex flex-col gap-2">
-        {(() => {
-          const prod = product as { category?: { title?: string; name?: string } | string; categories?: unknown[] };
-          const hasCategory = prod?.category || (prod?.categories && prod.categories.length > 0);
-          if (!hasCategory) return null;
 
-          let categoryLabel = "";
-          if (typeof prod?.category === "object" && prod.category !== null) {
-            categoryLabel = prod.category.title || prod.category.name || "";
-          } else if (typeof prod?.category === "string") {
-            categoryLabel = prod.category;
-          } else if (Array.isArray(prod?.categories)) {
-            categoryLabel = prod.categories
-              .map((cat: unknown) => {
-                if (typeof cat === "string") return cat;
-                if (cat && typeof cat === "object") {
-                  const obj = cat as { title?: string; name?: string };
-                  return obj.title || obj.name || "";
-                }
-                return "";
-              })
-              .filter(Boolean)
-              .join(", ");
-          }
+      {/* Content Area */}
+      <div className="p-2.5 sm:p-3.5 flex flex-col flex-1 justify-between gap-1.5">
+        <div className="space-y-1">
+          {(() => {
+            const prod = product as { category?: { title?: string; name?: string } | string; categories?: unknown[] };
+            const hasCategory = prod?.category || (prod?.categories && prod.categories.length > 0);
+            if (!hasCategory) return null;
 
-          if (!categoryLabel) return null;
-
-          return (
-            <p className="uppercase line-clamp-1 text-xs text-ushop-light-text">
-              {categoryLabel}
-            </p>
-          );
-        })()}
-      <Title className="text-base md:text-base line-clamp-1 text-ushop-purple-dark ">{product?.name}</Title>
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-0.5">
-          {[...Array(5)].map((_, index) => (
-            <StarIcon 
-            key={index} 
-            size={12}
-            className={index < 4 ?
-              "text-ushop-lighter-pink"
-              :
-              "text-ushop-lighter-text"
+            let categoryLabel = "";
+            if (typeof prod?.category === "object" && prod.category !== null) {
+              categoryLabel = prod.category.title || prod.category.name || "";
+            } else if (typeof prod?.category === "string") {
+              categoryLabel = prod.category;
+            } else if (Array.isArray(prod?.categories)) {
+              categoryLabel = prod.categories
+                .map((cat: unknown) => {
+                  if (typeof cat === "string") return cat;
+                  if (cat && typeof cat === "object") {
+                    const obj = cat as { title?: string; name?: string };
+                    return obj.title || obj.name || "";
+                  }
+                  return "";
+                })
+                .filter(Boolean)
+                .join(", ");
             }
-            
-            fill={index < 4 ? "#db2777" : "#ababab"}
-             />
-          ))}
+
+            if (!categoryLabel) return null;
+
+            return (
+              <p className="uppercase line-clamp-1 text-[10px] sm:text-xs text-ushop-light-text font-medium">
+                {categoryLabel}
+              </p>
+            );
+          })()}
+
+          <Link href={`/product/${product?.slug?.current}`} className="block">
+            <Title className="text-xs sm:text-sm font-bold line-clamp-1 text-gray-900 group-hover:text-ushop-purple hoverEffect leading-tight">
+              {product?.name}
+            </Title>
+          </Link>
+
+          <div className="flex items-center gap-1.5 pt-0.5">
+            <div className="flex items-center gap-0.5">
+              {[...Array(5)].map((_, index) => (
+                <StarIcon 
+                  key={index} 
+                  size={10}
+                  className={index < 4 ? "text-amber-400 fill-amber-400" : "text-gray-200 fill-gray-200"}
+                />
+              ))}
+            </div>
+            <span className="text-[10px] text-gray-400">
+              ({(product as Record<string, unknown>)?.totalReviews as number || 5})
+            </span>
+          </div>
         </div>
-        <p className="text-xs text-ushop-light-text tracking-wide">5 Reviews</p>
-      </div>
-      <div className="flex items-center gap-2.5">
-        <p className="font-medium">Stock</p>
-        <p className={` ${product?.stock === 0 ? "text-ushop-red font-semibold" : "text-ushop-purple font-semibold"}`}>{(product?.stock as number) > 0 ? `(${product?.stock})` : "Out of Stock"} </p>
-      </div>
-      <PriceView 
-      price={product?.price} 
-      discount={product?.discount}
-      className="text-sm"
-      />
-      <AddToCartBtn product={product} className="w-full rounded-full"/>
+
+        <div className="space-y-2 pt-1">
+          <div className="flex items-baseline justify-between gap-1">
+            <PriceView 
+              price={product?.price} 
+              discount={product?.discount}
+              className="text-xs sm:text-sm font-extrabold"
+            />
+            <span className={`text-[10px] font-semibold ${product?.stock === 0 ? "text-ushop-red" : "text-emerald-600"}`}>
+              {(product?.stock as number) > 0 ? "In Stock" : "Out of Stock"}
+            </span>
+          </div>
+
+          <AddToCartBtn product={product} className="w-full text-xs py-1.5 sm:py-2 rounded-xl" />
+        </div>
       </div>
     </div>
   );

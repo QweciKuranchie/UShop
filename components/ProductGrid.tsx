@@ -86,7 +86,7 @@ const ProductGrid = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(productType[0]?.title || "");
-  const [viewMode, setViewMode] = useState<ViewMode>("grid-5");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid-4");
   const [sortBy, setSortBy] = useState<SortOption>("name-asc");
   const [showFilters, setShowFilters] = useState(false);
   const [displayLimit, setDisplayLimit] = useState(12);
@@ -242,17 +242,17 @@ const ProductGrid = () => {
   const getGridClasses = () => {
     switch (viewMode) {
       case "grid-2":
-        return "grid-cols-1 sm:grid-cols-2 gap-6";
+        return "grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-3 sm:gap-5";
       case "grid-3":
-        return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5";
+        return "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4";
       case "grid-4":
-        return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4";
+        return "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4";
       case "grid-5":
-        return "grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3";
+        return "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-3.5";
       case "list":
-        return "grid-cols-1 gap-4";
+        return "grid-cols-1 gap-3 sm:gap-4";
       default:
-        return "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4";
+        return "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4";
     }
   };
 
