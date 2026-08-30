@@ -17,8 +17,8 @@ const DEAL_PRODUCTS = defineQuery(
   ...,"categories": categories[]->title
 }`
 );
-const FEATURE_PRODUCTS = defineQuery(
-  `*[_type == 'product' && isFeatured == true] | order(name asc){
+const POPULAR_PRODUCTS = defineQuery(
+  `*[_type == 'product' && (status == 'hot' || totalReviews > 0 || averageRating >= 4 || isFeatured == true || featured == true)] | order(coalesce(totalReviews, 0) desc, coalesce(averageRating, 0) desc, _createdAt desc) [0...8]{
   ...,"categories": categories[]->title
 }`
 );
@@ -386,7 +386,8 @@ export {
   FEATURED_CATEGORY_QUERY,
   ALL_PRODUCTS_QUERY,
   DEAL_PRODUCTS,
-  FEATURE_PRODUCTS,
+  POPULAR_PRODUCTS as FEATURE_PRODUCTS,
+  POPULAR_PRODUCTS,
   BRANDS_QUERY,
   ADDRESS_QUERY,
   ALLCATEGORIES_QUERY,

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Product } from "@/sanity.types";
 import ProductCard from "./ProductCard";
-import { Flame, Clock, ArrowRight } from "lucide-react";
+import { Flame, Clock, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 interface FlashSaleSectionProps {
@@ -11,6 +11,7 @@ interface FlashSaleSectionProps {
 }
 
 const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ products }) => {
+  const scrollRef = React.useRef<HTMLDivElement>(null);
   // Timer state: 12 hours countdown
   const [timeLeft, setTimeLeft] = useState({
     hours: 11,
@@ -35,17 +36,24 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ products }) => {
     return () => clearInterval(timer);
   }, []);
 
+  const handleScroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const scrollAmount = 320;
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
   if (!products || products.length === 0) {
     return null;
   }
 
-  // Take top 4 products for flash deal banner
-  const dealProducts = products.slice(0, 4);
-
   return (
     <section className="my-10 bg-gradient-to-r from-ushop-red/5 via-ushop-pink/10 to-ushop_light_bg rounded-2xl p-4 sm:p-8 border border-ushop-red/20 shadow-xs relative overflow-hidden">
       {/* Top Banner Header */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8 pb-6 border-b border-ushop-red/15">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-6 border-b border-ushop-red/15">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-ushop-red text-white flex items-center justify-center shadow-md shrink-0 animate-pulse">
             <Flame className="w-7 h-7 fill-white" />
@@ -65,8 +73,8 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ products }) => {
           </div>
         </div>
 
-        {/* Live Timer & View All */}
-        <div className="flex flex-wrap items-center gap-4 w-full md:w-auto justify-between md:justify-end">
+        {/* Live Timer & View All & Navigation Buttons */}
+        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-between md:justify-end">
           {/* Countdown Clock */}
           <div className="flex items-center gap-2 bg-white/90 backdrop-blur-xs border border-ushop-red/30 px-3.5 py-2 rounded-2xl shadow-xs">
             <Clock className="w-4 h-4 text-ushop-red shrink-0" />
@@ -93,13 +101,39 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ products }) => {
             <span>View All Deals</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
+
+          {/* Scroll Nav Buttons */}
+          <div className="hidden sm:flex items-center gap-1.5">
+            <button
+              onClick={() => handleScroll("left")}
+              aria-label="Previous flash deals"
+              className="p-2 rounded-xl bg-white border border-ushop-red/20 text-gray-700 hover:text-ushop-red hover:border-ushop-red hoverEffect shadow-xs"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => handleScroll("right")}
+              aria-label="Next flash deals"
+              className="p-2 rounded-xl bg-white border border-ushop-red/20 text-gray-700 hover:text-ushop-red hover:border-ushop-red hoverEffect shadow-xs"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Deal Products Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        {dealProducts.map((product) => (
-          <ProductCard key={product._id} product={product} isFlashSale={true} />
+      {/* Deal Products One-Line Horizontal Scroll Track */}
+      <div
+        ref={scrollRef}
+        className="flex overflow-x-auto gap-4 sm:gap-6 pb-2 pt-1 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-red/30 scrollbar-track-transparent scroll-smooth"
+      >
+        {products.map((product) => (
+          <div
+            key={product._id}
+            className="w-[230px] sm:w-[260px] md:w-[280px] shrink-0 snap-start"
+          >
+            <ProductCard product={product} isFlashSale={true} />
+          </div>
         ))}
       </div>
     </section>
