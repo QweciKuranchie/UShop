@@ -9,23 +9,34 @@ const FEATURED_CATEGORY_QUERY = defineQuery(
 const ALL_PRODUCTS_QUERY = defineQuery(
   `*[_type=="product"] | order(name asc){
     ...,
-    "categories": categories[]->title
+    "categories": categories[]->title,
+    "averageRating": coalesce(math::avg(*[_type == "review" && product._ref == ^._id && status == "approved"].rating), averageRating, 0),
+    "totalReviews": coalesce(count(*[_type == "review" && product._ref == ^._id && status == "approved"]), totalReviews, 0)
   }`
 );
 const DEAL_PRODUCTS = defineQuery(
   `*[_type == 'product' && (isFlashSale == true || status == 'hot' || discount > 0)] | order(_createdAt desc){
-  ...,"categories": categories[]->title
-}`
+    ...,
+    "categories": categories[]->title,
+    "averageRating": coalesce(math::avg(*[_type == "review" && product._ref == ^._id && status == "approved"].rating), averageRating, 0),
+    "totalReviews": coalesce(count(*[_type == "review" && product._ref == ^._id && status == "approved"]), totalReviews, 0)
+  }`
 );
 const POPULAR_PRODUCTS = defineQuery(
-  `*[_type == 'product' && (status == 'hot' || totalReviews > 0 || averageRating >= 4 || isFeatured == true || featured == true)] | order(coalesce(totalReviews, 0) desc, coalesce(averageRating, 0) desc, _createdAt desc) [0...8]{
-  ...,"categories": categories[]->title
-}`
+  `*[_type == 'product' && (status == 'hot' || totalReviews > 0 || averageRating >= 4 || isFeatured == true || featured == true || count(*[_type == "review" && product._ref == ^._id && status == "approved"]) > 0)] | order(coalesce(count(*[_type == "review" && product._ref == ^._id && status == "approved"]), totalReviews, 0) desc, coalesce(math::avg(*[_type == "review" && product._ref == ^._id && status == "approved"].rating), averageRating, 0) desc, _createdAt desc) [0...8]{
+    ...,
+    "categories": categories[]->title,
+    "averageRating": coalesce(math::avg(*[_type == "review" && product._ref == ^._id && status == "approved"].rating), averageRating, 0),
+    "totalReviews": coalesce(count(*[_type == "review" && product._ref == ^._id && status == "approved"]), totalReviews, 0)
+  }`
 );
 const NEW_ARRIVALS = defineQuery(
   `*[_type == 'product'] | order(_createdAt desc) [0...10]{
-  ...,"categories": categories[]->title
-}`
+    ...,
+    "categories": categories[]->title,
+    "averageRating": coalesce(math::avg(*[_type == "review" && product._ref == ^._id && status == "approved"].rating), averageRating, 0),
+    "totalReviews": coalesce(count(*[_type == "review" && product._ref == ^._id && status == "approved"]), totalReviews, 0)
+  }`
 );
 const BRANDS_QUERY = defineQuery(`*[_type=='brand'] | order(name asc) `);
 
@@ -134,7 +145,9 @@ const RELATED_PRODUCTS_QUERY = defineQuery(
       _id,
       title,
       slug
-    }
+    },
+    "averageRating": coalesce(math::avg(*[_type == "review" && product._ref == ^._id && status == "approved"].rating), averageRating, 0),
+    "totalReviews": coalesce(count(*[_type == "review" && product._ref == ^._id && status == "approved"]), totalReviews, 0)
   }`
 );
 
@@ -151,7 +164,9 @@ const PRODUCTS_BY_STORE_QUERY = defineQuery(
       _id,
       title,
       slug
-    }
+    },
+    "averageRating": coalesce(math::avg(*[_type == "review" && product._ref == ^._id && status == "approved"].rating), averageRating, 0),
+    "totalReviews": coalesce(count(*[_type == "review" && product._ref == ^._id && status == "approved"]), totalReviews, 0)
   }`
 );
 
@@ -185,6 +200,8 @@ const PRODUCTS_BY_BRAND_SLUG_QUERY = defineQuery(
   `*[_type == 'product' && brand->slug.current == $slug] | order(name asc) {
     ...,
     "categories": categories[]->title,
+    "averageRating": coalesce(math::avg(*[_type == "review" && product._ref == ^._id && status == "approved"].rating), averageRating, 0),
+    "totalReviews": coalesce(count(*[_type == "review" && product._ref == ^._id && status == "approved"]), totalReviews, 0),
     attributeValues[]{
       ...,
       attribute->{ _id, title, slug, type }
@@ -231,6 +248,8 @@ const PRODUCTS_BY_UNIVERSITY_SLUG_QUERY = defineQuery(
   )] | order(name asc) {
     ...,
     "categories": categories[]->title,
+    "averageRating": coalesce(math::avg(*[_type == "review" && product._ref == ^._id && status == "approved"].rating), averageRating, 0),
+    "totalReviews": coalesce(count(*[_type == "review" && product._ref == ^._id && status == "approved"]), totalReviews, 0),
     attributeValues[]{
       ...,
       attribute->{ _id, title, slug, type }
@@ -288,6 +307,8 @@ const CATEGORIES_HIERARCHY_QUERY = defineQuery(
 const PRODUCTS_BY_CLASSIFICATION_QUERY = defineQuery(
   `*[_type == "product" && productClassification->slug.current == $classificationSlug] | order(name asc) {
     ...,
+    "averageRating": coalesce(math::avg(*[_type == "review" && product._ref == ^._id && status == "approved"].rating), averageRating, 0),
+    "totalReviews": coalesce(count(*[_type == "review" && product._ref == ^._id && status == "approved"]), totalReviews, 0),
     productClassification->{
       _id,
       title,
@@ -382,7 +403,9 @@ const PRODUCTS_BY_STORE_SLUG_QUERY = defineQuery(
       _id,
       title,
       slug
-    }
+    },
+    "averageRating": coalesce(math::avg(*[_type == "review" && product._ref == ^._id && status == "approved"].rating), averageRating, 0),
+    "totalReviews": coalesce(count(*[_type == "review" && product._ref == ^._id && status == "approved"]), totalReviews, 0)
   }`
 );
 
