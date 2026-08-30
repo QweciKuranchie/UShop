@@ -5,7 +5,7 @@ import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
-import { shadcn } from "@clerk/ui/themes";
+import { shadcn } from "@clerk/themes";
 import { UserDataProvider } from "@/contexts/UserDataContext";
 import { SanityLive } from "@/sanity/lib/live";
 import { Toaster } from "sonner";
