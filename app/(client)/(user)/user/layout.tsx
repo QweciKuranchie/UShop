@@ -16,16 +16,11 @@ import {
   Menu,
   X,
   ChevronRight,
-  Shield,
-  Users,
-  Building2,
-  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useClerk } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import Container from "@/components/Container";
-import { useIsAdmin } from "@/lib/adminUtils";
 
 const sidebarItems = [
   {
@@ -66,33 +61,6 @@ const sidebarItems = [
   },
 ];
 
-const adminItems = [
-  {
-    title: "Manage Users",
-    href: "/user/admin/manage-users",
-    icon: Users,
-    description: "User premium status",
-  },
-  {
-    title: "Premium Accounts",
-    href: "/user/admin/premium-accounts",
-    icon: Shield,
-    description: "Premium approvals",
-  },
-  {
-    title: "Business Accounts",
-    href: "/user/admin/business-accounts",
-    icon: Building2,
-    description: "Business approvals",
-  },
-  {
-    title: "Reviews Moderation",
-    href: "/user/admin/reviews",
-    icon: Star,
-    description: "Approve customer reviews",
-  },
-];
-
 export default function UserLayout({
   children,
 }: {
@@ -102,7 +70,6 @@ export default function UserLayout({
   const { signOut } = useClerk();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const isAdmin = useIsAdmin(user?.primaryEmailAddress?.emailAddress);
 
   return (
     <div className="min-h-screen py-5 bg-gradient-to-br from-ushop_light_bg via-white to-ushop_light_pink/30">
@@ -238,55 +205,6 @@ export default function UserLayout({
                       </Link>
                     );
                   })}
-
-                  {/* Admin Section */}
-                  {isAdmin && (
-                    <>
-                      <div className="w-full border-t border-gray-200 my-3"></div>
-                      <div className="w-full text-xs text-gray-500 mb-2 px-2">
-                        Admin Tools
-                      </div>
-                      {adminItems.map((item) => {
-                        const isActive = pathname === item.href;
-                        return (
-                          <Link
-                            key={item.title}
-                            href={item.href}
-                            className={cn(
-                              "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border",
-                              isActive
-                                ? "bg-red-50 border-red-200 shadow-sm"
-                                : "hover:bg-red-50 border-gray-200 hover:border-red-200"
-                            )}
-                          >
-                            <div
-                              className={cn(
-                                "p-2 rounded-lg transition-colors",
-                                isActive
-                                  ? "bg-red-500 text-white"
-                                  : "bg-gray-100 text-gray-600 group-hover:bg-red-100 group-hover:text-red-600"
-                              )}
-                            >
-                              <item.icon className="h-4 w-4" />
-                            </div>
-                            <div>
-                              <div
-                                className={cn(
-                                  "font-medium text-sm",
-                                  isActive ? "text-red-700" : "text-gray-900"
-                                )}
-                              >
-                                {item.title}
-                              </div>
-                              <div className="text-xs text-gray-500">
-                                {item.description}
-                              </div>
-                            </div>
-                          </Link>
-                        );
-                      })}
-                    </>
-                  )}
                 </div>
               </nav>
             </div>
@@ -379,64 +297,6 @@ export default function UserLayout({
                   );
                 })}
 
-                {/* Admin Section - Mobile */}
-                {isAdmin && (
-                  <>
-                    <div className="border-t border-gray-200 pt-4 mt-4">
-                      <div className="text-xs text-gray-500 mb-3 px-4">
-                        Admin Tools
-                      </div>
-                      {adminItems.map((item) => {
-                        const isActive = pathname === item.href;
-                        return (
-                          <Link
-                            key={item.title}
-                            href={item.href}
-                            onClick={() => setSidebarOpen(false)}
-                            className={cn(
-                              "flex items-center justify-between p-4 rounded-xl transition-all duration-200 group",
-                              isActive
-                                ? "bg-red-50 border border-red-200 shadow-sm"
-                                : "hover:bg-red-50 border border-transparent"
-                            )}
-                          >
-                            <div className="flex items-center space-x-3">
-                              <div
-                                className={cn(
-                                  "p-2 rounded-lg transition-colors",
-                                  isActive
-                                    ? "bg-red-500 text-white"
-                                    : "bg-gray-100 text-gray-600 group-hover:bg-red-100 group-hover:text-red-600"
-                                )}
-                              >
-                                <item.icon className="h-4 w-4" />
-                              </div>
-                              <div>
-                                <div
-                                  className={cn(
-                                    "font-medium text-sm",
-                                    isActive ? "text-red-700" : "text-gray-900"
-                                  )}
-                                >
-                                  {item.title}
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                  {item.description}
-                                </div>
-                              </div>
-                            </div>
-                            <ChevronRight
-                              className={cn(
-                                "h-4 w-4 transition-colors",
-                                isActive ? "text-red-600" : "text-gray-400"
-                              )}
-                            />
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </>
-                )}
               </nav>
 
               {/* Mobile Sign Out Button */}

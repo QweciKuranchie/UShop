@@ -11,7 +11,6 @@ import {
   LogOut,
   UserCircle,
   Logs,
-  Shield,
   Wallet,
 } from "lucide-react";
 import { useUser, useClerk } from "@clerk/nextjs";
@@ -20,7 +19,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useIsAdmin } from "@/lib/adminUtils";
 import { useUserData } from "@/contexts/UserDataContext";
 
 const UserDropdown = () => {
@@ -32,9 +30,6 @@ const UserDropdown = () => {
     walletBalance,
     isLoading: isLoadingOrders,
   } = useUserData();
-
-  // Check if user is admin
-  const isAdmin = useIsAdmin(user?.primaryEmailAddress?.emailAddress);
 
   if (!user) return null;
 
@@ -207,18 +202,6 @@ const UserDropdown = () => {
               Help & Support
             </span>
           </Link>
-          {isAdmin && (
-            <Link
-              href="/user/admin/manage-users"
-              onClick={handleLinkClick}
-              className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-ushop_light_bg transition-colors duration-200 group"
-            >
-              <Shield className="w-4 h-4 text-orange-500 group-hover:text-orange-600 transition-colors" />
-              <span className="text-orange-600 group-hover:text-orange-700 transition-colors font-medium">
-                Admin Panel
-              </span>
-            </Link>
-          )}
         </div>
 
         <div className="p-2 border-t border-gray-100">

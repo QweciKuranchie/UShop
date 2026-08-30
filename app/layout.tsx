@@ -1,3 +1,4 @@
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
@@ -5,16 +6,74 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
-import type { Metadata, Viewport } from "next";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://ushopgh.com";
 
 export const metadata: Metadata = {
-  title: "U-Shop | Ghana's Tech E-Commerce Platform",
-  description: "UShop — Ghana's trusted tech e-commerce platform. Buy and sell phones, laptops, and gadgets.",
-  applicationName: "U-Shop",
+  metadataBase: new URL(BASE_URL),
+  title: {
+    template: "%s | UShop - Ghana's Tech Marketplace",
+    default: "UShop | Ghana's Tech E-Commerce Platform",
+  },
+  description:
+    "UShop — Ghana's trusted tech e-commerce platform. Buy and sell phones, laptops, tablets, and gadgets with campus hubs across Ghana.",
+  applicationName: "UShop",
+  authors: [{ name: "UShop Team" }],
+  generator: "Next.js",
+  keywords: [
+    "UShop",
+    "Ghana tech store",
+    "buy phones Ghana",
+    "laptops Accra",
+    "tech marketplace Ghana",
+    "student tech hub",
+    "electronics Ghana",
+  ],
+  referrer: "origin-when-cross-origin",
+  creator: "UShop",
+  publisher: "UShop",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_GH",
+    url: BASE_URL,
+    siteName: "UShop",
+    title: "UShop | Ghana's Tech E-Commerce Platform",
+    description:
+      "Ghana's trusted tech e-commerce platform. Buy and sell phones, laptops, and gadgets with campus hubs.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "UShop - Ghana's Tech Marketplace",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "UShop | Ghana's Tech E-Commerce Platform",
+    description:
+      "Ghana's trusted tech e-commerce platform. Buy and sell phones, laptops, and gadgets.",
+    images: ["/og-image.jpg"],
+    creator: "@ushopgh",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "U-Shop",
+    title: "UShop",
   },
   formatDetection: {
     telephone: false,

@@ -7,6 +7,7 @@ import FlashSaleSection from "@/components/FlashSaleSection";
 import { getCategories, getDealProducts } from "@/sanity/Queries";
 import ShopByBrand from "@/components/ShopByBrand";
 import ScrollToTop from "@/components/ScrollToTop";
+import { generateOrganizationSchema, generateWebsiteSchema } from "@/lib/seo";
 
 const Home = async () => {
   const [categories, dealProducts] = await Promise.all([
@@ -14,19 +15,38 @@ const Home = async () => {
     getDealProducts(),
   ]);
 
+  const orgSchema = generateOrganizationSchema();
+  const websiteSchema = generateWebsiteSchema();
+
   return (
-    <Container className="bg-ushop_light_bg/80">
-      <HomeBanner />
-      {dealProducts && dealProducts.length > 0 && (
-        <FlashSaleSection products={dealProducts} />
-      )}
-      <div className="py-10">
-        <ProductGrid />
-      </div>
-      <HomeCategories categories={categories} />
-      <ShopByBrand />
-      <ScrollToTop />
-    </Container>
+    <>
+      {/* Structured Data (JSON-LD) for Homepage */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(orgSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(websiteSchema),
+        }}
+      />
+
+      <Container className="bg-ushop_light_bg/80">
+        <HomeBanner />
+        {dealProducts && dealProducts.length > 0 && (
+          <FlashSaleSection products={dealProducts} />
+        )}
+        <div className="py-10">
+          <ProductGrid />
+        </div>
+        <HomeCategories categories={categories} />
+        <ShopByBrand />
+        <ScrollToTop />
+      </Container>
+    </>
   );
 };
 
