@@ -1,22 +1,32 @@
 import nodemailer, { Transporter } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
-const SENDER_EMAIL_ADDRESS = process.env.SENDER_EMAIL_ADDRESS;
-if (!SENDER_EMAIL_ADDRESS) {
-  throw new Error("SENDER_EMAIL_ADDRESS env var is required");
+let transporterInstance: Transporter<SMTPTransport.SentMessageInfo> | null = null;
+
+function getSenderEmail(): string {
+  const sender = process.env.SENDER_EMAIL_ADDRESS;
+  if (!sender) {
+    throw new Error("SENDER_EMAIL_ADDRESS env var is required");
+  }
+  return sender;
 }
 
-const transporter: Transporter<SMTPTransport.SentMessageInfo> =
-  nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      type: "OAuth2",
-      user: SENDER_EMAIL_ADDRESS,
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-    },
-  });
+function getTransporter(): Transporter<SMTPTransport.SentMessageInfo> {
+  if (!transporterInstance) {
+    const sender = getSenderEmail();
+    transporterInstance = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: sender,
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+      },
+    });
+  }
+  return transporterInstance;
+}
 
 // Type definitions
 interface OrderItem {
@@ -634,10 +644,11 @@ const sendOrderConfirmationEmail = async (
   data: OrderConfirmationData
 ): Promise<EmailResponse> => {
   try {
-    const htmlContent = generateOrderConfirmationHTML(data);
+    const senderEmail = getSenderEmail();
+    const mailer = getTransporter();
 
     const mailOptions = {
-      from: `"UShop Ecommerce" <${SENDER_EMAIL_ADDRESS}>`,
+      from: `"UShop Ecommerce" <${senderEmail}>`,
       to: data.customerEmail,
       subject: `Order Confirmation - ${data.orderId} | Thank you for your purchase!`,
       html: htmlContent,
@@ -679,7 +690,7 @@ Thank you for choosing UShop!
       `,
     };
 
-    const result = await transporter.sendMail(mailOptions);
+    const result = await mailer.sendMail(mailOptions);
 
     return { success: true, messageId: result.messageId };
   } catch (error) {
@@ -699,15 +710,18 @@ const sendMail = async ({
   html,
 }: SendMailParams): Promise<EmailResponse> => {
   try {
+    const senderEmail = getSenderEmail();
+    const mailer = getTransporter();
+
     const mailOptions = {
-      from: `"UShop Ecommerce" <${SENDER_EMAIL_ADDRESS}>`,
+      from: `"UShop Ecommerce" <${senderEmail}>`,
       to: email,
       subject,
       text,
       ...(html && { html }),
     };
 
-    const result = await transporter.sendMail(mailOptions);
+    const result = await mailer.sendMail(mailOptions);
     return { success: true, messageId: result.messageId };
   } catch (error) {
     console.error("Failed to send email:", error);
