@@ -644,6 +644,7 @@ const sendOrderConfirmationEmail = async (
   data: OrderConfirmationData
 ): Promise<EmailResponse> => {
   try {
+    const htmlContent = generateOrderConfirmationHTML(data);
     const senderEmail = getSenderEmail();
     const mailer = getTransporter();
 
