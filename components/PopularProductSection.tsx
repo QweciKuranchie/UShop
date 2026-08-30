@@ -4,7 +4,7 @@ import ProductCard from "./ProductCard";
 import Container from "./Container";
 import Title from "./Title";
 import Link from "next/link";
-import { TrendingUp, ArrowRight, Sparkles } from "lucide-react";
+import { TrendingUp, ArrowRight, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface PopularProductSectionProps {
   products: Product[];
@@ -13,12 +13,21 @@ interface PopularProductSectionProps {
 const PopularProductSection: React.FC<PopularProductSectionProps> = ({
   products,
 }) => {
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  const handleScroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const scrollAmount = 320;
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
   if (!products || products.length === 0) {
     return null;
   }
-
-  // Display top 8 popular products
-  const displayProducts = products.slice(0, 8);
 
   return (
     <Container className="mt-16 lg:mt-24">
@@ -64,15 +73,41 @@ const PopularProductSection: React.FC<PopularProductSectionProps> = ({
             </div>
           </div>
 
-          <span className="text-xs font-semibold text-ushop-purple bg-ushop-purple/10 px-3 py-1 rounded-full">
-            {displayProducts.length} Items
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold text-ushop-purple bg-ushop-purple/10 px-3 py-1 rounded-full">
+              {products.length} Items
+            </span>
+
+            {/* Scroll Navigation Buttons */}
+            <div className="hidden sm:flex items-center gap-1.5">
+              <button
+                onClick={() => handleScroll("left")}
+                aria-label="Previous products"
+                className="p-2 rounded-xl bg-white border border-ushop-purple/20 text-gray-700 hover:text-ushop-purple hover:border-ushop-purple hoverEffect shadow-xs"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => handleScroll("right")}
+                aria-label="Next products"
+                className="p-2 rounded-xl bg-white border border-ushop-purple/20 text-gray-700 hover:text-ushop-purple hover:border-ushop-purple hoverEffect shadow-xs"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {displayProducts.map((product, index) => (
-            <div key={product._id} className="hoverEffect transform hover:-translate-y-1">
+        {/* One-Line Scrollable Product Track */}
+        <div
+          ref={scrollRef}
+          className="flex overflow-x-auto gap-4 sm:gap-6 pb-2 pt-1 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-purple/30 scrollbar-track-transparent scroll-smooth"
+        >
+          {products.map((product, index) => (
+            <div
+              key={product._id}
+              className="w-[230px] sm:w-[260px] md:w-[280px] shrink-0 snap-start hoverEffect transform hover:-translate-y-1"
+            >
               <ProductCard
                 product={product}
                 priority={index < 4}
