@@ -37,8 +37,12 @@ export const contactConfig = {
   socials: {
     facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || "https://facebook.com/ushopgh",
     twitter: process.env.NEXT_PUBLIC_TWITTER_URL || "https://twitter.com/ushopgh",
+    x: process.env.NEXT_PUBLIC_X_URL || "https://x.com/ushopgh",
     instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://instagram.com/ushopgh",
     linkedin: process.env.NEXT_PUBLIC_LINKEDIN_URL || "https://linkedin.com/company/ushopgh",
+    // TODO: set NEXT_PUBLIC_WHATSAPP_NUMBER in Vercel — this fallback is a placeholder and must not go to production unset
+    whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "233000000000",
+    whatsappUrl: `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "233000000000"}`,
   },
   legal: {
     copyrightText:

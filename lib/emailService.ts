@@ -1,12 +1,17 @@
 import nodemailer, { Transporter } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
+const SENDER_EMAIL_ADDRESS = process.env.SENDER_EMAIL_ADDRESS;
+if (!SENDER_EMAIL_ADDRESS) {
+  throw new Error("SENDER_EMAIL_ADDRESS env var is required");
+}
+
 const transporter: Transporter<SMTPTransport.SentMessageInfo> =
   nodemailer.createTransport({
     service: "gmail",
     auth: {
       type: "OAuth2",
-      user: process.env.SENDER_EMAIL_ADDRESS || "reactjsbd@gmail.com",
+      user: SENDER_EMAIL_ADDRESS,
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
@@ -632,9 +637,7 @@ const sendOrderConfirmationEmail = async (
     const htmlContent = generateOrderConfirmationHTML(data);
 
     const mailOptions = {
-      from: `"UShop Ecommerce" <${
-        process.env.SENDER_EMAIL_ADDRESS || "reactjsbd@gmail.com"
-      }>`,
+      from: `"UShop Ecommerce" <${SENDER_EMAIL_ADDRESS}>`,
       to: data.customerEmail,
       subject: `Order Confirmation - ${data.orderId} | Thank you for your purchase!`,
       html: htmlContent,
@@ -697,9 +700,7 @@ const sendMail = async ({
 }: SendMailParams): Promise<EmailResponse> => {
   try {
     const mailOptions = {
-      from: `"UShop Ecommerce" <${
-        process.env.SENDER_EMAIL_ADDRESS || "reactjsbd@gmail.com"
-      }>`,
+      from: `"UShop Ecommerce" <${SENDER_EMAIL_ADDRESS}>`,
       to: email,
       subject,
       text,
