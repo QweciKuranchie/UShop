@@ -17,6 +17,7 @@ import { ADDRESS_QUERY,
   DEAL_PRODUCTS,
   FEATURE_PRODUCTS,
   POPULAR_PRODUCTS,
+  NEW_ARRIVALS,
   FEATURED_CATEGORY_QUERY,
   PRODUCT_BY_SLUG_QUERY,
   RELATED_PRODUCTS_QUERY,
@@ -127,6 +128,31 @@ const getPopularProducts = unstable_cache(
   },
   ["popular-products"],
   { revalidate: 300, tags: ["products", "popular", "homepage"] }
+);
+
+/**
+ * Get new arrival products - cached for 5 minutes
+ */
+const getNewArrivalProducts = unstable_cache(
+  async (quantity: number = 10) => {
+    try {
+      const { data } = (await sanityFetch({ query: NEW_ARRIVALS })) as {
+        data: Product[];
+      };
+      if (data && data.length > 0) {
+        return data.slice(0, quantity);
+      }
+      const fallback = (await sanityFetch({ query: ALL_PRODUCTS_QUERY })) as {
+        data: Product[];
+      };
+      return (fallback.data ?? []).slice(0, quantity);
+    } catch (error) {
+      console.error("Error fetching new arrivals:", error);
+      return [];
+    }
+  },
+  ["new-arrivals"],
+  { revalidate: 300, tags: ["products", "new-arrivals", "homepage"] }
 );
 
 /**
@@ -551,6 +577,7 @@ export {getBanner,
   getAllProducts,
   getDealProducts,
   getPopularProducts,
+  getNewArrivalProducts,
   getFeaturedProducts,
   getAllBrands,
   getBrandsWithCount,

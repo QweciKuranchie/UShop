@@ -22,6 +22,11 @@ const POPULAR_PRODUCTS = defineQuery(
   ...,"categories": categories[]->title
 }`
 );
+const NEW_ARRIVALS = defineQuery(
+  `*[_type == 'product'] | order(_createdAt desc) [0...10]{
+  ...,"categories": categories[]->title
+}`
+);
 const BRANDS_QUERY = defineQuery(`*[_type=='brand'] | order(name asc) `);
 
 // Address Query
@@ -388,6 +393,7 @@ export {
   DEAL_PRODUCTS,
   POPULAR_PRODUCTS as FEATURE_PRODUCTS,
   POPULAR_PRODUCTS,
+  NEW_ARRIVALS,
   BRANDS_QUERY,
   ADDRESS_QUERY,
   ALLCATEGORIES_QUERY,

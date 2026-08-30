@@ -6,17 +6,25 @@ import HomeCategories from "@/components/HomeCategories";
 import FlashSaleSection from "@/components/FlashSaleSection";
 import PopularProductSection from "@/components/PopularProductSection";
 import PromoBannerSection from "@/components/PromoBannerSection";
-import { getCategories, getDealProducts, getPopularProducts } from "@/sanity/Queries";
+import NewArrivalsSection from "@/components/NewArrivalsSection";
+import {
+  getCategories,
+  getDealProducts,
+  getPopularProducts,
+  getNewArrivalProducts,
+} from "@/sanity/Queries";
 import ShopByBrand from "@/components/ShopByBrand";
 import ScrollToTop from "@/components/ScrollToTop";
 import { generateOrganizationSchema, generateWebsiteSchema } from "@/lib/seo";
 
 const Home = async () => {
-  const [categories, dealProducts, popularProducts] = await Promise.all([
-    getCategories(6),
-    getDealProducts(),
-    getPopularProducts(8),
-  ]);
+  const [categories, dealProducts, popularProducts, newArrivals] =
+    await Promise.all([
+      getCategories(6),
+      getDealProducts(),
+      getPopularProducts(8),
+      getNewArrivalProducts(10),
+    ]);
 
   const orgSchema = generateOrganizationSchema();
   const websiteSchema = generateWebsiteSchema();
@@ -48,6 +56,9 @@ const Home = async () => {
           <PopularProductSection products={popularProducts} />
         )}
         <PromoBannerSection />
+        {newArrivals && newArrivals.length > 0 && (
+          <NewArrivalsSection products={newArrivals} />
+        )}
         <div className="py-10">
           <ProductGrid />
         </div>
