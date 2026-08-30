@@ -260,15 +260,15 @@ const ProductGrid = () => {
     <Container className="flex flex-col lg:px-0 mt-16 lg:mt-24">
       {/* Header Section */}
       <div className="text-center mb-8">
-        <div className="inline-flex items-center gap-3 mb-4">
-          <div className="h-1 w-12 bg-gradient-to-r from-ushop-purple to-ushop-purple-dark rounded-full"></div>
-          <h2 className="text-3xl lg:text-4xl font-bold text-dark-color">
+        <div className="inline-flex items-center gap-3 mb-3 sm:mb-4">
+          <div className="h-0.5 sm:h-1 w-8 sm:w-12 bg-gradient-to-r from-ushop-purple to-ushop-purple-dark rounded-full"></div>
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-dark-color">
             Featured Products
           </h2>
-          <div className="h-1 w-12 bg-gradient-to-l from-ushop-purple to-ushop-purple-dark rounded-full"></div>
+          <div className="h-0.5 sm:h-1 w-8 sm:w-12 bg-gradient-to-l from-ushop-purple to-ushop-purple-dark rounded-full"></div>
         </div>
-        <p className="text-light-color text-lg max-w-2xl mx-auto">
-          Discover our carefully curated selection of premium products
+        <p className="text-light-color text-xs sm:text-sm md:text-base max-w-2xl mx-auto px-4">
+          Browse our handpicked selection of top quality tech items
         </p>
       </div>
 

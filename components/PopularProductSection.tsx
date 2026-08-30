@@ -35,14 +35,14 @@ const PopularProductSection: React.FC<PopularProductSectionProps> = ({
     <Container className="mt-16 lg:mt-24">
       {/* Header Section */}
       <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-3 mb-4">
-          <div className="h-1 w-12 bg-gradient-to-r from-ushop-purple to-ushop-pink rounded-full"></div>
-          <Title className="text-3xl lg:text-4xl font-bold text-dark-color flex items-center gap-2">
+        <div className="inline-flex items-center gap-3 mb-3 sm:mb-4">
+          <div className="h-0.5 sm:h-1 w-8 sm:w-12 bg-gradient-to-r from-ushop-purple to-ushop-pink rounded-full"></div>
+          <Title className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-dark-color flex items-center gap-2">
             Popular Products
           </Title>
-          <div className="h-1 w-12 bg-gradient-to-l from-ushop-purple to-ushop-pink rounded-full"></div>
+          <div className="h-0.5 sm:h-1 w-8 sm:w-12 bg-gradient-to-l from-ushop-purple to-ushop-pink rounded-full"></div>
         </div>
-        <p className="text-light-color text-lg max-w-2xl mx-auto">
+        <p className="text-light-color text-xs sm:text-sm md:text-base max-w-2xl mx-auto px-4">
           Customer favorites and top trending picks loved by students and shoppers
         </p>
 

@@ -34,14 +34,14 @@ const HomeCategories = ({ categories }: Props) => {
     <Container className="mt-16 lg:mt-24">
       {/* Header Section */}
       <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-3 mb-4">
-          <div className="h-1 w-12 bg-gradient-to-r from-ushop-pink to-ushop-purple rounded-full"></div>
-          <Title className="text-3xl lg:text-4xl font-bold text-dark-color">
+        <div className="inline-flex items-center gap-3 mb-3 sm:mb-4">
+          <div className="h-0.5 sm:h-1 w-8 sm:w-12 bg-gradient-to-r from-ushop-pink to-ushop-purple rounded-full"></div>
+          <Title className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-dark-color">
             Popular Categories
           </Title>
-          <div className="h-1 w-12 bg-gradient-to-l from-ushop-pink to-ushop-purple rounded-full"></div>
+          <div className="h-0.5 sm:h-1 w-8 sm:w-12 bg-gradient-to-l from-ushop-pink to-ushop-purple rounded-full"></div>
         </div>
-        <p className="text-light-color text-lg max-w-2xl mx-auto">
+        <p className="text-light-color text-xs sm:text-sm md:text-base max-w-2xl mx-auto px-4">
           Explore our most popular product categories and find what you need
         </p>
         <Link
