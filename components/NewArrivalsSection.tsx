@@ -79,16 +79,12 @@ const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({
                 Fresh Off The Shelf
               </h3>
               <p className="text-[11px] sm:text-xs text-light-color">
-                Just listed by verified sellers and campus merchants
+                Just listed by verified sellers across Ghana
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold text-ushop-pink bg-ushop-pink/10 px-3 py-1 rounded-full">
-              {products.length} New Items
-            </span>
-
             {/* Scroll Navigation Buttons */}
             <div className="hidden sm:flex items-center gap-1.5">
               <button

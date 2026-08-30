@@ -1,5 +1,5 @@
 # UShop
-U-Shop (`ushopgh.com`) is a niche, peer-to-peer C2C e-commerce marketplace for technology equipment
+U-Shop (`ushopgh.com`) is a tech e-commerce platform for Ghana, distinguished by its three-tier seller model — Personal, Business, and Student.
 
 ## Getting Started
 

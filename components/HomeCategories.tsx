@@ -106,22 +106,6 @@ const HomeCategories = ({ categories }: Props) => {
                   </span>
                 </div>
 
-                {/* Product Count Display */}
-                <div className="space-y-1.5 mt-2">
-                  <div className="flex justify-between items-center text-[11px]">
-                    <span className="text-light-color font-medium">Products</span>
-                    <span className="text-ushop-purple font-bold">
-                      {category.productCount ?? 0} {category.productCount === 1 ? "Product" : "Products"}
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
-                    <div
-                      className="bg-gradient-to-r from-ushop-pink to-ushop-purple h-full rounded-full hoverEffect"
-                      style={{ width: `${((category.productCount || 0) / maxProductCount) * 100}%` }}
-                    ></div>
-                  </div>
-                </div>
-
                 {/* Shop Now Button */}
                 <div className="inline-flex items-center gap-1.5 mt-3 px-3.5 py-1.5 bg-gray-50 group-hover:bg-gradient-to-r group-hover:from-ushop-purple group-hover:to-ushop-purple-dark text-gray-700 group-hover:text-white font-semibold rounded-full text-xs hoverEffect transition-all border border-gray-100">
                   <span>Shop Now</span>
@@ -142,24 +126,6 @@ const HomeCategories = ({ categories }: Props) => {
               </div>
             </Link>
           ))}
-        </div>
-
-        {/* Categories Stats */}
-        <div className="flex flex-wrap items-center justify-center gap-8 mt-10 pt-6 border-t border-gray-100">
-          <div className="text-center">
-            <div className="text-xl sm:text-2xl font-bold text-ushop-purple">
-              {categories?.length}+
-            </div>
-            <div className="text-xs text-light-color">Categories</div>
-          </div>
-          <div className="text-center">
-            <div className="text-xl sm:text-2xl font-bold text-ushop-purple">{totalProducts}</div>
-            <div className="text-xs text-light-color">Products</div>
-          </div>
-          <div className="text-center">
-            <div className="text-xl sm:text-2xl font-bold text-ushop-purple">24/7</div>
-            <div className="text-xs text-light-color">Support</div>
-          </div>
         </div>
       </div>
     </Container>

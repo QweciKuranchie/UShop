@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     default: "UShop | Ghana's Tech E-Commerce Platform",
   },
   description:
-    "UShop — Ghana's trusted tech e-commerce platform. Buy and sell phones, laptops, tablets, and gadgets with campus hubs across Ghana.",
+    "UShop — Ghana's trusted tech e-commerce platform. Buy and sell phones, laptops, tablets, and gadgets from Personal, Business, and Student sellers across Ghana.",
   applicationName: "UShop",
   authors: [{ name: "UShop Team" }],
   generator: "Next.js",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     siteName: "UShop",
     title: "UShop | Ghana's Tech E-Commerce Platform",
     description:
-      "Ghana's trusted tech e-commerce platform. Buy and sell phones, laptops, and gadgets with campus hubs.",
+      "Ghana's trusted tech e-commerce platform. Buy and sell phones, laptops, tablets, and gadgets from Personal, Business, and Student sellers across Ghana.",
     images: [
       {
         url: "/og-image.jpg",

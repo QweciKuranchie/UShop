@@ -274,7 +274,7 @@ const CategoryPage = async () => {
             </div>
             <div>
               <h4 className="text-sm font-bold text-gray-900">Verified Equipment</h4>
-              <p className="text-xs text-gray-500 mt-0.5">Checked products from trusted merchants & campus sellers.</p>
+              <p className="text-xs text-gray-500 mt-0.5">Checked products from trusted Personal, Business, and Student sellers.</p>
             </div>
           </div>
 

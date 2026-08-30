@@ -315,11 +315,7 @@ const ProductContent = ({
             </ProductActionWrapper>
 
             {/* Action Links */}
-            <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center sm:justify-between border-b border-zinc-100 py-5">
-              <button className="flex items-center gap-2 text-sm text-zinc-700 hover:text-ushop-pink hoverEffect transition-colors">
-                <Palette size={16} />
-                <span>Compare color</span>
-              </button>
+            <div className="grid grid-cols-3 gap-3 sm:flex sm:flex-wrap sm:items-center sm:justify-between border-b border-zinc-100 py-5">
               <button className="flex items-center gap-2 text-sm text-zinc-700 hover:text-ushop-pink hoverEffect transition-colors">
                 <HelpCircle size={16} />
                 <span>Ask a question</span>

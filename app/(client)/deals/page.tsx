@@ -102,7 +102,7 @@ const MainDealsPage = async () => {
                 Daily Hot Deals & Special Sales
               </h1>
               <p className="text-sm sm:text-base text-white/90 leading-relaxed mb-6">
-                Save big on verified smartphones, laptops, audio gear, appliances, and campus essentials. Stock is limited!
+                Save big on verified smartphones, laptops, audio gear, appliances, and everyday tech essentials. Stock is limited!
               </p>
 
               {/* Deal Metrics */}

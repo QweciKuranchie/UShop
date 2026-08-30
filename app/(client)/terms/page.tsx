@@ -78,13 +78,13 @@ const TermsPage = () => {
           <section className="space-y-3">
             <h2 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center gap-2">
               <CheckCircle className="w-5 h-5 text-teal-600" />
-              <span>4. Orders, Payments & Campus Delivery</span>
+              <span>4. Orders, Payments & Delivery</span>
             </h2>
             <p>
               We support mobile money (MTN MoMo, Telecel Cash, AT Money) and debit cards. Full order confirmation occurs upon successful payment gateway authorization.
             </p>
             <p>
-              Delivery timeframes across campus hubs typically range from 24 to 48 hours. Orders to regions outside Accra and Kumasi are dispatched via certified parcel services.
+              Delivery timeframes within Accra and Kumasi typically range from 24 to 48 hours. Orders to other regions are dispatched via certified parcel services.
             </p>
           </section>
 

@@ -13,7 +13,7 @@ export const contactConfig = {
     city: process.env.NEXT_PUBLIC_COMPANY_CITY || "Accra, Ghana",
     description:
       process.env.NEXT_PUBLIC_COMPANY_DESCRIPTION ||
-      "Ghana's trusted tech marketplace. Buy and sell phones, laptops, and gadgets with campus hubs.",
+      "Ghana's trusted tech marketplace. Buy and sell phones, laptops, tablets, and gadgets from Personal, Business, and Student sellers across Ghana.",
   },
   businessHours: {
     weekday:

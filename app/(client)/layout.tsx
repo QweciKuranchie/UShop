@@ -14,7 +14,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 
 export const metadata: Metadata = {
   title: "U-Shop",
-  description: "U-Shop, Your trusted C2C e-commerce for tech equipment",
+  description: "U-Shop, Ghana's trusted tech e-commerce platform for buyers and sellers",
   icons: {
     icon: [
       { url: "/assets/logos/favicon/android-chrome-192x192.png", sizes: "192x192", type: "image/png" }

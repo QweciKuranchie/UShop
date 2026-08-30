@@ -37,8 +37,8 @@ const miniBanners: MiniBannerItem[] = [
   {
     id: "verified-stores",
     title: "Verified Stores",
-    subtitle: "Shop directly from trusted student & local merchant stores.",
-    badge: "Campus Hub",
+    subtitle: "Shop directly from trusted Personal, Business, and Student sellers.",
+    badge: "Verified Sellers",
     actionText: "Browse Stores",
     href: "/stores",
     gradientClass: "from-[#063c28] via-[#094d35] to-[#04281b] text-white",

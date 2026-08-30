@@ -1,4 +1,5 @@
 import React from "react";
+import { Metadata } from "next";
 import Container from "@/components/Container";
 import Link from "next/link";
 import { contactConfig } from "@/config/contact";
@@ -15,37 +16,37 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
-export const metadata = {
-  title: "About Us | U-Shop Ghana",
+export const metadata: Metadata = {
+  title: "About Us",
   description:
-    "Learn about U-Shop — Ghana's dedicated student and campus-centered tech marketplace for authentic electronics, phones, and computing gear.",
+    "Learn about U-Shop — Ghana's trusted tech e-commerce platform for buyers and Personal, Business, and Student sellers.",
 };
 
 const AboutPage = () => {
   const highlights = [
     {
       icon: <GraduationCap className="w-6 h-6 text-ushop-pink" />,
-      title: "Campus-First Marketplace",
+      title: "Three-Tier Seller Model",
       description:
-        "Built specifically for Ghanaian university students, staff, and tech enthusiasts with hubs across major tertiary institutions.",
+        "Built for Ghana's tech buyers and sellers — individuals, registered businesses, and verified university students — with dedicated hubs for student sellers across major tertiary institutions.",
     },
     {
       icon: <ShieldCheck className="w-6 h-6 text-emerald-600" />,
-      title: "Verified Student Merchants",
+      title: "Verified Merchants & Sellers",
       description:
         "Every seller undergoes verification to ensure genuine products, honest grading, and transparent warranty coverage.",
     },
     {
       icon: <Truck className="w-6 h-6 text-ushop-purple" />,
-      title: "Fast 24-48hr Campus Delivery",
+      title: "Fast 24-48hr Nationwide Delivery",
       description:
-        "Direct hostel and campus pickups with secure mobile money integration and cash-on-delivery options.",
+        "Reliable doorstep delivery in Accra & Kumasi, campus pickups, and certified parcel delivery across all regions.",
     },
     {
       icon: <Store className="w-6 h-6 text-amber-500" />,
-      title: "Student Seller Hub",
+      title: "Seller Portal & Storefronts",
       description:
-        "Empowering students to start e-commerce stores, sell electronics safely, and build campus commerce ventures.",
+        "Empowering individuals, shops, and students to start e-commerce stores and sell tech products safely across Ghana.",
     },
   ];
 
@@ -60,11 +61,11 @@ const AboutPage = () => {
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight">
-            Ghana&apos;s Leading Campus Tech Marketplace
+            Ghana&apos;s Trusted Tech E-Commerce Platform
           </h1>
 
           <p className="text-sm sm:text-base text-gray-500 mt-4 leading-relaxed max-w-2xl mx-auto">
-            U-Shop connects university students and tech buyers with trusted sellers, verified stores, and unbeatable deals on laptops, smartphones, and accessories.
+            U-Shop connects buyers with trusted Personal, Business, and Student sellers, offering verified tech products and unbeatable deals on laptops, smartphones, and accessories across Ghana.
           </p>
         </div>
 
@@ -72,26 +73,26 @@ const AboutPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-16 sm:mb-24">
           <div className="space-y-4 text-gray-600 leading-relaxed text-sm sm:text-base">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight mb-2">
-              Empowering Campus Commerce
+              Empowering Ghana&apos;s Tech Commerce
             </h2>
             <p>
-              Buying tech gear on campus shouldn&apos;t come with risks. U-Shop was founded to solve the challenge of finding genuine, affordable gadgets, laptops, and student tech accessories across universities in Ghana.
+              Buying tech gear shouldn&apos;t come with risks. U-Shop was founded to solve the challenge of finding genuine, affordable gadgets, laptops, and tech accessories across Ghana.
             </p>
             <p>
-              By combining strict seller vetting, student ID verification, and clear warranty terms, we create a secure and frictionless commerce experience tailored to university life.
+              By combining strict seller vetting, verified identity tiers (Personal, Business, and Student), and clear warranty terms, we create a secure and frictionless commerce experience for everyone.
             </p>
             <div className="pt-2 flex flex-col gap-2 font-medium text-gray-800 text-xs sm:text-sm">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Verified student merchants & vetted tech dealers</span>
+                <span>Verified Personal, Business, and Student sellers</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Encrypted mobile money checkout (MTN MoMo, Telecel Cash, AT)</span>
+                <span>Encrypted mobile money checkout (MTN MoMo, Telecel Cash, AT Money)</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Hostel delivery & dedicated campus pickup points</span>
+                <span>Fast 24-48hr doorstep delivery & university meetup points</span>
               </div>
             </div>
           </div>
@@ -109,7 +110,7 @@ const AboutPage = () => {
               </div>
               <div>
                 <p className="text-2xl sm:text-3xl font-extrabold text-white">5+</p>
-                <p className="text-xs text-white/70">Campus Hubs</p>
+                <p className="text-xs text-white/70">University Hubs</p>
               </div>
             </div>
           </div>
@@ -138,10 +139,10 @@ const AboutPage = () => {
         {/* CTA Bar */}
         <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-ushop-purple to-ushop-pink text-white text-center shadow-xl">
           <h2 className="text-2xl sm:text-3xl font-extrabold mb-2">
-            Ready to Explore Campus Deals?
+            Ready to Explore Deals?
           </h2>
           <p className="text-xs sm:text-sm text-white/90 max-w-lg mx-auto mb-6">
-            Discover student offers, browse verified stores, or join as a campus merchant today.
+            Discover deals, browse verified stores, or start selling today — as an individual, a business, or a verified student.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
