@@ -66,19 +66,19 @@ const HomeCategories = ({ categories }: Props) => {
       </div>
 
       {/* Categories Grid */}
-      <div className="bg-gradient-to-br from-white via-ushop_light_bg to-ushop-pink/5 p-8 lg:p-12 rounded-2xl shadow-xl border border-ushop-pink/10">
-        <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-pink/40 scrollbar-track-transparent sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:pb-0">
+      <div className="mt-8">
+        <div className="flex overflow-x-auto gap-4 sm:gap-6 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-pink/40 scrollbar-track-transparent sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:pb-0">
           {displayCategories?.map((category, index) => (
             <Link
               key={category?._id}
               href={`/category/${category?.slug?.current}`}
-              className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl border border-gray-100 hover:border-ushop-pink/40 hoverEffect transform hover:-translate-y-2 cursor-pointer block min-w-[250px] sm:min-w-0 flex-shrink-0 snap-start"
+              className="group bg-white rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-lg border border-gray-200/80 hover:border-ushop-pink/40 hoverEffect transform hover:-translate-y-1 cursor-pointer block min-w-[240px] sm:min-w-0 flex-shrink-0 snap-start"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Image Container */}
-              <div className="flex justify-center mb-5">
+              <div className="flex justify-center mb-4">
                 {category?.image && (
-                  <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-ushop-pink/10 to-ushop_light_bg p-3 group-hover:shadow-lg hoverEffect">
+                  <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-gradient-to-br from-ushop-pink/10 to-ushop_light_bg p-2.5 sm:p-3 group-hover:scale-105 hoverEffect">
                     <Image
                       src={urlFor(category?.image).url()}
                       alt={`${category?.title} category`}
@@ -86,32 +86,29 @@ const HomeCategories = ({ categories }: Props) => {
                       height={80}
                       className="w-full h-full object-contain group-hover:scale-110 hoverEffect"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ushop-pink/5 to-transparent opacity-0 group-hover:opacity-100 hoverEffect rounded-xl"></div>
                   </div>
                 )}
               </div>
 
               {/* Content */}
-              <div className="text-center space-y-3">
-                <h3 className="text-lg font-bold text-dark-color group-hover:text-ushop-pink hoverEffect line-clamp-1">
+              <div className="text-center space-y-2.5">
+                <h3 className="text-base font-bold text-dark-color group-hover:text-ushop-pink hoverEffect line-clamp-1">
                   {category?.title}
                 </h3>
 
-                <div className="flex items-center justify-center gap-2">
-                  <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-ushop-pink rounded-full"></div>
-                    <span className="text-sm font-semibold text-ushop-purple">
-                      Explore
-                    </span>
-                  </div>
-                  <span className="text-sm text-light-color">
-                    this category
+                <div className="flex items-center justify-center gap-1.5 text-xs">
+                  <div className="w-1.5 h-1.5 bg-ushop-pink rounded-full"></div>
+                  <span className="font-semibold text-ushop-purple">
+                    Explore
+                  </span>
+                  <span className="text-light-color">
+                    category
                   </span>
                 </div>
 
                 {/* Product Count Display */}
-                <div className="space-y-1.5 mt-3">
-                  <div className="flex justify-between items-center text-xs">
+                <div className="space-y-1.5 mt-2">
+                  <div className="flex justify-between items-center text-[11px]">
                     <span className="text-light-color font-medium">Products</span>
                     <span className="text-ushop-purple font-bold">
                       {category.productCount ?? 0} {category.productCount === 1 ? "Product" : "Products"}
@@ -126,10 +123,10 @@ const HomeCategories = ({ categories }: Props) => {
                 </div>
 
                 {/* Shop Now Button */}
-                <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-gradient-to-r from-ushop-pink/10 to-ushop_light_bg text-ushop-purple font-medium rounded-full group-hover:from-ushop-purple group-hover:to-ushop-purple-dark group-hover:text-white text-sm hoverEffect">
-                  Shop Now
+                <div className="inline-flex items-center gap-1.5 mt-3 px-3.5 py-1.5 bg-gray-50 group-hover:bg-gradient-to-r group-hover:from-ushop-purple group-hover:to-ushop-purple-dark text-gray-700 group-hover:text-white font-semibold rounded-full text-xs hoverEffect transition-all border border-gray-100">
+                  <span>Shop Now</span>
                   <svg
-                    className="w-3 h-3 hoverEffect group-hover:translate-x-1"
+                    className="w-3 h-3 hoverEffect group-hover:translate-x-0.5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -148,31 +145,20 @@ const HomeCategories = ({ categories }: Props) => {
         </div>
 
         {/* Categories Stats */}
-        <div className="flex flex-wrap items-center justify-center gap-8 mt-12 pt-8 border-t border-ushop-purple/10">
+        <div className="flex flex-wrap items-center justify-center gap-8 mt-10 pt-6 border-t border-gray-100">
           <div className="text-center">
-            <div className="text-2xl font-bold text-ushop-purple">
+            <div className="text-xl sm:text-2xl font-bold text-ushop-purple">
               {categories?.length}+
             </div>
-            <div className="text-sm text-light-color">Categories</div>
+            <div className="text-xs text-light-color">Categories</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-ushop-purple">{totalProducts}</div>
-            <div className="text-sm text-light-color">Products</div>
+            <div className="text-xl sm:text-2xl font-bold text-ushop-purple">{totalProducts}</div>
+            <div className="text-xs text-light-color">Products</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-ushop-purple">24/7</div>
-            <div className="text-sm text-light-color">Support</div>
-          </div>
-        </div>
-
-        {/* Bottom CTA */}
-        <div className="text-center mt-8">
-          <div className="inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-ushop-pink/5 to-ushop_light_bg rounded-2xl border border-ushop-purple/10">
-            <div className="w-2 h-2 bg-ushop-pink rounded-full animate-pulse"></div>
-            <span className="text-dark-text font-medium">
-              Discover amazing products in every category
-            </span>
-            <div className="w-2 h-2 bg-ushop-pink rounded-full animate-pulse"></div>
+            <div className="text-xl sm:text-2xl font-bold text-ushop-purple">24/7</div>
+            <div className="text-xs text-light-color">Support</div>
           </div>
         </div>
       </div>

@@ -67,18 +67,18 @@ const PopularProductSection: React.FC<PopularProductSectionProps> = ({
         </Link>
       </div>
 
-      {/* Popular Products Wrapper with subtle gradient frame */}
-      <div className="bg-gradient-to-br from-white via-ushop_light_bg to-ushop-purple/5 p-6 sm:p-8 lg:p-10 rounded-2xl shadow-xl border border-ushop-purple/10">
-        <div className="flex items-center justify-between mb-6 pb-4 border-b border-ushop-purple/10">
+      {/* Popular Products One-Line Scrollable Track */}
+      <div className="mt-8">
+        <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-100">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-ushop-purple/10 text-ushop-purple flex items-center justify-center">
               <TrendingUp className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-gray-900">
+              <h3 className="text-sm sm:text-base font-bold text-gray-900">
                 Top Rated & Trending
               </h3>
-              <p className="text-xs text-light-color">
+              <p className="text-[11px] sm:text-xs text-light-color">
                 Handpicked based on reviews and customer demand
               </p>
             </div>
@@ -94,14 +94,14 @@ const PopularProductSection: React.FC<PopularProductSectionProps> = ({
               <button
                 onClick={() => handleScroll("left")}
                 aria-label="Previous products"
-                className="p-2 rounded-xl bg-white border border-ushop-purple/20 text-gray-700 hover:text-ushop-purple hover:border-ushop-purple hoverEffect shadow-xs"
+                className="p-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-ushop-purple hover:border-ushop-purple hoverEffect shadow-2xs"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={() => handleScroll("right")}
                 aria-label="Next products"
-                className="p-2 rounded-xl bg-white border border-ushop-purple/20 text-gray-700 hover:text-ushop-purple hover:border-ushop-purple hoverEffect shadow-xs"
+                className="p-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-ushop-purple hover:border-ushop-purple hoverEffect shadow-2xs"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -112,7 +112,7 @@ const PopularProductSection: React.FC<PopularProductSectionProps> = ({
         {/* One-Line Scrollable Product Track */}
         <div
           ref={scrollRef}
-          className="flex overflow-x-auto gap-3 sm:gap-5 pb-2 pt-1 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-purple/30 scrollbar-track-transparent scroll-smooth"
+          className="flex overflow-x-auto gap-3 sm:gap-5 pb-4 pt-1 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-purple/30 scrollbar-track-transparent scroll-smooth"
         >
           {products.map((product, index) => (
             <div
