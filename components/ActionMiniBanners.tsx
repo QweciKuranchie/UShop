@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Store, ShieldCheck, Flame, PhoneCall, ArrowRight, ExternalLink } from "lucide-react";
+import { Store, ShieldCheck, Flame, PhoneCall, ArrowRight, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import Container from "./Container";
 
 interface MiniBannerItem {
@@ -77,96 +77,131 @@ const miniBanners: MiniBannerItem[] = [
 ];
 
 const ActionMiniBanners: React.FC = () => {
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  const handleScroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const scrollAmount = 320;
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
-    <Container className="mt-14 lg:mt-20">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-        {miniBanners.map((banner) => {
-          const content = (
-            <div
-              className={`h-full rounded-2xl p-5 sm:p-6 bg-gradient-to-br ${banner.gradientClass} border ${banner.borderClass} shadow-md hover:shadow-xl hoverEffect transform hover:-translate-y-1 flex flex-col justify-between relative overflow-hidden group cursor-pointer`}
-            >
-              {/* Background ambient glow circle */}
-              <div className="absolute -right-8 -bottom-8 w-28 h-28 rounded-full bg-white/10 blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
+    <Container className="mt-8 lg:mt-12">
+      <div className="relative group/carousel">
+        {/* Navigation Buttons (Desktop) */}
+        <button
+          onClick={() => handleScroll("left")}
+          aria-label="Scroll banners left"
+          className="hidden sm:flex absolute -left-3.5 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-white/95 text-gray-800 shadow-md border border-gray-100 hover:text-ushop-pink hover:bg-white hover:scale-105 transition-all opacity-0 group-hover/carousel:opacity-100 disabled:opacity-0"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
 
-              {/* Top Row: Icon + Badge */}
-              <div className="flex items-center justify-between gap-3 mb-4">
-                <div
-                  className={`w-10 h-10 rounded-xl ${banner.iconBgClass} flex items-center justify-center shadow-xs backdrop-blur-xs group-hover:scale-105 transition-transform`}
+        <button
+          onClick={() => handleScroll("right")}
+          aria-label="Scroll banners right"
+          className="hidden sm:flex absolute -right-3.5 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-white/95 text-gray-800 shadow-md border border-gray-100 hover:text-ushop-pink hover:bg-white hover:scale-105 transition-all opacity-0 group-hover/carousel:opacity-100 disabled:opacity-0"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+
+        {/* Scrollable Track */}
+        <div
+          ref={scrollRef}
+          className="flex overflow-x-auto gap-4 pb-2 pt-1 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-zinc-300 scrollbar-track-transparent scroll-smooth -mx-4 px-4 sm:mx-0 sm:px-0"
+        >
+          {miniBanners.map((banner) => {
+            const content = (
+              <div
+                className={`h-full rounded-2xl p-5 bg-gradient-to-br ${banner.gradientClass} border ${banner.borderClass} shadow-md hover:shadow-xl hoverEffect transform hover:-translate-y-0.5 flex flex-col justify-between relative overflow-hidden group cursor-pointer`}
+              >
+                {/* Background ambient glow circle */}
+                <div className="absolute -right-8 -bottom-8 w-28 h-28 rounded-full bg-white/10 blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
+
+                {/* Top Row: Icon + Badge */}
+                <div className="flex items-center justify-between gap-3 mb-4">
+                  <div
+                    className={`w-10 h-10 rounded-xl ${banner.iconBgClass} flex items-center justify-center shadow-xs backdrop-blur-xs group-hover:scale-105 transition-transform`}
+                  >
+                    {banner.icon}
+                  </div>
+
+                  <span className="text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-xs tracking-wide uppercase">
+                    {banner.badge}
+                  </span>
+                </div>
+
+                {/* Middle: Title & Subtitle */}
+                <div className="space-y-1.5 z-10 mb-5">
+                  <h3 className="text-base sm:text-lg font-extrabold tracking-tight">
+                    {banner.title}
+                  </h3>
+                  <p className="text-xs text-white/80 line-clamp-2 leading-relaxed">
+                    {banner.subtitle}
+                  </p>
+                </div>
+
+                {/* Bottom: Action link button */}
+                <div className="pt-3 border-t border-white/15 flex items-center justify-between text-xs font-bold tracking-wide">
+                  <span className="group-hover:translate-x-0.5 transition-transform truncate mr-2">
+                    {banner.actionText}
+                  </span>
+
+                  <div className="w-7 h-7 rounded-full bg-white/15 shrink-0 flex items-center justify-center group-hover:bg-white group-hover:text-gray-900 transition-all duration-300">
+                    {banner.isExternal ? (
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    ) : (
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+
+            if (banner.isExternal) {
+              return (
+                <a
+                  key={banner.id}
+                  href={banner.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={banner.title}
+                  className="shrink-0 w-[260px] sm:w-[280px] lg:w-[calc(25%-12px)] snap-start block h-full"
                 >
-                  {banner.icon}
-                </div>
+                  {content}
+                </a>
+              );
+            }
 
-                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-xs tracking-wide uppercase">
-                  {banner.badge}
-                </span>
-              </div>
+            if (banner.isPhone) {
+              return (
+                <a
+                  key={banner.id}
+                  href={banner.href}
+                  aria-label={`Call ${banner.title}`}
+                  className="shrink-0 w-[260px] sm:w-[280px] lg:w-[calc(25%-12px)] snap-start block h-full"
+                >
+                  {content}
+                </a>
+              );
+            }
 
-              {/* Middle: Title & Subtitle */}
-              <div className="space-y-1.5 z-10 mb-6">
-                <h3 className="text-lg font-extrabold tracking-tight">
-                  {banner.title}
-                </h3>
-                <p className="text-xs text-white/80 line-clamp-2 leading-relaxed">
-                  {banner.subtitle}
-                </p>
-              </div>
-
-              {/* Bottom: Action link button */}
-              <div className="pt-3 border-t border-white/15 flex items-center justify-between text-xs font-bold tracking-wide">
-                <span className="group-hover:translate-x-0.5 transition-transform">
-                  {banner.actionText}
-                </span>
-
-                <div className="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center group-hover:bg-white group-hover:text-gray-900 transition-all duration-300">
-                  {banner.isExternal ? (
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  ) : (
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                  )}
-                </div>
-              </div>
-            </div>
-          );
-
-          if (banner.isExternal) {
             return (
-              <a
+              <Link
                 key={banner.id}
                 href={banner.href}
-                target="_blank"
-                rel="noopener noreferrer"
                 aria-label={banner.title}
-                className="block h-full"
+                className="shrink-0 w-[260px] sm:w-[280px] lg:w-[calc(25%-12px)] snap-start block h-full"
               >
                 {content}
-              </a>
+              </Link>
             );
-          }
-
-          if (banner.isPhone) {
-            return (
-              <a
-                key={banner.id}
-                href={banner.href}
-                aria-label={`Call ${banner.title}`}
-                className="block h-full"
-              >
-                {content}
-              </a>
-            );
-          }
-
-          return (
-            <Link
-              key={banner.id}
-              href={banner.href}
-              aria-label={banner.title}
-              className="block h-full"
-            >
-              {content}
-            </Link>
-          );
-        })}
+          })}
+        </div>
       </div>
     </Container>
   );
