@@ -257,9 +257,12 @@ const PromoBannerSection: React.FC = () => {
           </div>
         </div>
 
-        <div className="text-sm sm:text-base font-black text-gray-900 shrink-0">
-          - Only GH₵ 200*
-        </div>
+        <Link
+          href="/shop"
+          className="inline-flex items-center gap-1.5 px-6 py-2.5 bg-[#FF4F5A] hover:bg-ushop-red text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-lg shadow-xs hover:shadow-md hoverEffect transform hover:-translate-y-0.5 shrink-0"
+        >
+          Shop Now
+        </Link>
       </div>
 
       {/* ─── TIER 3: 4-COLUMN TECH DEALS ROW ─── */}
