@@ -112,12 +112,12 @@ const PopularProductSection: React.FC<PopularProductSectionProps> = ({
         {/* One-Line Scrollable Product Track */}
         <div
           ref={scrollRef}
-          className="flex overflow-x-auto gap-4 sm:gap-6 pb-2 pt-1 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-purple/30 scrollbar-track-transparent scroll-smooth"
+          className="flex overflow-x-auto gap-3 sm:gap-5 pb-2 pt-1 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-purple/30 scrollbar-track-transparent scroll-smooth"
         >
           {products.map((product, index) => (
             <div
               key={product._id}
-              className="w-[230px] sm:w-[260px] md:w-[280px] shrink-0 snap-start hoverEffect transform hover:-translate-y-1"
+              className="w-[165px] sm:w-[220px] md:w-[250px] shrink-0 snap-start hoverEffect transform hover:-translate-y-1"
             >
               <ProductCard
                 product={product}

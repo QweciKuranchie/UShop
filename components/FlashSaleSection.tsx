@@ -125,12 +125,12 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ products }) => {
       {/* Deal Products One-Line Horizontal Scroll Track */}
       <div
         ref={scrollRef}
-        className="flex overflow-x-auto gap-4 sm:gap-6 pb-2 pt-1 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-red/30 scrollbar-track-transparent scroll-smooth"
+        className="flex overflow-x-auto gap-3 sm:gap-5 pb-2 pt-1 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-ushop-red/30 scrollbar-track-transparent scroll-smooth"
       >
         {products.map((product) => (
           <div
             key={product._id}
-            className="w-[230px] sm:w-[260px] md:w-[280px] shrink-0 snap-start"
+            className="w-[165px] sm:w-[220px] md:w-[250px] shrink-0 snap-start"
           >
             <ProductCard product={product} isFlashSale={true} />
           </div>
