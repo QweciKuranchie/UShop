@@ -46,11 +46,14 @@ const Home = async () => {
         }}
       />
 
-      <Container className="bg-ushop_light_bg/80">
-        <HomeBanner />
-        {dealProducts && dealProducts.length > 0 && (
-          <FlashSaleSection products={dealProducts} />
-        )}
+      <div className="bg-white min-h-screen">
+        <Container className="pt-4 sm:pt-6">
+          <HomeBanner />
+          {dealProducts && dealProducts.length > 0 && (
+            <FlashSaleSection products={dealProducts} />
+          )}
+        </Container>
+
         <HomeCategories categories={categories} />
         <ShopByBrand />
         {popularProducts && popularProducts.length > 0 && (
@@ -61,11 +64,11 @@ const Home = async () => {
           <NewArrivalsSection products={newArrivals} />
         )}
         <ActionMiniBanners />
-        <div className="py-10">
+        <div className="pb-16 pt-4">
           <ProductGrid />
         </div>
         <ScrollToTop />
-      </Container>
+      </div>
     </>
   );
 };
