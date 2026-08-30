@@ -5,6 +5,7 @@ import ProductGrid from "@/components/ProductGrid";
 import HomeCategories from "@/components/HomeCategories";
 import FlashSaleSection from "@/components/FlashSaleSection";
 import PopularProductSection from "@/components/PopularProductSection";
+import PromoBannerSection from "@/components/PromoBannerSection";
 import { getCategories, getDealProducts, getPopularProducts } from "@/sanity/Queries";
 import ShopByBrand from "@/components/ShopByBrand";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -46,6 +47,7 @@ const Home = async () => {
         {popularProducts && popularProducts.length > 0 && (
           <PopularProductSection products={popularProducts} />
         )}
+        <PromoBannerSection />
         <div className="py-10">
           <ProductGrid />
         </div>
