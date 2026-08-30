@@ -1,46 +1,51 @@
 import React from 'react' 
 import { Clock, Mail, MapPin, Phone } from "lucide-react"
+import { contactConfig } from "@/config/contact";
 
 interface ContactItemData {
   title: string;
   subtitle: string;
+  href?: string;
+  isExternal?: boolean;
   icon: React.ReactNode;
 }
 
 const data: ContactItemData[] = [
   {
     title: "Visit Us",
-    subtitle: "Akweteyman, Ghana",
+    subtitle: `${contactConfig.company.address}, ${contactConfig.company.city}`,
     icon: (
       <MapPin className="h-6 w-6 text-slate-400 group-hover:text-ushop-pink transition-colors" />
     ),
   },
   {
-    title: "Call US",
-    subtitle: "+233 50 956 5794",
+    title: "Call Us",
+    subtitle: contactConfig.company.phone,
+    href: `tel:${contactConfig.company.phoneClean}`,
     icon: (
       <Phone className="h-6 w-6 text-slate-400 group-hover:text-ushop-pink transition-colors" />
     )
   },
   {
     title: "Email Us",
-    subtitle: "ghanaushop@gmail.com",
+    subtitle: contactConfig.emails.support,
+    href: `mailto:${contactConfig.emails.support}`,
     icon: (
       <Mail className="h-6 w-6 text-slate-400 group-hover:text-ushop-pink transition-colors" />
     )
   },
   {
     title: "Working Hours",
-    subtitle: "Mon - Sat: 10:00 Am - 7:00 PM",
+    subtitle: contactConfig.businessHours.weekday,
     icon: (
       <Clock className="h-6 w-6 text-slate-400 group-hover:text-ushop-pink transition-colors" />
     )
   },
 ]
 
-const ContactItem = ({ title, subtitle, icon }: ContactItemData) => {
-  return (
-    <div className="flex items-center gap-4 group p-4 rounded-lg bg-[#1e293b]/30 border border-slate-800/80 hover:border-slate-700 hover:bg-[#1e293b]/50 transition-all duration-300">
+const ContactItem = ({ title, subtitle, href, icon }: ContactItemData) => {
+  const content = (
+    <div className="flex items-center gap-4 group p-4 rounded-lg bg-[#1e293b]/30 border border-slate-800/80 hover:border-slate-700 hover:bg-[#1e293b]/50 transition-all duration-300 h-full">
       <div className="p-3 bg-[#1e293b] rounded-full text-slate-400 group-hover:text-white transition-colors">
         {icon}
       </div>
@@ -50,6 +55,16 @@ const ContactItem = ({ title, subtitle, icon }: ContactItemData) => {
       </div>
     </div>
   );
+
+  if (href) {
+    return (
+      <a href={href} className="block">
+        {content}
+      </a>
+    );
+  }
+
+  return content;
 };
 
 const FooterTop = () => {

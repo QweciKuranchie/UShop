@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useSignIn, useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -65,6 +65,43 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
   // Email verification state
   const [pendingVerification, setPendingVerification] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
+  const [otpDigits, setOtpDigits] = useState<string[]>(["", "", "", "", "", ""]);
+  const otpInputsRef = useRef<(HTMLInputElement | null)[]>([]);
+
+  const handleOtpChange = (index: number, value: string) => {
+    // Only accept numeric or clean char
+    const char = value.slice(-1);
+    const newOtp = [...otpDigits];
+    newOtp[index] = char;
+    setOtpDigits(newOtp);
+    setVerificationCode(newOtp.join(""));
+
+    // Auto-advance to next input
+    if (char && index < 5) {
+      otpInputsRef.current[index + 1]?.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
+      otpInputsRef.current[index - 1]?.focus();
+    }
+  };
+
+  const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text").trim().slice(0, 6);
+    if (!pastedData) return;
+
+    const newOtp = [...otpDigits];
+    pastedData.split("").forEach((char, idx) => {
+      if (idx < 6) newOtp[idx] = char;
+    });
+    setOtpDigits(newOtp);
+    setVerificationCode(newOtp.join(""));
+    const focusIdx = Math.min(pastedData.length, 5);
+    otpInputsRef.current[focusIdx]?.focus();
+  };
 
   // Touched state for field-level error display
   const [touchedSignIn, setTouchedSignIn] = useState({ identifier: false, password: false });
@@ -377,33 +414,61 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
         {/* Sign Up Form */}
         <div className="auth-form-container auth-sign-up-container">
           {pendingVerification ? (
-            <form onSubmit={handleVerifyCodeSubmit} className="auth-form">
-              <h1>Verify Email</h1>
-              <p className="auth-subtitle">
-                Enter the verification code sent to <span className="font-bold text-ushop-purple">{signUpEmail}</span>
-              </p>
-              {signUpError && <div className="auth-error">{signUpError}</div>}
-              
-              <div className="auth-input-group">
-                <ShieldCheck className="auth-input-icon" />
-                <input
-                  type="text"
-                  className="auth-input"
-                  placeholder="6-digit Verification Code"
-                  value={verificationCode}
-                  onChange={(e) => setVerificationCode(e.target.value)}
-                  required
-                />
+            <form onSubmit={handleVerifyCodeSubmit} className="auth-form flex flex-col items-center text-center p-4 sm:p-6 w-full max-w-[420px] mx-auto">
+              <div className="w-12 h-12 rounded-2xl bg-ushop-pink/10 text-ushop-pink flex items-center justify-center mb-3">
+                <ShieldCheck className="w-6 h-6" />
               </div>
 
-              <button type="submit" className="auth-button" disabled={isSignUpLoading} style={{ width: "100%", marginTop: "16px" }}>
-                {isSignUpLoading ? "Verifying..." : "Verify & Complete"}
+              <h1 className="text-2xl font-bold text-gray-900">Email Verify OTP</h1>
+              <p className="mt-2 text-xs sm:text-sm text-gray-600 text-center max-w-xs">
+                Enter the 6-digit code sent to{" "}
+                <span className="font-bold text-ushop-purple break-all">{signUpEmail}</span>
+              </p>
+
+              {signUpError && (
+                <div className="auth-error w-full text-xs py-2 px-3 mt-3 bg-red-50 text-ushop-red border border-red-200 rounded-xl">
+                  {signUpError}
+                </div>
+              )}
+              
+              {/* 6-Digit OTP Inputs Grid */}
+              <div className="grid grid-cols-6 gap-2 sm:gap-2.5 w-full mt-6 max-w-xs">
+                {otpDigits.map((digit, idx) => (
+                  <input
+                    key={idx}
+                    ref={(el) => {
+                      otpInputsRef.current[idx] = el;
+                    }}
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleOtpChange(idx, e.target.value)}
+                    onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                    onPaste={handleOtpPaste}
+                    className="w-full h-12 bg-ushop_light_bg/80 focus:bg-white text-gray-900 font-bold text-xl rounded-xl border border-gray-200 focus:border-ushop-purple focus:ring-2 focus:ring-ushop-purple/20 outline-none text-center transition-all shadow-xs"
+                    required
+                  />
+                ))}
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSignUpLoading}
+                className="mt-6 w-full max-w-xs h-11 rounded-full text-white text-sm font-bold bg-gradient-to-r from-ushop-purple to-ushop-pink hover:from-ushop-purple-dark hover:to-ushop-pink/90 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSignUpLoading ? "Verifying Email..." : "Verify Email"}
               </button>
 
               <button
                 type="button"
-                onClick={() => setPendingVerification(false)}
-                className="mt-3 text-xs text-ushop-purple hover:underline font-semibold cursor-pointer"
+                onClick={() => {
+                  setPendingVerification(false);
+                  setOtpDigits(["", "", "", "", "", ""]);
+                  setVerificationCode("");
+                }}
+                className="mt-4 text-xs text-ushop-purple hover:underline font-semibold cursor-pointer"
               >
                 ← Back / Change Email
               </button>
