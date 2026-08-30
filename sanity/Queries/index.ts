@@ -16,6 +16,7 @@ import { ADDRESS_QUERY,
   PRODUCTS_BY_BRAND_SLUG_QUERY,
   DEAL_PRODUCTS,
   FEATURE_PRODUCTS,
+  POPULAR_PRODUCTS,
   FEATURED_CATEGORY_QUERY,
   PRODUCT_BY_SLUG_QUERY,
   RELATED_PRODUCTS_QUERY,
@@ -100,6 +101,32 @@ const getDealProducts = unstable_cache(
   },
   ["deal-products"],
   { revalidate: 300, tags: ["products", "deals", "homepage"] }
+);
+
+/**
+ * Get popular products - cached for 5 minutes
+ */
+const getPopularProducts = unstable_cache(
+  async (quantity: number = 8) => {
+    try {
+      const { data } = (await sanityFetch({ query: POPULAR_PRODUCTS })) as {
+        data: Product[];
+      };
+      if (data && data.length > 0) {
+        return data.slice(0, quantity);
+      }
+      // Fallback to all products if no explicit popular products
+      const fallback = (await sanityFetch({ query: ALL_PRODUCTS_QUERY })) as {
+        data: Product[];
+      };
+      return (fallback.data ?? []).slice(0, quantity);
+    } catch (error) {
+      console.error("Error fetching popular products:", error);
+      return [];
+    }
+  },
+  ["popular-products"],
+  { revalidate: 300, tags: ["products", "popular", "homepage"] }
 );
 
 /**
@@ -523,6 +550,7 @@ export {getBanner,
   getFeaturedCategory,
   getAllProducts,
   getDealProducts,
+  getPopularProducts,
   getFeaturedProducts,
   getAllBrands,
   getBrandsWithCount,
