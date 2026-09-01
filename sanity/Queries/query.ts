@@ -210,7 +210,7 @@ const PRODUCTS_BY_BRAND_SLUG_QUERY = defineQuery(
 );
 
 const UNIVERSITIES_QUERY = defineQuery(
-  `*[_type in ["location", "university"] && (type == "university" || _type == "university")] | order(name asc) {
+  `*[_type in ["location", "university"] && (type == "university" || _type == "university" || !defined(type))] | order(name asc) {
     _id,
     name,
     slug,
@@ -226,7 +226,7 @@ const UNIVERSITIES_QUERY = defineQuery(
 );
 
 const SINGLE_UNIVERSITY_BY_SLUG_QUERY = defineQuery(
-  `*[_type in ["location", "university"] && (type == "university" || _type == "university") && slug.current == $slug][0] {
+  `*[_type in ["location", "university"] && slug.current == $slug][0] {
     _id,
     name,
     slug,

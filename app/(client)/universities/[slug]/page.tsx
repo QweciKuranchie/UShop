@@ -33,82 +33,9 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-interface UniversityItem {
-  _id: string;
-  name: string;
-  slug: { current: string };
-  city?: string;
-  domain?: string;
-  productCount?: number;
-  image?: unknown;
-  logo?: unknown;
-}
-
-const DEFAULT_UNIVERSITIES_MAP: Record<string, UniversityItem> = {
-  "university-of-ghana-legon": {
-    _id: "uni-legon",
-    name: "University of Ghana (Legon)",
-    slug: { current: "university-of-ghana-legon" },
-    city: "Accra",
-    domain: "st.ug.edu.gh",
-  },
-  "knust-kumasi": {
-    _id: "uni-knust",
-    name: "Kwame Nkrumah University of Science and Technology (KNUST)",
-    slug: { current: "knust-kumasi" },
-    city: "Kumasi",
-    domain: "st.knust.edu.gh",
-  },
-  "university-of-cape-coast": {
-    _id: "uni-ucc",
-    name: "University of Cape Coast (UCC)",
-    slug: { current: "university-of-cape-coast" },
-    city: "Cape Coast",
-    domain: "stu.ucc.edu.gh",
-  },
-  "gctu-accra": {
-    _id: "uni-gctu",
-    name: "Ghana Communication Technology University (GCTU)",
-    slug: { current: "gctu-accra" },
-    city: "Accra",
-    domain: "gctu.edu.gh",
-  },
-  "umat-tarkwa": {
-    _id: "uni-umat",
-    name: "University of Mines and Technology (UMaT)",
-    slug: { current: "umat-tarkwa" },
-    city: "Tarkwa",
-    domain: "umat.edu.gh",
-  },
-};
-
-function findFallbackUniversity(slug: string): UniversityItem | null {
-  const s = slug.toLowerCase();
-  if (DEFAULT_UNIVERSITIES_MAP[s]) return DEFAULT_UNIVERSITIES_MAP[s];
-
-  if (s.includes("gctu") || s.includes("communication")) {
-    return DEFAULT_UNIVERSITIES_MAP["gctu-accra"];
-  }
-  if (s.includes("umat") || s.includes("mines")) {
-    return DEFAULT_UNIVERSITIES_MAP["umat-tarkwa"];
-  }
-  if (s.includes("ucc") || s.includes("cape-coast") || s.includes("capecoast")) {
-    return DEFAULT_UNIVERSITIES_MAP["university-of-cape-coast"];
-  }
-  if (s.includes("knust") || s.includes("kwame")) {
-    return DEFAULT_UNIVERSITIES_MAP["knust-kumasi"];
-  }
-  if (s.includes("legon") || s.includes("ug") || s.includes("ghana")) {
-    return DEFAULT_UNIVERSITIES_MAP["university-of-ghana-legon"];
-  }
-
-  return null;
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const fetched = await getSingleUniversityBySlug(slug);
-  const university = fetched || findFallbackUniversity(slug);
+  const university = await getSingleUniversityBySlug(slug);
 
   if (!university) {
     return {
@@ -125,13 +52,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const SingleUniversityPage = async ({ params }: Props) => {
   const { slug } = await params;
 
-  const [fetchedUni, fetchedProducts, allStoresData] = await Promise.all([
+  const [university, fetchedProducts, allStoresData] = await Promise.all([
     getSingleUniversityBySlug(slug),
     getProductsByUniversitySlug(slug),
     getStores(),
   ]);
-
-  const university = fetchedUni || findFallbackUniversity(slug);
 
   if (!university) {
     return notFound();
