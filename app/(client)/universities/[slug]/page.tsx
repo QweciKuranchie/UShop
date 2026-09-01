@@ -149,8 +149,8 @@ const SingleUniversityPage = async ({ params }: Props) => {
 
   // 1. Trending Products on Campus (Sorted by highest rating / hot status / fallback top items)
   const trendingProducts = [...displayProducts].sort((a, b) => {
-    const aRating = a.rating || 0;
-    const bRating = b.rating || 0;
+    const aRating = (a as Product & { rating?: number }).rating || 0;
+    const bRating = (b as Product & { rating?: number }).rating || 0;
     return bRating - aRating;
   }).slice(0, 10);
 
