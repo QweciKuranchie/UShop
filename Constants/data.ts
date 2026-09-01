@@ -1,46 +1,23 @@
 import { GraduationCap, Grid3X3, Home, ShoppingBag, Store } from "lucide-react";
 
-
 export const headerData = [
   { title: "Home", href: "/", icon: Home },
   { title: "Products", href: "/shop", icon: ShoppingBag },
   { title: "Categories", href: "/category", icon: Grid3X3 },
   { title: "Universities", href: "/universities", icon: GraduationCap },
-  { title: "Stores", href: "/stores", icon: Store},
+  { title: "Stores", href: "/stores", icon: Store },
 ];
-export const customerCareData = {
-  title: "Customer Care",
-  links: [
-    { title: "About Us", href: "/about" },
-    { title: "Contact Us", href: "/contact" },
-    { title: "Terms & Conditions", href: "/terms" },
-    { title: "Privacy Policy", href: "/privacy" },
-    { title: "FAQs", href: "/faqs" },
-    { title: "Help Center", href: "/help" },
-  ],
-};
-export const supportData = {
-  title: "Need Help?",
-  links: [
-    { title: "Help Center", href: "/help" },
-    { title: "Customer Support", href: "/contact" },
-    { title: "Track Your Order", href: "/user/orders" },
-    { title: "Return Policy & FAQs", href: "/faqs" },
-    { title: "Verified Stores", href: "/stores" },
-    { title: "Sitemap", href: "/sitemap.xml" },
-  ],
-};
+
 export const quickLinksData = {
   title: "Quick Links",
   links: [
     { title: "All Products", href: "/shop" },
-    { title: "Hot Deals & Offers", href: "/deals" },
-    { title: "Universities", href: "/universities" },
     { title: "Stores", href: "/stores" },
+    { title: "Universities", href: "/universities" },
     { title: "Flash Sales", href: "/deals/flash" },
-    { title: "Student Deals", href: "/deals/students" },
   ],
 };
+
 export const categoriesData = {
   title: "Categories",
   links: [
@@ -52,6 +29,31 @@ export const categoriesData = {
     { title: "Gaming", href: "/category/gaming" },
   ],
 };
+
+export const customerCareData = {
+  title: "Customer Care",
+  links: [
+    { title: "About Us", href: "/about" },
+    { title: "Terms & Conditions", href: "/terms" },
+    { title: "Privacy Policy", href: "/privacy" },
+    { title: "Cookie Policy", href: "/privacy#cookies" },
+    { title: "Return and Refund Policy", href: "/help#returns" },
+    { title: "Payments Info", href: "/help#payments" },
+    { title: "Sell on UShop", href: "/user/business-apply" },
+  ],
+};
+
+export const supportData = {
+  title: "Need Help?",
+  links: [
+    { title: "Contact Us", href: "/contact" },
+    { title: "Help Center", href: "/help" },
+    { title: "FAQs", href: "/faqs" },
+    { title: "Track Your Order", href: "/user/orders" },
+    { title: "Sitemap", href: "/sitemap.xml" },
+  ],
+};
+
 export const userAccountData = [
   { title: "My Profile", href: "/user/profile" },
   { title: "My Orders", href: "/user/orders" },
@@ -60,6 +62,7 @@ export const userAccountData = [
   { title: "Dashboard", href: "/user/dashboard" },
   { title: "Settings", href: "/user/settings" },
 ];
+
 export const productType = [
   { title: "All", value: "all" },
   { title: "Electronics", value: "electronics" },
@@ -67,6 +70,7 @@ export const productType = [
   { title: "Gaming", value: "gaming" },
   { title: "Others", value: "others" },
 ];
+
 export const faqsData = [
   {
     question: "What services does U-Shop offer?",
