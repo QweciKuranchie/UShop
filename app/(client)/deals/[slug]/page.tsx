@@ -10,7 +10,7 @@ import {
   GraduationCap,
   Tag,
   ShoppingBag,
-  Sparkles,
+  Flame,
   Package,
   ArrowLeft,
   LucideIcon,
@@ -44,8 +44,8 @@ const DEAL_CATEGORIES: Record<
   },
   students: {
     title: "Student Deals",
-    subtitle: "Verified campus pricing on laptops, accessories, tech gadgets & student essentials up to 90% off.",
-    badgeText: "STUDENT EXCLUSIVE — UP TO 90% OFF",
+    subtitle: "Verified campus deals on laptops, smartphones, and accessories for university students across Ghana.",
+    badgeText: "STUDENT SPECIALS — UP TO 90% OFF",
     maxDiscount: "Up to 90% OFF",
     bgGradient: "from-emerald-700 via-teal-600 to-ushop-pink",
     icon: GraduationCap,
@@ -68,11 +68,11 @@ const DEAL_CATEGORIES: Record<
   },
   "special-offers": {
     title: "Special Offers",
-    subtitle: "Hand-picked seller promotions, bundle discounts, and seasonal price drops on UShop.",
-    badgeText: "SPECIAL OFFERS",
-    maxDiscount: "Exclusive Savings",
-    bgGradient: "from-ushop-purple via-ushop-pink to-red-500",
-    icon: Sparkles,
+    subtitle: "Curated seasonal discounts, merchant bundle deals, and exclusive promotional pricing.",
+    badgeText: "SPECIAL PROMOTIONAL OFFERS",
+    maxDiscount: "Exclusive Deals",
+    bgGradient: "from-purple-800 via-pink-700 to-amber-600",
+    icon: Flame,
   },
 };
 

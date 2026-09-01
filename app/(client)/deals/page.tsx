@@ -11,7 +11,6 @@ import {
   ShoppingBag,
   GraduationCap,
   Tag,
-  Sparkles,
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
@@ -60,7 +59,7 @@ const dealsCategories = [
     badge: "Exclusive",
     description: "Curated seller promotions & seasonal bundle discounts.",
     href: "/deals/special-offers",
-    icon: Sparkles,
+    icon: Flame,
     color: "from-ushop-purple to-ushop-pink",
   },
 ];

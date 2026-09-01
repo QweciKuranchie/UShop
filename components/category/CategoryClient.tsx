@@ -11,7 +11,6 @@ import {
   Gamepad2,
   Layers,
   Flame,
-  Sparkles,
   Package,
   ArrowRight,
   Grid,
@@ -262,7 +261,7 @@ export default function CategoryClient({
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-ushop-pink" />
+              <Layers className="w-5 h-5 text-ushop-pink" />
               Featured Categories
             </h2>
             <p className="text-xs text-gray-500 mt-0.5">
@@ -469,11 +468,6 @@ export default function CategoryClient({
                         <Package className="w-10 h-10 text-ushop-pink/40" />
                       )}
 
-                      {category.featured && (
-                        <span className="absolute top-2 right-2 bg-amber-100 text-amber-800 text-xs font-semibold px-2 py-0.5 rounded-md shadow-2xs">
-                          Popular
-                        </span>
-                      )}
                     </div>
 
                     <h3 className="font-bold text-gray-900 text-base group-hover:text-ushop-pink transition-colors mb-1">

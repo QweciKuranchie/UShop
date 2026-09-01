@@ -5,7 +5,7 @@ import { useSignIn, useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Lock, User, Eye, EyeOff, Sparkles, ShieldCheck, Check, Truck } from "lucide-react";
+import { Mail, Lock, User, Eye, EyeOff, ShieldCheck, Check, Truck, Tag } from "lucide-react";
 import { useAuthModal } from "@/hooks/useAuthModal";
 import Logo from "@/components/common/Logo";
 import "./SlidingAuthContainer.css";
@@ -842,7 +842,7 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
               <div className="relative z-10 flex flex-col items-center justify-center text-center w-full px-5 lg:px-8 gap-4">
                 {/* Badge */}
                 <div className="inline-flex items-center gap-2 bg-black/40 border border-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full">
-                  <Sparkles className="w-3 h-3 text-[#D4009B]" />
+                  <Tag className="w-3 h-3 text-[#D4009B]" />
                   <span className="text-[10px] font-bold tracking-[0.15em] uppercase text-white/90">Exclusive</span>
                 </div>
 
