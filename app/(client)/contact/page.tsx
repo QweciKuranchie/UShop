@@ -194,9 +194,6 @@ const ContactPage = () => {
                     <p className="text-xs sm:text-sm text-white/90 mt-0.5 font-medium">
                       {contactConfig.businessHours.weekday}
                     </p>
-                    <p className="text-xs text-white/70 mt-0.5">
-                      {contactConfig.businessHours.weekend}
-                    </p>
                   </div>
                 </div>
               </div>
