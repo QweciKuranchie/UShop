@@ -3,9 +3,8 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import { Product } from "@/sanity.types";
 import Link from "next/link";
-import { Flame, StarIcon } from "lucide-react";
+import { Flame, GraduationCap, Tag, StarIcon } from "lucide-react";
 import AddToWishlistBtn from "./AddToWishlistBtn";
-import { Title } from "./ui/text";
 import PriceView from "./PriceView";
 import AddToCartBtn from "./AddToCartBtn";
 
@@ -44,13 +43,36 @@ interface ProductCardProps {
   product: Product;
   priority?: boolean;
   isFlashSale?: boolean;
+  dealType?: "flash" | "student" | "clearance" | "black-friday" | "special" | string;
 }
 
-const ProductCard = ({ product, priority = false, isFlashSale = false }: ProductCardProps) => {
-  const isHotOrFlash = isFlashSale || Boolean(product?.isFlashSale) || product?.status === "hot";
+const ProductCard = ({
+  product,
+  priority = false,
+  isFlashSale = false,
+  dealType,
+}: ProductCardProps) => {
+  // Determine deal icon badges under Wishlist button
+  const isFlash =
+    isFlashSale ||
+    dealType === "flash" ||
+    Boolean(product?.isFlashSale) ||
+    product?.status === "hot" ||
+    product?.status === "flash";
+
+  const isStudent =
+    dealType === "student" ||
+    Boolean((product as unknown as { isStudentDeal?: boolean })?.isStudentDeal) ||
+    product?.status === "student";
+
+  const isClearance =
+    dealType === "clearance" ||
+    Boolean((product as unknown as { isClearance?: boolean })?.isClearance) ||
+    product?.status === "clearance" ||
+    product?.status === "refurbished";
 
   return (
-    <div className="text-xs sm:text-sm border border-gray-200/80 rounded-2xl bg-white group hover:shadow-xl hover:border-ushop-pink/30 hoverEffect flex flex-col h-full overflow-hidden bg-white">
+    <div className="text-xs sm:text-sm border border-gray-200/80 rounded-2xl bg-white group hover:shadow-xl hover:border-ushop-pink/30 hoverEffect flex flex-col h-full overflow-hidden">
       {/* Product Image Area */}
       <div className="relative group overflow-hidden bg-[#fbfbfb] p-3 sm:p-4 aspect-square w-full flex items-center justify-center">
         {product?.images && product.images[0] && (
@@ -72,19 +94,51 @@ const ProductCard = ({ product, priority = false, isFlashSale = false }: Product
           </Link>
         )}
 
-        {/* Top-right action icons container (Wishlist + Flame icon if Flash Sale) */}
+        {/* Top-right action icons container (Wishlist + Deal Badges) */}
         <div className="absolute top-2 right-2 z-10 flex flex-col items-center gap-1.5">
           <AddToWishlistBtn product={product} />
-          {isHotOrFlash && (
+
+          {/* Flash Sale Flame Badge */}
+          {isFlash && (
             <Link
-              href="/deals"
-              aria-label="Flash Deal"
-              title="Flash Deal"
+              href="/deals/flash"
+              aria-label="Flash Sale Deal"
+              title="Flash Sale Deal"
               className="p-1 sm:p-1.5 rounded-full bg-white/95 shadow-md border border-red-100 hover:scale-110 transition-transform duration-200"
             >
               <Flame
                 size={14}
                 className="text-ushop-red fill-ushop-red animate-pulse"
+              />
+            </Link>
+          )}
+
+          {/* Student Deal Graduation Cap Badge */}
+          {!isFlash && isStudent && (
+            <Link
+              href="/deals/students"
+              aria-label="Student Deal"
+              title="Student Deal"
+              className="p-1 sm:p-1.5 rounded-full bg-white/95 shadow-md border border-emerald-100 hover:scale-110 transition-transform duration-200"
+            >
+              <GraduationCap
+                size={14}
+                className="text-emerald-600 fill-emerald-600/20"
+              />
+            </Link>
+          )}
+
+          {/* Clearance Sale Tag Badge */}
+          {!isFlash && !isStudent && isClearance && (
+            <Link
+              href="/deals/clearance"
+              aria-label="Clearance Sale"
+              title="Clearance Sale"
+              className="p-1 sm:p-1.5 rounded-full bg-white/95 shadow-md border border-amber-100 hover:scale-110 transition-transform duration-200"
+            >
+              <Tag
+                size={14}
+                className="text-amber-600 fill-amber-600/20"
               />
             </Link>
           )}
