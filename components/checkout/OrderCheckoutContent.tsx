@@ -215,10 +215,6 @@ export function OrderCheckoutContent({ order }: OrderCheckoutContentProps) {
                 <PriceFormatter amount={order.shipping} />
               )}
             </div>
-            <div className="flex justify-between">
-              <span>Tax</span>
-              <PriceFormatter amount={order.tax} />
-            </div>
             <Separator />
             <div className="flex justify-between text-lg font-bold">
               <span>Total</span>

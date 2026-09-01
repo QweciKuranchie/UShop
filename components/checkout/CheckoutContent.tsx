@@ -98,18 +98,57 @@ export function CheckoutContent() {
   } | null>(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
-  // New pricing structure
+  // Real pricing structure based on live cart items from Sanity
   const grossSubtotal = getSubTotalPrice(); // Gross amount (before discount)
-  const totalDiscount = getTotalDiscount(); // Total discount amount
-  const currentSubtotal = grossSubtotal - totalDiscount; // After discount
+  const totalDiscount = getTotalDiscount(); // Total product discount amount from Sanity
+  const currentSubtotal = grossSubtotal - totalDiscount; // After product discount
 
-  // Business account discount (2% additional discount)
+  // Business account discount (2% additional discount for verified business users)
   const businessDiscount = userProfile?.isBusiness ? currentSubtotal * 0.02 : 0;
   const finalSubtotal = currentSubtotal - businessDiscount;
 
-  const shipping = finalSubtotal > 100 ? 0 : 10;
-  const tax = finalSubtotal * (parseFloat(process.env.TAX_AMOUNT || "0") || 0);
-  const total = finalSubtotal + shipping + tax;
+  // Real Promo Code Discount calculation
+  const promoDiscountAmount = appliedDiscount
+    ? appliedDiscount.type === "percentage"
+      ? (finalSubtotal * appliedDiscount.amount) / 100
+      : appliedDiscount.amount
+    : 0;
+
+  // Real Shipping calculation based on selected address location & free shipping threshold
+  const calculateShippingFee = (addr: OrderAddress | null, subtotalAmount: number): number => {
+    if (subtotalAmount >= 500) return 0; // Free shipping on orders GH₵500+
+    if (!addr) return 20; // Base default shipping fee before address selection
+
+    const location = `${addr.city || ""} ${addr.state || ""} ${addr.address || ""}`.toLowerCase();
+
+    // Greater Accra Region
+    if (
+      location.includes("accra") ||
+      location.includes("tema") ||
+      location.includes("legon") ||
+      location.includes("madina") ||
+      location.includes("spintex") ||
+      location.includes("east legon") ||
+      location.includes("kasoa") ||
+      location.includes("adenta") ||
+      location.includes("dome") ||
+      location.includes("achimota")
+    ) {
+      return 15;
+    }
+
+    // Ashanti Region
+    if (location.includes("kumasi") || location.includes("obuasi") || location.includes("ashanti")) {
+      return 25;
+    }
+
+    // All other Ghana regions/cities
+    return 35;
+  };
+
+  const shipping = calculateShippingFee(selectedAddress, finalSubtotal);
+  const tax = 0; // Tax removed from order summary
+  const total = Math.max(0, finalSubtotal - promoDiscountAmount + shipping);
 
   // Fetch user profile for business account status
   useEffect(() => {
@@ -716,22 +755,30 @@ export function CheckoutContent() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between">
-              <span>Subtotal ({cart.length} items)</span>
-              <PriceFormatter amount={grossSubtotal} />
+              <span>Subtotal ({cart.length} {cart.length === 1 ? "item" : "items"})</span>
+              <PriceFormatter amount={finalSubtotal} />
             </div>
             {totalDiscount > 0 && (
-              <div className="flex justify-between text-green-600">
-                <span>Discount</span>
+              <div className="flex justify-between text-green-600 text-sm font-medium">
+                <span>Product Savings</span>
                 <span>
                   -<PriceFormatter amount={totalDiscount} />
                 </span>
               </div>
             )}
             {businessDiscount > 0 && (
-              <div className="flex justify-between text-blue-600">
+              <div className="flex justify-between text-blue-600 text-sm font-medium">
                 <span>Business Account Discount (2%)</span>
                 <span>
                   -<PriceFormatter amount={businessDiscount} />
+                </span>
+              </div>
+            )}
+            {promoDiscountAmount > 0 && (
+              <div className="flex justify-between text-emerald-600 text-sm font-medium">
+                <span>Promo Discount ({appliedDiscount?.code})</span>
+                <span>
+                  -<PriceFormatter amount={promoDiscountAmount} />
                 </span>
               </div>
             )}
@@ -742,10 +789,6 @@ export function CheckoutContent() {
               ) : (
                 <PriceFormatter amount={shipping} />
               )}
-            </div>
-            <div className="flex justify-between">
-              <span>Tax</span>
-              <PriceFormatter amount={tax} />
             </div>
             <Separator />
             <div className="flex justify-between text-lg font-bold">
