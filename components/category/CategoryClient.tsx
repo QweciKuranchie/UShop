@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -16,7 +16,6 @@ import {
   ArrowRight,
   Grid,
   Search,
-  Tag,
 } from "lucide-react";
 import { Category } from "@/sanity.types";
 import { ProductClassificationItem } from "@/sanity/Queries";
@@ -80,12 +79,15 @@ export default function CategoryClient({
   const [selectedClassificationId, setSelectedClassificationId] = useState<string>("all");
 
   // Helper to find Sanity category by slug
-  const findSanityCategory = (slug: string, altSlug?: string) => {
-    return initialCategories.find((c) => {
-      const s = (c.slug?.current || "").toLowerCase();
-      return s === slug.toLowerCase() || (altSlug && s === altSlug.toLowerCase());
-    });
-  };
+  const findSanityCategory = useCallback(
+    (slug: string, altSlug?: string) => {
+      return initialCategories.find((c) => {
+        const s = (c.slug?.current || "").toLowerCase();
+        return s === slug.toLowerCase() || (altSlug && s === altSlug.toLowerCase());
+      });
+    },
+    [initialCategories]
+  );
 
   // 1. Featured Categories (Phones, Laptops, Accessories on ONE line)
   const featuredThree = useMemo(() => {
@@ -128,7 +130,7 @@ export default function CategoryClient({
         btnBg: "bg-emerald-600 hover:bg-emerald-700",
       },
     ];
-  }, [initialCategories]);
+  }, [findSanityCategory]);
 
   // 2. Popular Categories (One line scrollable: Phones, Laptops, Accessories, Appliances, Gaming)
   const popularCategoriesList = useMemo(() => {
@@ -143,7 +145,7 @@ export default function CategoryClient({
         productCount: (sanityMatch as { productCount?: number })?.productCount || 0,
       };
     });
-  }, [initialCategories]);
+  }, [findSanityCategory]);
 
   // 3. Filtered Top Categories by Classification & Search Query
   const topCategories = useMemo(() => {
