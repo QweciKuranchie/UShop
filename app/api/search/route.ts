@@ -3,13 +3,13 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { defineQuery } from "next-sanity";
 
 const SEARCH_PRODUCTS_QUERY = defineQuery(
-  `*[_type == "product" && (name match $searchPattern || category->title match $searchPattern)] | order(name asc) [0...6] {
+  `*[_type == "product" && (name match $searchPattern || category->title match $searchPattern)] | order(name asc) [0...8] {
     _id,
     name,
     slug,
     price,
     discount,
-    images[0]
+    images
   }`
 );
 
