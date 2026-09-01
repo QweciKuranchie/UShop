@@ -19,9 +19,6 @@ export const contactConfig = {
     weekday:
       process.env.NEXT_PUBLIC_COMPANY_BUSINESS_HOURS_WEEKDAY ||
       "Monday - Saturday: 8:00 AM - 7:00 PM GMT",
-    weekend:
-      process.env.NEXT_PUBLIC_COMPANY_BUSINESS_HOURS_WEEKEND ||
-      "Sunday: 10:00 AM - 4:00 PM GMT",
   },
   emails: {
     support: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "support@ushopgh.com",
