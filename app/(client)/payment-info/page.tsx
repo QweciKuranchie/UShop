@@ -14,9 +14,6 @@ import {
   HelpCircle,
   Mail,
   PhoneCall,
-  CheckCircle2,
-  ArrowRight,
-  ShieldCheck,
 } from "lucide-react";
 
 export const metadata = {
