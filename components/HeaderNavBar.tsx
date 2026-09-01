@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
-import { Flame, ChevronDown, Zap, GraduationCap, Tag, ShoppingBag, Sparkles } from "lucide-react";
+import { Flame, ChevronDown, Zap, GraduationCap, Tag, ShoppingBag } from "lucide-react";
 import { headerData } from "@/Constants/data";
 import { usePathname } from "next/navigation";
 
@@ -39,7 +39,7 @@ const dealsDropdownItems = [
     title: "Special Offers",
     badge: "Exclusive",
     href: "/deals/special-offers",
-    icon: Sparkles,
+    icon: Flame,
     color: "text-ushop-pink",
   },
 ];

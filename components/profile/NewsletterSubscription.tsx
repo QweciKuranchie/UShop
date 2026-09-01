@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
-import { Mail, Loader2, CheckCircle2, XCircle, Gift, Zap, Package, Lightbulb, Sparkles } from "lucide-react";
+import { Mail, Loader2, CheckCircle2, XCircle, Gift, Zap, Package, Lightbulb } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -199,7 +199,7 @@ export default function NewsletterSubscription() {
                 <span>Shopping tips & trends</span>
               </li>
               <li className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-ushop-pink shrink-0" />
+                <Gift className="w-4 h-4 text-ushop-pink shrink-0" />
                 <span>Birthday surprises</span>
               </li>
             </ul>

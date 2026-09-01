@@ -238,6 +238,38 @@ export const productType = defineType({
       description: "Toggle flash sale / daily deal showcase on the homepage",
       initialValue: false,
     }),
+    defineField({
+      name: "isStudentDeal",
+      title: "Student Deal",
+      type: "boolean",
+      group: "main",
+      description: "Toggle student discount showcase",
+      initialValue: false,
+    }),
+    defineField({
+      name: "isClearance",
+      title: "Clearance Sale Item",
+      type: "boolean",
+      group: "main",
+      description: "Toggle clearance warehouse markdown",
+      initialValue: false,
+    }),
+    defineField({
+      name: "isBlackFriday",
+      title: "Black Friday Mega Deal",
+      type: "boolean",
+      group: "main",
+      description: "Toggle Black Friday shopping event promotion",
+      initialValue: false,
+    }),
+    defineField({
+      name: "isSpecialOffer",
+      title: "Special Promotional Offer",
+      type: "boolean",
+      group: "main",
+      description: "Toggle curated special offer / bundle discount",
+      initialValue: false,
+    }),
 
     // ─── TAB 2: ADDITIONAL INFORMATION (SPECS TAB) ──────────────
     defineField({

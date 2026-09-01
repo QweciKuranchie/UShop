@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import PriceFormatter from "../PriceFormatter";
-import { Search, ChevronRight, Loader2 } from "lucide-react";
+import { Search, ChevronRight, Loader2, Package } from "lucide-react";
 
 export interface SearchResultProduct {
   _id: string;
@@ -13,7 +13,7 @@ export interface SearchResultProduct {
   slug?: { current?: string };
   price?: number;
   discount?: number;
-  images?: Array<unknown>;
+  images?: unknown[];
 }
 
 interface LiveSearchPopoverProps {
@@ -32,6 +32,20 @@ export function LiveSearchPopover({
   onSelect,
 }: LiveSearchPopoverProps) {
   if (!isOpen) return null;
+
+  const getProductImage = (product: SearchResultProduct): string | null => {
+    try {
+      if (Array.isArray(product.images) && product.images.length > 0 && product.images[0]) {
+        return urlFor(product.images[0] as Parameters<typeof urlFor>[0]).url();
+      }
+      if (product.images && typeof product.images === "object") {
+        return urlFor(product.images as Parameters<typeof urlFor>[0]).url();
+      }
+    } catch (e) {
+      console.error("Error generating product image URL in live search:", e);
+    }
+    return null;
+  };
 
   return (
     <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
@@ -53,10 +67,7 @@ export function LiveSearchPopover({
 
           <div className="max-h-72 overflow-y-auto divide-y divide-gray-50">
             {results.map((product) => {
-              const imageSrc =
-                product.images && product.images[0]
-                  ? urlFor(product.images[0]).url()
-                  : null;
+              const imageSrc = getProductImage(product);
 
               return (
                 <Link
@@ -65,18 +76,17 @@ export function LiveSearchPopover({
                   onClick={onSelect}
                   className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-ushop_light_bg transition-colors group"
                 >
-                  <div className="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden shrink-0 relative border border-gray-100">
+                  {/* Product Image Thumbnail */}
+                  <div className="w-12 h-12 rounded-xl bg-gray-50 overflow-hidden shrink-0 relative border border-gray-100 flex items-center justify-center p-1">
                     {imageSrc ? (
                       <Image
                         src={imageSrc}
                         alt={product.name || "Product"}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform"
+                        className="object-contain p-1 group-hover:scale-105 transition-transform"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
-                        No img
-                      </div>
+                      <Package className="w-5 h-5 text-gray-300" />
                     )}
                   </div>
 

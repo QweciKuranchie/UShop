@@ -1,7 +1,5 @@
 import Container from "@/components/Container";
-import ProductCard from "@/components/ProductCard";
 import Title from "@/components/Title";
-import DealCountdown from "@/components/DealCountdown";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
 import { Product } from "@/sanity.types";
 import { getDealProducts } from "@/sanity/Queries";
@@ -11,11 +9,11 @@ import {
   ShoppingBag,
   GraduationCap,
   Tag,
-  Sparkles,
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
+import DealsCatalogClient from "@/components/deals/DealsCatalogClient";
 
 export const metadata: Metadata = {
   title: "Hot Deals & Special Offers | UShop",
@@ -60,7 +58,7 @@ const dealsCategories = [
     badge: "Exclusive",
     description: "Curated seller promotions & seasonal bundle discounts.",
     href: "/deals/special-offers",
-    icon: Sparkles,
+    icon: Flame,
     color: "from-ushop-purple to-ushop-pink",
   },
 ];
@@ -117,11 +115,6 @@ const MainDealsPage = async () => {
                 </div>
               </div>
             </div>
-
-            {/* Countdown Box */}
-            <div className="w-full lg:w-auto bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-3xl shrink-0">
-              <DealCountdown />
-            </div>
           </div>
         </div>
 
@@ -175,41 +168,8 @@ const MainDealsPage = async () => {
           </div>
         </div>
 
-        {/* Products Grid */}
-        <div className="mb-12">
-          <div className="flex items-center justify-between mb-6 pb-3 border-b border-gray-200">
-            <div>
-              <Title className="text-xl sm:text-2xl font-bold text-gray-900">
-                All Active Hot Deals
-              </Title>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Showing {products.length} discounted items ready for fast dispatch.
-              </p>
-            </div>
-          </div>
-
-          {products && products.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
-              {products.map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
-          ) : (
-            <div className="bg-white rounded-3xl border border-gray-100 p-12 text-center max-w-md mx-auto my-10 shadow-xs">
-              <Flame className="w-12 h-12 text-ushop-red/40 mx-auto mb-4 animate-bounce" />
-              <h3 className="text-lg font-bold text-gray-900 mb-2">No Deals Currently Active</h3>
-              <p className="text-xs text-gray-500 mb-6">
-                Check back soon for new flash sales and daily discounts!
-              </p>
-              <Link
-                href="/shop"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-ushop-pink hover:bg-ushop-pink/90 text-white text-xs font-semibold rounded-xl transition-colors"
-              >
-                Browse All Products
-              </Link>
-            </div>
-          )}
-        </div>
+        {/* All Active Hot Deals with Deal Type Filter Tabs */}
+        <DealsCatalogClient initialProducts={products} />
       </Container>
     </div>
   );

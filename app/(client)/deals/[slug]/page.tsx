@@ -1,8 +1,5 @@
 import Container from "@/components/Container";
-import Title from "@/components/Title";
-import DealCountdown from "@/components/DealCountdown";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb";
-import PaginatedProductGrid from "@/components/PaginatedProductGrid";
 import { Product } from "@/sanity.types";
 import { getDealProducts, getAllProducts } from "@/sanity/Queries";
 import {
@@ -10,14 +7,12 @@ import {
   GraduationCap,
   Tag,
   ShoppingBag,
-  Sparkles,
-  Package,
-  ArrowLeft,
+  Flame,
   LucideIcon,
 } from "lucide-react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import SingleDealClient from "@/components/deals/SingleDealClient";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -44,8 +39,8 @@ const DEAL_CATEGORIES: Record<
   },
   students: {
     title: "Student Deals",
-    subtitle: "Verified campus pricing on laptops, accessories, tech gadgets & student essentials up to 90% off.",
-    badgeText: "STUDENT EXCLUSIVE — UP TO 90% OFF",
+    subtitle: "Verified campus deals on laptops, smartphones, and accessories for university students across Ghana.",
+    badgeText: "STUDENT SPECIALS — UP TO 90% OFF",
     maxDiscount: "Up to 90% OFF",
     bgGradient: "from-emerald-700 via-teal-600 to-ushop-pink",
     icon: GraduationCap,
@@ -68,11 +63,11 @@ const DEAL_CATEGORIES: Record<
   },
   "special-offers": {
     title: "Special Offers",
-    subtitle: "Hand-picked seller promotions, bundle discounts, and seasonal price drops on UShop.",
-    badgeText: "SPECIAL OFFERS",
-    maxDiscount: "Exclusive Savings",
-    bgGradient: "from-ushop-purple via-ushop-pink to-red-500",
-    icon: Sparkles,
+    subtitle: "Curated seasonal discounts, merchant bundle deals, and exclusive promotional pricing.",
+    badgeText: "SPECIAL PROMOTIONAL OFFERS",
+    maxDiscount: "Exclusive Deals",
+    bgGradient: "from-purple-800 via-pink-700 to-amber-600",
+    icon: Flame,
   },
 };
 
@@ -126,7 +121,6 @@ const SingleDealCategoryPage = async ({ params }: Props) => {
 
   // If filtered set is small, fallback to all available deal products
   const displayProducts = filteredProducts.length > 0 ? filteredProducts : rawProducts;
-  const IconComp = dealInfo.icon;
 
   return (
     <div className="min-h-screen bg-gray-50/50 py-6">
@@ -139,73 +133,12 @@ const SingleDealCategoryPage = async ({ params }: Props) => {
           ]}
         />
 
-        {/* Hero Header Banner */}
-        <div className={`my-6 bg-gradient-to-r ${dealInfo.bgGradient} text-white rounded-3xl p-6 sm:p-10 shadow-xl overflow-hidden relative`}>
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 relative z-10">
-            <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full mb-4">
-                <IconComp className="w-4 h-4 fill-white text-white" />
-                <span className="text-xs font-black uppercase tracking-wider">
-                  {dealInfo.badgeText}
-                </span>
-              </div>
-
-              <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-3">
-                {dealInfo.title}
-              </h1>
-              <p className="text-sm sm:text-base text-white/90 leading-relaxed mb-6">
-                {dealInfo.subtitle}
-              </p>
-
-              <div className="flex flex-wrap items-center gap-3">
-                <Link
-                  href="/deals"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white text-xs font-bold rounded-xl transition-all"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  <span>All Deals Hub</span>
-                </Link>
-              </div>
-            </div>
-
-            {/* Countdown Box */}
-            <div className="w-full lg:w-auto bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-3xl shrink-0">
-              <DealCountdown />
-            </div>
-          </div>
-        </div>
-
-        {/* Catalog Section */}
-        <div className="mb-12">
-          <div className="flex items-center justify-between mb-6 pb-3 border-b border-gray-200">
-            <div>
-              <Title className="text-xl sm:text-2xl font-bold text-gray-900">
-                {dealInfo.title} Collection
-              </Title>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Showing {displayProducts.length} items on sale.
-              </p>
-            </div>
-          </div>
-
-          {displayProducts && displayProducts.length > 0 ? (
-            <PaginatedProductGrid products={displayProducts} initialLimit={12} incrementBy={12} />
-          ) : (
-            <div className="bg-white rounded-3xl border border-gray-100 p-12 text-center max-w-md mx-auto my-10 shadow-xs">
-              <Package className="w-12 h-12 text-ushop-pink/40 mx-auto mb-4" />
-              <h3 className="text-lg font-bold text-gray-900 mb-2">No Items Found</h3>
-              <p className="text-xs text-gray-500 mb-6">
-                Check back soon or explore other deal categories!
-              </p>
-              <Link
-                href="/deals"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-ushop-pink hover:bg-ushop-pink/90 text-white text-xs font-semibold rounded-xl transition-colors"
-              >
-                Back to All Deals
-              </Link>
-            </div>
-          )}
-        </div>
+        {/* Single Deal Client with Countdown rules, Flash tabs, and Product Filters */}
+        <SingleDealClient
+          slug={dealKey}
+          dealInfo={dealInfo}
+          initialProducts={displayProducts}
+        />
       </Container>
     </div>
   );

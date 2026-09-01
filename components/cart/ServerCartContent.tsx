@@ -284,22 +284,14 @@ export function ServerCartContent({
           onAddressesRefresh={onAddressesRefresh}
         />
 
-        {/* Order Summary */}
-        <div className="border rounded-lg p-6">
+        {/* Order Summary (Large Screens) */}
+        <div className="border rounded-lg p-6 hidden lg:block">
           <h2 className="text-xl font-bold mb-4">Order Summary</h2>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span>Subtotal ({cart.length} items)</span>
-              <PriceFormatter amount={grossSubtotal} />
+              <span>Subtotal ({cart.length} {cart.length === 1 ? "item" : "items"})</span>
+              <PriceFormatter amount={finalTotal} />
             </div>
-            {totalDiscount > 0 && (
-              <div className="flex justify-between text-green-600">
-                <span>Discount</span>
-                <span>
-                  -<PriceFormatter amount={totalDiscount} />
-                </span>
-              </div>
-            )}
             <Separator />
             <div className="flex justify-between text-lg font-bold">
               <span>Total</span>

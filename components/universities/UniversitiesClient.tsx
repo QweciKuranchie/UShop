@@ -105,11 +105,22 @@ export default function UniversitiesClient({
           </div>
 
           {/* Floating Glassmorphism Search Bar */}
-          <div className="relative w-full max-w-xl mx-auto shadow-2xl group">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+            className="relative w-full max-w-xl mx-auto shadow-2xl group"
+          >
             <div className="absolute -inset-0.5 rounded-2xl sm:rounded-full bg-gradient-to-r from-red-600/40 via-purple-600/30 to-red-600/40 blur-sm opacity-60 group-hover:opacity-90 transition-opacity" />
 
             <div className="relative flex items-center bg-slate-900/65 backdrop-blur-md border border-white/20 rounded-2xl sm:rounded-full px-4 sm:px-6 py-2.5 sm:py-3.5 text-white shadow-inner focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/30 transition-all">
-              <Search className="w-5 h-5 text-gray-300 shrink-0 mr-3" />
+              <button
+                type="submit"
+                className="text-gray-300 hover:text-white shrink-0 mr-3 transition-colors cursor-pointer"
+                aria-label="Search campus"
+              >
+                <Search className="w-5 h-5" />
+              </button>
               <input
                 type="text"
                 value={searchQuery}
@@ -121,13 +132,13 @@ export default function UniversitiesClient({
                 <button
                   type="button"
                   onClick={() => setSearchQuery("")}
-                  className="text-gray-300 hover:text-white text-xs px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 ml-2 font-medium transition-colors shrink-0"
+                  className="text-gray-300 hover:text-white text-xs px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 ml-2 font-medium transition-colors shrink-0 cursor-pointer"
                 >
                   Clear
                 </button>
               )}
             </div>
-          </div>
+          </form>
         </div>
       </div>
 
