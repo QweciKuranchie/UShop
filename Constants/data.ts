@@ -38,7 +38,7 @@ export const customerCareData = {
     { title: "Privacy Policy", href: "/privacy" },
     { title: "Cookie Policy", href: "/privacy#cookies" },
     { title: "Return and Refund Policy", href: "/help#returns" },
-    { title: "Payments Info", href: "/help#payments" },
+    { title: "Payments Info", href: "/payment-info" },
     { title: "Sell on UShop", href: "/user/business-apply" },
   ],
 };
