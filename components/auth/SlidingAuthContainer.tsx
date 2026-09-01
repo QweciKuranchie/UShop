@@ -475,209 +475,211 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
             </form>
           ) : (
             <form onSubmit={handleSignUpSubmit} className="auth-form">
-              {/* Mobile Navigation Tabs */}
-              <div className="auth-mobile-tabs md:hidden">
-                <button
-                  type="button"
-                  onClick={handleSwitchToSignIn}
-                  className="auth-mobile-tab"
-                >
-                  Login
-                </button>
-                <button
-                  type="button"
-                  className="auth-mobile-tab active"
-                >
-                  Sign Up
-                </button>
-              </div>
-
-              <div className="mb-2 flex justify-center">
-                <Logo imageClassName="h-7 sm:h-8 md:h-9 w-auto" />
-              </div>
-
-              <h1>Create Account</h1>
-              <p className="auth-subtitle">Join UShop tech marketplace today</p>
-              
-              {signUpError && <div className="auth-error">{signUpError}</div>}
-
-              {/* Google Sign Up Option */}
-              <button
-                type="button"
-                onClick={() => handleGoogleAuth("sign-up")}
-                className="auth-google-btn"
-              >
-                <GoogleIcon />
-                <span>Sign up with Google</span>
-              </button>
-
-              <div className="auth-divider">
-                <div className="auth-divider-line"></div>
-                <span className="auth-divider-text">OR EMAIL</span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
-                <div className="auth-input-group">
-                  <User className="auth-input-icon" />
-                  <input
-                    type="text"
-                    name="firstName"
-                    className={`auth-input ${touchedSignUp.firstName && !isFirstNameValid ? "!border-rose-400" : ""}`}
-                    placeholder="First Name"
-                    value={signUpFirstName}
-                    onChange={(e) => setSignUpFirstName(e.target.value)}
-                    onBlur={() => setTouchedSignUp((prev) => ({ ...prev, firstName: true }))}
-                    required
-                  />
-                </div>
-                <div className="auth-input-group">
-                  <User className="auth-input-icon" />
-                  <input
-                    type="text"
-                    name="lastName"
-                    className={`auth-input ${touchedSignUp.lastName && !isLastNameValid ? "!border-rose-400" : ""}`}
-                    placeholder="Last Name"
-                    value={signUpLastName}
-                    onChange={(e) => setSignUpLastName(e.target.value)}
-                    onBlur={() => setTouchedSignUp((prev) => ({ ...prev, lastName: true }))}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="auth-input-group">
-                <Mail className="auth-input-icon" />
-                <input
-                  type="email"
-                  name="email"
-                  className={`auth-input ${touchedSignUp.email && !isSignUpEmailValid ? "!border-rose-400" : ""}`}
-                  placeholder="Email Address (e.g. name@gmail.com)"
-                  value={signUpEmail}
-                  onChange={(e) => setSignUpEmail(e.target.value)}
-                  onBlur={() => setTouchedSignUp((prev) => ({ ...prev, email: true }))}
-                  required
-                />
-              </div>
-
-              <div className="auth-input-group">
-                <User className="auth-input-icon" />
-                <input
-                  type="text"
-                  name="username"
-                  className={`auth-input ${touchedSignUp.username && !isSignUpUsernameValid ? "!border-rose-400" : ""}`}
-                  placeholder="Username (Optional)"
-                  value={signUpUsername}
-                  onChange={(e) => setSignUpUsername(e.target.value)}
-                  onBlur={() => setTouchedSignUp((prev) => ({ ...prev, username: true }))}
-                />
-              </div>
-
-              <div className="auth-input-group">
-                <Lock className="auth-input-icon" />
-                <input
-                  type={showSignUpPassword ? "text" : "password"}
-                  name="password"
-                  className="auth-input auth-input-has-toggle"
-                  placeholder="Password"
-                  value={signUpPassword}
-                  onChange={(e) => setSignUpPassword(e.target.value)}
-                  required
-                />
-                <button
-                  type="button"
-                  className="auth-toggle-password"
-                  onClick={() => setShowSignUpPassword(!showSignUpPassword)}
-                  aria-label="Toggle password visibility"
-                >
-                  {showSignUpPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-
-              <div className="auth-input-group">
-                <Lock className="auth-input-icon" />
-                <input
-                  type={showSignUpPassword ? "text" : "password"}
-                  name="confirm_password"
-                  className="auth-input"
-                  placeholder="Confirm Password"
-                  value={signUpConfirmPassword}
-                  onChange={(e) => setSignUpConfirmPassword(e.target.value)}
-                  required
-                />
-              </div>
-
-              {/* Password Requirements Checklist */}
-              {(signUpPassword.length > 0 || signUpConfirmPassword.length > 0) && (
-                <div className="w-full my-2.5 p-3 rounded-xl bg-white border border-purple-200/90 shadow-sm text-left text-xs space-y-1 animate-in fade-in duration-200">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5">
-                    <div className={`flex items-center gap-1.5 ${passwordCriteria.hasMinLength ? "text-emerald-700 font-bold" : "text-slate-600 font-medium"}`}>
-                      <Check className={`w-3.5 h-3.5 shrink-0 ${passwordCriteria.hasMinLength ? "text-emerald-600 stroke-[3]" : "text-slate-400 stroke-[2]"}`} />
-                      <span>At least 8 characters</span>
-                    </div>
-                    <div className={`flex items-center gap-1.5 ${passwordCriteria.hasUpper ? "text-emerald-700 font-bold" : "text-slate-600 font-medium"}`}>
-                      <Check className={`w-3.5 h-3.5 shrink-0 ${passwordCriteria.hasUpper ? "text-emerald-600 stroke-[3]" : "text-slate-400 stroke-[2]"}`} />
-                      <span>Uppercase letter</span>
-                    </div>
-                    <div className={`flex items-center gap-1.5 ${passwordCriteria.hasLower ? "text-emerald-700 font-bold" : "text-slate-600 font-medium"}`}>
-                      <Check className={`w-3.5 h-3.5 shrink-0 ${passwordCriteria.hasLower ? "text-emerald-600 stroke-[3]" : "text-slate-400 stroke-[2]"}`} />
-                      <span>Lowercase letter</span>
-                    </div>
-                    <div className={`flex items-center gap-1.5 ${passwordCriteria.hasNumber ? "text-emerald-700 font-bold" : "text-slate-600 font-medium"}`}>
-                      <Check className={`w-3.5 h-3.5 shrink-0 ${passwordCriteria.hasNumber ? "text-emerald-600 stroke-[3]" : "text-slate-400 stroke-[2]"}`} />
-                      <span>A number</span>
-                    </div>
-                    <div className={`flex items-center gap-1.5 ${passwordCriteria.hasSpecial ? "text-emerald-700 font-bold" : "text-slate-600 font-medium"}`}>
-                      <Check className={`w-3.5 h-3.5 shrink-0 ${passwordCriteria.hasSpecial ? "text-emerald-600 stroke-[3]" : "text-slate-400 stroke-[2]"}`} />
-                      <span>Special character (@$!%*?&)</span>
-                    </div>
-                    <div className={`flex items-center gap-1.5 ${passwordCriteria.passwordsMatch ? "text-emerald-700 font-bold" : "text-slate-600 font-medium"}`}>
-                      <Check className={`w-3.5 h-3.5 shrink-0 ${passwordCriteria.passwordsMatch ? "text-emerald-600 stroke-[3]" : "text-slate-400 stroke-[2]"}`} />
-                      <span>Passwords match</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Terms and Privacy Policy Checkbox */}
-              <div className="flex items-center gap-2 my-2.5 text-left w-full">
-                <input
-                  type="checkbox"
-                  id="acceptTerms"
-                  checked={acceptedTerms}
-                  onChange={(e) => setAcceptedTerms(e.target.checked)}
-                  className="w-4 h-4 rounded border-purple-300 text-ushop-pink focus:ring-ushop-pink accent-ushop-pink cursor-pointer shrink-0"
-                  required
-                />
-                <label htmlFor="acceptTerms" className="text-xs text-slate-700 cursor-pointer font-medium leading-tight">
-                  I agree to the{" "}
-                  <Link href="/terms" className="text-ushop-purple font-bold hover:underline" onClick={(e) => e.stopPropagation()}>
-                    Terms of Service
-                  </Link>{" "}
-                  and{" "}
-                  <Link href="/privacy" className="text-ushop-purple font-bold hover:underline" onClick={(e) => e.stopPropagation()}>
-                    Privacy Policy
-                  </Link>
-                </label>
-              </div>
-
-              <div className="auth-button-group">
-                <button type="submit" className="auth-button" disabled={isSignUpLoading}>
-                  {isSignUpLoading ? "Signing Up..." : "Sign Up"}
-                </button>
-              </div>
-
-              {/* Mobile Switch Link */}
-              <div className="mt-4 pt-3 border-t border-purple-100/80 w-full text-center block md:hidden">
-                <p className="text-xs text-slate-500">
-                  Already have an account?{" "}
+              <div className="auth-form-content w-full my-auto flex flex-col items-center">
+                {/* Mobile Navigation Tabs */}
+                <div className="auth-mobile-tabs">
                   <button
                     type="button"
                     onClick={handleSwitchToSignIn}
-                    className="font-bold text-ushop-pink hover:underline cursor-pointer ml-1"
+                    className="auth-mobile-tab"
                   >
                     Login
                   </button>
-                </p>
+                  <button
+                    type="button"
+                    className="auth-mobile-tab active"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+
+                <div className="mb-1.5 flex justify-center">
+                  <Logo imageClassName="h-6 sm:h-7 md:h-8 w-auto" />
+                </div>
+
+                <h1>Create Account</h1>
+                <p className="auth-subtitle">Join UShop tech marketplace today</p>
+                
+                {signUpError && <div className="auth-error">{signUpError}</div>}
+
+                {/* Google Sign Up Option */}
+                <button
+                  type="button"
+                  onClick={() => handleGoogleAuth("sign-up")}
+                  className="auth-google-btn"
+                >
+                  <GoogleIcon />
+                  <span>Sign up with Google</span>
+                </button>
+
+                <div className="auth-divider">
+                  <div className="auth-divider-line"></div>
+                  <span className="auth-divider-text">OR EMAIL</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
+                  <div className="auth-input-group">
+                    <User className="auth-input-icon" />
+                    <input
+                      type="text"
+                      name="firstName"
+                      className={`auth-input ${touchedSignUp.firstName && !isFirstNameValid ? "!border-rose-400" : ""}`}
+                      placeholder="First Name"
+                      value={signUpFirstName}
+                      onChange={(e) => setSignUpFirstName(e.target.value)}
+                      onBlur={() => setTouchedSignUp((prev) => ({ ...prev, firstName: true }))}
+                      required
+                    />
+                  </div>
+                  <div className="auth-input-group">
+                    <User className="auth-input-icon" />
+                    <input
+                      type="text"
+                      name="lastName"
+                      className={`auth-input ${touchedSignUp.lastName && !isLastNameValid ? "!border-rose-400" : ""}`}
+                      placeholder="Last Name"
+                      value={signUpLastName}
+                      onChange={(e) => setSignUpLastName(e.target.value)}
+                      onBlur={() => setTouchedSignUp((prev) => ({ ...prev, lastName: true }))}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="auth-input-group">
+                  <Mail className="auth-input-icon" />
+                  <input
+                    type="email"
+                    name="email"
+                    className={`auth-input ${touchedSignUp.email && !isSignUpEmailValid ? "!border-rose-400" : ""}`}
+                    placeholder="Email Address (e.g. name@gmail.com)"
+                    value={signUpEmail}
+                    onChange={(e) => setSignUpEmail(e.target.value)}
+                    onBlur={() => setTouchedSignUp((prev) => ({ ...prev, email: true }))}
+                    required
+                  />
+                </div>
+
+                <div className="auth-input-group">
+                  <User className="auth-input-icon" />
+                  <input
+                    type="text"
+                    name="username"
+                    className={`auth-input ${touchedSignUp.username && !isSignUpUsernameValid ? "!border-rose-400" : ""}`}
+                    placeholder="Username (Optional)"
+                    value={signUpUsername}
+                    onChange={(e) => setSignUpUsername(e.target.value)}
+                    onBlur={() => setTouchedSignUp((prev) => ({ ...prev, username: true }))}
+                  />
+                </div>
+
+                <div className="auth-input-group">
+                  <Lock className="auth-input-icon" />
+                  <input
+                    type={showSignUpPassword ? "text" : "password"}
+                    name="password"
+                    className="auth-input auth-input-has-toggle"
+                    placeholder="Password"
+                    value={signUpPassword}
+                    onChange={(e) => setSignUpPassword(e.target.value)}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="auth-toggle-password"
+                    onClick={() => setShowSignUpPassword(!showSignUpPassword)}
+                    aria-label="Toggle password visibility"
+                  >
+                    {showSignUpPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+
+                <div className="auth-input-group">
+                  <Lock className="auth-input-icon" />
+                  <input
+                    type={showSignUpPassword ? "text" : "password"}
+                    name="confirm_password"
+                    className="auth-input"
+                    placeholder="Confirm Password"
+                    value={signUpConfirmPassword}
+                    onChange={(e) => setSignUpConfirmPassword(e.target.value)}
+                    required
+                  />
+                </div>
+
+                {/* Password Requirements Checklist */}
+                {(signUpPassword.length > 0 || signUpConfirmPassword.length > 0) && (
+                  <div className="w-full my-2 p-2.5 rounded-xl bg-white border border-purple-200/90 shadow-sm text-left text-xs space-y-1 animate-in fade-in duration-200">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1">
+                      <div className={`flex items-center gap-1.5 ${passwordCriteria.hasMinLength ? "text-emerald-700 font-bold" : "text-slate-600 font-medium"}`}>
+                        <Check className={`w-3.5 h-3.5 shrink-0 ${passwordCriteria.hasMinLength ? "text-emerald-600 stroke-[3]" : "text-slate-400 stroke-[2]"}`} />
+                        <span>At least 8 characters</span>
+                      </div>
+                      <div className={`flex items-center gap-1.5 ${passwordCriteria.hasUpper ? "text-emerald-700 font-bold" : "text-slate-600 font-medium"}`}>
+                        <Check className={`w-3.5 h-3.5 shrink-0 ${passwordCriteria.hasUpper ? "text-emerald-600 stroke-[3]" : "text-slate-400 stroke-[2]"}`} />
+                        <span>Uppercase letter</span>
+                      </div>
+                      <div className={`flex items-center gap-1.5 ${passwordCriteria.hasLower ? "text-emerald-700 font-bold" : "text-slate-600 font-medium"}`}>
+                        <Check className={`w-3.5 h-3.5 shrink-0 ${passwordCriteria.hasLower ? "text-emerald-600 stroke-[3]" : "text-slate-400 stroke-[2]"}`} />
+                        <span>Lowercase letter</span>
+                      </div>
+                      <div className={`flex items-center gap-1.5 ${passwordCriteria.hasNumber ? "text-emerald-700 font-bold" : "text-slate-600 font-medium"}`}>
+                        <Check className={`w-3.5 h-3.5 shrink-0 ${passwordCriteria.hasNumber ? "text-emerald-600 stroke-[3]" : "text-slate-400 stroke-[2]"}`} />
+                        <span>A number</span>
+                      </div>
+                      <div className={`flex items-center gap-1.5 ${passwordCriteria.hasSpecial ? "text-emerald-700 font-bold" : "text-slate-600 font-medium"}`}>
+                        <Check className={`w-3.5 h-3.5 shrink-0 ${passwordCriteria.hasSpecial ? "text-emerald-600 stroke-[3]" : "text-slate-400 stroke-[2]"}`} />
+                        <span>Special character (@$!%*?&)</span>
+                      </div>
+                      <div className={`flex items-center gap-1.5 ${passwordCriteria.passwordsMatch ? "text-emerald-700 font-bold" : "text-slate-600 font-medium"}`}>
+                        <Check className={`w-3.5 h-3.5 shrink-0 ${passwordCriteria.passwordsMatch ? "text-emerald-600 stroke-[3]" : "text-slate-400 stroke-[2]"}`} />
+                        <span>Passwords match</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Terms and Privacy Policy Checkbox */}
+                <div className="flex items-center gap-2 my-2 text-left w-full">
+                  <input
+                    type="checkbox"
+                    id="acceptTerms"
+                    checked={acceptedTerms}
+                    onChange={(e) => setAcceptedTerms(e.target.checked)}
+                    className="w-4 h-4 rounded border-purple-300 text-ushop-pink focus:ring-ushop-pink accent-ushop-pink cursor-pointer shrink-0"
+                    required
+                  />
+                  <label htmlFor="acceptTerms" className="text-xs text-slate-700 cursor-pointer font-medium leading-tight">
+                    I agree to the{" "}
+                    <Link href="/terms" className="text-ushop-purple font-bold hover:underline" onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+                      Terms of Service
+                    </Link>{" "}
+                    and{" "}
+                    <Link href="/privacy" className="text-ushop-purple font-bold hover:underline" onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+                      Privacy Policy
+                    </Link>
+                  </label>
+                </div>
+
+                <div className="auth-button-group">
+                  <button type="submit" className="auth-button" disabled={isSignUpLoading}>
+                    {isSignUpLoading ? "Signing Up..." : "Sign Up"}
+                  </button>
+                </div>
+
+                {/* Mobile Switch Link */}
+                <div className="mt-3 pt-2.5 border-t border-purple-100/80 w-full text-center block md:hidden">
+                  <p className="text-xs text-slate-500">
+                    Already have an account?{" "}
+                    <button
+                      type="button"
+                      onClick={handleSwitchToSignIn}
+                      className="font-bold text-ushop-pink hover:underline cursor-pointer ml-1"
+                    >
+                      Login
+                    </button>
+                  </p>
+                </div>
               </div>
             </form>
           )}
@@ -686,132 +688,134 @@ export default function SlidingAuthContainer({ initialMode = "sign-in", isModal 
         {/* Sign In Form */}
         <div className="auth-form-container auth-sign-in-container">
           <form onSubmit={handleSignInSubmit} className="auth-form">
-            {/* Mobile Navigation Tabs */}
-            <div className="auth-mobile-tabs md:hidden">
-              <button
-                type="button"
-                className="auth-mobile-tab active"
-              >
-                Login
-              </button>
-              <button
-                type="button"
-                onClick={handleSwitchToSignUp}
-                className="auth-mobile-tab"
-              >
-                Sign Up
-              </button>
-            </div>
-
-            <div className="mb-2 flex justify-center">
-              <Logo imageClassName="h-7 sm:h-8 md:h-9 w-auto" />
-            </div>
-
-            <h1>Welcome Back</h1>
-            <p className="auth-subtitle">Sign in to your UShop account</p>
-
-            {signInError && <div className="auth-error">{signInError}</div>}
-
-            {/* Google Sign In Option */}
-            <button
-              type="button"
-              onClick={() => handleGoogleAuth("sign-in")}
-              className="auth-google-btn"
-            >
-              <GoogleIcon />
-              <span>Sign in with Google</span>
-            </button>
-
-            <div className="auth-divider">
-              <div className="auth-divider-line"></div>
-              <span className="auth-divider-text">OR EMAIL</span>
-            </div>
-
-            <div className="auth-input-group">
-              <Mail className="auth-input-icon" />
-              <input
-                type="text"
-                name="username"
-                className={`auth-input ${touchedSignIn.identifier && !isSignInIdentifierValid ? "!border-rose-400" : ""}`}
-                placeholder="you@gmail.com or +233..."
-                value={signInIdentifier}
-                onChange={(e) => setSignInIdentifier(e.target.value)}
-                onBlur={() => setTouchedSignIn((prev) => ({ ...prev, identifier: true }))}
-                required
-              />
-            </div>
-
-            <div className="auth-input-group">
-              <Lock className="auth-input-icon" />
-              <input
-                type={showSignInPassword ? "text" : "password"}
-                name="password"
-                className={`auth-input auth-input-has-toggle ${touchedSignIn.password && !isSignInPasswordValid ? "!border-rose-400" : ""}`}
-                placeholder="Password"
-                value={signInPassword}
-                onChange={(e) => setSignInPassword(e.target.value)}
-                onBlur={() => setTouchedSignIn((prev) => ({ ...prev, password: true }))}
-                required
-              />
-              <button
-                type="button"
-                className="auth-toggle-password"
-                onClick={() => setShowSignInPassword(!showSignInPassword)}
-                aria-label="Toggle password visibility"
-              >
-                {showSignInPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-
-            {/* Remember my device & Forgot Password */}
-            <div className="flex items-center justify-between w-full my-2 text-xs">
-              <label className="flex items-center gap-1.5 cursor-pointer text-slate-700 font-medium">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-3.5 h-3.5 rounded border-purple-300 text-ushop-pink focus:ring-ushop-pink accent-ushop-pink cursor-pointer"
-                />
-                <span>Remember my device</span>
-              </label>
-              <Link
-                href="/forgot-password"
-                className="font-bold text-ushop-purple hover:underline"
-                onClick={(e) => e.stopPropagation()}
-              >
-                Forgot Password?
-              </Link>
-            </div>
-
-            <div className="auth-button-group">
-              <button type="submit" className="auth-button" disabled={isSignInLoading}>
-                {isSignInLoading ? "Logging in..." : "Login"}
-              </button>
-            </div>
-
-            <p className="text-[11px] text-center text-slate-500 leading-relaxed pt-2 mt-1">
-              By continuing, you agree to U-Shop&apos;s{" "}
-              <Link className="text-ushop-purple underline hover:text-ushop-pink transition-colors font-semibold" href="/terms" onClick={(e) => e.stopPropagation()}>
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link className="text-ushop-purple underline hover:text-ushop-pink transition-colors font-semibold" href="/privacy" onClick={(e) => e.stopPropagation()}>
-                Privacy Policy
-              </Link>.
-            </p>
-
-            {/* Mobile Switch Link */}
-            <div className="mt-4 pt-3 border-t border-purple-100/80 w-full text-center block md:hidden">
-              <p className="text-xs text-slate-500">
-                Don&rsquo;t have an account?{" "}
+            <div className="auth-form-content w-full my-auto flex flex-col items-center">
+              {/* Mobile Navigation Tabs */}
+              <div className="auth-mobile-tabs">
+                <button
+                  type="button"
+                  className="auth-mobile-tab active"
+                >
+                  Login
+                </button>
                 <button
                   type="button"
                   onClick={handleSwitchToSignUp}
-                  className="font-bold text-ushop-pink hover:underline cursor-pointer ml-1"
+                  className="auth-mobile-tab"
                 >
                   Sign Up
                 </button>
+              </div>
+
+              <div className="mb-1.5 flex justify-center">
+                <Logo imageClassName="h-6 sm:h-7 md:h-8 w-auto" />
+              </div>
+
+              <h1>Welcome Back</h1>
+              <p className="auth-subtitle">Sign in to your UShop account</p>
+
+              {signInError && <div className="auth-error">{signInError}</div>}
+
+              {/* Google Sign In Option */}
+              <button
+                type="button"
+                onClick={() => handleGoogleAuth("sign-in")}
+                className="auth-google-btn"
+              >
+                <GoogleIcon />
+                <span>Sign in with Google</span>
+              </button>
+
+              <div className="auth-divider">
+                <div className="auth-divider-line"></div>
+                <span className="auth-divider-text">OR EMAIL</span>
+              </div>
+
+              <div className="auth-input-group">
+                <Mail className="auth-input-icon" />
+                <input
+                  type="text"
+                  name="username"
+                  className={`auth-input ${touchedSignIn.identifier && !isSignInIdentifierValid ? "!border-rose-400" : ""}`}
+                  placeholder="you@gmail.com or +233..."
+                  value={signInIdentifier}
+                  onChange={(e) => setSignInIdentifier(e.target.value)}
+                  onBlur={() => setTouchedSignIn((prev) => ({ ...prev, identifier: true }))}
+                  required
+                />
+              </div>
+
+              <div className="auth-input-group">
+                <Lock className="auth-input-icon" />
+                <input
+                  type={showSignInPassword ? "text" : "password"}
+                  name="password"
+                  className={`auth-input auth-input-has-toggle ${touchedSignIn.password && !isSignInPasswordValid ? "!border-rose-400" : ""}`}
+                  placeholder="Password"
+                  value={signInPassword}
+                  onChange={(e) => setSignInPassword(e.target.value)}
+                  onBlur={() => setTouchedSignIn((prev) => ({ ...prev, password: true }))}
+                  required
+                />
+                <button
+                  type="button"
+                  className="auth-toggle-password"
+                  onClick={() => setShowSignInPassword(!showSignInPassword)}
+                  aria-label="Toggle password visibility"
+                >
+                  {showSignInPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+
+              {/* Remember my device & Forgot Password */}
+              <div className="flex items-center justify-between w-full my-2 text-xs">
+                <label className="flex items-center gap-1.5 cursor-pointer text-slate-700 font-medium">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="w-3.5 h-3.5 rounded border-purple-300 text-ushop-pink focus:ring-ushop-pink accent-ushop-pink cursor-pointer"
+                  />
+                  <span>Remember my device</span>
+                </label>
+                <Link
+                  href="/forgot-password"
+                  className="font-bold text-ushop-purple hover:underline"
+                  onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                >
+                  Forgot Password?
+                </Link>
+              </div>
+
+              <div className="auth-button-group">
+                <button type="submit" className="auth-button" disabled={isSignInLoading}>
+                  {isSignInLoading ? "Logging in..." : "Login"}
+                </button>
+              </div>
+
+              <p className="text-[11px] text-center text-slate-500 leading-relaxed pt-2 mt-1">
+                By continuing, you agree to U-Shop&apos;s{" "}
+                <Link className="text-ushop-purple underline hover:text-ushop-pink transition-colors font-semibold" href="/terms" onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+                  Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link className="text-ushop-purple underline hover:text-ushop-pink transition-colors font-semibold" href="/privacy" onClick={(e) => e.stopPropagation()}>
+                  Privacy Policy
+                </Link>.
               </p>
+
+              {/* Mobile Switch Link */}
+              <div className="mt-3 pt-2.5 border-t border-purple-100/80 w-full text-center block md:hidden">
+                <p className="text-xs text-slate-500">
+                  Don&rsquo;t have an account?{" "}
+                  <button
+                    type="button"
+                    onClick={handleSwitchToSignUp}
+                    className="font-bold text-ushop-pink hover:underline cursor-pointer ml-1"
+                  >
+                    Sign Up
+                  </button>
+                </p>
+              </div>
             </div>
           </form>
         </div>
