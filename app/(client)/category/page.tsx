@@ -11,9 +11,6 @@ import {
   Package,
   Tag,
   Layers,
-  ShieldCheck,
-  Truck,
-  Zap,
   Flame,
   Grid,
 } from "lucide-react";
@@ -266,38 +263,7 @@ const CategoryPage = async () => {
           </div>
         )}
 
-        {/* Feature Badges Footer */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-xs grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
-          <div className="flex items-center gap-4 p-2">
-            <div className="w-12 h-12 rounded-xl bg-ushop-pink/10 text-ushop-pink flex items-center justify-center shrink-0">
-              <ShieldCheck className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="text-sm font-bold text-gray-900">Verified Equipment</h4>
-              <p className="text-xs text-gray-500 mt-0.5">Checked products from trusted Personal, Business, and Student sellers.</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 p-2">
-            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-              <Zap className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="text-sm font-bold text-gray-900">Best Direct Prices</h4>
-              <p className="text-xs text-gray-500 mt-0.5">Competitive deals straight from verified vendors.</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 p-2">
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-              <Truck className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="text-sm font-bold text-gray-900">Fast Nationwide Delivery</h4>
-              <p className="text-xs text-gray-500 mt-0.5">Quick campus pick-up & doorstep delivery across Ghana.</p>
-            </div>
-          </div>
-        </div>
+        
       </Container>
     </div>
   );
