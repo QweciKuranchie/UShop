@@ -53,23 +53,25 @@ const ProductCard = ({
   dealType,
 }: ProductCardProps) => {
   // Determine deal icon badges under Wishlist button
+  const statusStr = product?.status as string | undefined;
+
   const isFlash =
     isFlashSale ||
     dealType === "flash" ||
     Boolean(product?.isFlashSale) ||
-    product?.status === "hot" ||
-    product?.status === "flash";
+    statusStr === "hot" ||
+    statusStr === "flash";
 
   const isStudent =
     dealType === "student" ||
     Boolean((product as unknown as { isStudentDeal?: boolean })?.isStudentDeal) ||
-    product?.status === "student";
+    statusStr === "student";
 
   const isClearance =
     dealType === "clearance" ||
     Boolean((product as unknown as { isClearance?: boolean })?.isClearance) ||
-    product?.status === "clearance" ||
-    product?.status === "refurbished";
+    statusStr === "clearance" ||
+    statusStr === "refurbished";
 
   return (
     <div className="text-xs sm:text-sm border border-gray-200/80 rounded-2xl bg-white group hover:shadow-xl hover:border-ushop-pink/30 hoverEffect flex flex-col h-full overflow-hidden">

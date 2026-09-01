@@ -15,7 +15,7 @@ const ALL_PRODUCTS_QUERY = defineQuery(
   }`
 );
 const DEAL_PRODUCTS = defineQuery(
-  `*[_type == 'product' && (isFlashSale == true || status == 'hot' || discount > 0)] | order(_createdAt desc){
+  `*[_type == 'product' && (isFlashSale == true || isStudentDeal == true || isClearance == true || isBlackFriday == true || isSpecialOffer == true || status == 'hot' || discount > 0)] | order(_createdAt desc){
     ...,
     "categories": categories[]->title,
     "averageRating": coalesce(math::avg(*[_type == "review" && product._ref == ^._id && status == "approved"].rating), averageRating, 0),
