@@ -18,7 +18,7 @@ importers:
         version: 1.6.0(@date-fns/tz@1.5.0)(@types/react@19.2.17)(date-fns@4.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@clerk/nextjs':
         specifier: ^6.39.6
-        version: 6.39.6(next@16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        version: 6.39.6(next@16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@clerk/shared':
         specifier: ^3.47.8
         version: 3.47.8(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -45,10 +45,10 @@ importers:
         version: 4.17.24
       '@vercel/analytics':
         specifier: ^2.0.1
-        version: 2.0.1(next@16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)
+        version: 2.0.1(next@16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)
       '@vercel/speed-insights':
         specifier: ^2.0.0
-        version: 2.0.0(next@16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)
+        version: 2.0.0(next@16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -89,11 +89,11 @@ importers:
         specifier: ^12.42.2
         version: 12.42.2(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       next:
-        specifier: ^16.3.3
-        version: 16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: ^16.3.8
+        version: 16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       next-sanity:
         specifier: ^13.1.1
-        version: 13.1.3(3e0b40cf202a775a6704c8ce0db968b7)
+        version: 13.1.3(58a4456e9bd8c92baaad04699395b3e1)
       react:
         specifier: ^19.2.4
         version: 19.2.7
@@ -2087,60 +2087,60 @@ packages:
       '@emnapi/core': ^1.7.1
       '@emnapi/runtime': ^1.7.1
 
-  '@next/env@16.3.3':
-    resolution: {integrity: sha512-U2eYQRwXj+dsqxV79zFqExDdatnNY/ZWc2nsJU1p/OgT7fd3dXwlF6OjYaFQCfMoeTA19PWq+wVmYgimVA+V+g==}
+  '@next/env@16.3.8':
+    resolution: {integrity: sha512-Al9zqHVV7TJv0eFuOU4U7Lvv74PTih4Ch63sk2xCIpSTkE3udFnaOcnzP2lQVymiL7yS9Cj2iClUXlR3EQ5sEw==}
 
   '@next/eslint-plugin-next@16.2.10':
     resolution: {integrity: sha512-Gs8D2m21VnJeFo9qvYIIqJH94frWerWYu41BprU1pLtRVF7PCQNLiFZZ3fG+iPuj3K83Cwv/rt+msLOy8Qgu3Q==}
 
-  '@next/swc-darwin-arm64@16.3.3':
-    resolution: {integrity: sha512-8Hiv32QJPwdV6KYJ8meR9SBA061tQqnIKTJDocvOXlEQqib0xMFpzArosuffFUUc0sslbh7QQ8a3Yey1QV8EIw==}
+  '@next/swc-darwin-arm64@16.3.8':
+    resolution: {integrity: sha512-2JPRMh2nmQG5CiL7cXGL9AGwnPWJQ//cTtAUCT+w511QHk79SYz3LGv/pc5X643B/WEO0rvu3Yww0hqwt3kgeA==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@next/swc-darwin-x64@16.3.3':
-    resolution: {integrity: sha512-A1lgKgwVchRYmSe467zdwhxT9040dd8lH+o65sL5Jet8fjB4kegw/rDyPIpYVRb6jAqwXFOJpjIXJLxQKLiE3A==}
+  '@next/swc-darwin-x64@16.3.8':
+    resolution: {integrity: sha512-GZtCCOBKJ4leVIT/Th0llWKhD1ca92lzbQiS5R5ON9QkoiFnilFsebDae1JU2a3HWoKMEmEZWGs1AGLavVM72Q==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
-  '@next/swc-linux-arm64-gnu@16.3.3':
-    resolution: {integrity: sha512-bf0FIssMFueU2dm7vQEWWxk0c8UjKTdW0yzuh0sQsD8pf1+KCLDdaqhYZNMYGmXwEOiHAUzgBKudovIlcvvBjg==}
+  '@next/swc-linux-arm64-gnu@16.3.8':
+    resolution: {integrity: sha512-O659ygeQYqneJ1fBKMpFxIFqYkYswu8IAS1OCKK/4f3ZgJJm1dRz4fVJZRi/kLLWjnBKnebOePA4WNv+sV1pVA==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@next/swc-linux-arm64-musl@16.3.3':
-    resolution: {integrity: sha512-W7viwCk9JY/cAkdz/A273rd5bb3RgT/IHwR7Upv90tunjBWNtAAhGhoecHh+teRNRSinuAFmE+l7fwZ4YKkrXg==}
+  '@next/swc-linux-arm64-musl@16.3.8':
+    resolution: {integrity: sha512-dSjKSyWpzxoO1d3DIZZcP4XJcNaKeLmxQMFOiYl5vuBRMmweIqnAhty8tAmRsvTss779cK1FtYnDMj40e4TQlg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@next/swc-linux-x64-gnu@16.3.3':
-    resolution: {integrity: sha512-0W46zw1N3ODpI6n0GeivHvvob1pooozgZVqy65k0mh4/7vr+FbY9+WpHzNVXjHipJf/A3FDheBG19H1s5A25rA==}
+  '@next/swc-linux-x64-gnu@16.3.8':
+    resolution: {integrity: sha512-lbqOuz3RPRcv+o9msNsJw5x4+Y1ZwPTs6vmL6DCf7i0fZfvng/F59wyeDwqHIvV0mK//RBy/jJkZ+nCKsSMXjQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@next/swc-linux-x64-musl@16.3.3':
-    resolution: {integrity: sha512-H4mBso8ZTMBPtdT0PN0pBx2ayTvQuTuvS6qT13d77yVFJXAPCxkyIhLTmdMaGTJs0krQYI/qpzdHijCeihXhbg==}
+  '@next/swc-linux-x64-musl@16.3.8':
+    resolution: {integrity: sha512-+316WswI8ScVgZeUd+1KGaXkHhaYQzCjvH/05TZSpJ8zBizb1a4G7DtO7F12jcBIqMOtsz9ji1t48fmKtzqsGA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@next/swc-win32-arm64-msvc@16.3.3':
-    resolution: {integrity: sha512-cTMUJpcEGmeywofCUfhR+rSsoE33+rVPnPEYNTNdLNlsOeEg/vktOsKUSTb28vUGqD2jkm4Zaskcwn7OCI6FQg==}
+  '@next/swc-win32-arm64-msvc@16.3.8':
+    resolution: {integrity: sha512-ji0gd4kMYUxO+1fJBIbiBVRCjzG/lloiyCccnlebvb1ZJ5qXCPZqYg4Jl1DrrixnWNMKylzgpmMWx0yNDYXlzw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
 
-  '@next/swc-win32-x64-msvc@16.3.3':
-    resolution: {integrity: sha512-2VR4cTBzHXaBjnGsuH6GyJjENzQOmHeAh11uY1iUhjm3j5dEUrVJuUj+VL78jaGi/Dik8xS76zEj18BsFhlVZQ==}
+  '@next/swc-win32-x64-msvc@16.3.8':
+    resolution: {integrity: sha512-WcTlaKt/TWkh5kUjdJcUmB1XgZ+1c6fz4Y9fDHL73YNSdGaUWjceeWrrlwF0nv19iABYWC4iAq1oX1w4Bn0vfg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -4090,6 +4090,9 @@ packages:
     resolution: {integrity: sha512-8WB3Jcas3swSvjIeA2yvCJ+Miyz5l1ZmB6HFb9R1317dt9LCQoswg/BGrmAmkWVEszSrrg4RwmO46qIm2OEnSA==}
     engines: {node: '>=16'}
 
+  camelize@1.0.1:
+    resolution: {integrity: sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==}
+
   caniuse-lite@1.0.30001806:
     resolution: {integrity: sha512-72Cuvd95zbSYPKq6Fhg8eDJRlzgWDf7/mtoZv6Qe/DYNCEBdNxoA3+rZAU2ZhGCpZlns3EssFavaZomckT5Uuw==}
 
@@ -4323,8 +4326,15 @@ packages:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
 
+  css-color-keywords@1.0.0:
+    resolution: {integrity: sha512-FyyrDHZKEjXDpNJYvVsV960FiqQyXc/LlYmsxl2BcdMb2WPx0OGRVgTg55rPSyLSNMqP52R9r8geSp7apN3Ofg==}
+    engines: {node: '>=4'}
+
   css-select@5.2.2:
     resolution: {integrity: sha512-TizTzUddG/xYLA3NXodFM0fSbNizXjOKhqiQQwvhlspadZokn1KDy0NZFS0wuEubIYAV5/c1/lAr0TaaFXEXzw==}
+
+  css-to-react-native@3.2.0:
+    resolution: {integrity: sha512-e8RKaLXMOFii+02mOlqwjbD00KSEKqblnpO9e++1aXS1fPQOpS1YoqdVHBqPjHNoxeF2mimzVqawm2KCbEdtHQ==}
 
   css-tree@3.2.1:
     resolution: {integrity: sha512-X7sjQzceUhu1u7Y/ylrRZFU2FS6LRiFVp6rKLPg23y3x3c3DOKAwuXGDp+PAGjh6CSnCjYeAul8pcT8bAl+lSA==}
@@ -6270,8 +6280,8 @@ packages:
       sanity: ^5.29.0 || ^6.0.0
       styled-components: ^6.1
 
-  next@16.3.3:
-    resolution: {integrity: sha512-tuRTx1nQ/yVw83cwJBo9F+njGUgMn3UHQycreWHB8XsStvvAh1AthbI8/4IpKnFaF58F+iSiHejYOlMQ/eq83g==}
+  next@16.3.8:
+    resolution: {integrity: sha512-U7QEZaTini6wKrb8A8hqLLqYQyCetegKjCpJOyxk642vWoMoU1x5PyZCJFvgYgiptA8xc5j/9xYlZFO7w9Sjmw==}
     engines: {node: '>=20.9.0'}
     hasBin: true
     peerDependencies:
@@ -6599,6 +6609,9 @@ packages:
   postcss-selector-parser@7.1.4:
     resolution: {integrity: sha512-HeP7D2wyhkR+XaK6v4W8oRF62Dsz4flyuczALJp61GckGm42u1saSSJ/0auvcBqxs3jMRFEcPK34At/0JBKdOg==}
     engines: {node: '>=4'}
+
+  postcss-value-parser@4.2.0:
+    resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
   postcss@8.5.23:
     resolution: {integrity: sha512-g50586zr4bZmwFiTlflMu8E0bDTb5I5gertgwAKmsdUlTQIhZtunzUlD1WSzwcVWPoAVpsrA6vlfCD7oXvRwgg==}
@@ -7356,13 +7369,10 @@ packages:
     resolution: {integrity: sha512-tJk5CmKUPMDoTsZQ8m0hHInBk9HFKUPSusqmbBuefDX+yUbMBWea2Ob/wdXFyHW8XZqXkprJscysAdKeGWNqlA==}
     engines: {node: '>= 16'}
     peerDependencies:
-      css-to-react-native: '>= 3.2.0'
       react: '>= 16.8.0'
       react-dom: '>= 16.8.0'
       react-native: '>= 0.68.0'
     peerDependenciesMeta:
-      css-to-react-native:
-        optional: true
       react-dom:
         optional: true
       react-native:
@@ -9036,13 +9046,13 @@ snapshots:
       react-dom: 19.2.7(react@19.2.7)
       tslib: 2.8.1
 
-  '@clerk/nextjs@6.39.6(next@16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@clerk/nextjs@6.39.6(next@16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
       '@clerk/backend': 2.33.6(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@clerk/clerk-react': 5.61.9(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@clerk/shared': 3.47.8(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@clerk/types': 4.101.26(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      next: 16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      next: 16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
       server-only: 0.0.1
@@ -10264,34 +10274,34 @@ snapshots:
       '@tybys/wasm-util': 0.10.3
     optional: true
 
-  '@next/env@16.3.3': {}
+  '@next/env@16.3.8': {}
 
   '@next/eslint-plugin-next@16.2.10':
     dependencies:
       fast-glob: 3.3.1
 
-  '@next/swc-darwin-arm64@16.3.3':
+  '@next/swc-darwin-arm64@16.3.8':
     optional: true
 
-  '@next/swc-darwin-x64@16.3.3':
+  '@next/swc-darwin-x64@16.3.8':
     optional: true
 
-  '@next/swc-linux-arm64-gnu@16.3.3':
+  '@next/swc-linux-arm64-gnu@16.3.8':
     optional: true
 
-  '@next/swc-linux-arm64-musl@16.3.3':
+  '@next/swc-linux-arm64-musl@16.3.8':
     optional: true
 
-  '@next/swc-linux-x64-gnu@16.3.3':
+  '@next/swc-linux-x64-gnu@16.3.8':
     optional: true
 
-  '@next/swc-linux-x64-musl@16.3.3':
+  '@next/swc-linux-x64-musl@16.3.8':
     optional: true
 
-  '@next/swc-win32-arm64-msvc@16.3.3':
+  '@next/swc-win32-arm64-msvc@16.3.8':
     optional: true
 
-  '@next/swc-win32-x64-msvc@16.3.3':
+  '@next/swc-win32-x64-msvc@16.3.8':
     optional: true
 
   '@noble/ed25519@3.1.0': {}
@@ -11578,7 +11588,7 @@ snapshots:
     optionalDependencies:
       '@sanity/types': 6.5.0(@types/react@19.2.17)
 
-  '@sanity/visual-editing@5.5.0(@emotion/is-prop-valid@1.4.0)(@sanity/client@7.23.2)(@types/react@19.2.17)(next@16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(styled-components@6.4.4(react-dom@19.2.7(react@19.2.7))(react-native@0.86.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(supports-color@8.1.1)(utf-8-validate@6.0.6))(react@19.2.7))(typescript@5.9.3)':
+  '@sanity/visual-editing@5.5.0(@emotion/is-prop-valid@1.4.0)(@sanity/client@7.23.2)(@types/react@19.2.17)(next@16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(styled-components@6.4.4(react-dom@19.2.7(react@19.2.7))(react-native@0.86.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(supports-color@8.1.1)(utf-8-validate@6.0.6))(react@19.2.7))(typescript@5.9.3)':
     dependencies:
       '@sanity/comlink': 4.0.1
       '@sanity/icons': 5.1.0(react@19.2.7)
@@ -11600,7 +11610,7 @@ snapshots:
       xstate: 5.32.5
     optionalDependencies:
       '@sanity/client': 7.23.2
-      next: 16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      next: 16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
     transitivePeerDependencies:
       - '@emotion/is-prop-valid'
       - '@types/react'
@@ -12073,9 +12083,9 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.12.2':
     optional: true
 
-  '@vercel/analytics@2.0.1(next@16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)':
+  '@vercel/analytics@2.0.1(next@16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)':
     optionalDependencies:
-      next: 16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      next: 16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react: 19.2.7
 
   '@vercel/edge@1.3.1': {}
@@ -12088,9 +12098,9 @@ snapshots:
       '@vercel/error-utils': 2.0.3
       js-yaml: 3.13.1
 
-  '@vercel/speed-insights@2.0.0(next@16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)':
+  '@vercel/speed-insights@2.0.0(next@16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)':
     optionalDependencies:
-      next: 16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      next: 16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react: 19.2.7
 
   '@vercel/stega@1.1.0': {}
@@ -12501,6 +12511,8 @@ snapshots:
 
   camelcase@8.0.0: {}
 
+  camelize@1.0.1: {}
+
   caniuse-lite@1.0.30001806: {}
 
   caniuse-lite@1.0.30001810: {}
@@ -12753,6 +12765,8 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
+  css-color-keywords@1.0.0: {}
+
   css-select@5.2.2:
     dependencies:
       boolbase: 1.0.0
@@ -12760,6 +12774,12 @@ snapshots:
       domhandler: 5.0.3
       domutils: 3.2.2
       nth-check: 2.1.1
+
+  css-to-react-native@3.2.0:
+    dependencies:
+      camelize: 1.0.1
+      css-color-keywords: 1.0.0
+      postcss-value-parser: 4.2.0
 
   css-tree@3.2.1:
     dependencies:
@@ -14785,7 +14805,7 @@ snapshots:
       '@babel/types': 7.29.8
       flow-enums-runtime: 0.0.6
       invariant: 2.2.4
-      metro-symbolicate: 0.84.4(supports-color@8.1.1)
+      metro-symbolicate: 0.84.4
       nullthrows: 1.1.1
       ob1: 0.84.4
       source-map: 0.5.7
@@ -14794,7 +14814,7 @@ snapshots:
       - supports-color
     optional: true
 
-  metro-symbolicate@0.84.4(supports-color@8.1.1):
+  metro-symbolicate@0.84.4:
     dependencies:
       flow-enums-runtime: 0.0.6
       invariant: 2.2.4
@@ -14802,8 +14822,6 @@ snapshots:
       nullthrows: 1.1.1
       source-map: 0.5.7
       vlq: 1.0.1
-    transitivePeerDependencies:
-      - supports-color
     optional: true
 
   metro-transform-plugins@0.84.4(supports-color@8.1.1):
@@ -14870,7 +14888,7 @@ snapshots:
       metro-resolver: 0.84.4
       metro-runtime: 0.84.4
       metro-source-map: 0.84.4(supports-color@8.1.1)
-      metro-symbolicate: 0.84.4(supports-color@8.1.1)
+      metro-symbolicate: 0.84.4
       metro-transform-plugins: 0.84.4(supports-color@8.1.1)
       metro-transform-worker: 0.84.4(bufferutil@4.1.0)(supports-color@8.1.1)(utf-8-validate@6.0.6)
       mime-types: 3.0.2
@@ -14977,17 +14995,17 @@ snapshots:
 
   negotiator@1.0.0: {}
 
-  next-sanity@13.1.3(3e0b40cf202a775a6704c8ce0db968b7):
+  next-sanity@13.1.3(58a4456e9bd8c92baaad04699395b3e1):
     dependencies:
       '@portabletext/react': 6.2.0(react@19.2.7)
       '@sanity/client': 7.23.2
       '@sanity/generate-help-url': 4.0.0
       '@sanity/preview-url-secret': 4.0.8(@sanity/client@7.23.2)
-      '@sanity/visual-editing': 5.5.0(@emotion/is-prop-valid@1.4.0)(@sanity/client@7.23.2)(@types/react@19.2.17)(next@16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(styled-components@6.4.4(react-dom@19.2.7(react@19.2.7))(react-native@0.86.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(supports-color@8.1.1)(utf-8-validate@6.0.6))(react@19.2.7))(typescript@5.9.3)
+      '@sanity/visual-editing': 5.5.0(@emotion/is-prop-valid@1.4.0)(@sanity/client@7.23.2)(@types/react@19.2.17)(next@16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(styled-components@6.4.4(react-dom@19.2.7(react@19.2.7))(react-native@0.86.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(supports-color@8.1.1)(utf-8-validate@6.0.6))(react@19.2.7))(typescript@5.9.3)
       '@sanity/webhook': 4.0.4
       groq: 6.5.0
       history: 5.3.0
-      next: 16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      next: 16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
       sanity: 5.31.1(@emotion/is-prop-valid@1.4.0)(@noble/hashes@2.2.0)(@oclif/core@4.11.14)(@sanity/cli-core@1.3.4(@noble/hashes@2.2.0)(@types/node@20.19.43)(lightningcss@1.32.0)(supports-color@8.1.1)(terser@5.49.2)(yaml@2.9.0))(@types/node@20.19.43)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(bufferutil@4.1.0)(immer@11.1.15)(jiti@2.7.0)(lightningcss@1.32.0)(react-dom@19.2.7(react@19.2.7))(react-native@0.86.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(supports-color@8.1.1)(utf-8-validate@6.0.6))(react@19.2.7)(styled-components@6.4.4(react-dom@19.2.7(react@19.2.7))(react-native@0.86.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(supports-color@8.1.1)(utf-8-validate@6.0.6))(react@19.2.7))(supports-color@8.1.1)(terser@5.49.2)(typescript@5.9.3)(utf-8-validate@6.0.6)
@@ -15000,9 +15018,9 @@ snapshots:
       - svelte
       - typescript
 
-  next@16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
+  next@16.3.8(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
     dependencies:
-      '@next/env': 16.3.3
+      '@next/env': 16.3.8
       '@swc/helpers': 0.5.23
       baseline-browser-mapping: 2.11.22
       caniuse-lite: 1.0.30001810
@@ -15011,14 +15029,14 @@ snapshots:
       react-dom: 19.2.7(react@19.2.7)
       styled-jsx: 5.1.6(@babel/core@7.29.7(supports-color@8.1.1))(babel-plugin-macros@3.1.0)(react@19.2.7)
     optionalDependencies:
-      '@next/swc-darwin-arm64': 16.3.3
-      '@next/swc-darwin-x64': 16.3.3
-      '@next/swc-linux-arm64-gnu': 16.3.3
-      '@next/swc-linux-arm64-musl': 16.3.3
-      '@next/swc-linux-x64-gnu': 16.3.3
-      '@next/swc-linux-x64-musl': 16.3.3
-      '@next/swc-win32-arm64-msvc': 16.3.3
-      '@next/swc-win32-x64-msvc': 16.3.3
+      '@next/swc-darwin-arm64': 16.3.8
+      '@next/swc-darwin-x64': 16.3.8
+      '@next/swc-linux-arm64-gnu': 16.3.8
+      '@next/swc-linux-arm64-musl': 16.3.8
+      '@next/swc-linux-x64-gnu': 16.3.8
+      '@next/swc-linux-x64-musl': 16.3.8
+      '@next/swc-win32-arm64-msvc': 16.3.8
+      '@next/swc-win32-x64-msvc': 16.3.8
       sharp: 0.35.4(@types/node@20.19.43)
     transitivePeerDependencies:
       - '@babel/core'
@@ -15354,6 +15372,8 @@ snapshots:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
+
+  postcss-value-parser@4.2.0: {}
 
   postcss@8.5.23:
     dependencies:
@@ -16460,6 +16480,7 @@ snapshots:
   styled-components@6.4.4(react-dom@19.2.7(react@19.2.7))(react-native@0.86.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(supports-color@8.1.1)(utf-8-validate@6.0.6))(react@19.2.7):
     dependencies:
       '@emotion/is-prop-valid': 1.4.0
+      css-to-react-native: 3.2.0
       csstype: 3.2.3
       react: 19.2.7
       stylis: 4.3.6
